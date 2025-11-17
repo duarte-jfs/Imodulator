@@ -84,3 +84,8 @@ nbsphinx_execute = 'never'
 
 # Recommended: ignore notebook checkpoints
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
+
+# -- Mock imports for autodoc -----------------------------------------------
+autodoc_mock_imports = [
+    "gmsh"
+]
