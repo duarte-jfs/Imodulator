@@ -61,7 +61,7 @@ class Config:
             spec.loader.exec_module(lumapi)
             self.lumapi = lumapi
             print("Successfully imported lumapi")
-        except ImportError as e:
+        except (ImportError, FileNotFoundError) as e:
             print(f"Failed to import lumapi: {e}")
             self.lumapi = None
 
