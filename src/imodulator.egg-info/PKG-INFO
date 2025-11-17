@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: imodulator
+Version: 0.0.0
+Summary: An all-in-one photonic electro-optic modulator design tool with complete modularity providing consistent optical mode solving, charge transport simulations, RF mode solving and transmission line analysis for arbitrary materials and cross sections.
+Author-email: Duarte Silva <d.j.fernandes.da.silva@tue.nl>, Kaan Sünnetçioğlu <a.k.sunnetcioglu@tue.nl>
+Project-URL: Homepage, https://gitlab.tue.nl/tue-phi/photonmod
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: femwell==0.1.11
+Requires-Dist: matplotlib==3.9.0
+Requires-Dist: meshwell==1.0.7
+Requires-Dist: numpy==2.0.0
+Requires-Dist: Pint>=0.24
+Requires-Dist: scipy==1.13.1
+Requires-Dist: shapely==2.0.4
+Requires-Dist: pyyaml==6.0.2
+Requires-Dist: pandas==2.3.0
+Requires-Dist: nextnanopy>=1.0.1
+Dynamic: license-file
+
+# Imodulator
+
+Imodulator is aimed to be an all in one photonic electro-optic modulator design tool with complete modularity providing consistent optical mode solving, charge transport simulations, RF mode solving and transmission line analysis for arbitrary materials and cross sections.
+
+## Instalation
+
+To get started with this package you must first clone the repository somewhere on your laptop. For that run:
+
+```console
+cd path\to\your\directory
+```
+
+```console
+git clone https://gitlab.tue.nl/tue-phi/photonmod.git
+```
+
+Now we will install the package **with the local files**. This means that instead of the package being installed in your python environment in the `site-packages` folder, python will fetch the files in the current directory. This is useful for development:
+
+```console
+pip install -e .
+```
+
+Now you can try to create a `.py` file and run `import photonmod`. If it gives no errors, you're done!
+
+## Usage
+
+Configure \*\*
+
+## Idealization
+
+![Architecture](imgs/architecture.png)

@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photonic Polygons &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=7026087e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Photonic Device" href="PhotonicDevice.html" />
+    <link rel="prev" title="Install" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Photonic Polygons</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/PhotonicPolygon.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="photonic-polygons">
+<h1>Photonic Polygons<a class="headerlink" href="#photonic-polygons" title="Link to this heading"></a></h1>
+<p>A <code class="docutils literal notranslate"><span class="pre">PhotonicPolygon</span></code> is a dataclass object that is meant to work as a subdomain for a <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code>, meaning that it should hold all the information about a single part of your photonic device. In particular it should hold the information about:</p>
+<ul class="simple">
+<li><p>The geometry of the polygon, which need not be a rectangle.</p></li>
+<li><p>The material properties of the polygon, including the optical and the RF relative electrical permitivity;</p></li>
+<li><p>The various mesh settings for optical, RF, charge transport and electro-optical calculations;</p></li>
+<li><p>Additional charge transport and optical simulator arguments.</p></li>
+</ul>
+<p>This is a list of the <code class="docutils literal notranslate"><span class="pre">PhotonicPolygon</span></code> classes available in the <code class="docutils literal notranslate"><span class="pre">imodulator</span></code> package.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.PhotonicPolygon.</span></span><span class="sig-name descname"><span class="pre">SemiconductorPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_material=(1+0j)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_eps=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">electro_optic_module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">electro_optic_module_kwargs=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculate_current=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_buffer_current=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eo_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_transport_simulator_kwargs=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_charge_transport_data=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon" title="Link to this definition"></a></dt>
+<dd><p>Base class for a polygon with semiconductor properties.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.polygon">
+<span class="sig-name descname"><span class="pre">polygon</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon" title="Link to this definition"></a></dt>
+<dd><p>The polygon geometry. It must be a <a class="reference external" href="https://shapely.readthedocs.io/en/stable/">shapely</a> object, either a <cite>Polygon</cite> or a <cite>MultiPolygon</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Polygon | Multipolygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.name" title="Link to this definition"></a></dt>
+<dd><p>The name of the polygon. If not provided, a unique ID will be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material">
+<span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material" title="Link to this definition"></a></dt>
+<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps">
+<span class="sig-name descname"><span class="pre">rf_eps</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps" title="Link to this definition"></a></dt>
+<dd><p>The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature. Note that the charge transport data will only be used to retrieve the conductivity values. You must always insert the real part of the permitivity. Otherwise it will consider it 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | complex | int | np.ndarray | list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module">
+<span class="sig-name descname"><span class="pre">electro_optic_module</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module" title="Link to this definition"></a></dt>
+<dd><p>The electro-optic module associated with the polygon. This is the model that will later be used by <a class="reference internal" href="ElectroOpticalSimulators/ElectroOpticalSimulator.html#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator" title="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElectroOpticalSimulator</span></code></a> to calculate the electro-optic effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None | ElectroOpticalModel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs">
+<span class="sig-name descname"><span class="pre">electro_optic_module_kwargs</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs" title="Link to this definition"></a></dt>
+<dd><p>The keyword arguments for the electro-optic module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current">
+<span class="sig-name descname"><span class="pre">calculate_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current" title="Link to this definition"></a></dt>
+<dd><p>A flag to indicate whether to calculate current.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current">
+<span class="sig-name descname"><span class="pre">d_buffer_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current" title="Link to this definition"></a></dt>
+<dd><p>The buffer distance for current calculation. The current is calculated with a line integral around the object. This parameter sets the distance from the object where the line integral is calculated. The default value is 0.1 micrometers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings">
+<span class="sig-name descname"><span class="pre">eo_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for electro-optic simulations. It is a dictionary with the following keys:</p>
+<ul class="simple">
+<li><p><strong>SizeMax</strong> (float): the maximum size of the mesh at a <code class="docutils literal notranslate"><span class="pre">distance</span></code> from the object;</p></li>
+<li><p><strong>resolution</strong> (float): the maximum size of the mesh <em>inside</em> the polygon;</p></li>
+<li><p><strong>distance</strong> (float): the distance from the object where the mesh size is <code class="docutils literal notranslate"><span class="pre">SizeMax</span></code>;</p></li>
+<li><p><strong>distance_junction</strong> (float): If there is a boundary of the type Semiconductor-Semiconductor, Semiconductor-Insulator a new polygon can be automatically inserted that captures the junction. This new polygon is inserted only in the direction of the semiconductor. <code class="docutils literal notranslate"><span class="pre">distance_junction</span></code> controls how deep into the semiconductor it goes;</p></li>
+<li><p><strong>resolution_junction</strong> (float): the maximum size of the mesh <em>inside</em> the junction;</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to search for junctions is not active at the moment. It is a feature that will be implemented in the future.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings">
+<span class="sig-name descname"><span class="pre">rf_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for RF simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings">
+<span class="sig-name descname"><span class="pre">optical_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for optical simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs">
+<span class="sig-name descname"><span class="pre">charge_transport_simulator_kwargs</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Additional keyword arguments for the charge transport simulator.
+charge_transport_simulator_kwargs;</p>
+<blockquote>
+<div><p>“material_definition”:None, If not defined, default is “Ga(x)In(1-x)As(y)P(1-y)” should be available in Nextnano
+“doping_conc”: None,
+“doping_type”: None,
+“alloy_y”: None,
+“alloy_x”:None,</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.PhotonicPolygon.</span></span><span class="sig-name descname"><span class="pre">MetalPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_material=(1+0j)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculate_current=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_buffer_current=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_eps=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eo_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_mesh_settings=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon" title="Link to this definition"></a></dt>
+<dd><p>Initialize a <code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code> object with the specified parameters. All the input spatial dimensions are assumed to be in micrometers, and the frequencies are in GHz.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.polygon">
+<span class="sig-name descname"><span class="pre">polygon</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.polygon" title="Link to this definition"></a></dt>
+<dd><p>The polygon geometry. It must be a <a class="reference external" href="https://shapely.readthedocs.io/en/stable/">shapely</a> object, either a <cite>Polygon</cite> or a <cite>MultiPolygon</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Polygon | MultiPolygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.name" title="Link to this definition"></a></dt>
+<dd><p>The name of the polygon. If not provided, a unique ID will be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.optical_material">
+<span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.optical_material" title="Link to this definition"></a></dt>
+<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.rf_eps">
+<span class="sig-name descname"><span class="pre">rf_eps</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.rf_eps" title="Link to this definition"></a></dt>
+<dd><p>The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, complex, int, or np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.calculate_current">
+<span class="sig-name descname"><span class="pre">calculate_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.calculate_current" title="Link to this definition"></a></dt>
+<dd><p>A flag to indicate whether to calculate current.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current">
+<span class="sig-name descname"><span class="pre">d_buffer_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current" title="Link to this definition"></a></dt>
+<dd><p>The buffer distance for current calculation. The current is calculated with a line integral around the object. This parameter sets the distance from the object where the line integral is calculated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings">
+<span class="sig-name descname"><span class="pre">eo_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for electro-optic simulations. It is a dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>SizeMax</strong> (float): the maximum size of the mesh at a <code class="docutils literal notranslate"><span class="pre">distance</span></code> from the object;</p></li>
+<li><p><strong>resolution</strong> (float): the maximum size of the mesh <em>inside</em> the polygon;</p></li>
+<li><p><strong>distance</strong> (float): the distance from the object where the mesh size is <code class="docutils literal notranslate"><span class="pre">SizeMax</span></code>;</p></li>
+<li><p><strong>distance_junction</strong> (float): If there is a boundary of the type Semiconductor-Semiconductor, Semiconductor-Insulator a new polygon can be automatically inserted that captures the junction. This new polygon is inserted only in the direction of the semiconductor. <code class="docutils literal notranslate"><span class="pre">distance_junction</span></code> controls how deep into the semiconductor it goes;</p></li>
+<li><p><strong>resolution_junction</strong> (float): the maximum size of the mesh <em>inside</em> the junction;</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to search for junctions is not active at the moment. It is a feature that will be implemented in the future.</p>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings">
+<span class="sig-name descname"><span class="pre">rf_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for RF simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings">
+<span class="sig-name descname"><span class="pre">optical_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for optical simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs">
+<span class="sig-name descname"><span class="pre">charge_transport_simulator_kwargs</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs" title="Link to this definition"></a></dt>
+<dd><p>You don’t input metals into charge transport simulation; the simulation line defines the boundaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.PhotonicPolygon.</span></span><span class="sig-name descname"><span class="pre">InsulatorPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_material=(1+0j)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_eps=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">electro_optic_module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eo_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_mesh_settings=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_transport_simulator_kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculate_current=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_buffer_current=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon" title="Link to this definition"></a></dt>
+<dd><p>Initialize an <code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code> object with the specified parameters. All the input spatial dimensions are assumed to be in micrometers, and the frequencies are in GHz.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.polygon">
+<span class="sig-name descname"><span class="pre">polygon</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.polygon" title="Link to this definition"></a></dt>
+<dd><p>The polygon geometry. It must be a <a class="reference external" href="https://shapely.readthedocs.io/en/stable/">shapely</a> object, either a <cite>Polygon</cite> or a <cite>MultiPolygon</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Polygon | MultiPolygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.name" title="Link to this definition"></a></dt>
+<dd><p>The name of the polygon. If not provided, a unique ID will be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.optical_material">
+<span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material" title="Link to this definition"></a></dt>
+<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps">
+<span class="sig-name descname"><span class="pre">rf_eps</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps" title="Link to this definition"></a></dt>
+<dd><p>The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, complex, int, or np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module">
+<span class="sig-name descname"><span class="pre">electro_optic_module</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module" title="Link to this definition"></a></dt>
+<dd><p>The electro-optic module associated with the polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings">
+<span class="sig-name descname"><span class="pre">eo_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for electro-optic simulations. It is a dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>SizeMax</strong> (float): the maximum size of the mesh at a <code class="docutils literal notranslate"><span class="pre">distance</span></code> from the object;</p></li>
+<li><p><strong>resolution</strong> (float): the maximum size of the mesh <em>inside</em> the polygon;</p></li>
+<li><p><strong>distance</strong> (float): the distance from the object where the mesh size is <code class="docutils literal notranslate"><span class="pre">SizeMax</span></code>;</p></li>
+<li><p><strong>distance_junction</strong> (float): If there is a boundary of the type Semiconductor-Semiconductor, Semiconductor-Insulator a new polygon can be automatically inserted that captures the junction. This new polygon is inserted only in the direction of the semiconductor. <code class="docutils literal notranslate"><span class="pre">distance_junction</span></code> controls how deep into the semiconductor it goes;</p></li>
+<li><p><strong>resolution_junction</strong> (float): the maximum size of the mesh <em>inside</em> the junction;</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to search for junctions is not active at the moment. It is a feature that will be implemented in the future.</p>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings">
+<span class="sig-name descname"><span class="pre">rf_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for RF simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings">
+<span class="sig-name descname"><span class="pre">optical_mesh_settings</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings" title="Link to this definition"></a></dt>
+<dd><p>The mesh settings for optical simulations. It is a dictionary with the same keys as <code class="docutils literal notranslate"><span class="pre">eo_mesh_settings</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs">
+<span class="sig-name descname"><span class="pre">charge_transport_simulator_kwargs</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Additional keyword arguments for the charge transport simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current">
+<span class="sig-name descname"><span class="pre">calculate_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current" title="Link to this definition"></a></dt>
+<dd><p>Flag to indicate whether to calculate current.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current">
+<span class="sig-name descname"><span class="pre">d_buffer_current</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current" title="Link to this definition"></a></dt>
+<dd><p>Buffer distance for current calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PhotonicDevice.html" class="btn btn-neutral float-right" title="Photonic Device" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

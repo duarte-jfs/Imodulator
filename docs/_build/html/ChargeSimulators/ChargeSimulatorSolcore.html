@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChargeSimulatorSolcore &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RFSimulatorFEMWELL" href="../RFSimulators/RFSimulatorFEMWELL.html" />
+    <link rel="prev" title="ChargeSimulatorNN" href="ChargeSimulatorNN.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ChargeSimulatorSolcore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ChargeSimulators/ChargeSimulatorSolcore.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chargesimulatorsolcore">
+<h1>ChargeSimulatorSolcore<a class="headerlink" href="#chargesimulatorsolcore" title="Link to this heading"></a></h1>
+<p>The <cite>ChargeSimulatorSolcore</cite> is a 1D poisson-drift-diffusion simulator based on the open-source software <a class="reference external" href="http://docs.solcore.solar/en/develop/">Solcore</a>, made compatible with the <a class="reference external" href="https://github.com/duarte-jfs/openbandparams">openbandparams</a> database.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There are currently issues with the solcore simulator, namely:</p>
+<ul class="simple">
+<li><p>The voltages applied to the device that are returned to the user are not necessarily correct. Depending on the voltage values array you give it it may return the values in a different order. Please see <a class="reference external" href="https://github.com/qpv-research-group/solcore5/issues/294">https://github.com/qpv-research-group/solcore5/issues/294</a></p></li>
+</ul>
+</div>
+<figure class="align-center" id="id20">
+<a class="reference internal image-reference" href="../_images/charge_transport_1D_interpolation.png"><img alt="../_images/charge_transport_1D_interpolation.png" src="../_images/charge_transport_1D_interpolation.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Illustration of the 1D to 2D data interpolation performed with the <cite>ChargeSimmulatorSolcore</cite>.</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ChargeSimulator.</span></span><span class="sig-name descname"><span class="pre">ChargeSimulatorSolcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Each SemiconductorPolygon can have the following charge_transport_kwargs:</dt><dd><ul class="simple">
+<li><p>sol_obp_material: a openbandparams material object,</p></li>
+<li><p>sol_Na: concentration of acceptors in cm^-3,</p></li>
+<li><p>sol_Nd: concentration of donors in cm^-3,</p></li>
+<li><p>sol_electron_minority_lifetime: electron minority lifetime in seconds,</p></li>
+<li><p>sol_hole_minority_lifetime: hole minority lifetime in seconds,</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This solver has a current issue with the ordering of the voltages when it outputs the results. Please visit <a class="reference external" href="https://github.com/qpv-research-group/solcore5/issues/294">https://github.com/qpv-research-group/solcore5/issues/294</a> for more details.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the ChargeSimulatorNN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a></span>) – PhotonicDevice instance containing the device geometry and materials.</p></li>
+<li><p><strong>simulation_line</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LineString</span></code></span>) – LineString defining the simulation line along which to perform 1D simulation.</p></li>
+<li><p><strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">300.0</span></code>)) – Simulation temperature in Kelvin. Defaults to 300.0.</p></li>
+<li><p><strong>bias_start_stop_step</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></code>)) – Voltage sweep [start, stop, steps]. Defaults to [0,1,1].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_mesh">
+<span class="sig-name descname"><span class="pre">plot_mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_mesh" title="Link to this definition"></a></dt>
+<dd><p>Plot the mesh points along the simulation line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib figure and axis objects</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>fig, ax</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_results">
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tab10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_scale_carriers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_results" title="Link to this definition"></a></dt>
+<dd><p>Plot simulation results in a 2x1 subplot layout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V_idx</strong> (<em>list</em><em>, </em><em>optional</em>) – Indices of voltages to plot. Defaults to first and last.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Colormap for voltage lines. Defaults to ‘tab10’.</p></li>
+<li><p><strong>log_scale_carriers</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use log scale for carrier concentrations. Defaults to True.</p></li>
+<li><p><strong>plot_limits</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot vertical lines at segment boundaries. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure and axes objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_with_simulation_line">
+<span class="sig-name descname"><span class="pre">plot_with_simulation_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_simulation_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth_simulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.plot_with_simulation_line" title="Link to this definition"></a></dt>
+<dd><p>Plot the device polygons with the simulation line overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color_polygon</strong> (default: <code class="docutils literal notranslate"><span class="pre">'black'</span></code>) – Color for device polygons</p></li>
+<li><p><strong>color_line</strong> (default: <code class="docutils literal notranslate"><span class="pre">'green'</span></code>) – Color for current calculation lines</p></li>
+<li><p><strong>color_junctions</strong> (default: <code class="docutils literal notranslate"><span class="pre">'blue'</span></code>) – Color for junction regions</p></li>
+<li><p><strong>color_simulation_line</strong> (default: <code class="docutils literal notranslate"><span class="pre">'red'</span></code>) – Color for the simulation line</p></li>
+<li><p><strong>fill_polygons</strong> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – Whether to fill the polygons</p></li>
+<li><p><strong>linewidth_simulation</strong> (default: <code class="docutils literal notranslate"><span class="pre">2</span></code>) – Line width for simulation line</p></li>
+<li><p><strong>fig</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Existing figure object (optional)</p></li>
+<li><p><strong>ax</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Existing axis object (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib figure and axis objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig, ax</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.solve_PDD">
+<span class="sig-name descname"><span class="pre">solve_PDD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savgol_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.solve_PDD" title="Link to this definition"></a></dt>
+<dd><p>Solve the Poisson Drift Diffusion equations for the device.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The current implementation of the sesame pdd in solcore has a small bug that can cause the outputs to be switched around. Because the solver must first solve the 0V and then it goes to some voltage, the solver does some reordering of the voltages to make sure that the solver converges. However, when storing the voltages corresponding to the outputs in the junction object, it is not saving the correct voltages yet, and for that reason, the outputs can be switched around. For more details go to: <a class="reference external" href="https://github.com/qpv-research-group/solcore5/issues/294">https://github.com/qpv-research-group/solcore5/issues/294</a></p>
+</div>
+<dl class="simple">
+<dt>This function will update self object with the following attributes:</dt><dd><ul class="simple">
+<li><p>self.V: The potential distribution in the device.</p></li>
+<li><p>self.Ec: The conduction band edge energy distribution in the device.</p></li>
+<li><p>self.Ev: The valence band edge energy distribution in the device.</p></li>
+<li><p>self.Efn: The Fermi level energy distribution in the device.</p></li>
+<li><p>self.Efp: The Fermi level energy distribution in the device.</p></li>
+<li><p>self.N: The electron concentration distribution in the device.</p></li>
+<li><p>self.P: The hole concentration distribution in the device.</p></li>
+<li><p>self.Efield: The electric field distribution in the device.</p></li>
+<li><p>self.mun: The electron mobility distribution in the device.</p></li>
+<li><p>self.mup: The hole mobility distribution in the device.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print detailed output.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance for convergence.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – Maximum number of iterations.</p></li>
+<li><p><strong>htp</strong> (<em>int</em>) – Number of homotopic Newton loops to perform</p></li>
+<li><p><strong>Note::</strong> (<em>..</em>) – For more details on these arguments please consult solcore.sesame_drift_diffusion.solve_pdd</p></li>
+<li><p><strong>smooth_output</strong> (<em>bool</em>) – If True, it will apply a savitzky-golay filter to each of the attributes specified above. The reasoning behind this is to numerical artifacts with big spikes in the charge distributions and electrical fields. For more details please check <a class="reference external" href="https://github.com/qpv-research-group/solcore5/discussions/293">https://github.com/qpv-research-group/solcore5/discussions/293</a></p></li>
+<li><p><strong>savgol_window</strong> (<em>int</em>) – The window size for the savitzky-golay filter. Default is 15. It should be an odd number.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.transfer_results_to_device">
+<span class="sig-name descname"><span class="pre">transfer_results_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.transfer_results_to_device" title="Link to this definition"></a></dt>
+<dd><p>Interpolate 1D simulation data onto a new 2D mesh.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method for the moment it only interpolates the 1D data onto the horizontal dimension.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dx</strong> (<em>float</em><em>, </em><em>optional</em>) – Step size for new mesh in microns. Defaults to 0.05.</p></li>
+<li><p><strong>xmin</strong> (<em>float</em>) – Minimum x value for mesh (required).</p></li>
+<li><p><strong>xmax</strong> (<em>float</em>) – Maximum x value for mesh (required).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Stores interpolators in self.photonicdevice.charge.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<span class="target" id="id1"></span></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ChargeSimulatorNN.html" class="btn btn-neutral float-left" title="ChargeSimulatorNN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../RFSimulators/RFSimulatorFEMWELL.html" class="btn btn-neutral float-right" title="RFSimulatorFEMWELL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling", "pip"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[project]
+name = "imodulator"
+version = "0.0.0"
+authors = [
+  { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
+  { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
+]
+maintainers = [
+  { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
+  { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
+]
+description = "An all-in-one photonic electro-optic modulator design tool with complete modularity providing consistent optical mode solving, charge transport simulations, RF mode solving and transmission line analysis for arbitrary materials and cross sections."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+license = {file = "LICENSE"}
+keywords = ["integrated photonics", "electro-optic modulators", "photonics simulation", "optical mode solver", "rf mode solver", "charge transport simulation", "electro-optic interaction"]
+dependencies = [
+    #"femwell==0.1.11",
+    # "femwell @ git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49",
+    "matplotlib==3.9.0",
+    "meshwell==1.0.7",
+    "numpy==2.0.0",
+    "Pint>=0.24",
+    "scipy==1.13.1",
+    "shapely==2.0.4",
+    "pyyaml==6.0.2",
+    "pandas==2.3.0",
+    "nextnanopy>=1.0.1",
+    "openbandparams>=1.0"
+]
+
+[project.urls]
+Homepage = "https://example.com"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/me/spam.git"
+
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "imodulator/**/*.yaml",
+    "imodulator/**/*.yml"
+]

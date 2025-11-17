@@ -1,0 +1,1169 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optical simulation with FEMWELL &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Solving the poisson-drift-diffusion equation with Solcore" href="../poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html" />
+    <link rel="prev" title="Building a PhotonicDevice" href="../building_photonic_device/building_photonic_device.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Optical simulation with FEMWELL</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Tutorials/optical_simulation_femwell/optical_simulation_femwell.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Optical-simulation-with-FEMWELL">
+<h1>Optical simulation with FEMWELL<a class="headerlink" href="#Optical-simulation-with-FEMWELL" title="Link to this heading"></a></h1>
+<p>In this notebook we will go over how to handle the optical simulation part in the imodulator workflow by using <code class="docutils literal notranslate"><span class="pre">FEMWELL</span></code>. Our goal is to explore how to get the data from the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> to the optical simulator and how to inspect the data properly.</p>
+<div style="text-align: center;"><p><img alt="Alt text" src="../../_images/main.png" /></p>
+</div><p>To illustrate how to do this, we will use the class developed in <code class="docutils literal notranslate"><span class="pre">Building</span> <span class="pre">a</span> <span class="pre">Photonic</span> <span class="pre">Device</span></code> tutorial: <code class="docutils literal notranslate"><span class="pre">InP_EOPM</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">imodulator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openbandparams</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">obp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.ElectroOpticalModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">InGaAsPElectroOpticalModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.OpticalSimulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpticalSimulatorFEMWELL</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tand_fitted_bcb</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fitted to results from https://link.springer.com/article/10.1007/s10762-009-9552-0</span>
+
+<span class="sd">    x must be in GHz</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span>  <span class="mf">0.0093839</span> <span class="o">-</span> <span class="mf">0.01790336</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.04773444</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="o">-</span><span class="mf">4.64170761</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">out</span><span class="o">&lt;</span><span class="mf">0.001</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">out</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InP_EOPM</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="mf">1.60e-19</span> <span class="c1"># electron charge in C</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e0</span> <span class="o">=</span> <span class="mf">8.85e-12</span> <span class="c1"># vacuum permittivity in F/m</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># Width of signal metal in um</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># Separation between signal and ground metals in um</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># Height of metals in um</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">=</span> <span class="mf">0.4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_box</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_bottom</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_top</span> <span class="o">=</span> <span class="mi">30</span>
+
+        <span class="k">for</span> <span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwarg</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># optical mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;substrate&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;box&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;sig_metal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_left&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_right&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;bcb&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="c1"># RF mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;substrate&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;box&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;sig_metal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_left&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_right&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;bcb&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="c1"># eo mesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;substrate&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;box&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;sig_metal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_left&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_right&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;bcb&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;wg2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+            <span class="s1">&#39;p2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;SizeMax&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;substrate&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="s1">&#39;sig_metal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_left&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+            <span class="s1">&#39;n_metal_right&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+            <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.003</span><span class="p">},</span>
+            <span class="s1">&#39;wg1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">},</span>
+            <span class="s1">&#39;wg2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">},</span>
+            <span class="s1">&#39;p1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.003</span><span class="p">},</span>
+            <span class="s1">&#39;p2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mf">0.003</span><span class="p">},</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#We will now set the RF properties of the metals and the BCB</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="c1">#GHz. This will be the simulation frequency</span>
+
+        <span class="n">eps_rf_metal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mf">6e7</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">freq</span><span class="o">*</span><span class="mf">1e9</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">e0</span><span class="p">)</span>
+        <span class="n">eps_rf_metal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">freq</span><span class="p">,</span> <span class="n">eps_rf_metal</span><span class="p">])</span>
+
+        <span class="n">bcb_eps_real</span> <span class="o">=</span> <span class="mf">2.65</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">bcb_eps_imag</span> <span class="o">=</span> <span class="n">bcb_eps_real</span> <span class="o">*</span> <span class="n">tand_fitted_bcb</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+
+        <span class="n">bcb_eps</span> <span class="o">=</span> <span class="n">bcb_eps_real</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">bcb_eps_imag</span>
+        <span class="n">bcb_eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">freq</span><span class="p">,</span> <span class="n">bcb_eps</span><span class="p">])</span>
+
+        <span class="c1">#Now we create the PhotoPolygons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">h_box</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_bottom</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">h_box</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="mf">11.7</span><span class="p">,</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;substrate&#39;</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mi">3</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;substrate&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;substrate&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;substrate&#39;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">h_box</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_bottom</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_top</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;background&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">h_box</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="mi">0</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="mf">3.9</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mf">3.9</span><span class="o">*</span><span class="mf">0.001</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.44</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;box&#39;</span>
+        <span class="p">)</span>
+
+        <span class="n">n_obp_material</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">GaInPAs</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">As</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">InP</span><span class="o">.</span><span class="n">a</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">n_obp_material</span><span class="o">.</span><span class="n">dielectric</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="n">n_obp_material</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span>
+            <span class="n">charge_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span>
+            <span class="n">electro_optic_module</span><span class="o">=</span><span class="n">InGaAsPElectroOpticalModel</span><span class="p">,</span>
+            <span class="n">electro_optic_module_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+                <span class="s1">&#39;BF_model&#39;</span><span class="p">:</span> <span class="s1">&#39;vinchant&#39;</span>
+            <span class="p">},</span>
+            <span class="n">charge_transport_simulator_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;sol_obp_material&#39;</span><span class="p">:</span> <span class="n">n_obp_material</span><span class="p">,</span>
+                <span class="s1">&#39;sol_Nd&#39;</span><span class="p">:</span> <span class="mf">1e18</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">wg1_obp_material</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">GaInPAs</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">As</span> <span class="o">=</span> <span class="mf">0.53</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">InP</span><span class="o">.</span><span class="n">a</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg1</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">wg1_obp_material</span><span class="o">.</span><span class="n">dielectric</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="n">wg1_obp_material</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg1&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg1&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg1&#39;</span><span class="p">],</span>
+            <span class="n">charge_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg1&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wg1&#39;</span><span class="p">,</span>
+            <span class="n">electro_optic_module</span><span class="o">=</span><span class="n">InGaAsPElectroOpticalModel</span><span class="p">,</span>
+            <span class="n">electro_optic_module_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.53</span><span class="p">,</span>
+                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+                <span class="s1">&#39;BF_model&#39;</span><span class="p">:</span> <span class="s1">&#39;vinchant&#39;</span>
+            <span class="p">},</span>
+            <span class="n">charge_transport_simulator_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;sol_obp_material&#39;</span><span class="p">:</span> <span class="n">wg1_obp_material</span><span class="p">,</span>
+                <span class="s1">&#39;sol_Nd&#39;</span><span class="p">:</span> <span class="mf">1e16</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">wg2_obp_material</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">GaInPAs</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">As</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">InP</span><span class="o">.</span><span class="n">a</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg2</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">wg2_obp_material</span><span class="o">.</span><span class="n">dielectric</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="n">wg2_obp_material</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg2&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg2&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg2&#39;</span><span class="p">],</span>
+            <span class="n">charge_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span><span class="p">[</span><span class="s1">&#39;wg2&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wg2&#39;</span><span class="p">,</span>
+            <span class="n">electro_optic_module</span><span class="o">=</span><span class="n">InGaAsPElectroOpticalModel</span><span class="p">,</span>
+            <span class="n">electro_optic_module_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+                <span class="s1">&#39;BF_model&#39;</span><span class="p">:</span> <span class="s1">&#39;vinchant&#39;</span>
+            <span class="p">},</span>
+            <span class="n">charge_transport_simulator_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;sol_obp_material&#39;</span><span class="p">:</span> <span class="n">wg2_obp_material</span><span class="p">,</span>
+                <span class="s1">&#39;sol_Nd&#39;</span><span class="p">:</span> <span class="mf">1e16</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">p1_obp_material</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">GaInPAs</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">As</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">InP</span><span class="o">.</span><span class="n">a</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p1</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">p1_obp_material</span><span class="o">.</span><span class="n">dielectric</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="n">p1_obp_material</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">],</span>
+            <span class="n">charge_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;p1&#39;</span><span class="p">,</span>
+            <span class="n">electro_optic_module</span><span class="o">=</span><span class="n">InGaAsPElectroOpticalModel</span><span class="p">,</span>
+            <span class="n">electro_optic_module_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+                <span class="s1">&#39;BF_model&#39;</span><span class="p">:</span> <span class="s1">&#39;vinchant&#39;</span>
+            <span class="p">},</span>
+            <span class="n">charge_transport_simulator_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;sol_obp_material&#39;</span><span class="p">:</span> <span class="n">wg2_obp_material</span><span class="p">,</span>
+                <span class="s1">&#39;sol_Na&#39;</span><span class="p">:</span> <span class="mf">1e17</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">p2_obp_material</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">GaInAs</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">obp</span><span class="o">.</span><span class="n">InP</span><span class="o">.</span><span class="n">a</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p2</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">SemiconductorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">p2_obp_material</span><span class="o">.</span><span class="n">dielectric</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="n">p2_obp_material</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p2&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p2&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p2&#39;</span><span class="p">],</span>
+            <span class="n">charge_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge_mesh_settings</span><span class="p">[</span><span class="s1">&#39;p2&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;p2&#39;</span><span class="p">,</span>
+            <span class="n">electro_optic_module</span><span class="o">=</span><span class="n">InGaAsPElectroOpticalModel</span><span class="p">,</span>
+            <span class="n">electro_optic_module_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+                <span class="s1">&#39;BF_model&#39;</span><span class="p">:</span> <span class="s1">&#39;vinchant&#39;</span>
+            <span class="p">},</span>
+            <span class="n">charge_transport_simulator_kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;sol_obp_material&#39;</span><span class="p">:</span> <span class="n">p2_obp_material</span><span class="p">,</span>
+                <span class="s1">&#39;sol_Na&#39;</span><span class="p">:</span> <span class="mf">1e19</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bcb_far_left</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bcb_far_left&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bcb_far_right</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bcb_far_right&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bcb_left</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bcb_left&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bcb_right</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">InsulatorPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;bcb&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bcb_right&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig_metal</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">MetalPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;sig_metal&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;sig_metal&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;sig_metal&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sig_metal&#39;</span><span class="p">,</span>
+            <span class="n">calculate_current</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">d_buffer_current</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">20</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span><span class="o">/</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_metal_left</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">MetalPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span><span class="p">,</span>
+                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_left&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_left&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_left&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;n_metal_left&#39;</span><span class="p">,</span>
+            <span class="n">calculate_current</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_metal_right</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">MetalPolygon</span><span class="p">(</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span>
+            <span class="p">),</span>
+            <span class="n">rf_eps</span> <span class="o">=</span> <span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_right&#39;</span><span class="p">],</span>
+            <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_right&#39;</span><span class="p">],</span>
+            <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s1">&#39;n_metal_right&#39;</span><span class="p">],</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;n_metal_right&#39;</span><span class="p">,</span>
+            <span class="n">calculate_current</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">photo_polygons</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sig_metal</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_metal_left</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_metal_right</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wg2</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wg1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bcb_left</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bcb_right</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bcb_far_left</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bcb_far_right</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">background</span>
+        <span class="p">]</span>
+
+        <span class="c1">#Just in case there are empty polygons</span>
+        <span class="n">idxs_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">poly</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">photo_polygons</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">polygon</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">poly</span><span class="o">.</span><span class="n">polygon</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]):</span>
+                <span class="n">idxs_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs_to_remove</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">photo_polygons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">imodulator</span><span class="o">.</span><span class="n">PhotonicDevice</span><span class="p">(</span>
+            <span class="n">photo_polygons</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Successfully imported lumapi
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eopm</span> <span class="o">=</span> <span class="n">InP_EOPM</span><span class="p">()</span>
+<span class="n">eopm</span><span class="o">.</span><span class="n">_make_meshes</span><span class="p">()</span>
+<span class="n">eopm</span><span class="o">.</span><span class="n">_create_polygons</span><span class="p">()</span>
+<span class="n">eopm</span><span class="o">.</span><span class="n">_initialize_device</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">]:</span>
+    <span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">plot_polygons</span><span class="p">(</span>
+        <span class="n">color_polygon</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">color_line</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+        <span class="n">color_junctions</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">fill_polygons</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (um)&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y (um)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (um)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y (um)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_3_0.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_3_0.png" />
+</div>
+</div>
+<p>Now we initialize the optical simulator.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
+    <span class="n">device</span><span class="o">=</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span>
+    <span class="n">include_metals</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">plot_polygons</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_5_0.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_5_0.png" />
+</div>
+</div>
+<p>We can generate the mesh and inspect it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 640x480 with 1 Axes&gt;, &lt;Axes: &gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_7_1.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_7_1.png" />
+</div>
+</div>
+<p>We can also inspect the optical permitivity:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">plot_epsilon_optical</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 800x400 with 4 Axes&gt;,
+ [&lt;Axes: title={&#39;center&#39;: &#39;$\\epsilon_{xx}$ real part&#39;}, xlabel=&#39;x (um)&#39;, ylabel=&#39;y (um)&#39;&gt;,
+  &lt;Axes: title={&#39;center&#39;: &#39;$\\epsilon_{xx}$ imaginary part&#39;}, xlabel=&#39;x (um)&#39;, ylabel=&#39;y (um)&#39;&gt;])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_9_1.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_9_1.png" />
+</div>
+</div>
+<p>It is important here to recognize that you see a clear linear grating around the structure. This is strictly due to the algorithm for plotting. In case you really need to inspect the values of the <code class="docutils literal notranslate"><span class="pre">epsilon_optical</span></code> as it stands in the mesh, you can do the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">epsilon_optical</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="c1"># fig = plt.figure()</span>
+<span class="c1"># ax = fig.add_subplot(111)</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">(</span>
+    <span class="n">plot_polygons</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+<span class="n">scat</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">mode</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">mode</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">epsilon_optical</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scat</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Optical Permittivity&#39;</span><span class="p">)</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_11_0.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_11_0.png" />
+</div>
+</div>
+<p>We can now calculate the modes:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.55</span><span class="p">,</span>
+    <span class="n">num_modes</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">metallic_boundaries</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_guess</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+    <span class="n">return_modes</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Effective index - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;loss - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> dB/cm&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#------------------------------------------#&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+    <span class="n">mode</span><span class="o">.</span><span class="n">plot_mode</span><span class="p">(</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Effective index - mode 0: 3.2990
+loss - mode 0: 59462.25 dB/cm
+#------------------------------------------#
+Effective index - mode 1: 3.2494
+loss - mode 1: 49129.62 dB/cm
+#------------------------------------------#
+Effective index - mode 2: 3.2201
+loss - mode 2: 8.15 dB/cm
+#------------------------------------------#
+Effective index - mode 3: 3.2179
+loss - mode 3: 4.05 dB/cm
+#------------------------------------------#
+Effective index - mode 4: 3.0602
+loss - mode 4: 2339.77 dB/cm
+#------------------------------------------#
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_1.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_2.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_3.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_4.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_4.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_5.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_13_5.png" />
+</div>
+</div>
+<p>Now it is time to transfer the modes to the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code>. The way we do it is to simply state what is the TE and TM mode indices. However, it may happen that you are studying some system that there is no TE and TM mode, but rather you are interested in some hybrid modes. This TE and TM are nothing more than labels for the <code class="docutils literal notranslate"><span class="pre">Imodulator</span></code>. No math is done on the assumption that a mode is TE or TM. We take the full vector of any mode you give it. This can be useful if you are exploring some
+polarization controller for example.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span>
+    <span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
+  data[ixs] = self._kernel(vbasis.basis[i], w, dx)
+</pre></div></div>
+</div>
+<p>The modes have been transferred to the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> and they are stored as an interpolator:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">xx</span><span class="p">,</span><span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">e_field_TE_x</span> <span class="o">=</span> <span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="s1">&#39;TE&#39;</span><span class="p">][</span><span class="s1">&#39;Ex&#39;</span><span class="p">](</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span>
+<span class="n">e_field_TE_y</span> <span class="o">=</span> <span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="s1">&#39;TE&#39;</span><span class="p">][</span><span class="s1">&#39;Ey&#39;</span><span class="p">](</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span>
+<span class="n">e_field_TE_z</span> <span class="o">=</span> <span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="s1">&#39;TE&#39;</span><span class="p">][</span><span class="s1">&#39;Ez&#39;</span><span class="p">](</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e_field_TE_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e_field_TE_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e_field_TE_z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+          <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+          <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;inferno&#39;</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span>
+<span class="p">)</span>
+
+<span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">plot_polygons</span><span class="p">(</span>
+    <span class="n">color_polygon</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span><span class="p">,</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (um)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;x (um)&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_17_1.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_17_1.png" />
+</div>
+</div>
+<section id="Mesh-refinement">
+<h2>Mesh refinement<a class="headerlink" href="#Mesh-refinement" title="Link to this heading"></a></h2>
+<p>We can also do some mesh refinement on the mode solver, in case you are interested in very accurate results.</p>
+<p>For details on the mesh refinement, we suggest you look into the tutorials implemented in <code class="docutils literal notranslate"><span class="pre">FEMWELL</span></code>. All we’ve done here was to reuse their tools to fit our needs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neff</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">nelements</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> ---&#39;</span><span class="p">)</span>
+
+    <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.55</span><span class="p">,</span>
+        <span class="n">num_modes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">metallic_boundaries</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">n_guess</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+        <span class="n">return_modes</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">loss_tmp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">opt_mode</span> <span class="ow">in</span> <span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">:</span>
+        <span class="n">loss_tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opt_mode</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">))</span>
+
+    <span class="n">idx_mode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">loss_tmp</span><span class="p">))</span>
+    <span class="c1"># print(&#39;Selected mode index for refinement:&#39;, idx_mode)</span>
+    <span class="c1"># print(&#39;Loss of se:&#39;, loss_tmp)</span>
+
+    <span class="n">nelements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">nelements</span><span class="p">)</span>
+    <span class="n">neff</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">))</span>
+
+    <span class="n">mode</span><span class="o">.</span><span class="n">refine_mesh</span><span class="p">(</span><span class="n">mode_for_refinement</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">])</span>
+
+
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--- Refinement iteration 0 ---
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Named boundaries invalidated by a call to Mesh.refined()
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--- Refinement iteration 1 ---
+--- Refinement iteration 2 ---
+--- Refinement iteration 3 ---
+--- Refinement iteration 4 ---
+--- Refinement iteration 5 ---
+--- Refinement iteration 6 ---
+--- Refinement iteration 7 ---
+--- Refinement iteration 8 ---
+--- Refinement iteration 9 ---
+--- Refinement iteration 10 ---
+--- Refinement iteration 11 ---
+--- Refinement iteration 12 ---
+--- Refinement iteration 13 ---
+--- Refinement iteration 14 ---
+--- Refinement iteration 15 ---
+--- Refinement iteration 16 ---
+--- Refinement iteration 17 ---
+--- Refinement iteration 18 ---
+--- Refinement iteration 19 ---
+--- Refinement iteration 20 ---
+--- Refinement iteration 21 ---
+--- Refinement iteration 22 ---
+--- Refinement iteration 23 ---
+--- Refinement iteration 24 ---
+--- Refinement iteration 25 ---
+--- Refinement iteration 26 ---
+--- Refinement iteration 27 ---
+--- Refinement iteration 28 ---
+--- Refinement iteration 29 ---
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">n_iterations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nelements</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">,</span> <span class="n">neff</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">,</span> <span class="n">nelements</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Refinement iteration&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Refinement iteration&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Refinement iteration&#39;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Effective index (Re)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Propagation loss (dB/m)&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Number of elements&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_21_0.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_21_0.png" />
+</div>
+</div>
+<p>We can inspect the final mesh</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 640x480 with 1 Axes&gt;, &lt;Axes: &gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_23_1.png" src="../../_images/Tutorials_optical_simulation_femwell_optical_simulation_femwell_23_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../building_photonic_device/building_photonic_device.html" class="btn btn-neutral float-left" title="Building a PhotonicDevice" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html" class="btn btn-neutral float-right" title="Solving the poisson-drift-diffusion equation with Solcore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

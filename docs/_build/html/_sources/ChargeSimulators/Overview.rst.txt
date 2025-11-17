@@ -1,0 +1,44 @@
+Overview
+========
+
+.. _NextNano: https://www.nextnano.com/error_pages/404.php
+
+.. _nextnanopy: https://github.com/nextnanopy
+
+.. _Solcore: http://docs.solcore.solar/en/develop/
+
+.. _openbandparams: https://github.com/duarte-jfs/openbandparams
+
+In semiconductor-based electro-optic modulators, the way charge carriers get redistributed along the device's cross section with applied voltage plays a crucial role influencing not only the electro-optic response, but also the RF properties of the device. For this reason, we mus account for position and voltage dependent :math:`\epsilon_{rf}(x,y,V)` as well as :math:`\Delta \epsilon_{opt}(x,y,V)` in the simulation of the device's RF and electro-optical response.
+
+- :doc:`ChargeSimulatorNN`: A 1D poisson-drift-diffusion simulator based on the commercial software NextNano_ and their open-source python interface nextnanopy_.
+
+The `ChargeSimulatorNN` was created to provide a fast and effective way to include charge transport data into electro-optical simulations. The vast majority of III-V electro-optical modulators follow a vertical design like in the picture below, where the approximation that the 1D profile is copied in the horizontal direction is a very good one. For this reason, we have limited the use of this simulator to such cases.
+
+.. note::
+   The generalization of the package to horizontal diodes such as the common silicon PN junctions ought to be simple to implement. However, due to time constraints, we are keeping it like this for the moment. If you need to implement such a feature, feel free to reach out and we will help you implement it.
+
+.. figure:: imgs/charge_transport_1D_interpolation.png
+   :width: 80%
+   :align: center
+
+   Illustration of the 1D to 2D data interpolation performed with the `ChargeSimmulatorNN`.
+
+- :doc:`ChargeSimulatorSolcore`: A 1D poisson-drift-diffusion simulator based on the open-source software Solcore_, compatible with the openbandparams_ database.
+
+.. warning::
+   There are currently issues with the solcore simulator, namely:
+   - The voltages applied to the device that are returned to the user are not necessarily correct. Please check https://github.com/qpv-research-group/solcore5/issues/294
+
+.. figure:: imgs/charge_transport_1D_interpolation.png
+   :width: 80%
+   :align: center
+
+   Illustration of the 1D to 2D data interpolation performed with the `ChargeSimmulatorSolcore`.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   ChargeSimulatorNN
+   ChargeSimulatorSolcore

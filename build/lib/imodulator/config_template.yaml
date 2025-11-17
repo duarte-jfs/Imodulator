@@ -1,0 +1,30 @@
+#Save this file without the _template in the name:
+# config.yaml will be called in this directory
+#Way of working 
+###############################################################
+#     from imodulator.Config import config_instance            
+#     # Get access to imported modules
+#     nn = config_instance.get_nextnanopy()
+#     lumapi = config_instance.get_lumapi()
+#     InGaAsP_models = config_instance.get_ingaasp_models()
+###############################################################
+#Paths that involves other package locations
+paths_to_add: 
+  - "C:/Users/alika/Documents/Repos/ingaasp-eo-modulator-design"
+  - "D:/Repos/ingaasp-eo-modulator-design" #InGaAsP_models repository location, required by the imodulator package for EO material properties
+  # Add more paths as needed all the paths will be called during the Config
+
+lumerical_api: 
+  path: "C:/Program Files/Lumerical/v232/api/python/lumapi.py"
+
+nextnano:
+  nextnano++:
+    exe: "C:/Program Files/nextnano/2024_12_20/nextnano++/bin/nextnano++_Intel_64bit.exe"
+    license: "C:/Users/20235351/OneDrive - TU Eindhoven/Documents/nextnano/License/License_nnp.lic"
+    database: "C:/Program Files/nextnano/2024_12_20/nextnano++/database/database_nnp.in"
+    output: "D:/Repos/imodulator/tests"
+  # You can add other nextnano variants here if needed
+  # nextnano3:
+  #   exe: "path/to/nextnano3.exe"
+  #   license: "path/to/license.lic"
+  #   database: "path/to/database.in"

@@ -1,0 +1,1315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InGaAsPElectroOpticalModel &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ElectroOpticalSimulator" href="../ElectroOpticalSimulators/ElectroOpticalSimulator.html" />
+    <link rel="prev" title="OpticalSimulatorMODE" href="../OpticalSimulators/OpticalSimulatorMODE.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">InGaAsPElectroOpticalModel</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ElectroOpticalModels/InGaAsPElectroOpticalModel.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ingaaspelectroopticalmodel">
+<h1>InGaAsPElectroOpticalModel<a class="headerlink" href="#ingaaspelectroopticalmodel" title="Link to this heading"></a></h1>
+<p>An <code class="docutils literal notranslate"><span class="pre">ElectroOpticalModel</span></code> is a <code class="docutils literal notranslate"><span class="pre">PhotonicPolygon</span></code>-specific object that will calculate the change in optical permitivity, <span class="math notranslate nohighlight">\(\Delta \epsilon\)</span>, locally, due to an applied electric field to your structure. These models are not meant to be used as a stand-alone package, but to be fed into a <code class="docutils literal notranslate"><span class="pre">PhotonicPolygon</span></code>, which in turn <cite>ElectroOpticalSimulator</cite> will make use of to calculate the full electro-optical response.</p>
+<p>InGaAsP-based modulators are one of the most mature technologies in integrated photonics, which translates into well established models that predict the electro-optic response of these alloys. All of the models below are specific to alloys lattice matched to InP, where the <span class="math notranslate nohighlight">\(x\)</span> can be predicted as:</p>
+<div class="math notranslate nohighlight">
+\[x = \frac{y}{2.2020 - 0.659y}\]</div>
+<p>In order to use many of the models, we first need to be able to predict some physical properties for all alloys. We will go over them one my one.</p>
+<section id="effective-mass">
+<h2>Effective mass<a class="headerlink" href="#effective-mass" title="Link to this heading"></a></h2>
+<p>The effective masses are calculated according to <span id="id1">Fiedler and Schlachetzki [<a class="reference internal" href="#id26" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">6</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    m_e &amp;= \left( 0.07 - 0.0308y \right)m_0 \\
+    m_{hh} &amp;= \left( 0.6 - 0.218y + 0.07y^2 \right)m_0 \\
+    m_{lh} &amp;= \left( 0.12 - 0.078y + 0.002y^2 \right)m_0
+\end{align}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(m_0\)</span> is the vacuum electron mass.</p>
+</section>
+<section id="carrier-effective-density-of-states">
+<h2>Carrier effective density of states<a class="headerlink" href="#carrier-effective-density-of-states" title="Link to this heading"></a></h2>
+<p>The effective density of states are calculated from <span id="id2">Bennett <em>et al.</em> [<a class="reference internal" href="#id27" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">4</a>]</span>. For electrons we have:</p>
+<div class="math notranslate nohighlight">
+\[N_C = 2 \left( \frac{m_e k_b T}{2\pi \hbar^2}\right)^{3/2}\]</div>
+<p>and for holes:</p>
+<div class="math notranslate nohighlight">
+\[N_v = 2 \left( \frac{m_h k_b T}{2\pi \hbar^2}\right)^{3/2}\]</div>
+<p>with:</p>
+<div class="math notranslate nohighlight">
+\[m_h = \left(m_{hh}^{1.5} + m_{lh}^{1.5}\right)^{2/3}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_b\)</span> is the boltzman constant, <span class="math notranslate nohighlight">\(T\)</span> is the temperature and <span class="math notranslate nohighlight">\(\hbar\)</span> is the planck constant.</p>
+</section>
+<section id="spin-orbit-splitting">
+<h2>Spin orbit splitting<a class="headerlink" href="#spin-orbit-splitting" title="Link to this heading"></a></h2>
+<p>The spin orbit splitting is taken from <span id="id3">Fiedler and Schlachetzki [<a class="reference internal" href="#id26" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">6</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Delta_{so} = 0.119 + 0.30y - 0.107y^2 \hspace{1cm} [eV]\]</div>
+</section>
+<section id="bandgap-narrowing">
+<h2>Bandgap narrowing<a class="headerlink" href="#bandgap-narrowing" title="Link to this heading"></a></h2>
+<p>The bandgap narrowing is a well known effect in III-V semiconductors, where it is observed that the bandgap of heavily doped materials shrinks. Here we follow the work of <span id="id4">Jain <em>et al.</em> [<a class="reference internal" href="#id28" title="S. C. Jain, J. M. McGregor, and D. J. Roulston. Band‐gap narrowing in novel III‐V semiconductors. Journal of Applied Physics, 68(7):3747–3749, October 1990. URL: http://aip.scitation.org/doi/10.1063/1.346291 (visited on 2023-04-19), doi:10.1063/1.346291.">7</a>]</span> where the band gap narrowing (BGN) is estimated via:</p>
+<div class="math notranslate nohighlight">
+\[\Delta E_g^{BGN} = A \times N^{1/3} + B \times N^{1/4} + C \times N^{1/2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the carrier concentration and the constants <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> have been empirically found for GaAs, GaP, InP and InAs, allowing for interpolation for InGaAsP alloys via <span id="id5">Fiedler and Schlachetzki [<a class="reference internal" href="#id26" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">6</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[Q(x,y) = xyQ_{GaAs} + x(1-y)Q_{GaP} + y(1-x)Q_{InAs} + (1-x)(1-y)Q_{InP}\]</div>
+<p>The constants are:</p>
+<table class="docutils align-center" id="id41">
+<caption><span class="caption-text">P-doped material</span><a class="headerlink" href="#id41" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 23.8%" />
+<col style="width: 23.8%" />
+<col style="width: 23.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Material</p></th>
+<th class="head"><p>A <span class="math notranslate nohighlight">\(\times 10^{-9}\)</span></p></th>
+<th class="head"><p>B <span class="math notranslate nohighlight">\(\times 10^{-7}\)</span></p></th>
+<th class="head"><p>C <span class="math notranslate nohighlight">\(\times 10^{-12}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GaAs</p></td>
+<td><p>9.83</p></td>
+<td><p>3.90</p></td>
+<td><p>3.90</p></td>
+</tr>
+<tr class="row-odd"><td><p>InAs</p></td>
+<td><p>8.34</p></td>
+<td><p>2.91</p></td>
+<td><p>4.53</p></td>
+</tr>
+<tr class="row-even"><td><p>InP</p></td>
+<td><p>10.3</p></td>
+<td><p>4.43</p></td>
+<td><p>3.38</p></td>
+</tr>
+<tr class="row-odd"><td><p>GaP</p></td>
+<td><p>12.7</p></td>
+<td><p>5.85</p></td>
+<td><p>3.90</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-center" id="id42">
+<caption><span class="caption-text">N-doped material</span><a class="headerlink" href="#id42" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 23.8%" />
+<col style="width: 23.8%" />
+<col style="width: 23.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Material</p></th>
+<th class="head"><p>A <span class="math notranslate nohighlight">\(\times 10^{-9}\)</span></p></th>
+<th class="head"><p>B <span class="math notranslate nohighlight">\(\times 10^{-7}\)</span></p></th>
+<th class="head"><p>C <span class="math notranslate nohighlight">\(\times 10^{-12}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GaAs</p></td>
+<td><p>16.5</p></td>
+<td><p>2.39</p></td>
+<td><p>91.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>InAs</p></td>
+<td><p>14.0</p></td>
+<td><p>1.97</p></td>
+<td><p>57.9</p></td>
+</tr>
+<tr class="row-even"><td><p>InP</p></td>
+<td><p>17.2</p></td>
+<td><p>2.62</p></td>
+<td><p>98.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>GaP</p></td>
+<td><p>10.7</p></td>
+<td><p>3.45</p></td>
+<td><p>9.97</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="charge-carrier-mobility">
+<h2>Charge carrier mobility<a class="headerlink" href="#charge-carrier-mobility" title="Link to this heading"></a></h2>
+<p>Despite most commercial software for the simulation of charge transport in semiconductors have a good material database, III-V (in particular InGaAsP) materials seldom have a correct value for mobility, and in particular doping dependent mobility values. For that reason we will follow the empirical model of <span id="id6">Sotoodeh <em>et al.</em> [<a class="reference internal" href="../index.html#id10" title="M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. Journal of Applied Physics, 87(6):2890–2900, March 2000. URL: https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121 (visited on 2023-05-24), doi:10.1063/1.372274.">1</a>]</span> for low field mobility:</p>
+<div class="math notranslate nohighlight">
+\[\mu (N, T) = \mu_{min} + \frac{\mu_{max}(300K)\left(\frac{300K}{T}\right)^{\theta_1}-\mu_{min}}{1+\left(\frac{N}{N_{ref}(300K)\left(\frac{T}{300K}\right)^{\theta_2}}\right)^\lambda}\]</div>
+<p>Where the values of <span class="math notranslate nohighlight">\(\lambda_n\)</span>, <span class="math notranslate nohighlight">\(\theta_{n2}\)</span>, <span class="math notranslate nohighlight">\(\log_10{N_{n,ref}(300K)}\)</span>, <span class="math notranslate nohighlight">\(\lambda_p\)</span>, <span class="math notranslate nohighlight">\(\mu_{p, min}\)</span>, <span class="math notranslate nohighlight">\(\theta_{p2}\)</span> and <span class="math notranslate nohighlight">\(\log_10{N_{p,ref}(300K)}\)</span> for <span class="math notranslate nohighlight">\(In_{1-x}Ga_{x}As_{y}P_{1-y}\)</span> are found via:</p>
+<div class="math notranslate nohighlight">
+\[Q(In_{1-x}Ga_{x}As_{y}P_{1-y}) = yQ(In_{1-x}Ga_{x}As) + (1-y)Q(In_{1-x}Ga_{x}P)\]</div>
+<p>The <span class="math notranslate nohighlight">\(\mu_{n,max}(300K)\)</span>, <span class="math notranslate nohighlight">\(\mu_{n,min}(300K)\)</span>, <span class="math notranslate nohighlight">\(\mu_{p,max}(300K)\)</span>, <span class="math notranslate nohighlight">\(\theta_{n1}\)</span>, <span class="math notranslate nohighlight">\(\theta_{p1}\)</span> are found via:</p>
+<div class="math notranslate nohighlight">
+\[Q(In_{1-x}Ga_{x}As_{y}P_{1-y}) = \frac{yQ(In_{1-x}Ga_{x}As) + (1-y)Q(In_{1-x}Ga_{x}P)}{1+my(1-y)}\]</div>
+<p>with:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mu_{n,max}(300K)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mu_{n,min}(300K)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\mu_{p,max}(300K)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\theta_{n1}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\theta_{p1}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>m</p></td>
+<td><p>6</p></td>
+<td><p>6</p></td>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Therefore, we just need to find the values for InGaAs and InGaP. To do so, we do a quadratic interpolation between each of the parameters, unless there are only two data points, in which case we do a linear interpolation. The values used are layed down in the tables below:</p>
+<table class="docutils align-center" id="id43">
+<caption><span class="caption-text">InGaP parameter list</span><a class="headerlink" href="#id43" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>0.51</p></th>
+<th class="head"><p>1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_{n, max}\)</span></p></td>
+<td><p>5200</p></td>
+<td><p>4300</p></td>
+<td><p>152</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_{n, min}\)</span></p></td>
+<td><p>400</p></td>
+<td><p>400</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N_{n, ref}\)</span></p></td>
+<td><p>log10(3e17)</p></td>
+<td><p>log10(2e16)</p></td>
+<td><p>log10(4.4e18)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{n}\)</span></p></td>
+<td><p>0.47</p></td>
+<td><p>0.70</p></td>
+<td><p>0.80</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\theta_{n,1}\)</span></p></td>
+<td><p>2.0</p></td>
+<td><p>1.66</p></td>
+<td><p>1.60</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_{n, 2}\)</span></p></td>
+<td><p>3.25</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>0.71</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_{p, max}\)</span></p></td>
+<td><p>170</p></td>
+<td><p>150</p></td>
+<td><p>147</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_{p, min}\)</span></p></td>
+<td><p>10</p></td>
+<td><p>15</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N_{p, ref}\)</span></p></td>
+<td><p>log10(4.87e17)</p></td>
+<td><p>log10(1.5e17)</p></td>
+<td><p>log10(1.0e18)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{p}\)</span></p></td>
+<td><p>0.62</p></td>
+<td><p>0.80</p></td>
+<td><p>0.85</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\theta_{p,1}\)</span></p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+<td><p>1.98</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_{p, 2}\)</span></p></td>
+<td><p>3.0</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-center" id="id44">
+<caption><span class="caption-text">InGaAs parameter list</span><a class="headerlink" href="#id44" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>0.47</p></th>
+<th class="head"><p>1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_{n, max}\)</span></p></td>
+<td><p>34000</p></td>
+<td><p>14000</p></td>
+<td><p>9400</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_{n, min}\)</span></p></td>
+<td><p>1000</p></td>
+<td><p>300</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N_{n, ref}\)</span></p></td>
+<td><p>log10(1.1e18)</p></td>
+<td><p>log10(1.3e17)</p></td>
+<td><p>log10(6.0e16)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{n}\)</span></p></td>
+<td><p>0.32</p></td>
+<td><p>0.48</p></td>
+<td><p>0.394</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\theta_{n,1}\)</span></p></td>
+<td><p>1.57</p></td>
+<td><p>1.59</p></td>
+<td><p>2.1</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_{n, 2}\)</span></p></td>
+<td><p>3.0</p></td>
+<td><p>3.68</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_{p, max}\)</span></p></td>
+<td><p>530</p></td>
+<td><p>320</p></td>
+<td><p>491.5</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mu_{p, min}\)</span></p></td>
+<td><p>20</p></td>
+<td><p>10</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N_{p, ref}\)</span></p></td>
+<td><p>log10(1.1e17)</p></td>
+<td><p>log10(4.9e17)</p></td>
+<td><p>log10(1.48e17)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lambda_{p}\)</span></p></td>
+<td><p>0.46</p></td>
+<td><p>0.403</p></td>
+<td><p>0.38</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\theta_{p,1}\)</span></p></td>
+<td><p>2.3</p></td>
+<td><p>1.59</p></td>
+<td><p>2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\theta_{p, 2}\)</span></p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="refractive-index">
+<h2>Refractive index<a class="headerlink" href="#refractive-index" title="Link to this heading"></a></h2>
+<p>The optical refractive index above the bandgap absorption edge is calculated via the modified single oscillator model through <span id="id7">Fiedler and Schlachetzki [<a class="reference internal" href="#id26" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">6</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[n^2 = 1+\frac{E_d}{E_0} + E_d \frac{E_d (\hbar \omega)^2}{E_0^3} + \frac{E_d}{2E_0^3(E_0^2 - E_g^2)} (\hbar \omega)^4ln\left[\frac{2E_0^2 - E_g^2 - (\hbar \omega)^2}{E_g^2 - (\hbar \omega)^2}\right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_0\)</span> and <span class="math notranslate nohighlight">\(E_d\)</span> are given by:</p>
+<div class="math notranslate nohighlight">
+\[E_0 = 3.391 - 1.652y + 0.863y^2 - 0.123y^3\]</div>
+<div class="math notranslate nohighlight">
+\[E_d = 28.91 - 9.278y + 5.626y^2\]</div>
+<p>Whereas if any information above the bandgap is needed, we resort to the following formula from <span id="id8">Seifert and Runge [<a class="reference internal" href="#id30" title="Sten Seifert and Patrick Runge. Revised refractive index and absorption of In_1-xGa_xas_yp_1-y lattice-matched to InP in transparent and absorption IR-region. Optical Materials Express, 6(2):629, February 2016. URL: https://opg.optica.org/abstract.cfm?URI=ome-6-2-629 (visited on 2023-08-29), doi:10.1364/OME.6.000629.">10</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  n^* - 1 &amp;\approx \frac{a}{b - (E + i\Gamma)^*} + \frac{A\sqrt{R}}{(E + i\Gamma)^*}
+  \Bigg\{ \ln \frac{E_z^*}{E_z^* - (E + i\Gamma)^*} + \pi \Bigg[ 2 \cot \left( \pi \sqrt{\frac{R}{E_z^*}} \right) \\
+  &amp;\quad - \cot \left( \pi \sqrt{\frac{R}{E_z^* - (E + i\Gamma)^*}} \right) - \cot \left( \pi \sqrt{\frac{R}{E_z^* + (E + i\Gamma)}} \right) \Bigg] \Bigg\}
+\end{aligned}\end{split}\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+  R &amp;= -0.00115 + 0.0191E_g \\
+  \Gamma &amp;= -0.000691 + 0.00433 E_g \\
+  A &amp;= -0.0453 + 2.1103 E_g \\
+  a &amp;= 72.32 + 12.78 E_g \\
+  b &amp;= 4.84 + 4.66 E_g \\
+  c &amp;= -0.015 + 0.02 E_g \\
+  d &amp;= -0.178 + 1.042 E_g
+\end{aligned}\end{split}\]</div>
+</section>
+<section id="charge-carrier-electro-optic-effects">
+<h2>Charge carrier electro-optic effects<a class="headerlink" href="#charge-carrier-electro-optic-effects" title="Link to this heading"></a></h2>
+<p>Now that we have defined all the necessary physical properties needed to do our calculations, we can finally dive deeper into the electro-optic effects that take place. We will start with the effects that are governed by the electrons and holes. We will not consider in extreme details the physics behind each effect, for that we reccomend you follow the cited references. Instead, we will focus on the models that are employed and their possible shortcomings.</p>
+<section id="band-filling-effect">
+<h3>Band filling effect<a class="headerlink" href="#band-filling-effect" title="Link to this heading"></a></h3>
+<p>When doping a semiconductor with additional donors, the fermi level gets closer to the conduction band, which ultimately can cause the occupation of energy levels above the minimum of the conduction band to be occupied. This means that the excitation of electrons will only occur at higher energy levels than the bandgap energy. This change in the absorption spectrum will translate into a change in the refractive index via the Kramers-Kronig relations. Here we follow the work of <span id="id9">Bennett <em>et al.</em> [<a class="reference internal" href="#id27" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">4</a>]</span>, with the difference that the quasi-fermi levels will be taken from numerical calculations of the charge transport simulator.</p>
+<p>The absorption due to the bandfilling effect is:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In the models below, we do not consider the bandgap narrowing as a separate effect. Instead we consider it in-built into every model that is dependent on the bandgap value by considering <span class="math notranslate nohighlight">\(E_g \to E_g - \Delta E_{BGN}\)</span></p>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \alpha(N,P,E) &amp;= \frac{C_{hh}}{E} \sqrt{E - E_g - \Delta E_{BGN}}
+    \left[ f_v(E_{ah}) - f_c(E_{bh}) - 1 \right] \\
+    &amp;\quad + \frac{C_{lh}}{E} \sqrt{E - E_g - \Delta E_{BGN}}
+    \left[ f_v(E_{al}) - f_c(E_{bl}) - 1 \right]
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_v\)</span> and <span class="math notranslate nohighlight">\(f_c\)</span> are the fermi-dirac distributions considering the fermi level as the quasi-fermi level for holes and electrons, respectively. <span class="math notranslate nohighlight">\(E\)</span> is the energy of the incoming photon. The change in absorption is then given by:</p>
+<div class="math notranslate nohighlight">
+\[\Delta \alpha(N,P,E) = \alpha(N,P,E) - \alpha_0\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_0(N,P,E) = \frac{C_{hh}}{E}\sqrt{E - E_g - \Delta E_{BGN}}  + \frac{C_{lh}}{E}\sqrt{E - E_g - \Delta E_{BGN}}\]</div>
+<p>The constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> are adapted from a constant <span class="math notranslate nohighlight">\(C = 4.4e12 cm^{-1} s^{-0.5}\)</span> in <span id="id10">Bennett <em>et al.</em> [<a class="reference internal" href="#id27" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">4</a>]</span>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To determine the constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> for arbitrary concentrations of InGaAsP, we have adopted a new approach. We have noticed that in the work of <span id="id11">Bennett <em>et al.</em> [<a class="reference internal" href="#id27" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">4</a>]</span>, the quaternary interpolation is done via the charge carrier masses alone. However, the parabolic absorption formula given by</p>
+<div class="math notranslate nohighlight">
+\[\alpha_0(N,P,E) = \frac{C}{E}\sqrt{E - E_g}\]</div>
+<p>tells us that the constant <span class="math notranslate nohighlight">\(C\)</span> can be written as <span id="id12">Moss <em>et al.</em> [<a class="reference internal" href="#id32" title="T. S. Moss, Geoffrey John Burrell, and Brian Ellis. Semiconductor opto-electronics. Butterworths, London, 1973. ISBN 978-0-408-70326-0.">9</a>]</span></p>
+<div class="math notranslate nohighlight">
+\[C = \frac{2\pi e^2 (2m_r)^{3/2} |p_{m0}|^2}{3m_0^2 n_0 \epsilon_0 c h^3 \nu}\]</div>
+<p>we see that the constant is dependent on the refractive index as well, which will have an impact and is not accounted by Bennet. At the same time, <span id="id13">Vinchant <em>et al.</em> [<a class="reference internal" href="#id31" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">12</a>]</span> states that a scaling factor is applied to the absorption spectrum so as to fit measurements at <span class="math notranslate nohighlight">\(E_g + 0.2eV\)</span>, however, such scaling factor is not disclosed. For these reasons we have decided to employ a new model.</p>
+</div>
+<p>The reduced mass of the electron-heavy/light hole pairs is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    m_{r, ehh} &amp;= \left(\frac{1}{m_e} + \frac{1}{m_hh}\right) \\
+    m_{r, elh} &amp;= \left(\frac{1}{m_e} + \frac{1}{m_lh}\right)
+\end{aligned}\end{split}\]</div>
+<p>The constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> are now calculated as:</p>
+<div class="math notranslate nohighlight">
+\[C_{hh} = C \frac{m_{r,hh, InP}^{3/2}}{m_{r,hh, InP}^{3/2} + m_{r,lh, InP}^{3/2}} \left(\frac{m_{r, hh}}{m_{r,hh,InP}}\right)^{3/2} \frac{n_{0,InP}}{n_0}\]</div>
+<div class="math notranslate nohighlight">
+\[C_{lh} = C \frac{m_{r,lh, InP}^{3/2}}{m_{r,hh, InP}^{3/2} + m_{r,lh, InP}^{3/2}} \left(\frac{m_{r, lh}}{m_{r,lh,InP}}\right)^{3/2} \frac{n_{0,InP}}{n_0}\]</div>
+<p>The change in refractive index can now be calculated via the Kramers-Kronig integral. We have found, in accordance to the literature <span id="id14">[<a class="reference internal" href="#id31" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">12</a>]</span>, that for all relevant alloys, the dependence with carrier concentration is linear. Therefore, we now emply the following slopes from <span class="math notranslate nohighlight">\(\Delta n = m_n N + m_p P\)</span>:</p>
+<table class="docutils align-center" id="id45">
+<caption><span class="caption-text">Our model with bandgap narrowing</span><a class="headerlink" href="#id45" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_n\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_p\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.0</p></td>
+<td><p>-4.935e-21</p></td>
+<td><p>-1.339e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>-6.053e-21</p></td>
+<td><p>-1.582e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>-7.589e-21</p></td>
+<td><p>-1.884e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.3</p></td>
+<td><p>-9.738e-21</p></td>
+<td><p>-2.266e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.4</p></td>
+<td><p>-12.96e-21</p></td>
+<td><p>-2.758e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.53</p></td>
+<td><p>-20.48e-21</p></td>
+<td><p>-3.6560e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.6</p></td>
+<td><p>-28.27e-21</p></td>
+<td><p>-4.340e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.7</p></td>
+<td><p>-58.43e-21</p></td>
+<td><p>-5.789e-21</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-center" id="id46">
+<caption><span class="caption-text">Our model without bandgap narrowing</span><a class="headerlink" href="#id46" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_n\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_p\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.0</p></td>
+<td><p>-3.520e-21</p></td>
+<td><p>-1.258e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>-4.284e-21</p></td>
+<td><p>-1.479e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>-5.276e-21</p></td>
+<td><p>-1.752e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.3</p></td>
+<td><p>-6.597e-21</p></td>
+<td><p>-2.092e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.4</p></td>
+<td><p>-8.410e-21</p></td>
+<td><p>-2.523e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.53</p></td>
+<td><p>-12.01e-21</p></td>
+<td><p>-3.289e-21</p></td>
+</tr>
+<tr class="row-even"><td><p>0.6</p></td>
+<td><p>-21.67e-21</p></td>
+<td><p>-4.982e-21</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.7</p></td>
+<td><p>-35.52e-21</p></td>
+<td><p>-6.936e-21</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-center" id="id47">
+<caption><span class="caption-text">Vinchant model</span><a class="headerlink" href="#id47" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_n\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(m_p\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-0.003</p></td>
+<td><p>-5.625e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.047</p></td>
+<td><p>-6.192e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.089</p></td>
+<td><p>-6.637e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.127</p></td>
+<td><p>-7.122e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.166</p></td>
+<td><p>-7.446e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.2</p></td>
+<td><p>-7.932e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.235</p></td>
+<td><p>-8.255e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.27</p></td>
+<td><p>-8.984e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.307</p></td>
+<td><p>-9.469e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.352</p></td>
+<td><p>-10.85e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.398</p></td>
+<td><p>-12.06e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.44</p></td>
+<td><p>-13.35e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.473</p></td>
+<td><p>-14.65e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.515</p></td>
+<td><p>-16.43e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.557</p></td>
+<td><p>-18.86e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.603</p></td>
+<td><p>-21.93e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.636</p></td>
+<td><p>-25.33e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.669</p></td>
+<td><p>-28.25e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.692</p></td>
+<td><p>-31.48e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.72</p></td>
+<td><p>-36.34e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.742</p></td>
+<td><p>-40.87e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.762</p></td>
+<td><p>-47.35e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.778</p></td>
+<td><p>-52.85e-21</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.793</p></td>
+<td><p>-58.35e-21</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="plasma-effect">
+<h3>Plasma effect<a class="headerlink" href="#plasma-effect" title="Link to this heading"></a></h3>
+<p>In this model we only consider the plasma effect coming from n-dopants. The reason for this is that, in p-dopants, the inter-valence absorption mechanism is so much stronger that scattering effects in holes are negligible. We follow the model from <span id="id15">Walukiewicz <em>et al.</em> [<a class="reference internal" href="#id33" title="W. Walukiewicz, J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. Electron mobility and free-carrier absorption in InP; determination of the compensation ratio. Journal of Applied Physics, 51(5):2659–2668, May 1980. URL: https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in (visited on 2023-08-14), doi:10.1063/1.327925.">13</a>]</span>, which is in accordance with <span id="id16">Dumke <em>et al.</em> [<a class="reference internal" href="#id34" title="W. P. Dumke, M. R. Lorenz, and G. D. Pettit. Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP. Physical Review B, 1(12):4668–4673, June 1970. URL: https://link.aps.org/doi/10.1103/PhysRevB.1.4668 (visited on 2023-08-10), doi:10.1103/PhysRevB.1.4668.">5</a>]</span>. The change in absorption is given by:</p>
+<div class="math notranslate nohighlight">
+\[\Delta \alpha(N, \lambda) = A_{\text{imp}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{3.5}
++ A_{\text{op}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{2.5}
++ A_{\text{ac}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{1.5}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_0 = 10\mu m\)</span>, and the constants <span class="math notranslate nohighlight">\(A_{imp}\)</span>, <span class="math notranslate nohighlight">\(A_{op}\)</span>, <span class="math notranslate nohighlight">\(A_{ac}\)</span> are interpolated from:</p>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(N \ (\text{cm}^{-3})\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(A_{\text{imp}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(A_{\text{op}}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(A_{\text{ac}}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.0e16</p></td>
+<td><p>0.004</p></td>
+<td><p>0.623</p></td>
+<td><p>0.034</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.5e16</p></td>
+<td><p>0.008</p></td>
+<td><p>0.932</p></td>
+<td><p>0.052</p></td>
+</tr>
+<tr class="row-even"><td><p>2.0e16</p></td>
+<td><p>0.014</p></td>
+<td><p>1.239</p></td>
+<td><p>0.069</p></td>
+</tr>
+<tr class="row-odd"><td><p>3.0e16</p></td>
+<td><p>0.031</p></td>
+<td><p>1.850</p></td>
+<td><p>0.104</p></td>
+</tr>
+<tr class="row-even"><td><p>4.0e16</p></td>
+<td><p>0.056</p></td>
+<td><p>2.456</p></td>
+<td><p>0.139</p></td>
+</tr>
+<tr class="row-odd"><td><p>5.0e16</p></td>
+<td><p>0.086</p></td>
+<td><p>3.051</p></td>
+<td><p>0.173</p></td>
+</tr>
+<tr class="row-even"><td><p>6.0e16</p></td>
+<td><p>0.123</p></td>
+<td><p>3.646</p></td>
+<td><p>0.208</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.0e16</p></td>
+<td><p>0.167</p></td>
+<td><p>4.240</p></td>
+<td><p>0.243</p></td>
+</tr>
+<tr class="row-even"><td><p>8.0e16</p></td>
+<td><p>0.217</p></td>
+<td><p>4.815</p></td>
+<td><p>0.278</p></td>
+</tr>
+<tr class="row-odd"><td><p>9.0e16</p></td>
+<td><p>0.273</p></td>
+<td><p>5.397</p></td>
+<td><p>0.313</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0e17</p></td>
+<td><p>0.314</p></td>
+<td><p>5.578</p></td>
+<td><p>0.325</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.5e17</p></td>
+<td><p>0.690</p></td>
+<td><p>8.227</p></td>
+<td><p>0.491</p></td>
+</tr>
+<tr class="row-even"><td><p>2.0e17</p></td>
+<td><p>1.201</p></td>
+<td><p>10.79</p></td>
+<td><p>0.660</p></td>
+</tr>
+<tr class="row-odd"><td><p>3.0e17</p></td>
+<td><p>2.602</p></td>
+<td><p>15.75</p></td>
+<td><p>1.005</p></td>
+</tr>
+<tr class="row-even"><td><p>4.0e17</p></td>
+<td><p>4.474</p></td>
+<td><p>20.52</p></td>
+<td><p>1.360</p></td>
+</tr>
+<tr class="row-odd"><td><p>5.0e17</p></td>
+<td><p>6.790</p></td>
+<td><p>25.16</p></td>
+<td><p>1.726</p></td>
+</tr>
+<tr class="row-even"><td><p>6.0e17</p></td>
+<td><p>9.510</p></td>
+<td><p>29.65</p></td>
+<td><p>2.100</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.0e17</p></td>
+<td><p>12.64</p></td>
+<td><p>34.11</p></td>
+<td><p>2.488</p></td>
+</tr>
+<tr class="row-even"><td><p>8.0e17</p></td>
+<td><p>16.13</p></td>
+<td><p>38.44</p></td>
+<td><p>2.879</p></td>
+</tr>
+<tr class="row-odd"><td><p>9.0e17</p></td>
+<td><p>20.00</p></td>
+<td><p>42.75</p></td>
+<td><p>3.285</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0e18</p></td>
+<td><p>24.22</p></td>
+<td><p>47.01</p></td>
+<td><p>3.699</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.5e18</p></td>
+<td><p>50.28</p></td>
+<td><p>67.80</p></td>
+<td><p>5.912</p></td>
+</tr>
+<tr class="row-even"><td><p>2.0e18</p></td>
+<td><p>93.91</p></td>
+<td><p>88.02</p></td>
+<td><p>8.354</p></td>
+</tr>
+<tr class="row-odd"><td><p>3.0e18</p></td>
+<td><p>170.3</p></td>
+<td><p>127.0</p></td>
+<td><p>13.87</p></td>
+</tr>
+<tr class="row-even"><td><p>4.0e18</p></td>
+<td><p>276.7</p></td>
+<td><p>164.1</p></td>
+<td><p>20.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>5.0e18</p></td>
+<td><p>396.1</p></td>
+<td><p>199.6</p></td>
+<td><p>26.98</p></td>
+</tr>
+<tr class="row-even"><td><p>6.0e18</p></td>
+<td><p>522.8</p></td>
+<td><p>233.4</p></td>
+<td><p>34.34</p></td>
+</tr>
+</tbody>
+</table>
+<p>As for the change in refractive index, we consider the simple Lorentz model:</p>
+<div class="math notranslate nohighlight">
+\[\Delta n(E) = -\frac{1}{2}  \frac{N e^2}{m_e \epsilon_0 (E/\hbar)^2 n_0}\]</div>
+</section>
+<section id="intervalence-absorption">
+<h3>Intervalence absorption<a class="headerlink" href="#intervalence-absorption" title="Link to this heading"></a></h3>
+<p>The bandstructure of InGaAsP has two valence bands (light and heavy holes) and a third band due to the spin-orbit coupling. When a photon hits such a material which is hevily P-doped, it can cause an electron in the spin-orbit valence band to jump to one of the hole bands. This effect can be quite intense in III-V at 1550nm because the <span class="math notranslate nohighlight">\(\Delta_{so} &lt; 0.8eV\)</span>. In IngaAsP materials, this effect has been thorougly characterized, and here we employ the model from <span id="id17">Weber [<a class="reference internal" href="#id35" title="J.-P. Weber. Optimization of the carrier-induced effective index change in InGaAsP waveguides-application to tunable Bragg filters. IEEE Journal of Quantum Electronics, 30(8):1801–1816, August 1994. URL: http://ieeexplore.ieee.org/document/301645/ (visited on 2023-05-03), doi:10.1109/3.301645.">14</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Delta \alpha(E,N) = 4.252\times 10^{-20} \exp \left(-3.657 E\right) P\]</div>
+<div class="math notranslate nohighlight">
+\[\Delta n(E,N) = -\frac{\hbar c \alpha_0}{\pi} \frac{1}{2E}\left(e^{-bE}E_i(bE) + e^{bE}E_1(bE)\right) P\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_0 = 4.252\times 10^-20 m^2\)</span> and <span class="math notranslate nohighlight">\(b = 3.657 eV^{-1}\)</span>. <span class="math notranslate nohighlight">\(E_i\)</span> and <span class="math notranslate nohighlight">\(E_1\)</span> are the exponential integrals.</p>
+</section>
+</section>
+<section id="field-effects">
+<h2>Field effects<a class="headerlink" href="#field-effects" title="Link to this heading"></a></h2>
+<p>In InGaAsP materials you have a linear and a quadratic field effect.</p>
+<section id="pockels-effect">
+<h3>Pockels effect<a class="headerlink" href="#pockels-effect" title="Link to this heading"></a></h3>
+<p>The pockels effect follows the works of <span id="id18">Adachi and Oe [<a class="reference internal" href="#id36" title="Sadao Adachi and Kunishige Oe. Internal strain and photoelastic effects in Ga $_\textrm  1− \textit x $ Al $_\textrm  \textit x $ As/GaAs and In $_\textrm  1− \textit x $ Ga $_\textrm  \textit x $ As $_\textrm  \textit y $ P $_\textrm  1− \textit y $ /InP crystals. Journal of Applied Physics, 54(11):6620–6627, November 1983. URL: https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142 (visited on 2023-05-04), doi:10.1063/1.331898.">1</a>]</span> and <span id="id19">Adachi and Oe [<a class="reference internal" href="#id37" title="Sadao Adachi and Kunishige Oe. Linear electro‐optic effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. Journal of Applied Physics, 56(1):74–80, July 1984. URL: http://aip.scitation.org/doi/10.1063/1.333731 (visited on 2023-04-19), doi:10.1063/1.333731.">2</a>]</span>. The electro-optic coefficient <span class="math notranslate nohighlight">\(r_{41}\)</span> is given by the sum of the free and piezoelectric contributions. Namely:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For simplicity, here we will not write the <span class="math notranslate nohighlight">\(\Delta E_{BGN}\)</span> contribution, but consider it implied.</p>
+</div>
+<div class="math notranslate nohighlight">
+\[r_{41, free} = -\frac{1}{\epsilon_r^2} \left(E_0 g\left(\frac{E}{E_g}\right) + F_0\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+r_{41, \text{piezo}} &amp;=
+- \frac{1}{\epsilon_r^2}
+\Bigg(
+    C \bigg(
+        -g\left(\frac{E}{E_g}\right)
+        + 4 \frac{E_g}{\Delta_{\text{so}}}
+        \bigg[
+            f\left(\frac{E}{E_g}\right) \\
+        &amp;\quad - \left(\frac{E_g}{E_g + \Delta_{\text{so}}}\right)^{1.5}
+            f\left(\frac{E}{E_g + \Delta_{\text{so}}}\right)
+        \bigg]
+    \bigg)
+    + D
+\Bigg) e_{14}
+\end{aligned}\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[g(\chi) = \frac{1}{\chi^2} \left( 2 - (1 + \chi)^{-0.5} - (1 - \chi)^{-0.5} \right)\]</div>
+<div class="math notranslate nohighlight">
+\[f(\chi) = \frac{1}{\chi^2} \left( 2 - (1 + \chi)^{0.5} - (1 - \chi)^{0.5} \right)\]</div>
+<p>The constants <span class="math notranslate nohighlight">\(E_0\)</span>, <span class="math notranslate nohighlight">\(F_0\)</span>, <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(D\)</span> are found via interpolation as:</p>
+<div class="math notranslate nohighlight">
+\[Q(x,y) = xyQ_{GaAs} + x(1-y)Q_{GaP} + y(1-x)Q_{InAs} + (1-x)(1-y)Q_{InP}\]</div>
+<p>and the constants for the binaries are found in the table below:</p>
+<table class="docutils align-default" id="id48">
+<caption><span class="caption-text">Constants for materials
+ :align: center
+ :header-rows: 1</span><a class="headerlink" href="#id48" title="Link to this table"></a></caption>
+<tbody>
+<tr class="row-odd"><td><p>Constant</p></td>
+<td><p>InP</p></td>
+<td><p>GaP</p></td>
+<td><p>GaAs</p></td>
+<td><p>InAs</p></td>
+</tr>
+<tr class="row-even"><td><p>E0 (m V^-1)</p></td>
+<td><p>-42.06e-12</p></td>
+<td><p>-83.31e-12</p></td>
+<td><p>-71.48e-12</p></td>
+<td><p>-30.23e-12</p></td>
+</tr>
+<tr class="row-odd"><td><p>F0 (m V^-1)</p></td>
+<td><p>91.32e-12</p></td>
+<td><p>16.60e-12</p></td>
+<td><p>123.16e-12</p></td>
+<td><p>197.88e-12</p></td>
+</tr>
+<tr class="row-even"><td><p>C (m^2 N^-1)</p></td>
+<td><p>-0.36e-10</p></td>
+<td><p>-0.06e-10</p></td>
+<td><p>-0.21e-10</p></td>
+<td><p>-1.48e-10</p></td>
+</tr>
+<tr class="row-odd"><td><p>D (m^2 N^-1)</p></td>
+<td><p>2.60e-10</p></td>
+<td><p>1.92e-10</p></td>
+<td><p>2.12e-10</p></td>
+<td><p>2.32e-10</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kerr-effect">
+<h3>Kerr effect<a class="headerlink" href="#kerr-effect" title="Link to this heading"></a></h3>
+<p>The kerr effect is due to the Franz-Keldysh effect, which causes a ripple in the absorption band-edge, which translates to a quadratic change in the refractive index. Here, we follow the work of <span id="id20">Adachi and Oe [<a class="reference internal" href="#id38" title="Sadao Adachi and Kunishige Oe. Quadratic electro‐optic (Kerr) effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. Journal of Applied Physics, 56(5):1499–1504, September 1984. URL: https://pubs.aip.org/aip/jap/article/56/5/1499-1504/170597 (visited on 2023-05-15), doi:10.1063/1.334105.">3</a>]</span> and <span id="id21">Maat [<a class="reference internal" href="#id39">8</a>]</span>. Contrary to other materials, like ferroelectric materials like lithium niobate, the quadratic response to an electric field is complex. This is a consequence of the Franz Keldysh effect. The absorption for TE and TM polarization is given by:</p>
+<div class="math notranslate nohighlight">
+\[\Delta \alpha (E)_{TE,TM} = A_{TE,TM}\lambda \frac{|E_ext|}{E_g - E} 10^{-B_{TE,TM}\frac{(E_g-E)^{3/2}}{|E_{ext}|}}\]</div>
+<p>As for the <span class="math notranslate nohighlight">\(S_{11}\)</span> and <span class="math notranslate nohighlight">\(S_{12}\)</span>, they are given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    S_{11} &amp;= C_{TE} \frac{E^2}{\epsilon_r^2(E_g^2 - E^2)^2} \\
+    S_{12} &amp;= C_{TM} \frac{E^2}{\epsilon_r^2(E_g^2 - E^2)^2}
+\end{aligned}\end{split}\]</div>
+<p>and the constants <span class="math notranslate nohighlight">\(C_{TE}\)</span> and <span class="math notranslate nohighlight">\(C_{TM}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    C_{TE} &amp;= -3.10\times 10^{-18} eV^2 m^2 V^{-2} \\
+    C_{TM} &amp;= -5.60\times 10^{-18} eV^2 m^2 V^{-2}
+\end{aligned}\end{split}\]</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalModel.</span></span><span class="sig-name descname"><span class="pre">InGaAsPElectroOpticalModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efield</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandgap_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BF_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vinchant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">growing_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'z'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efield</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandgap_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BF_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vinchant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">growing_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'z'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.__init__" title="Link to this definition"></a></dt>
+<dd><p>Base model for In_{1-x}Ga_{x}As_{y}P_{1-y}. It gives the changes in absorption and
+refractive index for charge carrier effects.</p>
+<p>[!!] It expects Quantities for a single voltage
+The kwargs are to accomodate interoperability with other ElectroOpticalModels
+NOTE: the equations used for the modification of the bandstructure are applied assuming validity for compensated material, but that is not the case.
+It  may be a source of error. Beware.</p>
+<p>Ec: Conduction band energy in eV. Assumed to have shape (N)
+Ev: Valence band energy in eV. Assumed to have shape (N)
+Efn: Conduction quasi fermi level energy in eV. Assumed to have shape (N)
+Ep: Valence quasi fermi level energy in eV. Assumed to have shape (N)
+Efield: induced electric field. Assumed to have shape (N, 3).
+n: Electron concentration in cm^-3. Assumed to have shape (N)
+p: Hole concentration in cm^-3. Assumed to have shape (N)
+T: Temperature of operation in kelvin
+y: Concentration. Must be between 0 and 1. Assumed to have shape (Nx).
+growing direction: the axis of growth. Must be x,y or z. Default is z.
+BF_model: if ‘vinchant’ it will use the data calculated by Vinchant 1992 [7]. If ‘BGN’ it will use the result from the model while including BGN, and ‘no BGN’ will not include it.</p>
+<p>References:
+1) <a class="reference external" href="http://www.ioffe.ru/SVA/NSM/Semicond/InP/bandstr.html#Masses">http://www.ioffe.ru/SVA/NSM/Semicond/InP/bandstr.html#Masses</a>
+2) Bennett, B.R., R.A. Soref, and J.A. Del Alamo. “Carrier-Induced Change in Refractive Index of InP, GaAs and InGaAsP.” IEEE Journal of Quantum Electronics 26, no. 1 (January 1990): 113–22. <a class="reference external" href="https://doi.org/10.1109/3.44924">https://doi.org/10.1109/3.44924</a>.
+3) Adachi, Sadao. Properties of Group-IV, III-V and II-VI Semiconductors. Wiley Series in Materials for Electronic and Optoelectronic Applications. Chichester, West Sussex, England: John Wiley &amp; Sons, Ltd, 2006.
+4) Sze, S. M., and Kwok Kwok Ng. Physics of Semiconductor Devices. 3rd ed. Hoboken, N.J: Wiley-Interscience, 2007.
+5) Fiedler, F., and A. Schlachetzki. “Optical Parameters of InP-Based Waveguides.” Solid-State Electronics 30, no. 1 (January 1987): 73–83. <a class="reference external" href="https://doi.org/10.1016/0038-1101(87)90032-3">https://doi.org/10.1016/0038-1101(87)90032-3</a>.
+6) Moss, T. S., Geoffrey John Burrell, and Brian Ellis. Semiconductor Opto-Electronics. London: Butterworths, 1973.
+7) Vinchant, J.-F., J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. “InP/GaInAsP Guided-Wave Phase Modulators Based on Carrier-Induced Effects: Theory and Experiment.” Journal of Lightwave Technology 10, no. 1 (January 1992): 63–70. <a class="reference external" href="https://doi.org/10.1109/50.108738">https://doi.org/10.1109/50.108738</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_BGN">
+<span class="sig-name descname"><span class="pre">get_BGN</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_BGN" title="Link to this definition"></a></dt>
+<dd><p>Return the bandgap narrowing energy of InGaAsP.
+Temperature dependence was taken from [1] page 121.</p>
+<p>BGN is calculated for uncompensated InGaAsP.</p>
+<p>if model=’jain’ it makes use of the model from [2]. The BGN adaptation for InGaAsP is based on the Vegard’s law taken from [5].</p>
+<p>References:
+1) Adachi, Sadao. Properties of Group-IV, III-V and II-VI Semiconductors. Wiley Series in Materials for Electronic and Optoelectronic Applications. Chichester, West Sussex, England: John Wiley &amp; Sons, Ltd, 2006.
+2) Jain, S. C., J. M. McGregor, and D. J. Roulston. “Band‐gap Narrowing in Novel III‐V Semiconductors.” Journal of Applied Physics 68, no. 7 (October 1990): 3747–49. <a class="reference external" href="https://doi.org/10.1063/1.346291">https://doi.org/10.1063/1.346291</a>.
+3) Bennett, B.R., R.A. Soref, and J.A. Del Alamo. “Carrier-Induced Change in Refractive Index of InP, GaAs and InGaAsP.” IEEE Journal of Quantum Electronics 26, no. 1 (January 1990): 113–22. <a class="reference external" href="https://doi.org/10.1109/3.44924">https://doi.org/10.1109/3.44924</a>.
+4) <a class="reference external" href="http://www.ioffe.ru/SVA/NSM/Semicond/InP">http://www.ioffe.ru/SVA/NSM/Semicond/InP</a>
+5) Fiedler, F., and A. Schlachetzki. “Optical Parameters of InP-Based Waveguides.” Solid-State Electronics 30, no. 1 (January 1987): 73–83. <a class="reference external" href="https://doi.org/10.1016/0038-1101(87)90032-3">https://doi.org/10.1016/0038-1101(87)90032-3</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_BF">
+<span class="sig-name descname"><span class="pre">get_dalpha_BF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_BF" title="Link to this definition"></a></dt>
+<dd><p>Gives the change in absorption due to the bandfilling effect.
+The treatment if based on [1] but we neglect the quasi-fermi levels and use the fermi level numerically calculated instead.</p>
+<p>Note that if the bandgap_model is not ‘none’ the BGN effect is taken into consideration within the bandfilling.</p>
+<p>E must be a Pint quantity in energy using the parent object’s register!!</p>
+<p>References:
+1) Bennett, B.R., R.A. Soref, and J.A. Del Alamo. “Carrier-Induced Change in Refractive Index of InP, GaAs and InGaAsP.” IEEE Journal of Quantum Electronics 26, no. 1 (January 1990): 113–22. <a class="reference external" href="https://doi.org/10.1109/3.44924">https://doi.org/10.1109/3.44924</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_iv">
+<span class="sig-name descname"><span class="pre">get_dalpha_iv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_iv" title="Link to this definition"></a></dt>
+<dd><p>Returns the intervalence absorption component. This is calculated from [1], eq. 16.</p>
+<p>This formula may give worse results at low dopings and underpredict absorption. [2]</p>
+<p>E: float. Pint quantity in energy using the parent object’s register.</p>
+<p>References:
+1) Weber, J.-P. “Optimization of the Carrier-Induced Effective Index Change in InGaAsP Waveguides-Application to Tunable Bragg Filters.” IEEE Journal of Quantum Electronics 30, no. 8 (August 1994): 1801–16. <a class="reference external" href="https://doi.org/10.1109/3.301645">https://doi.org/10.1109/3.301645</a>.
+2) Casey, H. C., and P. L. Carter. “Variation of Intervalence Band Absorption with Hole Concentration in p -Type InP.” Applied Physics Letters 44, no. 1 (January 1, 1984): 82–83. <a class="reference external" href="https://doi.org/10.1063/1.94561">https://doi.org/10.1063/1.94561</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_plasma">
+<span class="sig-name descname"><span class="pre">get_dalpha_plasma</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dalpha_plasma" title="Link to this definition"></a></dt>
+<dd><p>Gives the change in absorption due to the plasma effect as reported in [1]. Simply put, the model is based on a second order perturbation theory and considers 3 scattering mechanisms: electron - optical phonon, electron - acoustical phonon and electron - ionized impurity. It assumes room temperature of 300K. It is limited to concentrations below 6e18 cm^-3 and above 1116cm^-3</p>
+<p>E must be a Pint quantity in energy using the parent object’s register!!</p>
+<p>The values predicted by the below formula are consistent with the experimental results from [2].</p>
+<p>References:
+1) Walukiewicz, W., J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. “Electron Mobility and Free-Carrier Absorption in InP; Determination of the Compensation Ratio.” Journal of Applied Physics 51, no. 5 (May 1, 1980): 2659–68. <a class="reference external" href="https://doi.org/10.1063/1.327925">https://doi.org/10.1063/1.327925</a>.</p>
+<ol class="arabic simple" start="2">
+<li><p>Dumke, W. P., M. R. Lorenz, and G. D. Pettit. “Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP.” Physical Review B 1, no. 12 (June 15, 1970): 4668–73. <a class="reference external" href="https://doi.org/10.1103/PhysRevB.1.4668">https://doi.org/10.1103/PhysRevB.1.4668</a>.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_BF">
+<span class="sig-name descname"><span class="pre">get_dn_BF</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_BF" title="Link to this definition"></a></dt>
+<dd><p>Returns the change in refractive index based only on the band filling effect based on the kramers kronig relations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_iv">
+<span class="sig-name descname"><span class="pre">get_dn_iv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_iv" title="Link to this definition"></a></dt>
+<dd><p>Returns the intervalence absorption component. This is calculated from [1], eq. 17 and 18.</p>
+<p>E must be a Pint quantity in energy using the parent object’s register!!</p>
+<p>References:
+1) Weber, J.-P. “Optimization of the Carrier-Induced Effective Index Change in InGaAsP Waveguides-Application to Tunable Bragg Filters.” IEEE Journal of Quantum Electronics 30, no. 8 (August 1994): 1801–16. <a class="reference external" href="https://doi.org/10.1109/3.301645">https://doi.org/10.1109/3.301645</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_plasma">
+<span class="sig-name descname"><span class="pre">get_dn_plasma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dn_plasma" title="Link to this definition"></a></dt>
+<dd><p>Returns the change in refractive index based on the plasma effect. It makes use of [1], page 79, eq.5.2.14</p>
+<p>E: float. Pint quantity in energy using the parent object’s register.</p>
+<p>References:
+1) Hunsperger, Robert G. Integrated Optics: Theory and Technology. 6th ed. Advanced Texts in Physics. New York London: Springer, 2009.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm">
+<span class="sig-name descname"><span class="pre">get_dperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fractions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm" title="Link to this definition"></a></dt>
+<dd><p>This function returns the change in permitivity tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm_kerr">
+<span class="sig-name descname"><span class="pre">get_dperm_kerr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm_kerr" title="Link to this definition"></a></dt>
+<dd><p>Returns the change in refractive index owing to the Kerr effect.</p>
+<p>E: energy of the field’s photons. Pint quantity
+Efield: Electric field components. It is assumed to have dimensions (Nx, 3)</p>
+<p>References:
+[1] - Maat, Derk Hendrik Pieter. InP-Based Integrated MZI Switches for Optical Communication, 2001.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm_pockels">
+<span class="sig-name descname"><span class="pre">get_dperm_pockels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_dperm_pockels" title="Link to this definition"></a></dt>
+<dd><p>Returns the change in refractive index owing to the pockels effect.</p>
+<p>E: energy of the field’s photons. Pint quantity
+Efield: Electric field components. It is assumed to have dimensions (Nx, 3)</p>
+<p>References:
+1) Adachi, Sadao, and Kunishige Oe. “Internal Strain and Photoelastic Effects in Ga  1− x  Al  x  As/GaAs and In  1− x  Ga  x  As  y  P  1− y  /InP Crystals.” Journal of Applied Physics 54, no. 11 (November 1983): 6620–27. <a class="reference external" href="https://doi.org/10.1063/1.331898">https://doi.org/10.1063/1.331898</a>.
+2) Adachi, Sadao, and Kunishige Oe. “Linear Electro‐optic Effects in Zincblende‐type Semiconductors: Key Properties of InGaAsP Relevant to Device Design.” Journal of Applied Physics 56, no. 1 (July 1984): 74–80. <a class="reference external" href="https://doi.org/10.1063/1.333731">https://doi.org/10.1063/1.333731</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_eps_s">
+<span class="sig-name descname"><span class="pre">get_eps_s</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_eps_s" title="Link to this definition"></a></dt>
+<dd><p>Returns the relative permeability as a function of wavelength and adjusted for the different concentrations.
+It uses the modified single oscillator model and the conversion formulas from the single oscilator model formula as outlined in [1] (Appendix).</p>
+<p>References:
+1) Fiedler, F., and A. Schlachetzki. “Optical Parameters of InP-Based Waveguides.” Solid-State Electronics 30, no. 1 (January 1987): 73–83. <a class="reference external" href="https://doi.org/10.1016/0038-1101(87)90032-3">https://doi.org/10.1016/0038-1101(87)90032-3</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_mobility">
+<span class="sig-name descname"><span class="pre">get_mobility</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel.get_mobility" title="Link to this definition"></a></dt>
+<dd><p>Returns the electron and hole mobility for In_{1-x}Ga_{x}As_{y}P_{1-y} based on an interpolation scheme reported by [1]</p>
+<p>References:
+1- Sotoodeh, M., A. H. Khalid, and A. A. Rezazadeh. “Empirical Low-Field Mobility Model for III–V Compounds Applicable in Device Simulation Codes.” Journal of Applied Physics 87, no. 6 (March 15, 2000): 2890–2900. <a class="reference external" href="https://doi.org/10.1063/1.372274">https://doi.org/10.1063/1.372274</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="docutils container" id="id22">
+<div role="list" class="citation-list">
+<div class="citation" id="id36" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id18">1</a><span class="fn-bracket">]</span></span>
+<p>Sadao Adachi and Kunishige Oe. Internal strain and photoelastic effects in Ga $_\textrm  1− \textit x $ Al $_\textrm  \textit x $ As/GaAs and In $_\textrm  1− \textit x $ Ga $_\textrm  \textit x $ As $_\textrm  \textit y $ P $_\textrm  1− \textit y $ /InP crystals. <em>Journal of Applied Physics</em>, 54(11):6620–6627, November 1983. URL: <a class="reference external" href="https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142">https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142</a> (visited on 2023-05-04), <a class="reference external" href="https://doi.org/10.1063/1.331898">doi:10.1063/1.331898</a>.</p>
+</div>
+<div class="citation" id="id37" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id19">2</a><span class="fn-bracket">]</span></span>
+<p>Sadao Adachi and Kunishige Oe. Linear electro‐optic effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. <em>Journal of Applied Physics</em>, 56(1):74–80, July 1984. URL: <a class="reference external" href="http://aip.scitation.org/doi/10.1063/1.333731">http://aip.scitation.org/doi/10.1063/1.333731</a> (visited on 2023-04-19), <a class="reference external" href="https://doi.org/10.1063/1.333731">doi:10.1063/1.333731</a>.</p>
+</div>
+<div class="citation" id="id38" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id20">3</a><span class="fn-bracket">]</span></span>
+<p>Sadao Adachi and Kunishige Oe. Quadratic electro‐optic (Kerr) effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. <em>Journal of Applied Physics</em>, 56(5):1499–1504, September 1984. URL: <a class="reference external" href="https://pubs.aip.org/aip/jap/article/56/5/1499-1504/170597">https://pubs.aip.org/aip/jap/article/56/5/1499-1504/170597</a> (visited on 2023-05-15), <a class="reference external" href="https://doi.org/10.1063/1.334105">doi:10.1063/1.334105</a>.</p>
+</div>
+<div class="citation" id="id27" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id10">3</a>,<a role="doc-backlink" href="#id11">4</a>)</span>
+<p>B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. <em>IEEE Journal of Quantum Electronics</em>, 26(1):113–122, January 1990. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/44924/">http://ieeexplore.ieee.org/document/44924/</a> (visited on 2023-04-18), <a class="reference external" href="https://doi.org/10.1109/3.44924">doi:10.1109/3.44924</a>.</p>
+</div>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id16">5</a><span class="fn-bracket">]</span></span>
+<p>W. P. Dumke, M. R. Lorenz, and G. D. Pettit. Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP. <em>Physical Review B</em>, 1(12):4668–4673, June 1970. URL: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.1.4668">https://link.aps.org/doi/10.1103/PhysRevB.1.4668</a> (visited on 2023-08-10), <a class="reference external" href="https://doi.org/10.1103/PhysRevB.1.4668">doi:10.1103/PhysRevB.1.4668</a>.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id5">3</a>,<a role="doc-backlink" href="#id7">4</a>)</span>
+<p>F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. <em>Solid-State Electronics</em>, 30(1):73–83, January 1987. URL: <a class="reference external" href="https://linkinghub.elsevier.com/retrieve/pii/0038110187900323">https://linkinghub.elsevier.com/retrieve/pii/0038110187900323</a> (visited on 2023-05-16), <a class="reference external" href="https://doi.org/10.1016/0038-1101(87)90032-3">doi:10.1016/0038-1101(87)90032-3</a>.</p>
+</div>
+<div class="citation" id="id28" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">7</a><span class="fn-bracket">]</span></span>
+<p>S. C. Jain, J. M. McGregor, and D. J. Roulston. Band‐gap narrowing in novel III‐V semiconductors. <em>Journal of Applied Physics</em>, 68(7):3747–3749, October 1990. URL: <a class="reference external" href="http://aip.scitation.org/doi/10.1063/1.346291">http://aip.scitation.org/doi/10.1063/1.346291</a> (visited on 2023-04-19), <a class="reference external" href="https://doi.org/10.1063/1.346291">doi:10.1063/1.346291</a>.</p>
+</div>
+<div class="citation" id="id39" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id21">8</a><span class="fn-bracket">]</span></span>
+<p><strong>missing publisher in maat_inp-based_2001</strong></p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">9</a><span class="fn-bracket">]</span></span>
+<p>T. S. Moss, Geoffrey John Burrell, and Brian Ellis. <em>Semiconductor opto-electronics</em>. Butterworths, London, 1973. ISBN 978-0-408-70326-0.</p>
+</div>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">10</a><span class="fn-bracket">]</span></span>
+<p>Sten Seifert and Patrick Runge. Revised refractive index and absorption of In_1-xGa_xas_yp_1-y lattice-matched to InP in transparent and absorption IR-region. <em>Optical Materials Express</em>, 6(2):629, February 2016. URL: <a class="reference external" href="https://opg.optica.org/abstract.cfm?URI=ome-6-2-629">https://opg.optica.org/abstract.cfm?URI=ome-6-2-629</a> (visited on 2023-08-29), <a class="reference external" href="https://doi.org/10.1364/OME.6.000629">doi:10.1364/OME.6.000629</a>.</p>
+</div>
+<div class="citation" id="id29" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">11</a><span class="fn-bracket">]</span></span>
+<p>M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. <em>Journal of Applied Physics</em>, 87(6):2890–2900, March 2000. URL: <a class="reference external" href="https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121">https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121</a> (visited on 2023-05-24), <a class="reference external" href="https://doi.org/10.1063/1.372274">doi:10.1063/1.372274</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id13">1</a>,<a role="doc-backlink" href="#id14">2</a>)</span>
+<p>J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. <em>Journal of Lightwave Technology</em>, 10(1):63–70, January 1992. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/108738/">http://ieeexplore.ieee.org/document/108738/</a> (visited on 2023-04-06), <a class="reference external" href="https://doi.org/10.1109/50.108738">doi:10.1109/50.108738</a>.</p>
+</div>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id15">13</a><span class="fn-bracket">]</span></span>
+<p>W. Walukiewicz, J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. Electron mobility and free-carrier absorption in InP; determination of the compensation ratio. <em>Journal of Applied Physics</em>, 51(5):2659–2668, May 1980. URL: <a class="reference external" href="https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in">https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in</a> (visited on 2023-08-14), <a class="reference external" href="https://doi.org/10.1063/1.327925">doi:10.1063/1.327925</a>.</p>
+</div>
+<div class="citation" id="id35" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">14</a><span class="fn-bracket">]</span></span>
+<p>J.-P. Weber. Optimization of the carrier-induced effective index change in InGaAsP waveguides-application to tunable Bragg filters. <em>IEEE Journal of Quantum Electronics</em>, 30(8):1801–1816, August 1994. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/301645/">http://ieeexplore.ieee.org/document/301645/</a> (visited on 2023-05-03), <a class="reference external" href="https://doi.org/10.1109/3.301645">doi:10.1109/3.301645</a>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../OpticalSimulators/OpticalSimulatorMODE.html" class="btn btn-neutral float-left" title="OpticalSimulatorMODE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ElectroOpticalSimulators/ElectroOpticalSimulator.html" class="btn btn-neutral float-right" title="ElectroOpticalSimulator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

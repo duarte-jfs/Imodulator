@@ -1,0 +1,115 @@
+.. _mobility_solcore: https://github.com/qpv-research-group/solcore5/blob/develop/solcore/material_data/mobility.py
+.. _NextNano: https://www.nextnano.com/error_pages/404.php
+
+
+Welcome to Imodulator's documentation
+=====================================
+
+**Imodulator** is an all in tool for the simulation of electro-optic phase modulators. Simply define your geometry and materials, and then send the information to the various solvers available including optical mode solver, RF mode solver with small signal analysis, charge transport simulations and electro-optic interaction simulations.
+
+.. image:: architecture.png
+   :width: 600px
+   :align: center
+
+Check out the :doc:`install` section for further information, including how to
+:ref:`install <installation>` the project.
+
+Current limitations
+-------------------
+
+For the moment, the full functionality of the Imodulator package is limited to InGaAsP alloys lattice matched to InP. However, when we consider the different parts of the simulator, we have various limitations that can or not be relevant.
+
+- ``OpticalSimulatorFEMWELL``: There is virtually no limitation here. As long as you provide a refractive index for each polygon, you're good to go.
+- ``OpticalSimulatorMODE``: There is virtually no limitation here. As long as you provide a refractive index for each polygon, you're good to go.
+- ``RFSimulatorFEMWELL``: There is also no limitation in this solver. You need only to input the material properties and it will work.
+- ``ChargeSimmulatorSolcore``: ``Solcore`` has been developed with solar cells in mind, and we have found that the internal library of material parameters was limiting for the purpose of this package. Therefore, we have made a connection between ``Solcore`` and ``openbandparams`` so that we can use arbitrary III-V alloys, excluding strain effects, in solving the poisson-drift-diffusion solver. The limitation here is that we must work with III-V alloys only. Furthermore, the mobility values are calculated through ``Solcore`` via mobility_solcore_, and we are, therefore, limited to:
+
+   - InGaAs;
+   - InGaP;
+   - AlGaAs;
+   - InAlAs;
+   - InGaAsP.
+
+- ``ChargeSimmulatorNN``: There isn't really a limitation here. We only need to provide materials supporded by NextNano_.
+- ``ElectroOpticalModels``: We have only included here a model compatible with electro-optical effects that take place in InGaAsP alloys lattice matched to InP. However, the software has been written to allow for any model, as along as we provide a :math:`\Delta \bar{\epsilon} (V, E_c, E_v, E_{fp}, E_{fv}, \mu_n, \mu_p, \vec{E}, N, P)` function.
+
+Where you can contribute
+------------------------
+
+- Generalization of ``openbandparams`` to include other semiconductor compounds such as Si and SiGe;
+- Generalization of mobility_solcore_ to include other mobility models explored in :cite:`sotoodeh_empirical_2000`. Alternatively, one could explore the inclusion of the models of :cite:`sotoodeh_empirical_2000` in ``openbandparams`` directly.
+- Include more electro-optic models.
+- Include surface impedance boundary conditions in the RF mode solver.
+- Improve the documentation (help wanted!).
+
+
+Acknowledgements
+----------------
+
+This work was funded by the European Union through the QuGANTIC project and the Dutch National Growth Fund and PhotonDelta. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Innovation Council. Neither the European Union nor the granting authority can be held responsible for them.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Main:
+
+   install
+   PhotonicPolygon
+   PhotonicDevice
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Charge-transport simulators
+   :titlesonly:
+
+   ChargeSimulators/ChargeSimulatorNN
+   ChargeSimulators/ChargeSimulatorSolcore
+
+.. toctree::
+   :maxdepth: 2
+   :caption: RF mode solvers
+   :titlesonly:
+
+   RFSimulators/RFSimulatorFEMWELL
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Optical mode solvers
+   :titlesonly:
+
+   OpticalSimulators/OpticalSimulatorFEMWELL
+   OpticalSimulators/OpticalSimulatorMODE
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Electro Optical models
+   :titlesonly:
+
+   ElectroOpticalModels/InGaAsPElectroOpticalModel
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Electro-optic simulators
+   :titlesonly:
+
+   ElectroOpticalSimulators/ElectroOpticalSimulator
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Tutorials
+
+   Tutorials/building_photonic_device/building_photonic_device
+   Tutorials/optical_simulation_femwell/optical_simulation_femwell
+   Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore
+   Tutorials/rf_simulation/rf_simulation
+   Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport
+   Tutorials/dc_electro_optical/dc_electro_optical
+   Tutorials/polarization_converter/polarization_converter
+
+
+References
+----------
+
+.. bibliography::
+   :filter: docname in docnames
+   :style: plain

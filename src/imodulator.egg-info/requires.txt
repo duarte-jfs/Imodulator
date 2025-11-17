@@ -1,0 +1,10 @@
+femwell==0.1.11
+matplotlib==3.9.0
+meshwell==1.0.7
+numpy==2.0.0
+Pint>=0.24
+scipy==1.13.1
+shapely==2.0.4
+pyyaml==6.0.2
+pandas==2.3.0
+nextnanopy>=1.0.1

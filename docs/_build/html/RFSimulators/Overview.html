@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RF simulator" href="RFSimulatorFEMWELL.html" />
+    <link rel="prev" title="ChargeSimulatorSolcore" href="../ChargeSimulators/ChargeSimulatorSolcore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicDevice.html">Photonic Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChargeSimulators/Overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RFSimulatorFEMWELL.html">RF simulator</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/Overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalModels/Overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalSimulators/Overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/first_rf_simulation.html">My first RF simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/first_optical_simulation.html">My first optical simulation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/RFSimulators/Overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The RF properties of an electro-optical modulator are of utmost importance as it will define how our device behaves with high-speed electronics.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="RFSimulatorFEMWELL.html"><span class="doc">RF simulator</span></a>: A FEM mode solver built around <a href="#id21"><span class="problematic" id="id22">FEMWELL_</span></a> and <a class="reference external" href="https://scikit-fem.readthedocs.io/en/latest/">skfem</a>. With this tool we can calculate the RF mode supported by our structure, and thus propagation constant, but we’re also able to calculate the characteristic impedance, small signal S parameters and equivalent RLGC transmission line model parameters [<span id="id1">[<a class="reference internal" href="RFSimulatorFEMWELL.html#id5" title="R.B. Marks and D.F. Williams. A general waveguide circuit theory. Journal of Research of the National Institute of Standards and Technology, 97(5):533, September 1992. URL: https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf (visited on 2024-05-02), doi:10.6028/jres.097.024.">1</a>]</span>, <span id="id2">[<a class="reference internal" href="RFSimulatorFEMWELL.html#id7" title="Peter A. Rizzi. Microwave engineering: passive circuits. Prentice Hall, Englewood Cliffs, N.J, 1988. ISBN 978-0-13-586702-0.">3</a>]</span>].</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>R.B. Marks and D.F. Williams. A general waveguide circuit theory. <em>Journal of Research of the National Institute of Standards and Technology</em>, 97(5):533, September 1992. URL: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf">https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf</a> (visited on 2024-05-02), <a class="reference external" href="https://doi.org/10.6028/jres.097.024">doi:10.6028/jres.097.024</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Peter A. Rizzi. <em>Microwave engineering: passive circuits</em>. Prentice Hall, Englewood Cliffs, N.J, 1988. ISBN 978-0-13-586702-0.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ChargeSimulators/ChargeSimulatorSolcore.html" class="btn btn-neutral float-left" title="ChargeSimulatorSolcore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RFSimulatorFEMWELL.html" class="btn btn-neutral float-right" title="RF simulator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

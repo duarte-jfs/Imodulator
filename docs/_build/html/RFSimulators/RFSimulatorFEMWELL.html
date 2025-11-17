@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RFSimulatorFEMWELL &mdash; Imodulator 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7026087e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OpticalSimulatorFEMWELL" href="../OpticalSimulators/OpticalSimulatorFEMWELL.html" />
+    <link rel="prev" title="ChargeSimulatorSolcore" href="../ChargeSimulators/ChargeSimulatorSolcore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">RFSimulatorFEMWELL</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/RFSimulators/RFSimulatorFEMWELL.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rfsimulatorfemwell">
+<h1>RFSimulatorFEMWELL<a class="headerlink" href="#rfsimulatorfemwell" title="Link to this heading"></a></h1>
+<p>The <cite>RFSimulatorFEMWELL</cite> is a FEM mode solver built around <a class="reference external" href="https://femwell.readthedocs.io">FEMWELL</a> and <a class="reference external" href="https://scikit-fem.readthedocs.io/en/latest/">skfem</a>. With this tool we can calculate the RF mode supported by our structure. We can retrieve the propagation constant, and calculate the characteristic impedance, small signal S parameters and equivalent RLGC transmission line model parameters [<span id="id1">[<a class="reference internal" href="#id7" title="R.B. Marks and D.F. Williams. A general waveguide circuit theory. Journal of Research of the National Institute of Standards and Technology, 97(5):533, September 1992. URL: https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf (visited on 2024-05-02), doi:10.6028/jres.097.024.">1</a>]</span>, <span id="id2">[<a class="reference internal" href="#id9" title="Peter A. Rizzi. Microwave engineering: passive circuits. Prentice Hall, Englewood Cliffs, N.J, 1988. ISBN 978-0-13-586702-0.">3</a>]</span>].</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.RFSimulator.</span></span><span class="sig-name descname"><span class="pre">RFSimulatorFEMWELL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL" title="Link to this definition"></a></dt>
+<dd><p>Base class for RF simulation of a PhotonicDevice. The role of the RFsimulator is to:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to search for junctions is not active at the moment. It is a feature that will be implemented in the future.</p>
+</div>
+<ul class="simple">
+<li><p>generate the RF mesh;</p></li>
+<li><p>apply RF simmetry planes;</p></li>
+<li><p>Generate field visualizations of the RF modes;</p></li>
+<li><p>Generate mesh visuals;</p></li>
+<li><p>Solve for the RF modes;</p></li>
+<li><p>Return small-signal S parameters;</p></li>
+<li><p>Return RLGC parameters based on waveguide theory;</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initializes the simulator with the photonic device and the simulation window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a></span>) – The <code class="xref py py-class docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> object to simulate.</p></li>
+<li><p><strong>simulation_window</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – The simulation window to use for the RF simulation. If None, the entire device is simulated.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The simulation window MUST be a rectangle. If not, the simulation will fail. Also beware that the definition of the simulation window is how you can make use of symmetry planes through the definition of metal boundaries or not. See <cite>compute_modes</cite> for more information on how to use the symmetry planes.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.compute_modes">
+<span class="sig-name descname"><span class="pre">compute_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metallic_boundaries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_charge_transport_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.compute_modes" title="Link to this definition"></a></dt>
+<dd><p>Compute the electromagnetic RF modes of a photonic device at a given frequency. The modes are computed via <a class="reference external" href="https://femwell.readthedocs.io">FEMWELL</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)) – The frequency at which to compute the modes. The frequency must be in GHz.</p></li>
+<li><p><strong>voltage_idx</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)) – The index of the voltage to use for the permittivity tensor.</p></li>
+<li><p><strong>num_modes</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)) – The number of modes to compute.</p></li>
+<li><p><strong>order</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)) – Order of the basis functions to use in the EM solver.</p></li>
+<li><p><strong>metallic_boundaries</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – The boundaries to treat as metallic. If <cite>False</cite>, no boundaries are treated as metallic. If <cite>True</cite>, all boundaries are treated as metallic. If a list of strings, the boundaries with the given names are treated as metallic. At the moment, the simulation window is treated as a square, therefore, the metallic boundaries can be <code class="docutils literal notranslate"><span class="pre">left`,</span> <span class="pre">``right</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code> and <code class="docutils literal notranslate"><span class="pre">bottom</span></code> boundaries.</p></li>
+<li><p><strong>n_guess</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">4.0</span></code>)) – Initial guess for the effective index.</p></li>
+<li><p><strong>return_modes</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to return the computed modes.</p></li>
+<li><p><strong>use_charge_transport_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a <span class="math notranslate nohighlight">\(\sigma(x,y,V)\)</span>. Make sure your mesh is appropriate for it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Modes</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed modes if <cite>return_modes</cite> is <cite>True</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_RLGC">
+<span class="sig-name descname"><span class="pre">get_RLGC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_RLGC" title="Link to this definition"></a></dt>
+<dd><p>This function calculates the RLGC parameters calculated from waveguide circuit theory for a TEM field.</p>
+<p>The <span class="math notranslate nohighlight">\(i_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span> values provided should be the values of current and voltage across the signal and ground tracks of the equivalent transmission line. This is not always straightforward, particularly if you’re dealing with multiconductor transmission lines. It is reccomended to use this formalism only when you have a good equivalent transmission line of the present mode.</p>
+<p>Please note that every field returned by <a class="reference external" href="https://femwell.readthedocs.io">FEMWELL</a> is power normalized by orthogonality relations. Therefore, if you’re using a symmetry plane, you have to take into account that this code will return a value taking into account that HALF the field has power 1. Please adjust the values to your specific case/symmetry. The reccomended approach is to calculate once with the full structure and then find the proper scaling factors.</p>
+<p>The RLGC parameters are calculated according to <span id="id3">Marks and Williams [<a class="reference internal" href="#id7" title="R.B. Marks and D.F. Williams. A general waveguide circuit theory. Journal of Research of the National Institute of Standards and Technology, 97(5):533, September 1992. URL: https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf (visited on 2024-05-02), doi:10.6028/jres.097.024.">1</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C = \frac{1}{|v_0|^2} \left[ \int_S \Re\{\epsilon_{RF}\} |E_t|^2dS - \int_S \Re\{\mu_{RF}\}|H_z|^2 dS \right] \\
+L = \frac{1}{|i_0|^2} \left[ \int_S \Re\{\mu_{RF}\} |H_t|^2dS - \int_S \Re\{\epsilon_{RF}\}|E_z|^2 dS \right] \\
+G = \frac{\omega}{|v_0|^2} \left[ \int_S \Im\{\epsilon_{RF}\} |E_t|^2dS + \int_S \Im\{\mu_{RF}\}|H_z|^2 dS \right] \\
+R = \frac{\omega}{|i_0|^2} \left[ \int_S \Im\{\mu_{RF}\} |H_t|^2dS + \int_S \Im\{\epsilon_{RF}\}|E_z|^2 dS \right]\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></span>) – The mode object containing the electric and magnetic field data to be used for the calculation.</p></li>
+<li><p><strong>i0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>)) – The current value to use for the calculation.</p></li>
+<li><p><strong>v0</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>)) – The voltage value to use for the calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resistance per unit length in Ohms per micrometer.
+L (float): The inductance per unit length in Henrys per micrometer.
+G (float): The conductance per unit length in Siemens per micrometer.
+C (float): The capacitance per unit length in Farads per micrometer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>R (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_S">
+<span class="sig-name descname"><span class="pre">get_S</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_S" title="Link to this definition"></a></dt>
+<dd><p>We calculate the S parameters based on transmission line theory <span id="id4">Rizzi [<a class="reference internal" href="#id9" title="Peter A. Rizzi. Microwave engineering: passive circuits. Prentice Hall, Englewood Cliffs, N.J, 1988. ISBN 978-0-13-586702-0.">3</a>]</span>, starting from the ABCD matrix and going to S parameters:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S_{11} = \frac{AZ_L + B - CZ_L*Z_S - DZ_S}{AZ_L + B + CZ_LZ_S + DZ_S} \\
+S_{22} = \frac{2\sqrt{Z_S Z_L}}{AZ_L + B + CZ_LZ_S + DZ_S}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gamma</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The propagation constant. Must be in um**-1</p></li>
+<li><p><strong>Z</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></span>) – The characteristic impedance. Must be in Ohm.</p></li>
+<li><p><strong>ZL</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">50.0</span></code>)) – The load impedance. Defaults to 50 Ohm.</p></li>
+<li><p><strong>ZS</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">50.0</span></code>)) – The source impedance. Defaults to 50 Ohm.</p></li>
+<li><p><strong>L</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1000.0</span></code>)) – The length of the transmission line. Defaults to 1000 um.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The S11 parameter.
+S12: The S12 parameter</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>S11</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_currents">
+<span class="sig-name descname"><span class="pre">get_currents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_currents" title="Link to this definition"></a></dt>
+<dd><p>This function calculates the currents in every polygon marked as <code class="docutils literal notranslate"><span class="pre">calculate_current</span> <span class="pre">=</span> <span class="pre">True</span></code> via:</p>
+<div class="math notranslate nohighlight">
+\[i_0 = \int_{\partial \Omega} \mathbf{n} \times \mathbf{H} \cdot d\mathbf{s}\]</div>
+<p>Note that every field returned by <a class="reference external" href="https://femwell.readthedocs.io">FEMWELL</a> is <strong>power normalized by orthogonality relations</strong>. Therefore, if you’re using a symmetry plane, you have to take into account that this code will return a value taking into account that HALF the field has power 1. Please adjust the values to your specific case/symmetry. The reccomended approach is to calculate once with the full structure and then find the proper scaling factors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></span>) – The mode object containing the electric and magnetic field data to be used for the calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The power normalization factor. It will be <strong>very</strong> close to 1, but it is not exactly 1 due to the numerical integration.
+currents (dict): A dictionary containing the calculated currents for each polygon.
+impedances (dict): A dictionary containing the calculated impedances for each polygon.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>p0 (complex)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_epsilon_rf">
+<span class="sig-name descname"><span class="pre">get_epsilon_rf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_charge_transport_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_epsilon_rf" title="Link to this definition"></a></dt>
+<dd><p>This function will return the <span class="math notranslate nohighlight">\(\epsilon_{RF}\)</span> tensor with the signature <code class="docutils literal notranslate"><span class="pre">self.epsilon_rf[vertice_idx,</span> <span class="pre">voltage_idx]</span></code> where <code class="docutils literal notranslate"><span class="pre">vertice_idx</span></code> is the index of the vertice in the mesh and <cite>voltage_idx</cite> is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the <code class="docutils literal notranslate"><span class="pre">voltage_idx</span></code> must be 0 as the second axis of the array will have size 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The frequency at which to compute the permittivity tensor. The frequency must be in GHz.</p></li>
+<li><p><strong>use_charge_transport_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a <span class="math notranslate nohighlight">\(\sigma(x,y,V)\)</span>. Make sure your mesh is appropriate for it.</p></li>
+<li><p><strong>voltage_idx</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)) – The index of the voltage to use for the permittivity tensor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_power_loss_per_polygon">
+<span class="sig-name descname"><span class="pre">get_power_loss_per_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_power_loss_per_polygon" title="Link to this definition"></a></dt>
+<dd><p>This function returns the power loss per polygon as described in <span id="id5">Pozar [<a class="reference internal" href="#id8" title="David M. Pozar. Microwave engineering. Wiley, Hoboken, NJ, 4th ed edition, 2012. ISBN 978-0-470-63155-3. OCLC: ocn714728044.">2</a>]</span> eq. 1.92. The result is given in W/cm:</p>
+<div class="math notranslate nohighlight">
+\[P_l = \int_V \frac{\sigma}{2}|E|^2dv + \frac{\omega}{2}\int_V(\Im\{\epsilon\}|E|^2 + \Im\{\mu\}|H|^2)dv\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This part is not developed yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></span>) – The mode object containing the electric and magnetic field data to be used for the calculation.</p></li>
+<li><p><strong>frequency</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The frequency at which to compute the power loss. The frequency must be in GHz.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the power lost per polygon</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>power_lost_all (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.make_mesh">
+<span class="sig-name descname"><span class="pre">make_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_resolution_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_resolution_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmsh_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_quad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.make_mesh" title="Link to this definition"></a></dt>
+<dd><p>Returns a <a class="reference external" href="https://gmsh.info/">gmsh</a> with the geometric information of the photonic device. The mesh generation is currently handled by <a class="reference external" href="https://femwell.readthedocs.io">FEMWELL</a>, but it will later be deprecated in favour of <a class="reference external" href="https://simbilod.github.io/meshwell/intro.html">MESHWELL</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_resolution_min</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1e-12</span></code>)) – The minimum resolution to use for the mesh generation if no resolution is specified for a given entity.</p></li>
+<li><p><strong>default_resolution_max</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">100</span></code>)) – The maximum resolution to use for the mesh generation if no resolution is specified for a given entity.</p></li>
+<li><p><strong>filename</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – The filename to save the mesh to. If <cite>None</cite>, the mesh is not saved.</p></li>
+<li><p><strong>gmsh_algorithm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">5</span></code>)) – The algorithm to use for the mesh generation.</p></li>
+<li><p><strong>global_quad</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to use global quadrature for the mesh generation.</p></li>
+<li><p><strong>verbose</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to print verbose output during the mesh generation.</p></li>
+<li><p><strong>mesh_scaling_factor</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>)) – The scaling factor to apply to the mesh.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_eps_rf">
+<span class="sig-name descname"><span class="pre">plot_eps_rf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_charge_transport_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_scale_im</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_scale_re</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_eps_rf" title="Link to this definition"></a></dt>
+<dd><p>Plots the real and imaginary parts of the RF permittivity tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)) – The frequency at which to compute the permittivity tensor. The frequency must be in GHz.</p></li>
+<li><p><strong>voltage_idx</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)) – The index of the voltage to use for the permittivity tensor.</p></li>
+<li><p><strong>use_charge_transport_data</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a <span class="math notranslate nohighlight">\(\sigma(x,y,V)\)</span>.</p></li>
+<li><p><strong>log_scale_im</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – Whether to plot the imaginary part of the permittivity tensor in logarithmic scale.</p></li>
+<li><p><strong>log_scale_re</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – Whether to plot the real part of the permittivity tensor in logarithmic scale.</p></li>
+<li><p><strong>cmap</strong> (default: <code class="docutils literal notranslate"><span class="pre">'jet'</span></code>) – The colormap to use for plotting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matplotlib figure containing the plots.
+ax1: The axis for the imaginary part of the permittivity tensor.
+ax2: The axis for the real part of the permittivity tensor.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mesh">
+<span class="sig-name descname"><span class="pre">plot_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mesh" title="Link to this definition"></a></dt>
+<dd><p>Plots the mesh of the photonic device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plot_polygons</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – Whether to plot the polygons on the mesh. If <code class="docutils literal notranslate"><span class="pre">True</span></code> it will call the <code class="xref py py-meth docutils literal notranslate"><span class="pre">imodulator.RFSimulator.plot_polygons()</span></code> method.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matplotlib figure.
+ax: The matplotlib axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mode">
+<span class="sig-name descname"><span class="pre">plot_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wspace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_integral_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_vectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mode" title="Link to this definition"></a></dt>
+<dd><p>Plots the electric and magnetic fields of a mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></span>) – The mode object containing the electric and magnetic field data to be plotted.</p></li>
+<li><p><strong>Nx</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)) – Number of grid points along the x-axis.</p></li>
+<li><p><strong>Ny</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)) – Number of grid points along the y-axis.</p></li>
+<li><p><strong>xmin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)) – Minimum x-coordinate for the plot.</p></li>
+<li><p><strong>xmax</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)) – Maximum x-coordinate for the plot.</p></li>
+<li><p><strong>ymin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">-10</span></code>)) – Minimum y-coordinate for the plot.</p></li>
+<li><p><strong>ymax</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)) – Maximum y-coordinate for the plot.</p></li>
+<li><p><strong>figsize</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span> (default: <code class="docutils literal notranslate"><span class="pre">(10,</span> <span class="pre">4)</span></code>)) – Figure size as (width, height).</p></li>
+<li><p><strong>wspace</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">0.5</span></code>)) – The amount of width reserved for blank space between subplots.</p></li>
+<li><p><strong>color_polygons</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'white'</span></code>)) – Color of the polygons in the plot.</p></li>
+<li><p><strong>color_integral_lines</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'red'</span></code>)) – Color of the integral lines in the plot.</p></li>
+<li><p><strong>cmap</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'jet'</span></code>)) – Colormap used for plotting the magnitude of the fields.</p></li>
+<li><p><strong>color_vectors</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'black'</span></code>)) – Color of the vector field streamlines.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This method does not return any value. It generates a plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This method uses the <cite>mode</cite> object to interpolate the electric and magnetic fields onto a rectangular grid.</p></li>
+<li><p>The fields are split into transverse and longitudinal components for plotting.</p></li>
+<li><p>The resulting plot includes both the magnitude of the fields and their respective vector field streamlines.</p></li>
+<li><p>Polygons and integral lines can be overlaid on the plot for additional context.</p></li>
+<li><p>The projection into a rectangular grid is quite heavy, so it is reccomended to use this method only for small regions to avoid large rectangular grids.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_polygons">
+<span class="sig-name descname"><span class="pre">plot_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_polygons" title="Link to this definition"></a></dt>
+<dd><p>Plots the polygon and line entities in the simulation window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color_polygon</strong> (default: <code class="docutils literal notranslate"><span class="pre">'black'</span></code>) – The color of the polygons in the plot.</p></li>
+<li><p><strong>color_line</strong> (default: <code class="docutils literal notranslate"><span class="pre">'green'</span></code>) – The color of the line entities in the plot.</p></li>
+<li><p><strong>color_junctions</strong> (default: <code class="docutils literal notranslate"><span class="pre">'blue'</span></code>) – The color of the junction entities in the plot.</p></li>
+<li><p><strong>fig</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib figure to plot on. If <cite>None</cite>, a new figure is created.</p></li>
+<li><p><strong>ax</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib axis to plot on. If <cite>None</cite>, a new axis is created.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.refine_mesh">
+<span class="sig-name descname"><span class="pre">refine_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_nearest_neighbours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_for_refinement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.refine_mesh" title="Link to this definition"></a></dt>
+<dd><p>Refines the mesh based on the computed RF modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N_nearest_neighbours</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">200</span></code>)) – Number of nearest neighbors when finding the facets in the new mesh corresponding to the old mesh boundaries. If you have a very fine mesh, it is wise to make this number higher. If it’s not high enough, it may not update the named boundaries in its entirety, and you end up with wrong line integrals. Of course, the higher it is, the slower the algorithm.</p></li>
+<li><p><strong>mode_for_refinement</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – the mode to be used for refinement.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="docutils container" id="id6">
+<div role="list" class="citation-list">
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>R.B. Marks and D.F. Williams. A general waveguide circuit theory. <em>Journal of Research of the National Institute of Standards and Technology</em>, 97(5):533, September 1992. URL: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf">https://nvlpubs.nist.gov/nistpubs/jres/097/jresv97n5p533_A1b.pdf</a> (visited on 2024-05-02), <a class="reference external" href="https://doi.org/10.6028/jres.097.024">doi:10.6028/jres.097.024</a>.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">2</a><span class="fn-bracket">]</span></span>
+<p>David M. Pozar. <em>Microwave engineering</em>. Wiley, Hoboken, NJ, 4th ed edition, 2012. ISBN 978-0-470-63155-3. OCLC: ocn714728044.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<p>Peter A. Rizzi. <em>Microwave engineering: passive circuits</em>. Prentice Hall, Englewood Cliffs, N.J, 1988. ISBN 978-0-13-586702-0.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ChargeSimulators/ChargeSimulatorSolcore.html" class="btn btn-neutral float-left" title="ChargeSimulatorSolcore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../OpticalSimulators/OpticalSimulatorFEMWELL.html" class="btn btn-neutral float-right" title="OpticalSimulatorFEMWELL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

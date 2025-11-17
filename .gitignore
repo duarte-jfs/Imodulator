@@ -1,0 +1,9 @@
+**/__pycache__/
+**/nn_output
+*.pyc
+/.vscode/
+src/imodulator/config.yaml
+*.lms
+*tempCodeRunnerFile.py
+*checkpoint.ipynb
+*.pptx

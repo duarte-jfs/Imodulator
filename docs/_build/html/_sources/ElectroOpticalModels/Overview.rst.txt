@@ -1,0 +1,14 @@
+Overview
+========
+
+An ``ElectroOpticalModel`` is a ``PhotonicPolygon``-specific object that will calculate the change in optical permitivity, :math:`\Delta \epsilon`, locally, due to an applied electric field to your structure. These models are not meant to be used as a stand-alone package, but to be fed into a ``PhotonicPolygon``, which in turn `ElectroOpticalSimulator` will make use of to calculate the full electro-optical response. 
+
+At the moment these are the available ``ElectroOpticalModel`` 's:
+
+- :doc:`InGaAsPElectroOpticalModel`: this model is meant to be used on :math:`In_{1-x}Ga_{x}As_{y}P_{1-y}` alloys, lattice matched to InP at 300K.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   InGaAsPElectroOpticalModel
