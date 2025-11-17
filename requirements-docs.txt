@@ -11,4 +11,3 @@ sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
 nbsphinx==0.9.7
 pygments
--e .             # installs local imodulator in editable mode
