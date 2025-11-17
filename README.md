@@ -1,4 +1,4 @@
-# Welcome to Imodulator's Documentation
+# Welcome to the Imodulator's repository
 
 **Imodulator** is an all-in-one tool for the simulation of electro-optic phase modulators.  
 Simply define your geometry and materials, and then send the information to the various solvers available — including optical mode solver, RF mode solver with small-signal analysis, charge transport simulations, and electro-optic interaction simulations.
