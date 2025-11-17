@@ -10,7 +10,7 @@ sources = ["src"]
 
 [project]
 name = "imodulator"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
   { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
@@ -60,4 +60,4 @@ include = [
 
 [tool.hatch.build.targets.sdist]
 include = ["src/**", "README.md", "LICENSE"]
-exclude = ["docs/**", "build/**", "imgs/**", ".vscode/**", "*.egg-info"]
+exclude = ["build/**", "imgs/**", ".vscode/**", "*.egg-info"]
