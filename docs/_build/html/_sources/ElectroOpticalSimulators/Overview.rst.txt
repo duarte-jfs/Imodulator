@@ -1,8 +1,0 @@
-Overview
-========
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   ElectroOpticalSimulator
