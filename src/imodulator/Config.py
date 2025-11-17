@@ -36,6 +36,12 @@ class Config:
 
         # Load the configuration from YAML file
         self.config_file = self.config_dir / 'config.yaml'
+
+        if not self.config_file.exists():
+            print(f"WARNING: Configuration file not found: {self.config_file}. Using template file instead.")
+
+            self.config_file = self.config_dir / 'config_template.yaml'
+
         with open(self.config_file, 'r') as file:
             self.config = yaml.safe_load(file)
 
@@ -55,7 +61,7 @@ class Config:
             spec.loader.exec_module(lumapi)
             self.lumapi = lumapi
             print("Successfully imported lumapi")
-        except ImportError as e:
+        except (ImportError, FileNotFoundError) as e:
             print(f"Failed to import lumapi: {e}")
             self.lumapi = None
 

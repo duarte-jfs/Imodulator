@@ -3,13 +3,28 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+#This is needed to allow the highlighting when the docs are built online
+from pygments.lexers import PythonLexer
+from pygments.lexers.special import TextLexer
+from sphinx.highlighting import lexers
+
+# Map ipython3 (not recognized) to Python3
+lexers['ipython3'] = PythonLexer()
+lexers['ipy'] = PythonLexer()  # optional alias
+###########################
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..', 'src').resolve()))
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Imodulator'
 copyright = '2025, Duarte Silva, Kaan Sünnetçioğlu'
 author = 'Duarte Silva, Kaan Sünnetçioğlu'
-release = '1.0.0'
+release = '1.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -69,3 +84,9 @@ nbsphinx_execute = 'never'
 
 # Recommended: ignore notebook checkpoints
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
+
+# -- Mock imports for autodoc -----------------------------------------------
+autodoc_mock_imports = [
+    "gmsh",
+	"pygmsh"
+]
