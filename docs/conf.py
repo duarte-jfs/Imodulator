@@ -3,6 +3,17 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+#This is needed to allow the highlighting when the docs are built online
+from pygments.lexers import PythonLexer
+from pygments.lexers.special import TextLexer
+from sphinx.highlighting import lexers
+
+# Map ipython3 (not recognized) to Python3
+lexers['ipython3'] = PythonLexer()
+lexers['ipy'] = PythonLexer()  # optional alias
+###########################
+
+#This is nee
 import os
 import sys
 
