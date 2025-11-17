@@ -13,14 +13,6 @@ lexers['ipython3'] = PythonLexer()
 lexers['ipy'] = PythonLexer()  # optional alias
 ###########################
 
-#This is nee
-import os
-import sys
-
-# Add the parent directory (project root) to sys.path
-# so Sphinx can import the package
-sys.path.insert(0, os.path.abspath("../src"))
-
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
