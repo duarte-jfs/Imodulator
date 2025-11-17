@@ -21,3 +21,4 @@ pyyaml==6.0.2
 pandas==2.3.0
 nextnanopy>=1.0.1
 openbandparams>=1.0
+scikit-fem>=11.0.0
