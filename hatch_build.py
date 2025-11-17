@@ -4,7 +4,7 @@ import sys
 
 class CustomBuildHook(BuildHookInterface):
     def initialize(self, version, build_data):
-        print("Installing proj1 from Git (no dependencies)...")
+        print("Installing femwell from Git (no dependencies)...")
         print("Python executable:", sys.executable)
         subprocess.check_call([sys.executable, '-m',
             "pip", "install", "--no-deps",

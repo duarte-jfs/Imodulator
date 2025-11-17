@@ -5,6 +5,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.hooks.custom]
 path = "hatch_build.py"
 
+[tool.hatch.build]
+sources = ["src"]
+
 [project]
 name = "imodulator"
 version = "1.0.0"
