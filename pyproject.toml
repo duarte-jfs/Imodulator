@@ -41,8 +41,8 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
-Documentation = "https://readthedocs.org"
-Repository = "https://github.com/me/spam.git"
+Documentation = "https://imodulator.readthedocs.io/en/latest/"
+Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
 [tool.hatch.build.targets.wheel]
