@@ -7,7 +7,7 @@ Simply define your geometry and materials, and then send the information to the 
   <img src="docs\architecture.png" width="600">
 </p>
 
-Check out the docs to see how to install and use this package.
+Check out the [docs](https://imodulator.readthedocs.io/en/latest/) to see how to install and use this package.
 
 ---
 
