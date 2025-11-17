@@ -13,6 +13,11 @@ lexers['ipython3'] = PythonLexer()
 lexers['ipy'] = PythonLexer()  # optional alias
 ###########################
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..', 'src').resolve()))
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
