@@ -38,9 +38,9 @@ class Config:
         self.config_file = self.config_dir / 'config.yaml'
 
         if not self.config_file.exists():
-            self.config_file = self.config_dir / 'config_template.yaml'
-            
             print(f"WARNING: Configuration file not found: {self.config_file}. Using template file instead.")
+
+            self.config_file = self.config_dir / 'config_template.yaml'
 
         with open(self.config_file, 'r') as file:
             self.config = yaml.safe_load(file)

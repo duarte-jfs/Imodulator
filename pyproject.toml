@@ -40,7 +40,9 @@ dependencies = [
     "pandas==2.3.0",
     "nextnanopy>=1.0.1",
     "openbandparams>=1.0",
-    "scikit-fem>=11.0.0"
+    "scikit-fem>=11.0.0",
+    "pygmsh>=7.1.17",
+    "solcore>=5.10.1"
 ]
 
 [project.urls]
@@ -50,7 +52,12 @@ Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
 [tool.hatch.build.targets.wheel]
+packages = ["imodulator"]          # <--- ensures Python package is installed
 include = [
     "imodulator/**/*.yaml",
     "imodulator/**/*.yml"
 ]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/**", "README.md", "LICENSE"]
+exclude = ["docs/**", "build/**", "imgs/**", ".vscode/**", "*.egg-info"]
