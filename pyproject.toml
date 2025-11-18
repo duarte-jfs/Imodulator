@@ -7,6 +7,7 @@ path = "hatch_build.py"
 
 [tool.hatch.build]
 sources = ["src"]
+packages = ["src/imodulator"]
 
 [project]
 name = "imodulator"
@@ -52,7 +53,7 @@ Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["imodulator"]          # <--- ensures Python package is installed
+packages = ["src/imodulator"]          # <--- ensures Python package is installed
 include = [
     "imodulator/**/*.yaml",
     "imodulator/**/*.yml"
