@@ -7,10 +7,11 @@ path = "hatch_build.py"
 
 [tool.hatch.build]
 sources = ["src"]
+packages = ["src/imodulator"]
 
 [project]
 name = "imodulator"
-version = "1.0.1"
+version = "0.0.0"
 authors = [
   { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
   { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
@@ -31,7 +32,6 @@ dependencies = [
     #"femwell==0.1.11",
     # "femwell @ git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49",
     "matplotlib==3.9.0",
-    "meshwell==1.0.7",
     "numpy>=2.0.0",
     "Pint>=0.24",
     "scipy==1.13.1",
@@ -52,7 +52,7 @@ Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["imodulator"]          # <--- ensures Python package is installed
+packages = ["src/imodulator"]          # <--- ensures Python package is installed
 include = [
     "imodulator/**/*.yaml",
     "imodulator/**/*.yml"
