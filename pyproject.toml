@@ -32,7 +32,6 @@ dependencies = [
     #"femwell==0.1.11",
     # "femwell @ git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49",
     "matplotlib==3.9.0",
-    "meshwell==1.0.7",
     "numpy>=2.0.0",
     "Pint>=0.24",
     "scipy==1.13.1",
