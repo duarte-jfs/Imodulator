@@ -11,7 +11,7 @@ packages = ["src/imodulator"]
 
 [project]
 name = "imodulator"
-version = "0.0.0"
+version = "1.0.2"
 authors = [
   { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
   { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
@@ -52,7 +52,7 @@ Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/imodulator"]          # <--- ensures Python package is installed
+packages = ["imodulator"]          # <--- ensures Python package is installed
 include = [
     "imodulator/**/*.yaml",
     "imodulator/**/*.yml"
