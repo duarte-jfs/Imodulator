@@ -401,22 +401,23 @@ class PhotonicDevice:
     
         for name, poly in self.entities.items():
             if isinstance(poly, Polygon):
-                if name in poly_list_color:
-                    ax.plot(
-                        *poly.exterior.xy,
-                        color=color_polygon if "junction" not in name else color_junctions,
-                    )
-                    if fill_polygons:
-                        fill_color = (
-                            poly_list_color.get(name, np.random.rand(3,))
-                            if poly_list_color  
-                            else np.random.rand(3,)
-                        )
-                        ax.fill(
+                if poly_list_color is not None:
+                    if name in poly_list_color:
+                        ax.plot(
                             *poly.exterior.xy,
-                            color=fill_color,
-                            alpha=0.5,
+                            color=color_polygon if "junction" not in name else color_junctions,
                         )
+                        if fill_polygons:
+                            fill_color = (
+                                poly_list_color.get(name, np.random.rand(3,))
+                                if poly_list_color  
+                                else np.random.rand(3,)
+                            )
+                            ax.fill(
+                                *poly.exterior.xy,
+                                color=fill_color,
+                                alpha=0.5,
+                            )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
                 
