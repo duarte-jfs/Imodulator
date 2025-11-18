@@ -75,34 +75,26 @@ The DOI tracking for this project is handled by Zenodo, and a single DOI shall b
 
 |  Version | DOI  |
 |----------|------|
-|  v1.0.1  | [![DOI](https://zenodo.org/badge/1098165730.svg)](https://doi.org/10.5281/zenodo.17633733) |
+|  all     | https://doi.org/10.5281/zenodo.17633733 |
+|  v1.0.2  | https://doi.org/10.5281/zenodo.17639012 |
+
+
+
+#### Which DOI should I use in citations?
+
+You should normally always use the DOI for the specific version of your record in citations. This is to ensure that other researchers can access the exact research artefact you used for reproducibility. By default, we use the specific version to generate citations.
+
+You can use the Concept DOI representing all versions in citations when it is desirable to cite an evolving research artifact, without being specific about the version.
 
 When translating to a bibtex entry, please consider using the following formatting to display the author names properly:
 
 ```
 @MISC{,
-  title     = "Imodulator: Initial release",
+  title     = "Imodulator",
   author    = "{Duarte J.F. da Silva, Ali Kaan Sünnetçioğlu}",
-  abstract  = "Full Changelog:
-               https://github.com/duarte-jfs/Imodulator/compare/v1.0.0...v1.0.1",
   publisher = "Zenodo",
   year      =  2025,
-  url       = {https://github.com/duarte-jfs/Imodulator/releases/tag/v1.0.1},
-  doi       = {https://doi.org/10.5281/zenodo.17633733}
-}
-```
-
-In case you are using code stemming from a development branch, we advise to use the same DOI as the most recent release, but with the altered bibtex entry:
-
-```
-@MISC{,
-  title     = "Imodulator: development",
-  author    = "{Duarte J.F. da Silva, Ali Kaan Sünnetçioğlu}",
-  abstract  = "Full Changelog:
-               https://github.com/duarte-jfs/Imodulator/compare/v1.0.0...v1.0.1",
-  publisher = "Zenodo",
-  year      =  2025,
-  url       = {https://github.com/duarte-jfs/Imodulator/tree/development},
+  url       = {https://github.com/duarte-jfs/Imodulator},
   doi       = {https://doi.org/10.5281/zenodo.17633733}
 }
 ```
