@@ -9,7 +9,9 @@ To use Imodulator, simply install via pip:
 .. code-block:: console
 
    (.venv) $ pip install imodulator
+   (.venv) $ pip install --no-deps git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49
 
+The second line has been added as a temporary measure. New changes have been made in FEMWELL on the mesh refinement which have not been made into a release yet. Once a new FEMWELL release is made, it shall be added to the dependencies of Imodulator and the second line can be omitted.
 Alternatively you can close the repository and install it locally:
 
 .. code-block:: console

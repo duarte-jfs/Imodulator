@@ -10,7 +10,7 @@ sources = ["src"]
 
 [project]
 name = "imodulator"
-version = "1.0.1"
+version = "0.0.0"
 authors = [
   { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
   { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
