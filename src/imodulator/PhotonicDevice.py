@@ -378,6 +378,7 @@ class PhotonicDevice:
         poly_list_color: Optional[Dict[str, str]] = None,
         fig=None,
         ax=None,
+        alpha_polygons: float = 0.5,
     ):
         """
         Plots the polygons of the :class:`PhotonicDevice` object.
@@ -417,14 +418,14 @@ class PhotonicDevice:
                             ax.fill(
                                 *poly.exterior.xy,
                                 color=fill_color,
-                                alpha=0.5,
+                                alpha=alpha_polygons,
                             )
                     else:
                         fill_color = np.random.rand(3,)
                         ax.fill(
                             *poly.exterior.xy,
                             color=fill_color,
-                            alpha=0.5,
+                            alpha=alpha_polygons,
                         )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)

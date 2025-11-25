@@ -264,7 +264,7 @@ class RFSimulatorFEMWELL:
             )
         )
         # Choosing each element as ElementTriP1 is crucial as the dofs that assumes are the mesh vertices
-        self.basis = Basis(self.mesh, ElementTriP1(), intorder=4)
+        self.basis = Basis(self.mesh, ElementTriP1())
 
     def refine_mesh(
             self,
