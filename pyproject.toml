@@ -47,12 +47,12 @@ Documentation = "https://imodulator.readthedocs.io/en/latest/"
 Repository = "https://github.com/duarte-jfs/Imodulator"
 
 
-# [tool.hatch.build.targets.wheel]
-# packages = ["imodulator"]          # <--- ensures Python package is installed
-# include = [
-#     "imodulator/**/*.yaml",
-#     "imodulator/**/*.yml"
-# ]
+[tool.hatch.build.targets.wheel]
+packages = ["src/imodulator"]          # <--- ensures Python package is installed
+include = [
+    "imodulator/**/*.yaml",
+    "imodulator/**/*.yml"
+]
 
 # [tool.hatch.build.targets.sdist]
 # include = ["src/**", "README.md", "LICENSE"]
