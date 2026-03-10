@@ -792,7 +792,6 @@ class OpticalSimulatorFEMWELL:
                 "Cannot attribute an optical epsilon. The mesh of the optical simulator is not yet generated"
             )
 
-        
         self.epsilon_optical = np.zeros(
             (3, 3, self.mesh.nvertices), dtype=np.complex128
         )
@@ -801,9 +800,6 @@ class OpticalSimulatorFEMWELL:
         self.epsilon_optical[1, 1, :] = 1
         self.epsilon_optical[2, 2, :] = 1
 
-       
-
-        
         # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
         # Here, however, if we loop through the photo_polygons from idx 0 to idx N
         # the hierarchy on the boundaries will be inverted. That is,
@@ -811,7 +807,8 @@ class OpticalSimulatorFEMWELL:
         # loop over the inverted list of photo_polygons
 
         for photo_polygon in self.optical_photopolygons[::-1]:
-            
+            if photo_polygon.name not in self.mesh.subdomains:
+                continue
             # Retrieve all vertice idxs that belong to the polygon
             elements_idxs = self.mesh.subdomains[photo_polygon.name]
             triangles = self.mesh.t[:, elements_idxs]
