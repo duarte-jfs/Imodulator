@@ -49,11 +49,12 @@ class SemiconductorPolygon:
         
         charge_transport_simulator_kwargs (dict | None): Additional keyword arguments for the charge transport simulator.
             charge_transport_simulator_kwargs;   
-                    "material_definition":None, If not defined, default is "Ga(x)In(1-x)As(y)P(1-y)" should be available in Nextnano
-                    "doping_conc": None,
-                    "doping_type": None,
-                    "alloy_y": None,
-                    "alloy_x":None,
+                    "material_definition":Union[None,str], If not defined, default is "Ga(x)In(1-x)As(y)P(1-y)" should be available in Nextnano
+                    "doping_conc": Union[None,float],
+                    "doping_type": Union[None,str],
+                    "alloy_type":Union[None,str], If not defined, default is "quaternary_constant{}" should be available in Nextnano
+                    "alloy_y": Union[None,list],
+                    "alloy_x":Union[None,list],
         
     """
 
@@ -93,12 +94,15 @@ class SemiconductorPolygon:
         "resolution_junction": 0,
         "distance_junction": 0,
     })
+    #Defaults should be decided by the solver since the definitions can be different
     charge_transport_simulator_kwargs: Union[Dict, None] = field(default_factory=lambda:{
-        "material_definition":None,
-        "doping_conc": None,
-        "doping_type": None,
-        "alloy_y": None,
-        "alloy_x":None,
+        "material_definition":Union[None,str],
+        "doping_conc": Union[None,float,list],
+        "doping_profile":Union[None,str],
+        "doping_type": Union[None,str],
+        "alloy_type":Union[None,str],
+        "alloy_y": Union[None,float,list],
+        "alloy_x":Union[None,float,list],
     })
     has_charge_transport_data: bool = False
     _rf_eps_func: Callable[[float], float] = field(repr=False, init=False)
