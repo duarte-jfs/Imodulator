@@ -324,18 +324,20 @@ class ChargeSimulatorNN:
                         material_def = segment_charge_kwargs["material_definition"]
                     #alloy type
                     alloy_type = segment_charge_kwargs.get("alloy_type", "quaternary_constant")
+                    if alloy_type is None:
+                        alloy_type = "quaternary_constant"
                     if alloy_type == "quaternary_linear":
                         material_def = segment_charge_kwargs["alloy_type"]
-                        alloy_coords = "x = [{x_coords}]"
+                        alloy_coords = f"{x_coords}"
                     else:
                         alloy_coords = ""
                     #make sure its a list for compatibility with linear    
                     alloy_x = segment_charge_kwargs["alloy_x"]
                     if not isinstance(alloy_x, list):
-                        alloy_x = [alloy_x]  # Convert to a list if it's not already a list    
+                        alloy_x = list(np.atleast_1d(alloy_x))    
                     alloy_y = segment_charge_kwargs["alloy_y"]
                     if not isinstance(alloy_y, list):
-                        alloy_y = [alloy_y]  # Convert to a list if it's not already a list
+                        alloy_y = list(np.atleast_1d(alloy_y))
                     ### Start of the definition    
                     if i == 0: #first contact + initial position 
                         cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
