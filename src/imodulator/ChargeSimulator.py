@@ -314,6 +314,7 @@ class ChargeSimulatorNN:
         self.contact_thickness=10
         for i, (segment_name, line_segment) in enumerate(self.line_segments.items()):
             for polygon_idx, polygon in enumerate(self.optical_photopolygons):
+                x_coords = f"x = [{line_segment.xy[1][0]*10**3:.2f},{line_segment.xy[1][1]*10**3:.2f}]"
                 if segment_name==polygon.name:
                     segment_charge_kwargs=polygon.charge_transport_simulator_kwargs
                     #Kwarg checks
@@ -322,11 +323,12 @@ class ChargeSimulatorNN:
                     else:
                         material_def = segment_charge_kwargs["material_definition"]
                     #alloy type
-                    alloy_type = segment_charge_kwargs.get("alloy_type", "quarternary_constant")
-                    if alloy_type == "quarternary_linear":
+                    alloy_type = segment_charge_kwargs.get("alloy_type", "quaternary_constant")
+                    if alloy_type == "quaternary_linear":
                         material_def = segment_charge_kwargs["alloy_type"]
+                        alloy_coords = "x = [{x_coords}]"
                     else:
-                        warnings.warn(f"Unsupported/Untested alloy_type: {alloy_type}", UserWarning)
+                        alloy_coords = ""
                     #make sure its a list for compatibility with linear    
                     alloy_x = segment_charge_kwargs["alloy_x"]
                     if not isinstance(alloy_x, list):
@@ -338,16 +340,16 @@ class ChargeSimulatorNN:
                     if i == 0: #first contact + initial position 
                         cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
                         line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos+self.contact_thickness:.2f}] }}"
-
+                    
                         region_definitions.append(f"""
             region{{
                 {line}
                 {f"contact{{name = contact1}}"}
             }}
             """)
-
+                    ######################################################
                     #non contact lines
-                    line = f"line{{x = [{line_segment.xy[1][0]*10**3:.2f},{line_segment.xy[1][1]*10**3:.2f}]}}"
+                    line = f"line{{{x_coords}}}"
                     region_definitions.append(f"""
             region{{
                 {line}
@@ -355,6 +357,7 @@ class ChargeSimulatorNN:
                     name = "{material_def}"    
                     alloy_x = [{", ".join(f"{x:.2f}" for x in alloy_x)}]
                     alloy_y = [{", ".join(f"{y:.2f}" for y in alloy_y)}]
+                    {alloy_coords}
                 }}
                 doping{{
                     constant{{
@@ -364,7 +367,7 @@ class ChargeSimulatorNN:
                 }}        
             }}
             """)
-
+                    #####################################################
                     if i == total_items - 1: #last contact
                         line = f"line{{x = [{line_segment.xy[1][1]*10**3:.2f},{self.contact_thickness+line_segment.xy[1][1]*10**3:.2f}] }}"
 
