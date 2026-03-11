@@ -94,13 +94,15 @@ class SemiconductorPolygon:
         "resolution_junction": 0,
         "distance_junction": 0,
     })
+    #Defaults should be decided by the solver since the definitions can be different
     charge_transport_simulator_kwargs: Union[Dict, None] = field(default_factory=lambda:{
         "material_definition":Union[None,str],
-        "doping_conc": Union[None,float],
+        "doping_conc": Union[None,float,list],
+        "doping_profile":Union[None,str],
         "doping_type": Union[None,str],
         "alloy_type":Union[None,str],
-        "alloy_y": Union[None,list],
-        "alloy_x":Union[None,list],
+        "alloy_y": Union[None,float,list],
+        "alloy_x":Union[None,float,list],
     })
     has_charge_transport_data: bool = False
     _rf_eps_func: Callable[[float], float] = field(repr=False, init=False)

@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import copy
 from collections import OrderedDict
-
+import warnings
 import numpy as np
 import pandas as pd
 
@@ -321,12 +321,20 @@ class ChargeSimulatorNN:
                         material_def = "Ga(x)In(1-x)As(y)P(1-y)"
                     else:
                         material_def = segment_charge_kwargs["material_definition"]
-                        
-                    if segment_charge_kwargs["alloy_type"]== None:
-                        alloy_type = "quarternary_constant"
-                    else:
+                    #alloy type
+                    alloy_type = segment_charge_kwargs.get("alloy_type", "quarternary_constant")
+                    if alloy_type == "quarternary_linear":
                         material_def = segment_charge_kwargs["alloy_type"]
-                    
+                    else:
+                        warnings.warn(f"Unsupported/Untested alloy_type: {alloy_type}", UserWarning)
+                    #make sure its a list for compatibility with linear    
+                    alloy_x = segment_charge_kwargs["alloy_x"]
+                    if not isinstance(alloy_x, list):
+                        alloy_x = [alloy_x]  # Convert to a list if it's not already a list    
+                    alloy_y = segment_charge_kwargs["alloy_y"]
+                    if not isinstance(alloy_y, list):
+                        alloy_y = [alloy_y]  # Convert to a list if it's not already a list
+                    ### Start of the definition    
                     if i == 0: #first contact + initial position 
                         cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
                         line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos+self.contact_thickness:.2f}] }}"
@@ -343,10 +351,10 @@ class ChargeSimulatorNN:
                     region_definitions.append(f"""
             region{{
                 {line}
-                quaternary_constant{{
+                {alloy_type}{{
                     name = "{material_def}"    
-                    alloy_x = {segment_charge_kwargs["alloy_x"]:.2f}
-                    alloy_y = {segment_charge_kwargs["alloy_y"]:.2f}
+                    alloy_x = [{", ".join(f"{x:.2f}" for x in alloy_x)}]
+                    alloy_y = [{", ".join(f"{y:.2f}" for y in alloy_y)}]
                 }}
                 doping{{
                     constant{{
