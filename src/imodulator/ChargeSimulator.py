@@ -82,7 +82,7 @@ class ChargeSimulatorNN:
     
     """
         Initialize the ChargeSimulatorNN.
-
+        Compatible with NextNano version 2026-02-05
         Args:
             device (PhotonicDevice): The photonic device to simulate.
             simulation_line (LineString): The line along which to perform 1D simulation.
@@ -327,7 +327,7 @@ class ChargeSimulatorNN:
                     if alloy_type is None:
                         alloy_type = "quaternary_constant"
                     if alloy_type == "quaternary_linear":
-                        material_def = segment_charge_kwargs["alloy_type"]
+                        alloy_type = segment_charge_kwargs["alloy_type"]
                         alloy_coords = f"{x_coords}"
                     else:
                         alloy_coords = ""
@@ -410,8 +410,8 @@ class ChargeSimulatorNN:
         """Create the impurities section"""
         return f"""
         impurities{{
-            donor {{ name = "n-type" energy = -1000 degeneracy = 2 }}
-            acceptor {{ name = "p-type" energy = -1000 degeneracy = 4 }}
+            donor {{ name = "n-type" energy = -1 degeneracy = 2 }}
+            acceptor {{ name = "p-type" energy = -1 degeneracy = 4 }}
         }}"""
     
     def _create_classical_section(self):
@@ -511,10 +511,10 @@ class ChargeSimulatorNN:
             #first get the file locations for each data needed
             nnfiles=nndata.folders[i].files
             # Read each .dat file into DataFrames
-            self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma_[eV]"]
-            self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH_[eV]"]
-            self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level_[eV]"]
-            self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level_[eV]"]
+            self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma[eV]"]
+            self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH[eV]"]
+            self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level[eV]"]
+            self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level[eV]"]
             self.N[i] = pd.read_csv([f for f in nnfiles if 'density_electron.dat' in f][0], delim_whitespace=True).iloc[:,1]
             self.P[i] = pd.read_csv([f for f in nnfiles if 'density_hole.dat' in f][0], delim_whitespace=True).iloc[:,1]
             self.Efield[i][1::] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[:,1]
