@@ -49,11 +49,12 @@ class SemiconductorPolygon:
         
         charge_transport_simulator_kwargs (dict | None): Additional keyword arguments for the charge transport simulator.
             charge_transport_simulator_kwargs;   
-                    "material_definition":None, If not defined, default is "Ga(x)In(1-x)As(y)P(1-y)" should be available in Nextnano
-                    "doping_conc": None,
-                    "doping_type": None,
-                    "alloy_y": None,
-                    "alloy_x":None,
+                    "material_definition":Union[None,str], If not defined, default is "Ga(x)In(1-x)As(y)P(1-y)" should be available in Nextnano
+                    "doping_conc": Union[None,float],
+                    "doping_type": Union[None,str],
+                    "alloy_type":Union[None,str], If not defined, default is "quaternary_constant{}" should be available in Nextnano
+                    "alloy_y": Union[None,list],
+                    "alloy_x":Union[None,list],
         
     """
 
