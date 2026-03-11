@@ -94,11 +94,12 @@ class SemiconductorPolygon:
         "distance_junction": 0,
     })
     charge_transport_simulator_kwargs: Union[Dict, None] = field(default_factory=lambda:{
-        "material_definition":None,
-        "doping_conc": None,
-        "doping_type": None,
-        "alloy_y": None,
-        "alloy_x":None,
+        "material_definition":Union[None,str],
+        "doping_conc": Union[None,float],
+        "doping_type": Union[None,str],
+        "alloy_type":Union[None,str],
+        "alloy_y": Union[None,list],
+        "alloy_x":Union[None,list],
     })
     has_charge_transport_data: bool = False
     _rf_eps_func: Callable[[float], float] = field(repr=False, init=False)

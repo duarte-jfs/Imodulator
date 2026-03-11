@@ -316,10 +316,17 @@ class ChargeSimulatorNN:
             for polygon_idx, polygon in enumerate(self.optical_photopolygons):
                 if segment_name==polygon.name:
                     segment_charge_kwargs=polygon.charge_transport_simulator_kwargs
+                    #Kwarg checks
                     if segment_charge_kwargs["material_definition"] == None:
                         material_def = "Ga(x)In(1-x)As(y)P(1-y)"
                     else:
                         material_def = segment_charge_kwargs["material_definition"]
+                        
+                    if segment_charge_kwargs["alloy_type"]== None:
+                        alloy_type = "quarternary_constant"
+                    else:
+                        material_def = segment_charge_kwargs["alloy_type"]
+                    
                     if i == 0: #first contact + initial position 
                         cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
                         line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos+self.contact_thickness:.2f}] }}"
