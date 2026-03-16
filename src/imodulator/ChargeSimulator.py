@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import copy
 from collections import OrderedDict
-
+import warnings
 import numpy as np
 import pandas as pd
 
@@ -82,7 +82,7 @@ class ChargeSimulatorNN:
     
     """
         Initialize the ChargeSimulatorNN.
-
+        Compatible with NextNano version 2026-02-05
         Args:
             device (PhotonicDevice): The photonic device to simulate.
             simulation_line (LineString): The line along which to perform 1D simulation.
@@ -314,32 +314,52 @@ class ChargeSimulatorNN:
         self.contact_thickness=10
         for i, (segment_name, line_segment) in enumerate(self.line_segments.items()):
             for polygon_idx, polygon in enumerate(self.optical_photopolygons):
+                x_coords = f"x = [{line_segment.xy[1][0]*10**3:.2f},{line_segment.xy[1][1]*10**3:.2f}]"
                 if segment_name==polygon.name:
                     segment_charge_kwargs=polygon.charge_transport_simulator_kwargs
+                    #Kwarg checks
                     if segment_charge_kwargs["material_definition"] == None:
                         material_def = "Ga(x)In(1-x)As(y)P(1-y)"
                     else:
                         material_def = segment_charge_kwargs["material_definition"]
+                    #alloy type
+                    alloy_type = segment_charge_kwargs.get("alloy_type", "quaternary_constant")
+                    if alloy_type is None:
+                        alloy_type = "quaternary_constant"
+                    if alloy_type == "quaternary_linear":
+                        alloy_type = segment_charge_kwargs["alloy_type"]
+                        alloy_coords = f"{x_coords}"
+                    else:
+                        alloy_coords = ""
+                    #make sure its a list for compatibility with linear    
+                    alloy_x = segment_charge_kwargs["alloy_x"]
+                    if not isinstance(alloy_x, list):
+                        alloy_x = list(np.atleast_1d(alloy_x))    
+                    alloy_y = segment_charge_kwargs["alloy_y"]
+                    if not isinstance(alloy_y, list):
+                        alloy_y = list(np.atleast_1d(alloy_y))
+                    ### Start of the definition    
                     if i == 0: #first contact + initial position 
                         cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
                         line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos+self.contact_thickness:.2f}] }}"
-
+                    
                         region_definitions.append(f"""
             region{{
                 {line}
                 {f"contact{{name = contact1}}"}
             }}
             """)
-
+                    ######################################################
                     #non contact lines
-                    line = f"line{{x = [{line_segment.xy[1][0]*10**3:.2f},{line_segment.xy[1][1]*10**3:.2f}]}}"
+                    line = f"line{{{x_coords}}}"
                     region_definitions.append(f"""
             region{{
                 {line}
-                quaternary_constant{{
+                {alloy_type}{{
                     name = "{material_def}"    
-                    alloy_x = {segment_charge_kwargs["alloy_x"]:.2f}
-                    alloy_y = {segment_charge_kwargs["alloy_y"]:.2f}
+                    alloy_x = [{", ".join(f"{x:.2f}" for x in alloy_x)}]
+                    alloy_y = [{", ".join(f"{y:.2f}" for y in alloy_y)}]
+                    {alloy_coords}
                 }}
                 doping{{
                     constant{{
@@ -349,7 +369,7 @@ class ChargeSimulatorNN:
                 }}        
             }}
             """)
-
+                    #####################################################
                     if i == total_items - 1: #last contact
                         line = f"line{{x = [{line_segment.xy[1][1]*10**3:.2f},{self.contact_thickness+line_segment.xy[1][1]*10**3:.2f}] }}"
 
@@ -390,8 +410,8 @@ class ChargeSimulatorNN:
         """Create the impurities section"""
         return f"""
         impurities{{
-            donor {{ name = "n-type" energy = -1000 degeneracy = 2 }}
-            acceptor {{ name = "p-type" energy = -1000 degeneracy = 4 }}
+            donor {{ name = "n-type" energy = -1 degeneracy = 2 }}
+            acceptor {{ name = "p-type" energy = -1 degeneracy = 4 }}
         }}"""
     
     def _create_classical_section(self):
@@ -491,10 +511,10 @@ class ChargeSimulatorNN:
             #first get the file locations for each data needed
             nnfiles=nndata.folders[i].files
             # Read each .dat file into DataFrames
-            self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma_[eV]"]
-            self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH_[eV]"]
-            self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level_[eV]"]
-            self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level_[eV]"]
+            self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma[eV]"]
+            self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH[eV]"]
+            self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level[eV]"]
+            self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level[eV]"]
             self.N[i] = pd.read_csv([f for f in nnfiles if 'density_electron.dat' in f][0], delim_whitespace=True).iloc[:,1]
             self.P[i] = pd.read_csv([f for f in nnfiles if 'density_hole.dat' in f][0], delim_whitespace=True).iloc[:,1]
             self.Efield[i][1::] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[:,1]
