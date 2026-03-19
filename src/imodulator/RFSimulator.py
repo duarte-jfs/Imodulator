@@ -650,7 +650,7 @@ class RFSimulatorFEMWELL:
         ax_H = fig.add_subplot(gs[0, 1])
 
         for ax, data, label in zip(
-            [ax_E, ax_H], [grid_data_E, grid_data_H], [r"$|E(x,y)|$", r"$|H(x,y)|"]
+            [ax_E, ax_H], [grid_data_E, grid_data_H], [r"$|E(x,y)|$", r"$|H(x,y)|$"]
         ):
 
             ax.imshow(
