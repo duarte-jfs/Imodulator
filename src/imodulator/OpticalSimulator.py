@@ -197,8 +197,8 @@ class OpticalSimulatorMODE:
                 n0 = polygon.optical_material.real
                 nimag = polygon.optical_material.imag
                
-                self.mode.setmaterial(lum_materialname, "Refractive Index", np.sqrt(polygon.optical_material.real))
-                self.mode.setmaterial(lum_materialname, "Imaginary Refractive Index", np.sqrt(polygon.optical_material.imag))  
+                self.mode.setmaterial(lum_materialname, "Refractive Index", np.sqrt(polygon.optical_material).real)
+                self.mode.setmaterial(lum_materialname, "Imaginary Refractive Index", np.sqrt(polygon.optical_material).imag)  
     
     def _add_metal_mat_mode(self) :
         ##

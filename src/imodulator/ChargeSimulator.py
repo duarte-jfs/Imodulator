@@ -1683,7 +1683,7 @@ class ChargeSimulatorSolcore:
         self.mun = un * 1e4 # Convert from m^2/(V·s) to cm^2/(V·s)
         self.mup = up * 1e4 # Convert from m^2/(V·s) to cm^2/(V·s)
 
-    def transfer_results_to_device(self, dx = 0.05, xmin = -2, xmax = 2):
+    def transfer_results_to_device(self, dx = 0.05, polygons_to_map = None):
         
         """
         Interpolate 1D simulation data onto a new 2D mesh.
@@ -1693,12 +1693,42 @@ class ChargeSimulatorSolcore:
 
         Args:
             dx (float, optional): Step size for new mesh in microns. Defaults to 0.05.
-            xmin (float): Minimum x value for mesh (required).
-            xmax (float): Maximum x value for mesh (required).
+            polygons_to_map (list, optional): List of polygon names to which the interpolated data should be mapped. If None, data will be mapped to all polygons involved in the charge transport simulations. Defaults to None.
 
         Returns:
             None. Stores interpolators in self.photonicdevice.charge.
         """
+
+        if polygons_to_map is None:
+            polygons_to_map = self.line_segments.keys()
+
+        #All the polygons that are NOT on the simulation line have not had their flag of has_charge_Transport_Data changed to True, so we need to do it here to make sure that the data gets mapped correctly in the end
+        else:
+            for poly in self.photonicdevice.photo_polygons:
+                if poly.name in polygons_to_map and not poly.name in self.line_segments.keys():
+                    poly.has_charge_transport_data = True
+
+
+        xmax = -np.inf
+        xmin = +np.inf
+        ymax = -np.inf
+        ymin = +np.inf
+        for poly_name in polygons_to_map:
+            photo_poly = next((x for x in self.photonicdevice.photo_polygons if x.name == poly_name), None)
+            poly = photo_poly.polygon
+
+            points = np.asarray(poly.exterior.coords)
+            x_coords = points[:, 0]
+            y_coords = points[:, 1]
+            xmax = max(xmax, np.max(x_coords))
+            xmin = min(xmin, np.min(x_coords))
+            ymax = max(ymax, np.max(y_coords))
+            ymin = min(ymin, np.min(y_coords))
+
+        xmax += 10*dx
+        ymax += 10*dx
+        xmin -= 10*dx
+        ymin -= 10*dx
 
         reg = self.photonicdevice.reg
         # First part is to make data into 2d and fit the wg
@@ -1706,6 +1736,19 @@ class ChargeSimulatorSolcore:
         y = np.array(self.mesh)  # Convert list to numpy array first
 
         xx, yy = np.meshgrid(x, y)
+
+        # Now we need to mask the values to include only points inside the polygons involved in the charge transport simulations
+        points = shapely.points(xx, yy)
+        total_mask = np.zeros(points.shape, dtype=bool)
+
+        for poly_name in polygons_to_map:
+            photo_poly = next((x for x in self.photonicdevice.photo_polygons if x.name == poly_name), None)
+            poly = photo_poly.polygon
+
+            # Compute mask once
+            mask_inside = shapely.covers(poly, points)
+
+            total_mask += mask_inside
 
         # Initialize 2D arrays for each variable
         Ec_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
@@ -1738,18 +1781,7 @@ class ChargeSimulatorSolcore:
             mun_2d[i] = np.broadcast_to(self.mun[i][:, np.newaxis], (len(y), len(x)))
             mup_2d[i] = np.broadcast_to(self.mup[i][:, np.newaxis], (len(y), len(x)))
 
-        # Now we need to mask the values to include only points inside the polygons involved in the charge transport simulations
-        points = shapely.points(xx, yy)
-        total_mask = np.zeros(points.shape, dtype=bool)
-
-        for poly_name in self.line_segments.keys():
-            photo_poly = next((x for x in self.photonicdevice.photo_polygons if x.name == poly_name), None)
-            poly = photo_poly.polygon
-
-            # Compute mask once
-            mask_inside = shapely.covers(poly, points)
-
-            total_mask += mask_inside
+        
 
         for data in [
             Ec_2d,
