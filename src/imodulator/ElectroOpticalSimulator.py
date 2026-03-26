@@ -469,7 +469,7 @@ class ElectroOpticalSimulator:
         BETA=rot_y
         GAMMA=rot_x
 
-        rot= Rx(ALPHA) @ Ry(BETA) @ Rz(GAMMA)
+        rot= Rx(GAMMA) @ Ry(BETA) @ Rz(ALPHA)
 
         #Generate the optical field
         x = self.mesh.p[0, :]
