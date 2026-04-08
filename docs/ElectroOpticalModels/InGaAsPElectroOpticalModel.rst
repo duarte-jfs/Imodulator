@@ -669,6 +669,32 @@ As for the change in refractive index, we consider the simple Lorentz model:
 .. math::
     \Delta n(E) = -\frac{1}{2}  \frac{N e^2}{m_e \epsilon_0 (E/\hbar)^2 n_0}
 
+Finally, we must account for the intraband absorption, which is the case when an electron at the :math:`\Gamma` valley is excited to the :math:`X` or :math:`L` valleys. To do this we follow the treatment by :cite:t:`fiedler_optical_1987` and compute the following integral:
+
+.. math::
+  \[
+  \alpha_{IB} = A m_e^{3/2} \frac{E_{ac} E_{def}}{n \rho s^2}
+  \frac{1}{\exp(E_{ac}/kT) - 1}
+  \times \frac{1}{(E_{20} - \hbar \omega)^2 \hbar \omega}
+  \]
+  \[
+  \times \left\{
+  \exp(E_{ac}/kT)
+  \int_{u^+}^{\infty}
+  \frac{E^{1/2} (E - E_{10} + \hbar \omega + E_{ac})^{1/2}}
+  {\exp[(E - E_F)/kT] + 1} \, dE
+  \right.
+  \]
+  \[
+  \left.
+  + \int_{u^-}^{\infty}
+  \frac{E^{1/2} (E - E_{10} + \hbar \omega - E_{ac})^{1/2}}
+  {\exp[(E - E_F)/kT] + 1} \, dE
+  \right\}
+  \]
+
+Please refer to :cite:t:`fiedler_optical_1987` for the definition of all the constants employed.
+
 Intervalence absorption
 ~~~~~~~~~~~~~~~~~~~~~~~
 

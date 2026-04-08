@@ -3,7 +3,7 @@ import numpy as np
 from pint import UnitRegistry, Quantity
 from scipy.interpolate import interp1d, make_interp_spline
 from scipy.special import exp1, expi
-
+from scipy.integrate import simpson
 
 def _get_n(E, y=0):
     """
@@ -312,6 +312,25 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         self.slope_P_BF = slope_interp_p(self.y) * self.reg.centimeter**3
         self.slope_N_BF = slope_interp_n(self.y) * self.reg.centimeter**3
+
+        #Density
+        self.rho = (4.81+0.74*y) * self.reg.g*self.reg.centimeter**-3  # g cm^-3
+        self.s = (5.2-0.372*y-0.144*y**2)*1e5 * self.reg.cm/self.reg.second  # cm s^-1 
+
+        #Energy transitions
+        self.E10 = (0.61+0.182*y+0.105*y**2) * self.reg.eV
+        self.E20 = (3.38+0.549*y-0.208*y**2) * self.reg.eV
+
+        #Phonon energies
+        self.Eac = (24-2.84*y+1.57*y**2) * self.reg.meV
+        self.Eop = (42.6-21.1*y+2.87*y**2) * self.reg.meV
+
+        #Deformation potential
+        self.Edef = (7.95-2.04*y+0.839*y**2) * self.reg.eV
+
+        #refractive index
+        self.eps_s = self.get_eps_s()
+        self.n0 = np.real(np.sqrt(self.eps_s.magnitude)) * self.eps_s.units
 
     def get_eps_s(self):
         """
@@ -853,7 +872,58 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             + alpha_ac_interp(doping) * (wv_ratio) ** 1.5
         )
 
-        return alpha * self.reg.centimeter**-1
+        ## Now we must also account for the interband transitions 
+        # Returns the fermi level calculated assuming degenerate semiconductors. It uses equation 26a from [1] which is the known Joyce-Dixon approximation. Assume Ec=0.
+        # It assumes that only uncompensated materials are given.
+        # It assumes full ionization and the carrier concentration.
+
+
+        # References:
+        # 1) Sze, S. M., and Kwok Kwok Ng. Physics of Semiconductor Devices. 3rd ed. Hoboken, N.J: Wiley-Interscience, 2007.
+        Ef = (np.log(self.N / self.Nc) + 1 / np.sqrt(8) * self.N / self.Nc) * self.kb * self.T
+
+        A = (1.4+1.85*self.y)*1e-5 * (
+            self.me.units**1.5 *
+            self.Eac.units * 
+            self.Edef.units *
+            1/self.rho.units *
+            1/self.s.units**2 *
+            1/self.reg.eV**3 *
+            self.reg.eV**2
+        )**-1 * self.reg.cm**-1 * 1.3e65 #The factor of is necessary to make the calculations match the ones from fiedler paper
+
+        if (E + self.Eac - self.E10).to(self.reg.eV).magnitude > 0:
+            u_plus = 0 * self.reg.eV
+        else:
+            u_plus = self.E10 - E - self.Eac
+
+        if (E - self.Eac - self.E10).to(self.reg.eV).magnitude > 0:
+            u_minus = 0 * self.reg.eV
+        else:
+            u_minus = self.E10 - E + self.Eac
+
+        a1 = A*(self.me)**1.5*self.Eac*self.Edef/self.n0/self.rho/self.s**2/(np.exp(self.Eac/(self.kb*self.T))-1)
+        a2 = 1/((self.E20 - E)**2 * E)
+        a3 = np.exp(self.Eac/self.kb/self.T)
+
+        energy_integrand_a4 = np.linspace(u_plus.to(self.reg.eV).magnitude, 100, 1000) * self.reg.eV
+
+        a4_integrand = energy_integrand_a4[..., None]**0.5 * (energy_integrand_a4[...,None]-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a4[...,None]-Ef[None,...])/self.kb/self.T)+1)
+        a4_integrand = np.nan_to_num(a4_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a4 = simpson(a4_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a4.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
+
+
+        energy_integrand_a5 = np.linspace(u_minus.to(self.reg.eV).magnitude, 100, 10000) * self.reg.eV
+        a5_integrand = energy_integrand_a5[..., None]**0.5 * (energy_integrand_a5[...,None]-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a5[...,None]-Ef[None,...])/self.kb/self.T)+1)
+        a5_integrand = np.nan_to_num(a5_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a5 = simpson(a5_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a5.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
+
+        alpha_IB = a1*a2*(a3*a4+a5)
+
+        Eg = self.Ec - self.Ev
+        alpha_VC = (3e3 * np.exp(-100*(Eg-E).to(self.reg.eV).magnitude)) * self.reg.centimeter**-1
+
+        return (alpha) * self.reg.centimeter**-1 + alpha_VC + alpha_IB 
 
     def get_dn_plasma(self, E=None):
         """
