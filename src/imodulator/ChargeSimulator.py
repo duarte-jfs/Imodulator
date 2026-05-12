@@ -19,7 +19,8 @@ from shapely.geometry import (
 )
 import shapely
 
-from scipy.interpolate import RegularGridInterpolator
+from scipy.interpolate import RegularGridInterpolator, LinearNDInterpolator, interp1d
+
 
 from imodulator import PhotonicDevice
 from imodulator.PhotonicPolygon import (
@@ -74,6 +75,29 @@ def get_normalized_vector(line: LineString):
     if norm == 0:
         return np.zeros_like(vector)
     return vector / norm
+
+## Functions to be used on the Solcore solver to get the interpolated values of the charge transport simulation on the 2D geometry of the photonic device.
+def make_interp(poly_union, interp_y, unit):
+    def f(x, y):
+        pts = shapely.points(x, y)
+        inside = shapely.covers(poly_union, pts)
+
+        vals = interp_y(y)
+        vals = np.where(inside, vals, 0.0)
+
+        return vals * unit
+    return f
+
+def make_vector_interp(poly_union, interp_y, vec, unit):
+    def f(x, y):
+        pts = shapely.points(x, y)
+        inside = shapely.covers(poly_union, pts)
+
+        vals = interp_y(y)
+        vals = np.where(inside, vals, 0.0)
+
+        return vals[..., np.newaxis] * vec * unit
+    return f
 
 class ChargeSimulatorNN:
     #The api import can be cleaner dunno how
@@ -1708,101 +1732,17 @@ class ChargeSimulatorSolcore:
                 if poly.name in polygons_to_map and not poly.name in self.line_segments.keys():
                     poly.has_charge_transport_data = True
 
-
-        xmax = -np.inf
-        xmin = +np.inf
-        ymax = -np.inf
-        ymin = +np.inf
-        for poly_name in polygons_to_map:
-            photo_poly = next((x for x in self.photonicdevice.photo_polygons if x.name == poly_name), None)
-            poly = photo_poly.polygon
-
-            points = np.asarray(poly.exterior.coords)
-            x_coords = points[:, 0]
-            y_coords = points[:, 1]
-            xmax = max(xmax, np.max(x_coords))
-            xmin = min(xmin, np.min(x_coords))
-            ymax = max(ymax, np.max(y_coords))
-            ymin = min(ymin, np.min(y_coords))
-
-        xmax += 10*dx
-        ymax += 10*dx
-        xmin -= 10*dx
-        ymin -= 10*dx
-
         reg = self.photonicdevice.reg
-        # First part is to make data into 2d and fit the wg
-        x = np.arange(xmin, xmax, dx)
         y = np.array(self.mesh)  # Convert list to numpy array first
 
-        xx, yy = np.meshgrid(x, y)
+        poly_union = shapely.union_all([
+            next(
+                p for p in self.photonicdevice.photo_polygons
+                if p.name == poly_name
+            ).polygon
+            for poly_name in polygons_to_map
+        ])
 
-        # Now we need to mask the values to include only points inside the polygons involved in the charge transport simulations
-        points = shapely.points(xx, yy)
-        total_mask = np.zeros(points.shape, dtype=bool)
-
-        for poly_name in polygons_to_map:
-            photo_poly = next((x for x in self.photonicdevice.photo_polygons if x.name == poly_name), None)
-            poly = photo_poly.polygon
-
-            # Compute mask once
-            mask_inside = shapely.covers(poly, points)
-
-            total_mask += mask_inside
-
-        # Initialize 2D arrays for each variable
-        Ec_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Ev_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efn_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efp_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        N_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        P_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efield_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        mun_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        mup_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-
-        # Store coordinate grids
-        self.x_2d = x
-        self.y_2d = y
-        self.xx_2d = xx
-        self.yy_2d = yy
-
-        # For each voltage, replicate 1D data across x-axis
-        for i, v in enumerate(self.V):
-            # Take 1D data (shape: n_y_points) and replicate across x-axis
-            # Using broadcasting: 1D array becomes column, then broadcast to all x positions
-            Ec_2d[i] = np.broadcast_to(self.Ec[i][:, np.newaxis], (len(y), len(x)))
-            Ev_2d[i] = np.broadcast_to(self.Ev[i][:, np.newaxis], (len(y), len(x)))
-            Efn_2d[i] = np.broadcast_to(self.Efn[i][:, np.newaxis], (len(y), len(x)))
-            Efp_2d[i] = np.broadcast_to(self.Efp[i][:, np.newaxis], (len(y), len(x)))
-            N_2d[i] = np.broadcast_to(self.N[i][:, np.newaxis], (len(y), len(x)))
-            P_2d[i] = np.broadcast_to(self.P[i][:, np.newaxis], (len(y), len(x)))
-            Efield_2d[i] = np.broadcast_to(self.Efield[i][:, np.newaxis], (len(y), len(x)))
-            mun_2d[i] = np.broadcast_to(self.mun[i][:, np.newaxis], (len(y), len(x)))
-            mup_2d[i] = np.broadcast_to(self.mup[i][:, np.newaxis], (len(y), len(x)))
-
-        
-
-        for data in [
-            Ec_2d,
-            Ev_2d,
-            Efn_2d,
-            Efp_2d,
-            N_2d,
-            P_2d,
-            Efield_2d,
-            mun_2d,
-            mup_2d,
-        ]:
-            for i in range(len(self.V)):
-                data[i] *= total_mask  # Mask out points outside polygons
-
-        #Transform the Efield into a 3d vector field of shape (Ny, Nx, 3)
-        Efield_2d = Efield_2d[..., np.newaxis]*self.sim_vector_norm
-        
-        #this part needs to poop out the interpolators 
-        #if the interpolator is called the out of bound points should return the boundary values
-            # Initialize interpolator dictionaries
         Ec_int = []
         Ev_int = []
         Efn_int = []
@@ -1814,95 +1754,26 @@ class ChargeSimulatorSolcore:
         mup_int = []
         
         for i ,v in enumerate(self.V):
-            Ec_int.append(
-                lambda x,y, arr=Ec_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
-            )
+            Ec_int_interp = interp1d(y, self.Ec[i], bounds_error=False, fill_value=0)
+            Ev_int_interp = interp1d(y, self.Ev[i], bounds_error=False, fill_value=0)
+            Efn_int_interp = interp1d(y, self.Efn[i], bounds_error=False, fill_value=0)
+            Efp_int_interp = interp1d(y, self.Efp[i], bounds_error=False, fill_value=0)
+            N_int_interp = interp1d(y, self.N[i], bounds_error=False, fill_value=0)
+            P_int_interp = interp1d(y, self.P[i], bounds_error=False, fill_value=0)
+            Efield_int_interp = interp1d(y, self.Efield[i], bounds_error=False, fill_value=0)
+            mun_int_interp = interp1d(y, self.mun[i], bounds_error=False, fill_value=0)
+            mup_int_interp = interp1d(y, self.mup[i], bounds_error=False, fill_value=0)
 
-            Ev_int.append(
-                lambda x,y, arr=Ev_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
-            )
+            Ec_int.append(make_interp(poly_union, Ec_int_interp, reg.eV))
+            Ev_int.append(make_interp(poly_union, Ev_int_interp, reg.eV))
+            Efn_int.append(make_interp(poly_union, Efn_int_interp, reg.eV))
+            Efp_int.append(make_interp(poly_union, Efp_int_interp, reg.eV))
+            N_int.append(make_interp(poly_union, N_int_interp, reg.cm**-3))
+            P_int.append(make_interp(poly_union, P_int_interp, reg.cm**-3))
+            Efield_int.append(make_vector_interp(poly_union, Efield_int_interp, self.sim_vector_norm, reg.kV / reg.cm))
+            mun_int.append(make_interp(poly_union, mun_int_interp, reg.cm**2 / reg.V / reg.s))
+            mup_int.append(make_interp(poly_union, mup_int_interp, reg.cm**2 / reg.V / reg.s))
 
-            Efn_int.append(
-                lambda x,y, arr=Efn_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
-            )
-
-            Efp_int.append(
-                lambda x,y, arr=Efp_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
-            )
-
-            N_int.append(
-                lambda x,y, arr=N_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**-3
-            )
-
-            P_int.append(
-                lambda x,y, arr=P_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**-3
-            )
-
-            Efield_int.append(
-                lambda x,y, arr=Efield_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.kV / reg.cm
-            )
-
-            mun_int.append(
-                lambda x,y, arr=mun_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**2 / reg.V / reg.s
-            )
-
-            mup_int.append(
-                lambda x,y, arr=mup_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**2 / reg.V / reg.s
-            )
             
         self.photonicdevice.charge = {
             "Ec": Ec_int,

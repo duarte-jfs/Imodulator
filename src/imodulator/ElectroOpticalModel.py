@@ -1282,6 +1282,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # Return to symmetric shape
         deta_real = symmetric(np.einsum("ijk,jk->ik", S_mat, Efield_voigt))
+        
 
         # build the permitivity tensor
         perm = np.zeros((3, 3, *Efield.shape[1:])) * self.e0.units
