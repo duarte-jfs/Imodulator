@@ -592,10 +592,10 @@ class ElectroOpticalSimulator:
         integrands = self._calculate_eo_integrand(
             voltage_idx, rot_x, rot_y, rot_z, base_epsilon_voltage_idx, optical_mode_a, optical_mode_b)
         
-        I_integrand_a = 1/2*(np.cross(self.Eopt_a.T.conjugate(), self.Hopt_a.T) + np.cross(self.Eopt_a.T, self.Hopt_a.T.conjugate()))[:,2]
+        I_integrand_a = (np.cross(self.Eopt_a.T.conjugate(), self.Hopt_a.T) + np.cross(self.Eopt_a.T, self.Hopt_a.T.conjugate()))[:,2]
         power_a = integral_form.assemble(self.basis, integrand = I_integrand_a)
 
-        I_integrand_b = 1/2*(np.cross(self.Eopt_b.T.conjugate(), self.Hopt_b.T) + np.cross(self.Eopt_b.T, self.Hopt_b.T.conjugate()))[:,2]
+        I_integrand_b = (np.cross(self.Eopt_b.T.conjugate(), self.Hopt_b.T) + np.cross(self.Eopt_b.T, self.Hopt_b.T.conjugate()))[:,2]
         power_b = integral_form.assemble(self.basis, integrand = I_integrand_b)
 
         print(f"INSIDE SIMULATOR | power_a: {power_a}, power_b: {power_b}")
