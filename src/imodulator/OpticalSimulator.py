@@ -1104,13 +1104,13 @@ class OpticalSimulatorFEMWELL:
         for opt_mode_idx, label in zip(TE_TM_idx, ['TE', 'TM']):
             opt_mode = self.modes[opt_mode_idx]
             basis = opt_mode.basis
-            basis_fix = basis.with_element(ElementVector(ElementTriP1()))
 
             (et, et_basis), (ez, ez_basis) = opt_mode.basis.split(opt_mode.E)
-            (ex, ex_basis), (ey, ey_basis) = basis_fix.split(basis_fix.project(et_basis.interpolate(et)))
-
             (ht, ht_basis), (hz, hz_basis) = opt_mode.basis.split(opt_mode.H)
-            (hx, hx_basis), (hy, hy_basis) = basis_fix.split(basis_fix.project(ht_basis.interpolate(ht)))
+
+            #Projecting the FEM fields defined with the Nedelec elements into linear polynomials leads to very bad projection. It is best to sample the fields with the nedelec elements into the nodal points instead.
+            ex, ey = et_basis.interpolator(et)(basis.mesh.p)
+            hx, hy = ht_basis.interpolator(ht)(basis.mesh.p)
 
             from scipy.interpolate import LinearNDInterpolator
             Ex_interp = LinearNDInterpolator(
