@@ -1460,11 +1460,11 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         else:
             return (
                 ['Bandfilling', 'Plasma', 'Intervalence', 'Pockels', 'Kerr'],
-                dperm_BF,
-                dperm_plasma,
-                dperm_iv,
-                dperm_pockels,
-                dperm_kerr,
+                dperm_BF.to(self.reg.dimensionless).magnitude,
+                dperm_plasma.to(self.reg.dimensionless).magnitude,
+                dperm_iv.to(self.reg.dimensionless).magnitude,
+                dperm_pockels.to(self.reg.dimensionless).magnitude,
+                dperm_kerr.to(self.reg.dimensionless).magnitude,
             )
 
 

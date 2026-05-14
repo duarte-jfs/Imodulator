@@ -8,6 +8,7 @@ from typing import (
 import numpy as np
 from scipy.interpolate import interp1d
 from shapely.geometry import MultiPolygon, Polygon
+import shapely
 
 
 @dataclass
@@ -111,6 +112,8 @@ class SemiconductorPolygon:
         # Generate unique ID if name is not provided
         if self.name is None:
             self.name = str(uuid.uuid4())
+
+        self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
 
         self._make_rf_eps_callable(self.rf_eps)
 
@@ -245,6 +248,8 @@ class MetalPolygon:
         if self.name is None:
             self.name = str(uuid.uuid4())
         
+        self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
+
         self._make_rf_eps_callable(self.rf_eps)
 
         # Default mesh settings if keys are missing
@@ -378,6 +383,8 @@ class InsulatorPolygon:
     def __post_init__(self):
         if self.name is None:
             self.name = str(uuid.uuid4())
+
+        self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
         
         self._make_rf_eps_callable(self.rf_eps)
 

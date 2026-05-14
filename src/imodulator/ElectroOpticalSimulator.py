@@ -598,8 +598,6 @@ class ElectroOpticalSimulator:
         I_integrand_b = (np.cross(self.Eopt_b.T.conjugate(), self.Hopt_b.T) + np.cross(self.Eopt_b.T, self.Hopt_b.T.conjugate()))[:,2]
         power_b = integral_form.assemble(self.basis, integrand = I_integrand_b)
 
-        print(f"INSIDE SIMULATOR | power_a: {power_a}, power_b: {power_b}")
-
         #Loop over all the integrands and remove any nan values that may be present
 
         for electro_optic_model_name, data in integrands.items():
