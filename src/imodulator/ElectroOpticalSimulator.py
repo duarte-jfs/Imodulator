@@ -56,6 +56,7 @@ class ElectroOpticalSimulator:
             self,
             device: PhotonicDevice,
             simulation_window: Polygon | None = None,
+            wavelength: float = 1550
     ):
         """
         Initializes the ElectroOpticalSimulator with a PhotonicDevice and an optional simulation window.
@@ -65,10 +66,12 @@ class ElectroOpticalSimulator:
         Args:
             device (PhotonicDevice): The photonic device to simulate.
             simulation_window (Polygon, optional): The polygon defining the simulation region. If None, the entire device is used.
+            wavelength (float): The wavelength of the optical mode in nanometers. Default is 1550 nm.
         """
         
         self.photodevice = device
         self.reg = self.photodevice.reg
+        self.wl = wavelength * self.reg.nanometer
 
         self.e = 1.602176634e-19 * self.reg.coulomb
         self.e0 = 8.854e-12 * self.reg.farad * self.reg.meter**-1
@@ -355,6 +358,7 @@ class ElectroOpticalSimulator:
                                 N=N,
                                 Efield=Efield,
                                 reg=self.photodevice.reg,
+                                wavelength=self.wl.to(self.photodevice.reg.nanometer).magnitude,
                                 **photo_polygon.electro_optic_module_kwargs,
                             ).get_dperm(fractions = True)
 

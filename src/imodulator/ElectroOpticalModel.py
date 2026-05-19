@@ -1,9 +1,10 @@
 from __future__ import annotations
 import numpy as np
 from pint import UnitRegistry, Quantity
-from scipy.interpolate import interp1d, make_interp_spline
+from scipy.interpolate import interp1d, make_interp_spline, RegularGridInterpolator
 from scipy.special import exp1, expi
 from scipy.integrate import simpson
+import os
 
 def _get_n(E, y=0):
     """
@@ -107,7 +108,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         y: float = 0,
         bandgap_model: str = "jain",
         BF_model: str = "vinchant",
-        growing_direction: str = "z",
+        wavelength: float = 1550
     ):
         """
         Base model for In_{1-x}Ga_{x}As_{y}P_{1-y}. It gives the changes in absorption and
@@ -127,8 +128,8 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         p: Hole concentration in cm^-3. Assumed to have shape (N)
         T: Temperature of operation in kelvin
         y: Concentration. Must be between 0 and 1. Assumed to have shape (Nx).
-        growing direction: the axis of growth. Must be x,y or z. Default is z.
         BF_model: if 'vinchant' it will use the data calculated by Vinchant 1992 [7]. If 'BGN' it will use the result from the model while including BGN, and 'no BGN' will not include it.
+        wavelength: wavelength of operation in nanometers. Default is 1550 nm.
 
         References:
         1) http://www.ioffe.ru/SVA/NSM/Semicond/InP/bandstr.html#Masses
@@ -146,14 +147,12 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         self.reg = reg
 
-        self.wl = 1550 * self.reg.nanometer
+        self.wl = wavelength * self.reg.nanometer
         self.y = y
 
         self.x = self.y / (2.2020 - 0.0659 * self.y)  # Taken from [5]
 
         self.bandgap_model = bandgap_model
-
-        self.growing_direction = growing_direction
 
         self.Ec = Ec
         self.Ev = Ev
@@ -250,68 +249,31 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # Load data for bandfilling effect
         if BF_model == "BGN":
-            data_BF = np.asarray(
-                [
-                    [0.0, -4.935845233448187e-21, -1.339378005082977e-21],
-                    [0.1, -6.052742734846166e-21, -1.5824393501361544e-21],
-                    [0.2, -7.588619428674746e-21, -1.8843286756997448e-21],
-                    [0.3, -9.73845412951748e-21, -2.265714433315684e-21],
-                    [0.4, -1.2962568457500875e-20, -2.7582981460228194e-21],
-                    [0.53, -2.0482999504509693e-20, -3.656520005343032e-21],
-                    [0.6, -2.826656837654254e-20, -4.340072388303156e-21],
-                    [0.7, -5.843171447512438e-20, -5.78945579548802e-21],
-                ]
+            data_BF = np.load(
+                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_w_BGN.npz")
             )
+
         elif BF_model == "no BGN":
-            data_BF = np.asarray(
-                [
-                    [0.0, -3.519944131135538e-21, -1.2578195480077319e-21],
-                    [0.1, -4.283763658235055e-21, -1.4795311461745242e-21],
-                    [0.2, -5.276454725508618e-21, -1.7520509288891255e-21],
-                    [0.3, -6.597394990306974e-21, -2.0916355997477367e-21],
-                    [0.4, -8.40993170474557e-21, -2.522768453275956e-21],
-                    [0.53, -1.2013320880787854e-20, -3.2895688460532474e-21],
-                    [0.6, -1.4978905917602458e-20, -3.853518305029724e-21],
-                    [0.7, -2.167838137390019e-20, -4.982386824381391e-21],
-                    [0.8, -3.5522589772741646e-20, -6.935918911360957e-21],
-                ]
+            data_BF = np.load(
+                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_wo_BGN.npz")
             )
         elif BF_model == "vinchant":
-
-            data_BF = np.asarray(
-                [
-                    [-0.003, -5.625e-21, 0.0],
-                    [0.047, -6.192e-21, 0.0],
-                    [0.089, -6.637e-21, 0.0],
-                    [0.127, -7.122000000000001e-21, 0.0],
-                    [0.166, -7.446e-21, 0.0],
-                    [0.2, -7.932e-21, 0.0],
-                    [0.235, -8.255e-21, 0.0],
-                    [0.27, -8.984e-21, 0.0],
-                    [0.307, -9.469e-21, 0.0],
-                    [0.352, -1.085e-20, 0.0],
-                    [0.398, -1.206e-20, 0.0],
-                    [0.44, -1.3350000000000001e-20, 0.0],
-                    [0.473, -1.4650000000000002e-20, 0.0],
-                    [0.515, -1.643e-20, 0.0],
-                    [0.557, -1.8860000000000002e-20, 0.0],
-                    [0.603, -2.1930000000000002e-20, 0.0],
-                    [0.636, -2.533e-20, 0.0],
-                    [0.669, -2.8250000000000005e-20, 0.0],
-                    [0.692, -3.148e-20, 0.0],
-                    [0.72, -3.6340000000000004e-20, 0.0],
-                    [0.742, -4.0870000000000006e-20, 0.0],
-                    [0.762, -4.735e-20, 0.0],
-                    [0.778, -5.2850000000000003e-20, 0.0],
-                    [0.793, -5.835e-20, 0.0],
-                ]
+            data_BF = np.load(
+                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_vinchant.npz")
             )
 
-        slope_interp_n = interp1d(data_BF[:, 0], data_BF[:, 1], kind="quadratic")
-        slope_interp_p = interp1d(data_BF[:, 0], data_BF[:, 2], kind="quadratic")
+        wl_values = data_BF["wl_values"]
+        y_values = data_BF["y_values"]
+        doping_values = data_BF["doping_values"]
+        dn_n = data_BF["dn_n"]
+        dn_p = data_BF["dn_p"]
+        dalpha_n = data_BF["dalpha_n"]
+        dalpha_p = data_BF["dalpha_p"]
 
-        self.slope_P_BF = slope_interp_p(self.y) * self.reg.centimeter**3
-        self.slope_N_BF = slope_interp_n(self.y) * self.reg.centimeter**3
+        self.dn_n_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dn_n, bounds_error=False, fill_value=None)
+        self.dn_p_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dn_p, bounds_error=False, fill_value=None)
+        self.dalpha_n_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dalpha_n, bounds_error=False, fill_value=None)
+        self.dalpha_p_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dalpha_p, bounds_error=False, fill_value=None)
 
         #Density
         self.rho = (4.81+0.74*y) * self.reg.g*self.reg.centimeter**-3  # g cm^-3
@@ -666,42 +628,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         """
 
-        E = np.asarray([self.energy.magnitude])[..., None, None] * self.energy.units
-
-        Eg = (
-            self.Ec - self.Ev
-        )  - self.get_BGN()
-
-        Eg = Eg[None, ...]
-
-        Eah = (Eg - E) * (self.me / (self.me + self.mhh)) - Eg + self.Ec
-        Eal = (Eg - E) * (self.me / (self.me + self.mhl)) - Eg + self.Ec
-        Ebh = (E - Eg) * (self.mhh / (self.me + self.mhh)) + self.Ec
-        Ebl = (E - Eg) * (self.mhl / (self.me + self.mhl)) + self.Ec
-
-        # Eah=Eah[None, ...]
-        # Eal=Eal[None, ...]
-        # Ebh=Ebh[None, ...]
-        # Ebl=Ebl[None, ...]
-        # print(E.shape, Eg.shape)
-        Efn = (np.log(self.N/self.Nc) + self.N/self.Nc*(64+0.05524*self.N/self.Nc*(64+np.sqrt(self.N/self.Nc))**-0.25))*self.kb * self.T
-        Efp = -(np.log(self.P/self.Nv) + self.P/self.Nv*(64+0.05524*self.P/self.Nv*(64+np.sqrt(self.P/self.Nv))**-0.25))*self.kb * self.T-Eg
-
-        Efn = Efn.to(self.reg.eV)
-        Efp = Efp.to(self.reg.eV)
-        
-        alpha0 = self.Chh / E * np.sqrt(E - Eg) + self.Chl / E * np.sqrt(E - Eg)
-        alpha = self.Chh / E * np.sqrt(E - Eg) * (
-            self.FD(Eah, Ef=Efp[None, ...]) - self.FD(Ebh, Ef=Efn[None, ...])
-        ) + self.Chl / E * np.sqrt(E - Eg) * (
-            self.FD(Eal, Ef=Efp[None, ...]) - self.FD(Ebl, Ef=Efn[None, ...])
-        )
-        # print(alpha.shape, alpha0.shape)
-        # print(E.shape, Eg.shape)
-        alpha = np.nan_to_num(alpha)
-        alpha0 = np.nan_to_num(alpha0)
-
-        return np.squeeze((alpha - alpha0)).to(self.reg.centimeter**-1)
+        return self.dalpha_n_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.N.to(self.reg.centimeter**-3).magnitude)) + self.dalpha_p_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.P.to(self.reg.centimeter**-3).magnitude)) * self.reg.centimeter**-1
 
     def get_alpha_sqrt(self, E=None, bandgap_model=None):
         E = self.energy
@@ -718,7 +645,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         Returns the change in refractive index based only on the band filling effect based on the kramers kronig relations.
         """
 
-        return self.slope_P_BF * self.P + self.slope_N_BF * self.N
+        return self.dn_n_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.N.to(self.reg.centimeter**-3).magnitude)) + self.dn_p_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.P.to(self.reg.centimeter**-3).magnitude))
 
     def get_dalpha_plasma(self):
         """
