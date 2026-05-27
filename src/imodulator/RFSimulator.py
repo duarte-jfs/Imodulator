@@ -390,9 +390,7 @@ class RFSimulatorFEMWELL:
                         x = self.mesh.p[0, vertices_idxs]
                         y = self.mesh.p[1, vertices_idxs]
 
-                        self.epsilon_rf[vertices_idxs, voltage_idx] = self.epsilon_rf[
-                            vertices_idxs, voltage_idx
-                        ].real + (
+                        self.epsilon_rf[vertices_idxs, voltage_idx] = photo_polygon.rf_eps(omega).real + (
                             -1j
                             * (
                                 self.e

@@ -6,3 +6,4 @@
 - Improved data transfer from `ChargeSimulatorSolcore` to `PhotonicDevice`. 
 - Improved data transfer of optical modes from `OpticalSimulatorFEMWELL` to `PhotonicDevice`.
 - Added wavelength dependence to `InGaAsPElectroOpticalModel` and on the `ElectroOpticalSimulator`. The `InGaAsPElectroOpticalModel` can now be used for the simulation accross the telecomunications bands. 
+- Fixed the `epsilon_rf` generation. The real part was not respecting the polygon hierarchy.
