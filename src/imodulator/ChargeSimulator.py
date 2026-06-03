@@ -449,6 +449,18 @@ class ChargeSimulatorNN:
                 profile["x"],
                 profile["sigma_x"],
             )
+        if profile_type == "linear":
+            return self._linear_doping(
+                profile["name"],
+                profile["conc"],
+                profile["x"],
+            )
+        if profile_type == "samples":
+            return self._samples_doping(
+                profile["name"],
+                profile["x"],
+                profile["conc"],
+            )
 
         raise NotImplementedError(
             f"doping_profile type {profile_type!r} is not yet supported"
@@ -470,6 +482,36 @@ class ChargeSimulatorNN:
                         x= {x}
                         sigma_x= {sigma_x}
                     }}
+                }}"""
+
+    def _linear_doping(self, name, conc, x):
+        c0, c1 = conc
+        x0, x1 = x
+        return f"""doping{{
+                    linear{{
+                        name= "{name}"
+                        conc= [{c0:.2e}, {c1:.2e}]
+                        x= [{x0}, {x1}]
+                    }}
+                }}"""
+
+    def _samples_doping(self, name, x, conc):
+        if len(x) != len(conc) or len(x) < 2:
+            raise ValueError(
+                "doping_profile samples: 'x' and 'conc' must be equal-length "
+                "arrays of size >= 2"
+            )
+        linear_blocks = [
+            f"""linear{{
+                        name= "{name}"
+                        conc= [{conc[i]:.2e}, {conc[i+1]:.2e}]
+                        x= [{x[i]}, {x[i+1]}]
+                    }}"""
+            for i in range(len(x) - 1)
+        ]
+        joined = "\n                    ".join(linear_blocks)
+        return f"""doping{{
+                    {joined}
                 }}"""
 
     def _create_impurities_section(self):

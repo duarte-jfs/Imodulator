@@ -56,8 +56,7 @@ class SemiconductorPolygon:
                     "doping_profile": Union[None, dict], Position-dependent doping profile. When set, overrides "doping_type"/"doping_conc". Supported dict shapes (x in nm, conc in cm^-3): 
                         {"type":"constant","name":..,"conc":..}, 
                         {"type":"gaussian","name":..,"conc":..,"x":..,"sigma_x":..}, 
-                        {"type":"linear","name":..,"conc":[c0,c1],"x":[x0,x1]}, 
-                        {"type":"analytic","name":..,"expression":..}, 
+                        {"type":"linear","name":..,"conc":[c0,c1],"x":[x0,x1]},
                         {"type":"samples","name":..,"x":[..],"conc":[..]}.
                     "alloy_type":Union[None,str], If not defined, default is "quaternary_constant{}" should be available in Nextnano
                     "alloy_y": Union[None,list],
