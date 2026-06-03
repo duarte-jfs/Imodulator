@@ -385,12 +385,7 @@ class ChargeSimulatorNN:
                     alloy_y = [{", ".join(f"{y:.2f}" for y in alloy_y)}]
                     {alloy_coords}
                 }}
-                doping{{
-                    constant{{
-                        name= "{segment_charge_kwargs["doping_type"]}-type"
-                        conc= {segment_charge_kwargs["doping_conc"]:.2e}    
-                    }}
-                }}        
+                {self._generate_doping_block(segment_charge_kwargs)}
             }}
             """)
                     #####################################################
@@ -429,7 +424,54 @@ class ChargeSimulatorNN:
         """
 
         return output#"\n".join(output)
-    
+
+    def _generate_doping_block(self, segment_charge_kwargs):
+        """Return the ``doping{...}`` block text for one region.
+
+        If ``doping_profile`` is set on the polygon's charge kwargs, dispatch
+        on its ``type`` field. Otherwise fall back to a constant block built
+        from the legacy ``doping_type`` / ``doping_conc`` pair.
+        """
+        profile = segment_charge_kwargs.get("doping_profile")
+
+        if not isinstance(profile, dict):
+            name = f'{segment_charge_kwargs["doping_type"]}-type'
+            conc = segment_charge_kwargs["doping_conc"]
+            return self._constant_doping(name, conc)
+
+        profile_type = profile["type"]
+        if profile_type == "constant":
+            return self._constant_doping(profile["name"], profile["conc"])
+        if profile_type == "gaussian":
+            return self._gaussian_doping(
+                profile["name"],
+                profile["conc"],
+                profile["x"],
+                profile["sigma_x"],
+            )
+
+        raise NotImplementedError(
+            f"doping_profile type {profile_type!r} is not yet supported"
+        )
+
+    def _constant_doping(self, name, conc):
+        return f"""doping{{
+                    constant{{
+                        name= "{name}"
+                        conc= {conc:.2e}
+                    }}
+                }}"""
+
+    def _gaussian_doping(self, name, conc, x, sigma_x):
+        return f"""doping{{
+                    gaussian1D{{
+                        name= "{name}"
+                        conc= {conc:.2e}
+                        x= {x}
+                        sigma_x= {sigma_x}
+                    }}
+                }}"""
+
     def _create_impurities_section(self):
         """Create the impurities section"""
         return f"""
