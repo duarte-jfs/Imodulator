@@ -49,10 +49,16 @@ class SemiconductorPolygon:
         optical_mesh_settings (dict[str, float]): The mesh settings for optical simulations. It is a dictionary with the same keys as ``eo_mesh_settings``.
         
         charge_transport_simulator_kwargs (dict | None): Additional keyword arguments for the charge transport simulator.
-            charge_transport_simulator_kwargs;   
+            charge_transport_simulator_kwargs;
                     "material_definition":Union[None,str], If not defined, default is "Ga(x)In(1-x)As(y)P(1-y)" should be available in Nextnano
                     "doping_conc": Union[None,float],
                     "doping_type": Union[None,str],
+                    "doping_profile": Union[None, dict], Position-dependent doping profile. When set, overrides "doping_type"/"doping_conc". Supported dict shapes (x in nm, conc in cm^-3): 
+                        {"type":"constant","name":..,"conc":..}, 
+                        {"type":"gaussian","name":..,"conc":..,"x":..,"sigma_x":..}, 
+                        {"type":"linear","name":..,"conc":[c0,c1],"x":[x0,x1]}, 
+                        {"type":"analytic","name":..,"expression":..}, 
+                        {"type":"samples","name":..,"x":[..],"conc":[..]}.
                     "alloy_type":Union[None,str], If not defined, default is "quaternary_constant{}" should be available in Nextnano
                     "alloy_y": Union[None,list],
                     "alloy_x":Union[None,list],
