@@ -21,9 +21,9 @@ class SemiconductorPolygon:
         
         name (str | None): The name of the polygon. If not provided, a unique ID will be generated.
         
-        optical_material (str | complex): The optical material properties of the polygon. This will be deprecated in the future.
+        optical_material (str | complex | float | int | np.ndarray | list | Callable[[float], float]): The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.
         
-        rf_eps (float | complex | int | np.ndarray | list): The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature. Note that the charge transport data will only be used to retrieve the conductivity values. You must always insert the real part of the permitivity. Otherwise it will consider it 1.
+        rf_eps (float | complex | int | np.ndarray | list | Callable[[float], float]): The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature. Note that the charge transport data will only be used to retrieve the conductivity values. You must always insert the real part of the permitivity. Otherwise it will consider it 1.
         
         electro_optic_module (None | ElectroOpticalModel): The electro-optic module associated with the polygon. This is the model that will later be used by :class:`ElectroOpticalSimulator <imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator>` to calculate the electro-optic effect.
         
@@ -61,7 +61,7 @@ class SemiconductorPolygon:
 
     polygon: Union[Polygon, MultiPolygon]
     name: str = field(default_factory=lambda: str(uuid.uuid4()))
-    optical_material: Union[str, complex] = 1 + 0j
+    optical_material: Union[str, complex, float, int, np.ndarray, list, Callable[[float], float]] = 1 + 0j
     rf_eps: Union[float, complex, int, np.ndarray, list, Callable[[float], float]] = 1
     electro_optic_module: None = None
     electro_optic_module_kwargs: Dict = field(default_factory=dict)
@@ -104,6 +104,11 @@ class SemiconductorPolygon:
         "alloy_type":Union[None,str],
         "alloy_y": Union[None,float,list],
         "alloy_x":Union[None,float,list],
+        "sol_obp_material": None,
+        "sol_Na": None,
+        "sol_Nd": None,
+        "sol_electron_minority_lifetime": 1e-9,
+        "sol_hole_minority_lifetime": 1e-9
     })
     has_charge_transport_data: bool = False
     _rf_eps_func: Callable[[float], float] = field(repr=False, init=False)
@@ -116,6 +121,7 @@ class SemiconductorPolygon:
         self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
 
         self._make_rf_eps_callable(self.rf_eps)
+        self._make_optical_material_callable(self.optical_material)
 
         default_mesh_settings = {
             "resolution": 100,
@@ -140,7 +146,7 @@ class SemiconductorPolygon:
             value = np.array(value)
             if np.shape(value)[0] != 2:
                 raise ValueError("If rf_eps is given as an array or list, it must have shape (2,N)")
-            call = lambda omega: interp1d(2 * np.pi * value[0].real, value[1].real, kind='cubic')(omega) + 1j*interp1d(2 * np.pi * value[0].real, value[1].imag, kind='cubic')(omega)
+            call = lambda omega: interp1d(2 * np.pi * value[0].real, value[1].real, kind='linear')(omega) + 1j*interp1d(2 * np.pi * value[0].real, value[1].imag, kind='linear')(omega)
 
             super().__setattr__("_rf_eps_func", call)
             super().__setattr__("rf_eps", call)
@@ -150,6 +156,25 @@ class SemiconductorPolygon:
             super().__setattr__("rf_eps", value)
         else:
             raise ValueError("rf_eps must be a float, complex, int, np.ndarray, or callable")
+        
+    def _make_optical_material_callable(self, value):
+        if isinstance(value, (float, complex, int)):
+            super().__setattr__("_optical_material_func", lambda wavelength: value)
+            super().__setattr__("optical_material", lambda wavelength: value)
+        elif isinstance(value, np.ndarray) or isinstance(value, list):
+            value = np.array(value)
+            if np.shape(value)[0] != 2:
+                raise ValueError("If optical_material is given as an array or list, it must have shape (2,N)")
+            call = lambda wavelength: interp1d(value[0].real, value[1].real, kind='linear')(wavelength) + 1j*interp1d(value[0].real, value[1].imag, kind='linear')(wavelength)
+
+            super().__setattr__("_optical_material_func", call)
+            super().__setattr__("optical_material", call)
+
+        elif callable(value):
+            super().__setattr__("_optical_material_func", value)
+            super().__setattr__("optical_material", value)
+        else:
+            raise ValueError("optical_material must be a float, complex, int, np.ndarray, or callable")
 
     def __setattr__(self, name, value):
         # Intercept assignments to rf_eps
@@ -158,6 +183,12 @@ class SemiconductorPolygon:
             super().__setattr__(name, value)
             if hasattr(self, "_rf_eps_func"):  # skip during init until post_init
                 self._make_rf_eps_callable(value)
+
+        elif name == "optical_material":
+            super().__setattr__(name, value)
+            if hasattr(self, "_optical_material_func"):  # skip during init until post_init
+                self._make_optical_material_callable(value)
+
         else:
             super().__setattr__(name, value)
 
@@ -173,8 +204,7 @@ class MetalPolygon:
         name (str, optional): 
             The name of the polygon. If not provided, a unique ID will be generated.
 
-        optical_material (str or complex): 
-            The optical material properties of the polygon. This will be deprecated in the future.
+        optical_material (str | complex | float | int | np.ndarray | list | Callable[[float], float]): The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.
 
         rf_eps (float, complex, int, or np.ndarray): 
             The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature.
@@ -208,7 +238,7 @@ class MetalPolygon:
     """
     polygon: Union[Polygon, MultiPolygon] 
     name: Optional[str] = field(default=None)
-    optical_material: Union[str, complex] = field(default=1 + 0j)
+    optical_material: Union[str, complex, float, int, np.ndarray, list, Callable[[float], float]] = field(default=1 + 0j)
     calculate_current: bool = field(default=True)
     d_buffer_current: float = field(default=0.1)
     rf_eps: Union[float, complex, int, np.ndarray, list, Callable[[float], float]] = 1
@@ -251,6 +281,7 @@ class MetalPolygon:
         self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
 
         self._make_rf_eps_callable(self.rf_eps)
+        self._make_optical_material_callable(self.optical_material)
 
         # Default mesh settings if keys are missing
         default_mesh_settings = {
@@ -286,6 +317,25 @@ class MetalPolygon:
             super().__setattr__("rf_eps", value)
         else:
             raise ValueError("rf_eps must be a float, complex, int, np.ndarray, or callable")
+        
+    def _make_optical_material_callable(self, value):
+        if isinstance(value, (float, complex, int)):
+            super().__setattr__("_optical_material_func", lambda wavelength: value)
+            super().__setattr__("optical_material", lambda wavelength: value)
+        elif isinstance(value, np.ndarray) or isinstance(value, list):
+            value = np.array(value)
+            if np.shape(value)[0] != 2:
+                raise ValueError("If optical_material is given as an array or list, it must have shape (2,N)")
+            call = lambda wavelength: interp1d(value[0].real, value[1].real, kind='linear')(wavelength) + 1j*interp1d(value[0].real, value[1].imag, kind='linear')(wavelength)
+
+            super().__setattr__("_optical_material_func", call)
+            super().__setattr__("optical_material", call)
+
+        elif callable(value):
+            super().__setattr__("_optical_material_func", value)
+            super().__setattr__("optical_material", value)
+        else:
+            raise ValueError("optical_material must be a float, complex, int, np.ndarray, or callable")
 
     def __setattr__(self, name, value):
         # Intercept assignments to rf_eps
@@ -294,6 +344,12 @@ class MetalPolygon:
             super().__setattr__(name, value)
             if hasattr(self, "_rf_eps_func"):  # skip during init until post_init
                 self._make_rf_eps_callable(value)
+
+        elif name == "optical_material":
+            super().__setattr__(name, value)
+            if hasattr(self, "_optical_material_func"):  # skip during init until post_init
+                self._make_optical_material_callable(value)
+
         else:
             super().__setattr__(name, value)
 
@@ -310,8 +366,7 @@ class InsulatorPolygon:
         name (str, optional): 
             The name of the polygon. If not provided, a unique ID will be generated.
 
-        optical_material (str or complex): 
-            The optical material properties of the polygon. This will be deprecated in the future.
+        optical_material (str | complex | float | int | np.ndarray | list | Callable[[float], float]): The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.
 
         rf_eps (float, complex, int, or np.ndarray): 
             The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a ``np.array`` of shape `(2,N)` then it will interpolate to give a callable of the same signature.
@@ -348,7 +403,7 @@ class InsulatorPolygon:
     """
     polygon: Union[Polygon, MultiPolygon]
     name: str = field(default_factory=lambda: str(uuid.uuid4()))
-    optical_material: Union[str, complex] = 1 + 0j
+    optical_material: Union[str, complex, float, int, np.ndarray, list, Callable[[float], float]] = 1 + 0j
     rf_eps: Union[float, complex, int, np.ndarray, list, Callable[[float], float]] = 1 
     electro_optic_module: None = None
     charge_mesh_settings: Dict[str, float] = field(default_factory=lambda: {
@@ -387,6 +442,7 @@ class InsulatorPolygon:
         self.polygon = shapely.set_precision(self.polygon,1e-3)  # set precision to avoid issues with very close vertices. Setting grid size to 1nm
         
         self._make_rf_eps_callable(self.rf_eps)
+        self._make_optical_material_callable(self.optical_material)
 
         default_mesh_settings = {
             "resolution": 100,
@@ -422,6 +478,25 @@ class InsulatorPolygon:
         else:
             raise ValueError("rf_eps must be a float, complex, int, np.ndarray, or callable")
 
+    def _make_optical_material_callable(self, value):
+        if isinstance(value, (float, complex, int)):
+            super().__setattr__("_optical_material_func", lambda wavelength: value)
+            super().__setattr__("optical_material", lambda wavelength: value)
+        elif isinstance(value, np.ndarray) or isinstance(value, list):
+            value = np.array(value)
+            if np.shape(value)[0] != 2:
+                raise ValueError("If optical_material is given as an array or list, it must have shape (2,N)")
+            call = lambda wavelength: interp1d(value[0].real, value[1].real, kind='linear')(wavelength) + 1j*interp1d(value[0].real, value[1].imag, kind='linear')(wavelength)
+
+            super().__setattr__("_optical_material_func", call)
+            super().__setattr__("optical_material", call)
+
+        elif callable(value):
+            super().__setattr__("_optical_material_func", value)
+            super().__setattr__("optical_material", value)
+        else:
+            raise ValueError("optical_material must be a float, complex, int, np.ndarray, or callable")
+
     def __setattr__(self, name, value):
         # Intercept assignments to rf_eps
         if name == "rf_eps":
@@ -429,5 +504,11 @@ class InsulatorPolygon:
             super().__setattr__(name, value)
             if hasattr(self, "_rf_eps_func"):  # skip during init until post_init
                 self._make_rf_eps_callable(value)
+
+        elif name == "optical_material":
+            super().__setattr__(name, value)
+            if hasattr(self, "_optical_material_func"):  # skip during init until post_init
+                self._make_optical_material_callable(value)
+
         else:
             super().__setattr__(name, value)

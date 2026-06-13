@@ -780,11 +780,14 @@ class OpticalSimulatorFEMWELL:
 
     def get_epsilon_optical(
         self,
+        wavelength: float = 1.55
     ):
         """
         This function will return the :math:`\epsilon_{opt}` tensor with the signature ``self.epsilon_optical[vertice_idx]`` where ``vertice_idx`` is the index of the vertice in the mesh 
-        
 
+        Args:
+            wavelength: The wavelength at which to evaluate the optical permittivity. This can be used to account for dispersion if the optical_material properties of the polygons are defined as functions of wavelength.
+        
         """
 
         if self.mesh is None:
@@ -814,17 +817,9 @@ class OpticalSimulatorFEMWELL:
             triangles = self.mesh.t[:, elements_idxs]
             vertices_idxs = np.unique(triangles.flatten())
 
-            # if it has the optical_material as a number then it will put that number on. If not then it will pass it
-            if isinstance(photo_polygon.optical_material, float | int | complex):
-                for i in range(3):
-                    self.epsilon_optical[i, i, vertices_idxs] = (
-                        photo_polygon.optical_material
-                    )
-
-            elif isinstance(photo_polygon.optical_material, str):
-                warnings.warn(
-                    f"The optical_material of {photo_polygon.name} is a str. Make sure you insert the material in your mode solver.",
-                    stacklevel=2,
+            for i in range(3):
+                self.epsilon_optical[i, i, vertices_idxs] = (
+                    photo_polygon.optical_material(wavelength)
                 )
 
     def plot_epsilon_optical(
@@ -941,7 +936,7 @@ class OpticalSimulatorFEMWELL:
             The computed modes if `return_modes` is `True`.
         """
 
-        self.get_epsilon_optical()
+        self.get_epsilon_optical(wavelength=wavelength)
 
         modes = compute_modes(
             self.basis,
@@ -1023,6 +1018,13 @@ class OpticalSimulatorFEMWELL:
         mode.plot_component('E', 'x', colorbar = True, ax = ax1)
         mode.plot_component('E', 'y', colorbar = True, ax = ax2)
         mode.plot_component('E', 'z', colorbar = True, ax = ax3)
+
+        ax1.set_xlabel("x (um)")
+        ax1.set_ylabel("y (um)")
+        ax2.set_xlabel("x (um)")
+        ax2.set_ylabel("y (um)")
+        ax3.set_xlabel("x (um)")
+        ax3.set_ylabel("y (um)")
 
         fig.tight_layout()
     
