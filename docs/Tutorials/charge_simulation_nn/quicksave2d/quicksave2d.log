@@ -1,0 +1,48 @@
+================================================================================
+PREPARING...
+================================================================================
+
+Checking input files...
+
+
+Reading environment and checking paths...
+
+================================================================================
+RUNNING..
+================================================================================
+Starting execution as:
+D:/nextnano/2026_02_05/nextnano++/bin/nextnano++_Intel_64bit.exe --license D:/nextnano/2026_02_05/License/License_nnp.lic --database D:/nextnano/2026_02_05/nextnano++/database/database.nnp --threads 0 --outputdirectory d:\Repos\Imodulator\docs\Tutorials\charge_simulation_nn\quicksave2d --noautooutdir d:\Repos\Imodulator\docs\Tutorials\charge_simulation_nn\quicksave2d.in 
+
+nextnano++ 2.4.27 from 2025-12-11 (library 2025-07-29)
+=============================================================================
+COPYRIGHT NOTICE                                                             
+=============================================================================
+ANY USE OF THE NEXTNANO++ CODE CONSTITUTES ACCEPTANCE OF THE TERMS OF THE    
+COPYRIGHT NOTICE.                                                            
+                                                                             
+The terms of copyright of the nextnano++ code and of third party source codes
+and libraries used in the nextnano++ code can be found in the file           
+'documentation/copyright/copyright_notice_nextnano++.pdf' in your            
+installation folder.                                                         
+                                                                             
+In case this file is missing or seems incomplete or corrupted, please contact
+our support team at https://nextnano.com/goto/support to receive a new copy. 
+=============================================================================
+
+
+=============================================================================
+ PROCESSING INPUT FILE: d:\Repos\Imodulator\docs\Tutorials\charge_simulation_nn\quicksave2d.in
+
+ nextnano++  v2.4.27
+=============================================================================
+
+Start time: Wed 2026-07-08, 16:49:04 (+0200)
+
+Simulation process uses 16 of 16 available OpenMP threads (system default).
+
+BLAS and LAPACK libraries use 8 of 8 available threads (system default).
+
+Reading input file (d:\Repos\Imodulator\docs\Tutorials\charge_simulation_nn\quicksave2d.in)...
+
+syntax error in d:\Repos\Imodulator\docs\Tutorials\charge_simulation_nn\quicksave2d.in, line 55.
+Terminating program !!

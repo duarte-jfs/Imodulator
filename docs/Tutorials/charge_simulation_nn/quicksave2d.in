@@ -1,0 +1,175 @@
+
+        global{
+        simulate2D{}
+
+        temperature = 300.0
+        substrate{ name = "InP" }
+        crystal_zb{
+            x_hkl = [1, 0, 0]
+            y_hkl = [0, 1, 0]
+        }
+        }
+        
+
+        grid{
+            xgrid{
+        			line{pos = -23000.0000 spacing = 2.0000}
+			line{pos = -22500.0000 spacing = 3.0000}
+			line{pos = -12500.0000 spacing = 100.0000}
+			line{pos = -2500.0000 spacing = 100.0000}
+			line{pos = -500.0000 spacing = 2.0000}
+			line{pos = 500.0000 spacing = 2.0000}
+			line{pos = 2500.0000 spacing = 100.0000}
+			line{pos = 3000.0000 spacing = 2.0000}
+            }
+            ygrid{
+        			line{pos = -50.0000 spacing = 2.0000}
+			line{pos = 0.0000 spacing = 3.0000}
+			line{pos = 400.0000 spacing = 2.0000}
+			line{pos = 900.0000 spacing = 2.0000}
+			line{pos = 1200.0000 spacing = 2.0000}
+			line{pos = 2200.0000 spacing = 3.0000}
+			line{pos = 2400.0000 spacing = 3.0000}
+			line{pos = 4400.0000 spacing = 100.0000}
+			line{pos = 6400.0000 spacing = 100.0000}
+			line{pos = 6500.0000 spacing = 2.0000}
+            }
+        }
+        
+
+        structure{
+            output_region_index{}
+            output_material_index{}
+            output_user_index{}
+            output_contact_index{}
+            output_alloy_composition{}
+            output_impurities{}
+
+            region{
+                everywhere{}
+                binary{ name = 'Air' }
+            }
+
+        
+            region{
+                polygon{ corner-coordinates = -500.0000 2400.0000 500.0000 2400.0000 500.0000 2200.0000 -500.0000 2200.0000 }
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"
+                    alloy_x = 0.4680
+                    alloy_y = 1.0000
+                }
+                doping{
+                    constant{
+                        name = "p-type"
+                        conc = 1.0000e+19
+                    }
+                }
+            }
+            
+            region{
+                polygon{ corner-coordinates = -500.0000 2200.0000 500.0000 2200.0000 500.0000 1200.0000 -500.0000 1200.0000 }
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"
+                    alloy_x = 0.0000
+                    alloy_y = 0.0000
+                }
+                doping{
+                    constant{
+                        name = "p-type"
+                        conc = 1.0000e+17
+                    }
+                }
+            }
+            
+            region{
+                polygon{ corner-coordinates = -500.0000 1200.0000 500.0000 1200.0000 500.0000 900.0000 -500.0000 900.0000 }
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"
+                    alloy_x = 0.0000
+                    alloy_y = 0.0000
+                }
+                doping{
+                    constant{
+                        name = "n-type"
+                        conc = 1.0000e+16
+                    }
+                }
+            }
+            
+            region{
+                polygon{ corner-coordinates = -500.0000 900.0000 500.0000 900.0000 500.0000 400.0000 -500.0000 400.0000 }
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"
+                    alloy_x = 0.2450
+                    alloy_y = 0.5300
+                }
+                doping{
+                    constant{
+                        name = "n-type"
+                        conc = 1.0000e+16
+                    }
+                }
+            }
+            
+            region{
+                polygon{ corner-coordinates = 3000.0000 0.0000 -22500.0000 0.0000 -22500.0000 400.0000 3000.0000 400.0000 }
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"
+                    alloy_x = 0.0000
+                    alloy_y = 0.0000
+                }
+                doping{
+                    constant{
+                        name = "n-type"
+                        conc = 1.0000e+18
+                    }
+                }
+            }
+            
+            region{
+                polygon{ corner-coordinates = -2500.0000 6400.0000 2500.0000 6400.0000 2500.0000 2400.0000 -2500.0000 2400.0000 }
+                contact{ name = "contact1" }
+            }
+            
+            region{
+                polygon{ corner-coordinates = -22500.0000 4400.0000 -12500.0000 4400.0000 -12500.0000 400.0000 -22500.0000 400.0000 }
+                contact{ name = "contact2" }
+            }
+            
+        }
+        
+
+        impurities{
+            donor { name = "n-type" energy = -1000 degeneracy = 2 }
+            acceptor { name = "p-type" energy = -1000 degeneracy = 4 }
+        }
+
+        classical{
+            Gamma{}
+            HH{}
+
+            output_bandedges{ averaged = yes }
+            output_carrier_densities{}
+        }
+
+        poisson{
+            charge_neutral{}
+            output_electric_field{}
+        }
+
+        currents{
+            output_mobilities{}
+            recombination_model{}
+        }
+
+        contacts{
+            ohmic{ name = "contact1" bias = [0, 5] steps = 11}
+            ohmic{ name = "contact2" bias = 0.0 }
+        }
+
+        run{
+            current_poisson{
+                iterations = 10000
+                output_log = yes
+            }
+        }

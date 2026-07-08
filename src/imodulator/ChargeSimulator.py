@@ -12,13 +12,15 @@ from matplotlib.gridspec import GridSpec
 import matplotlib.cm as cm
 
 from shapely.geometry import (
+    Point,
     Polygon,
+    MultiPolygon,
     LineString,
     MultiLineString,
     LinearRing,
 )
 import shapely
-
+from shapely.ops import clip_by_rect, linemerge, unary_union
 from scipy.interpolate import RegularGridInterpolator, LinearNDInterpolator, interp1d
 
 
