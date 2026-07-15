@@ -211,6 +211,7 @@ class RFSimulatorFEMWELL:
                 if difference_poly.is_empty:
                     polygons_to_remove.append(poly_name)
                     print(f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.')
+                    break
         
         #Remove the polygons that are fully covered by higher priority polygons
         for poly_name in polygons_to_remove:
