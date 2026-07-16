@@ -73,7 +73,8 @@ class OpticalSimulatorMODE:
         device: PhotonicDevice,
         simulation_window: Polygon | None = None,
         include_metals: bool = False,
-        save_sim: bool = False,
+        save_sim: bool = True,
+        wavelength: float = 1.55,
     ):
 
         '''
@@ -89,12 +90,12 @@ class OpticalSimulatorMODE:
        Way of working:
 
        1. __init__(); runs 
-       2. create_geometry(): creates polygons
-       3. create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters
-       4. create_fde(): sets the required simulation parameters & creates the simulation region" 
-       5. compute_modes(): runs the simulation
-       6. select_modes() #select TE and TM mode index or it will be automatically chosen if the top two modes are the fundamental TE and TM mode
-       7. plot_modes() #plots the electric field magnitudes for TE and TM modes
+        1.1 _create_geometry(): creates polygons
+        1.2 _create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters
+       2. create_fde(): sets the required simulation parameters & creates the simulation region" 
+       3. compute_modes(): runs the simulation
+       4. select_modes() #select TE and TM mode index or it will be automatically chosen if the top two modes are the fundamental TE and TM mode
+       5. plot_modes() #plots the electric field magnitudes for TE and TM modes
        
         
         Args:
@@ -102,7 +103,9 @@ class OpticalSimulatorMODE:
             simulation_window: The simulation window bounds. If None, uses device bounds
             include_metals: Whether to include metal polygons in simulation. Defaults to True
             save_sim: Whether to save simulation files. Defaults to False
-            
+            wavelength: The wavelength **in um** at which each polygon's
+                ``optical_material`` is evaluated to get its permittivity. Defaults to 1.55
+
         .. todo::  
             Permitivity tensor to input n,k values? Not sure if necesary
         
@@ -112,6 +115,7 @@ class OpticalSimulatorMODE:
         self.photonicdevice = device
         self.lumapi=lumapi
         self.simulation_window = simulation_window
+        self.wavelength = wavelength
 
         self.optical_photopolygons = copy.deepcopy(self.photonicdevice.photo_polygons)
 
@@ -194,11 +198,12 @@ class OpticalSimulatorMODE:
                 mode_mats[polygon.name] = self.mode.addmaterial("(n,k) Material")
                 self.mode.setmaterial(mode_mats[polygon.name], "name", lum_materialname)
                 
-                n0 = polygon.optical_material.real
-                nimag = polygon.optical_material.imag
-               
-                self.mode.setmaterial(lum_materialname, "Refractive Index", np.sqrt(polygon.optical_material).real)
-                self.mode.setmaterial(lum_materialname, "Imaginary Refractive Index", np.sqrt(polygon.optical_material).imag)  
+                # optical_material is a callable f(wavelength in um) returning the
+                # permittivity, so evaluate it before taking the index.
+                n = np.sqrt(complex(polygon.optical_material(self.wavelength)))
+
+                self.mode.setmaterial(lum_materialname, "Refractive Index", n.real)
+                self.mode.setmaterial(lum_materialname, "Imaginary Refractive Index", n.imag)
     
     def _add_metal_mat_mode(self) :
         ##
