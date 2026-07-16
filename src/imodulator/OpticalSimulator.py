@@ -308,10 +308,12 @@ class OpticalSimulatorMODE:
                 Values can be "PML" (Perfectly Matched Layer), "Metal", or "PMC" 
                 (Perfect Magnetic Conductor). Defaults to PML on all boundaries.
                 
-            bounds (list or tuple, optional): Custom simulation region bounds as 
-                [x_min, y_min, x_max, y_max] in meters. If None, automatically sets
-                bounds based on the background polygon with 1 μm padding on all sides.
-                Defaults to None.
+            bounds (list or tuple, optional): Custom simulation region bounds as
+                [x_min, y_min, x_max, y_max] in meters. If None and a
+                ``simulation_window`` was given at initialization, the region is set to
+                that window's bounds. If None and there is no ``simulation_window``,
+                bounds are set from the background polygon with 1 μm padding on all
+                sides. Defaults to None.
         
         Returns:
             None: Configures the FDE solver in the Lumerical MODE session.
@@ -341,22 +343,30 @@ class OpticalSimulatorMODE:
         """
         
         scaled_bounds = tuple(element * 1e-6 for element in self.polygon_entities["background"].bounds)
-        
+
         self.mode.addfde()
         self.mode.select("FDE")
-       
+
         self.mode.set("solver type", "2D Z normal")
         #expend the simulation region
-        if bounds==None:
-            self.mode.set("x min", scaled_bounds[0]-1e-6)
-            self.mode.set("y min", scaled_bounds[1]-1e-6)
-            self.mode.set("x max", scaled_bounds[2]+1e-6)
-            self.mode.set("y max", scaled_bounds[3]+1e-6)  
-        elif bounds != None:
-            self.mode.set("x min", bounds[0])
-            self.mode.set("y min", bounds[1])
-            self.mode.set("x max", bounds[2])
-            self.mode.set("y max", bounds[3])
+        if bounds is not None:
+            region_bounds = tuple(bounds)
+        elif self.simulation_window is not None:
+            region_bounds = tuple(
+                element * 1e-6 for element in self.simulation_window.bounds
+            )
+        else:
+            region_bounds = (
+                scaled_bounds[0]-1e-6,
+                scaled_bounds[1]-1e-6,
+                scaled_bounds[2]+1e-6,
+                scaled_bounds[3]+1e-6,
+            )
+
+        self.mode.set("x min", region_bounds[0])
+        self.mode.set("y min", region_bounds[1])
+        self.mode.set("x max", region_bounds[2])
+        self.mode.set("y max", region_bounds[3])
 
         #Work on the mesh
         # mesh settings
