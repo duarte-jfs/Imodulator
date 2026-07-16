@@ -447,17 +447,12 @@ class OpticalSimulatorMODE:
             TE_TM_idx[0]=TE_idx
             TE_TM_idx[1]=TM_idx
 
-
-
-        
         print("TE and TM mode indexes;\n")
             
-        
         TE_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "E")
         TE_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "H")
         TM_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "E")
         TM_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "H")
-        
         
         self.modefields = {
         "TE": {
@@ -482,8 +477,6 @@ class OpticalSimulatorMODE:
         },
         }
 
-        # xx, yy = np.meshgrid(Efield_modes["x"][:, 0], Efield_modes["y"][:, 0])
-        # print(xx.shape, yy.shape)
         self.mode.save("quicksave"+".lms")
         return TE_TM_idx
 
@@ -555,11 +548,15 @@ class OpticalSimulatorMODE:
         
         Returns:
             tuple: (figure, (ax1, ax2)) - matplotlib figure and axes objects
-        
-            
+
+
         Creates side-by-side plots of :math:`|E|^2` intensity for TE and TM modes with
         optional device geometry overlay and colorbars.
-        """        
+
+        If a ``simulation_window`` was given at initialization, both axes are limited
+        to its bounds. Otherwise the axes are left to fit whatever is drawn, which
+        includes the full device geometry when ``show_polygons`` is True.
+        """
         # Extract TE mode fields
         TE_Ex = self.modefields["TE"]["Ex"].transpose()
         TE_Ey = self.modefields["TE"]["Ey"].transpose()
@@ -618,12 +615,22 @@ class OpticalSimulatorMODE:
             self._plot_polygons_on_axis(ax2, color_polygons)
         
         fig.colorbar(im2, ax=ax2, shrink=0.8)
-        
+
+        # The polygon overlay spans the whole device, so without this the axes
+        # stretch past the region that was actually solved.
+        if self.simulation_window is not None:
+            window_bounds = tuple(
+                element * 1e-6 for element in self.simulation_window.bounds
+            )
+            for ax in (ax1, ax2):
+                ax.set_xlim(window_bounds[0], window_bounds[2])
+                ax.set_ylim(window_bounds[1], window_bounds[3])
+
         # Set labels and titles
         ax1.set_ylabel("y (m)")
         ax1.set_xlabel("x (m)")
         ax1.set_title(r"$|E|^2$ | TE")
-        
+
         ax2.set_ylabel("y (m)")
         ax2.set_xlabel("x (m)")
         ax2.set_title(r"$|E|^2$ | TM")
