@@ -620,10 +620,14 @@ class ChargeSimulatorNN:
         
         if xmin is None or xmax is None:
             raise ValueError("Both xmin and xmax must be provided as numeric values. (e.g. waveguide boundaries)")
-        
+        if xmin >= xmax:
+            raise ValueError(f"xmin ({xmin}) must be smaller than xmax ({xmax}), otherwise the x mesh is empty.")
+
         reg = self.photonicdevice.reg
         # First part is to make data into 2d and fit the wg
         x = np.arange(xmin, xmax, dx)
+        if len(x) == 0:
+            raise ValueError(f"Empty x mesh: dx ({dx}) is larger than the span xmax - xmin ({xmax - xmin}).")
         y = np.array(self.grid) * 1e-3  # Convert list to numpy array first
 
         xx, yy = np.meshgrid(x, y)
