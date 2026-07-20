@@ -451,9 +451,10 @@ class OpticalSimulatorMODE:
             
         TE_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "E")
         TE_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "H")
+        self.TE_Loss = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "loss")
         TM_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "E")
         TM_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "H")
-        
+        self.TM_Loss = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "loss") * 1e-2 #db/cm 
         self.modefields = {
         "TE": {
             "Ex": TE_Efield["E"][:, :, 0, 0, 0],
@@ -507,6 +508,8 @@ class OpticalSimulatorMODE:
             # interp_fields["x"] = fields["x"]
             # interp_fields["y"] = fields["y"]
             interpolatordict[pol] = interp_fields
+        interpolatordict["TE"]["loss"] = self.TE_Loss
+        interpolatordict["TM"]["loss"] = self.TM_Loss
         self.photonicdevice.mode=interpolatordict
            
     def _plot_polygons_on_axis(self, ax, color_polygons="white"):
