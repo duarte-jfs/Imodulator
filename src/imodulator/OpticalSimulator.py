@@ -444,8 +444,11 @@ class OpticalSimulatorMODE:
                 TE_idx=1
                 TM_idx=2 
             
-            TE_TM_idx[0]=TE_idx
-            TE_TM_idx[1]=TM_idx
+            TE_TM_idx=[TE_idx, TM_idx]
+
+        elif TE_TM_idx is None:
+            # auto_select=False with no indices given: fall back to documented default
+            TE_TM_idx=[1, 2]
 
         print("TE and TM mode indexes;\n")
             
