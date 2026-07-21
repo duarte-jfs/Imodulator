@@ -539,8 +539,8 @@ class ChargeSimulatorNN:
             self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH[eV]"]
             self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level[eV]"]
             self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level[eV]"]
-            self.N[i] = pd.read_csv([f for f in nnfiles if 'density_electron.dat' in f][0], delim_whitespace=True).iloc[:,1]
-            self.P[i] = pd.read_csv([f for f in nnfiles if 'density_hole.dat' in f][0], delim_whitespace=True).iloc[:,1]
+            self.N[i] = pd.read_csv([f for f in nnfiles if 'density_electron.dat' in f][0], delim_whitespace=True).iloc[:,1] * 1e18
+            self.P[i] = pd.read_csv([f for f in nnfiles if 'density_hole.dat' in f][0], delim_whitespace=True).iloc[:,1] * 1e18
             self.Efield[i][1::] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[:,1]
             self.Efield[i][0] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[0,1]
             self.mun[i][1::] = pd.read_csv([f for f in nnfiles if 'mobility_electron.dat' in f][0], delim_whitespace=True).iloc[:,1]
