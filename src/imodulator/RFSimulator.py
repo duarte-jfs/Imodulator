@@ -13,7 +13,7 @@ from shapely.ops import clip_by_rect, linemerge
 
 from skfem.io.meshio import from_meshio
 from skfem.visuals.matplotlib import draw_mesh2d
-from skfem import Basis, ElementTriP1, ElementVector, ElementDG, Functional
+from skfem import Basis, ElementTriP0, ElementTriP1, ElementVector, ElementDG, Functional
 from skfem.helpers import inner
 from skfem import adaptive_theta
 
@@ -264,8 +264,12 @@ class RFSimulatorFEMWELL:
                 mesh_scaling_factor=mesh_scaling_factor,
             )
         )
-        # Choosing each element as ElementTriP1 is crucial as the dofs that assumes are the mesh vertices
-        self.basis = Basis(self.mesh, ElementTriP1())
+        # Choosing ElementTriP0 is crucial as it assumes one dof per element. A nodal
+        # (P1) basis cannot represent the permittivity jump at a material interface:
+        # a node shared by two polygons can only hold one value, so whichever polygon
+        # is written last wins and its permittivity bleeds one element deep into its
+        # neighbour. That silently strips the conductivity from thin doped layers.
+        self.basis = Basis(self.mesh, ElementTriP0())
 
     def refine_mesh(
             self,
@@ -299,7 +303,7 @@ class RFSimulatorFEMWELL:
 
         self.mesh = new_mesh
         self.mesh._boundaries = new_boundaries
-        self.basis = Basis(self.mesh, ElementTriP1())
+        self.basis = Basis(self.mesh, ElementTriP0())
 
 
     def get_epsilon_rf(self, 
@@ -307,7 +311,10 @@ class RFSimulatorFEMWELL:
                        use_charge_transport_data: bool = False,
                        voltage_idx: int = 0):
         """
-        This function will return the :math:`\epsilon_{RF}` tensor with the signature ``self.epsilon_rf[vertice_idx, voltage_idx]`` where ``vertice_idx`` is the index of the vertice in the mesh and `voltage_idx` is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the ``voltage_idx`` must be 0 as the second axis of the array will have size 1.
+        This function will return the :math:`\epsilon_{RF}` tensor with the signature ``self.epsilon_rf[element_idx, voltage_idx]`` where ``element_idx`` is the index of the element in the mesh and `voltage_idx` is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the ``voltage_idx`` must be 0 as the second axis of the array will have size 1.
+
+        .. note::
+            The permittivity is piecewise constant per element, so every element takes the value of exactly one polygon and material interfaces stay sharp. Bias dependent quantities are therefore evaluated at the element centroids.
 
         Args:
             frequency: The frequency at which to compute the permittivity tensor. The frequency must be in GHz.
@@ -317,7 +324,7 @@ class RFSimulatorFEMWELL:
         """
         omega = 2 * np.pi * frequency * self.reg.GHz
 
-        self.epsilon_rf = np.zeros((self.mesh.nvertices, 1), dtype=np.complex128)
+        self.epsilon_rf = np.zeros((self.basis.N, 1), dtype=np.complex128)
 
         # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
         # Here, however, if we loop through the photo_polygons from idx 0 to idx N
@@ -325,21 +332,9 @@ class RFSimulatorFEMWELL:
         #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
         # loop over the inverted list of photo_polygons
         for photo_polygon in self.rf_photopolygons[::-1]:
-            # Sweep through all the junctions and see which fall within the semiconductor
-            extra_vertices = np.asarray([], dtype=int)
-            for name, junction_poly in self.junction_entities.items():
-                if photo_polygon.polygon.contains(junction_poly):
-                    elements_idxs = self.mesh.subdomains[name]
-                    triangles = self.mesh.t[:, elements_idxs]
-                    vertices_idxs = np.unique(triangles.flatten())
-                    extra_vertices = np.concatenate((extra_vertices, vertices_idxs))
+            dofs_idxs = self._dofs_of(photo_polygon)
 
-            elements_idxs = self.mesh.subdomains[photo_polygon.name]
-            triangles = self.mesh.t[:, elements_idxs]
-            vertices_idxs = np.unique(triangles.flatten())
-            vertices_idxs = np.concatenate((vertices_idxs, extra_vertices))
-            
-            self.epsilon_rf[vertices_idxs, 0] = photo_polygon.rf_eps(omega)
+            self.epsilon_rf[dofs_idxs, 0] = photo_polygon.rf_eps(omega)
 
         if use_charge_transport_data == True:
             # Expand the epsilon_rf array to the voltage values
@@ -351,8 +346,8 @@ class RFSimulatorFEMWELL:
             N_bias_points = len(self.photodevice.charge['V'])
 
             if self.epsilon_rf is None:
-                self.epsilon_rf = np.zeros((self.mesh.nvertices, N_bias_points), dtype=np.complex128)
-            
+                self.epsilon_rf = np.zeros((self.basis.N, N_bias_points), dtype=np.complex128)
+
             elif self.epsilon_rf.shape[1] == 1:  
                 # This is to account for the case where it has been first initialized 
                 #with the charge transport data so we extend the array to another dimension
@@ -370,28 +365,15 @@ class RFSimulatorFEMWELL:
                 #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
                 # loop over the inverted list of photo_polygons
                 for photo_polygon in self.rf_photopolygons[::-1]:
-                    # Sweep through all the junctions and see which fall within the semiconductor
-                    extra_vertices = np.asarray([], dtype=int)
-                    for name, junction_poly in self.junction_entities.items():
-                        if photo_polygon.polygon.contains(junction_poly):
-                            elements_idxs = self.mesh.subdomains[name]
-                            triangles = self.mesh.t[:, elements_idxs]
-                            vertices_idxs = np.unique(triangles.flatten())
-                            extra_vertices = np.concatenate((extra_vertices, vertices_idxs))
-
-                    elements_idxs = self.mesh.subdomains[photo_polygon.name]
-                    triangles = self.mesh.t[:, elements_idxs]
-                    vertices_idxs = np.unique(triangles.flatten())
-                    vertices_idxs = np.concatenate((vertices_idxs, extra_vertices))
+                    dofs_idxs = self._dofs_of(photo_polygon)
 
                     if (
                         isinstance(photo_polygon, SemiconductorPolygon) and
                         photo_polygon.has_charge_transport_data
                     ):
-                        x = self.mesh.p[0, vertices_idxs]
-                        y = self.mesh.p[1, vertices_idxs]
+                        x, y = self._centroids_of(photo_polygon)
 
-                        self.epsilon_rf[vertices_idxs, voltage_idx] = photo_polygon.rf_eps(omega).real + (
+                        self.epsilon_rf[dofs_idxs, voltage_idx] = photo_polygon.rf_eps(omega).real + (
                             -1j
                             * (
                                 self.e
@@ -406,7 +388,39 @@ class RFSimulatorFEMWELL:
                             .magnitude
                         )
                     else:
-                        self.epsilon_rf[vertices_idxs, voltage_idx] = photo_polygon.rf_eps(omega)
+                        self.epsilon_rf[dofs_idxs, voltage_idx] = photo_polygon.rf_eps(omega)
+
+    def _elements_of(self, photo_polygon) -> np.ndarray:
+        """
+        The mesh elements owned by a photopolygon, together with those of any junction entity that falls inside it.
+        """
+        elements_idxs = np.asarray(self.mesh.subdomains[photo_polygon.name], dtype=int)
+
+        # Sweep through all the junctions and see which fall within the semiconductor
+        for name, junction_poly in self.junction_entities.items():
+            if photo_polygon.polygon.contains(junction_poly):
+                elements_idxs = np.concatenate(
+                    (elements_idxs, np.asarray(self.mesh.subdomains[name], dtype=int))
+                )
+
+        return elements_idxs
+
+    def _dofs_of(self, photo_polygon) -> np.ndarray:
+        """
+        The ``self.basis`` dofs owned by a photopolygon. With ``ElementTriP0`` there is exactly one dof per element, so this is a relabelling of :meth:`_elements_of`.
+        """
+        return self.basis.element_dofs[:, self._elements_of(photo_polygon)].flatten()
+
+    def _centroids_of(self, photo_polygon) -> tuple[np.ndarray, np.ndarray]:
+        """
+        The ``(x, y)`` centroids of the elements owned by a photopolygon, ordered to match :meth:`_dofs_of`. Bias dependent data is sampled here because the permittivity is constant over each element.
+        """
+        triangles = self.mesh.t[:, self._elements_of(photo_polygon)]
+
+        return (
+            self.mesh.p[0, triangles].mean(axis=0),
+            self.mesh.p[1, triangles].mean(axis=0),
+        )
 
     def compute_modes(
         self,
