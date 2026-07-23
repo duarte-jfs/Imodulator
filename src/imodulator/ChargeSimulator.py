@@ -150,7 +150,7 @@ class ChargeSimulatorNN:
         inputfile_name: str ="quicksave", 
         output_directory:str=nn.config.config['nextnano++']['outputdirectory'],
         temperature: float = 300.0,  # Add temperature parameter
-        bias_start_stop_step: list = [0,1,1], #contact1 is the bias electrode decide - or + accordingly
+        bias_start_stop_step: list = [0,1,2], #contact1 is the bias electrode decide - or + accordingly
         # save_sim: bool = False,
     ):
         
@@ -473,7 +473,7 @@ class ChargeSimulatorNN:
         """Create the contacts section with voltage sweep parameters"""
         return f"""
         contacts{{
-            ohmic{{ name = "contact1" bias = [{self.bias_start_stop_step[0]}, {self.bias_start_stop_step[1]}] steps = {self.bias_start_stop_step[2]}}}
+            ohmic{{ name = "contact1" bias = [{self.bias_start_stop_step[0]}, {self.bias_start_stop_step[1]}] steps = {self.bias_start_stop_step[2]-1}}}
             ohmic{{ name = "contact2" bias = 0.0 }}
         }}"""
     
