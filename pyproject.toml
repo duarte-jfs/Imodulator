@@ -35,7 +35,7 @@ dependencies = [
     "shapely>=2.1.2",
     "pyyaml==6.0.2",
     "pandas==2.3.0",
-    "nextnanopy>=1.0.1",
+    "nextnanopy>=1.2.0",
     "openbandparams>=1.0",
     "scikit-fem>=11.0.0",
     "pygmsh>=7.1.17",
