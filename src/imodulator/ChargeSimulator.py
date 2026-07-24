@@ -511,6 +511,7 @@ class ChargeSimulatorNN:
 
         All arrays have shape (n_bias_points, n_grid_points).
         """
+
         if folderpath == None:
             nndata=nn.DataFolder(self.NNinputf.folder_output)
         else:
@@ -530,10 +531,14 @@ class ChargeSimulatorNN:
         self.Efield = np.zeros(shape=(len(self.V),len(self.grid)))
         self.mun = np.zeros(shape=(len(self.V),len(self.grid)))
         self.mup = np.zeros(shape=(len(self.V),len(self.grid)))
-        #Loops over the bias000x folders
+        #Loops over the bias000x folders, skipping the "Structure" folder
+        bias_folders = [
+            folder for folder in nndata.folders
+            if os.path.basename(folder.fullpath.rstrip("\\/")).lower() != "structure"
+        ]
         for i, v in enumerate(self.V):
             #first get the file locations for each data needed
-            nnfiles=nndata.folders[i].files
+            nnfiles=bias_folders[i].files
             # Read each .dat file into DataFrames
             self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma[eV]"]
             self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH[eV]"]
