@@ -1064,6 +1064,7 @@ class OpticalSimulatorFEMWELL:
         color_junctions="blue",
         fig=None,
         ax=None,
+        equal_aspect: bool = False,
     ):
         """
         Plots the polygons of the :class:`PhotonicDevice` object.
@@ -1074,6 +1075,7 @@ class OpticalSimulatorFEMWELL:
             color_junctions: The color to use for the junctions.
             fig: The figure to plot on. If ``None``, a new figure is created.
             ax: The axis to plot on. If ``None``, a new axis is created.
+            equal_aspect: If ``True``, the x and y axes are scaled with a 1:1 aspect ratio.
 
         Returns:
             fig, ax: The figure and axis objects.
@@ -1090,6 +1092,9 @@ class OpticalSimulatorFEMWELL:
                 )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
+
+        if equal_aspect:
+            ax.set_aspect("equal", adjustable="box")
 
     def plot_mesh(
         self,

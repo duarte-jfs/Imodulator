@@ -224,8 +224,9 @@ class ElectroOpticalSimulator:
         color_junctions="blue",
         fig=None,
         ax=None,
+        equal_aspect: bool = False,
     ):
-        "plots all the polygons and boundaries"
+        "plots all the polygons and boundaries. Set equal_aspect to True for a 1:1 x/y aspect ratio"
         if fig is None and ax is None:
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -238,6 +239,9 @@ class ElectroOpticalSimulator:
                 )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
+
+        if equal_aspect:
+            ax.set_aspect("equal", adjustable="box")
 
     def plot_mesh(
         self,
