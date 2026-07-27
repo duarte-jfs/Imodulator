@@ -379,6 +379,7 @@ class PhotonicDevice:
         fig=None,
         ax=None,
         alpha_polygons: float = 0.5,
+        equal_aspect: bool = False,
     ):
         """
         Plots the polygons of the :class:`PhotonicDevice` object.
@@ -392,7 +393,8 @@ class PhotonicDevice:
             {"name of the polygon":color,...}
             fig: The figure to plot on. If ``None``, a new figure is created.
             ax: The axis to plot on. If ``None``, a new axis is created.
-    
+            equal_aspect: If ``True``, the x and y axes are scaled with a 1:1 aspect ratio.
+
         Returns:
             fig, ax: The figure and axis objects.
         """
@@ -429,8 +431,12 @@ class PhotonicDevice:
                         )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
-                
-            
+
+        if equal_aspect:
+            ax.set_aspect("equal", adjustable="box")
+
+        return ax.get_figure() if fig is None else fig, ax
+
 
 
 

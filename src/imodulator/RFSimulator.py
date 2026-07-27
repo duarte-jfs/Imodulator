@@ -692,6 +692,7 @@ class RFSimulatorFEMWELL:
         color_junctions="blue",
         fig=None,
         ax=None,
+        equal_aspect: bool = False,
     ):
         """
         Plots the polygon and line entities in the simulation window.
@@ -702,6 +703,7 @@ class RFSimulatorFEMWELL:
             color_junctions: The color of the junction entities in the plot.
             fig: The matplotlib figure to plot on. If `None`, a new figure is created.
             ax: The matplotlib axis to plot on. If `None`, a new axis is created.
+            equal_aspect: If ``True``, the x and y axes are scaled with a 1:1 aspect ratio.
         """
         if fig is None and ax is None:
             fig = plt.figure()
@@ -715,6 +717,9 @@ class RFSimulatorFEMWELL:
                 )
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
+
+        if equal_aspect:
+            ax.set_aspect("equal", adjustable="box")
 
     def plot_mesh(
         self,
