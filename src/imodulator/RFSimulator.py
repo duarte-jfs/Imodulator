@@ -579,6 +579,7 @@ class RFSimulatorFEMWELL:
         color_integral_lines: str = "red",
         cmap: str = "jet",
         color_vectors: str = "black",
+        plot_vectors: bool = True,
     ):
         """
         Plots the electric and magnetic fields of a mode.
@@ -597,6 +598,7 @@ class RFSimulatorFEMWELL:
             color_integral_lines: Color of the integral lines in the plot. 
             cmap: Colormap used for plotting the magnitude of the fields. 
             color_vectors: Color of the vector field streamlines. 
+            plot_vectors: Whether to plot the vector field streamlines. If ``False``, intensity of the transverse fields will be plotted. The advantage of this is that the projection of the mode into a rectangular grid is quite heavy and if you request too many points it can take a while. Plotting the intensity only though is very fast.
         Returns:
             None: This method does not return any value. It generates a plot.
 
@@ -606,53 +608,54 @@ class RFSimulatorFEMWELL:
             * The fields are split into transverse and longitudinal components for plotting.
             * The resulting plot includes both the magnitude of the fields and their respective vector field streamlines.
             * Polygons and integral lines can be overlaid on the plot for additional context.
-            * The projection into a rectangular grid is quite heavy, so it is reccomended to use this method only for small regions to avoid large rectangular grids.
+            * The projection into a rectangular grid is quite heavy, so it is recommended to use this method only for small regions to avoid large rectangular grids if you want to plot the vector fields.
 
         """
-        grid_x, grid_y = np.meshgrid(
-            np.linspace(xmin, xmax, Nx), np.linspace(ymin, ymax, Ny)
-        )
-
-        # Transform the data onto a rectangular regular grid
-        grid_data_E = np.zeros((Ny, Nx, 3), dtype=complex)
-        grid_data_H = np.zeros((Ny, Nx, 3), dtype=complex)
-
-        basis = mode.basis
-        basis_fix = basis.with_element(ElementVector(ElementDG(ElementTriP1())))
-
-        (et, et_basis), (ez, ez_basis) = basis.split(mode.E)
-        (et_x, et_x_basis), (et_y, et_y_basis) = basis_fix.split(
-            basis_fix.project(et_basis.interpolate(et))
-        )
-
-        coordinates = np.array([grid_x.flatten(), grid_y.flatten()])
-
-        grid_data = np.array(
-            (
-                et_x_basis.interpolator(et_x)(coordinates),
-                et_y_basis.interpolator(et_y)(coordinates),
-                ez_basis.interpolator(ez)(coordinates),
+        if plot_vectors:
+            grid_x, grid_y = np.meshgrid(
+                np.linspace(xmin, xmax, Nx), np.linspace(ymin, ymax, Ny)
             )
-        ).T
 
-        grid_data_E = grid_data.reshape((*grid_x.shape, -1))
+            # Transform the data onto a rectangular regular grid
+            grid_data_E = np.zeros((Ny, Nx, 3), dtype=complex)
+            grid_data_H = np.zeros((Ny, Nx, 3), dtype=complex)
 
-        (et, et_basis), (ez, ez_basis) = basis.split(mode.H)
-        (et_x, et_x_basis), (et_y, et_y_basis) = basis_fix.split(
-            basis_fix.project(et_basis.interpolate(et))
-        )
+            basis = mode.basis
+            basis_fix = basis.with_element(ElementVector(ElementDG(ElementTriP1())))
 
-        coordinates = np.array([grid_x.flatten(), grid_y.flatten()])
-
-        grid_data = np.array(
-            (
-                et_x_basis.interpolator(et_x)(coordinates),
-                et_y_basis.interpolator(et_y)(coordinates),
-                ez_basis.interpolator(ez)(coordinates),
+            (et, et_basis), (ez, ez_basis) = basis.split(mode.E)
+            (et_x, et_x_basis), (et_y, et_y_basis) = basis_fix.split(
+                basis_fix.project(et_basis.interpolate(et))
             )
-        ).T
 
-        grid_data_H = grid_data.reshape((*grid_x.shape, -1))
+            coordinates = np.array([grid_x.flatten(), grid_y.flatten()])
+
+            grid_data = np.array(
+                (
+                    et_x_basis.interpolator(et_x)(coordinates),
+                    et_y_basis.interpolator(et_y)(coordinates),
+                    ez_basis.interpolator(ez)(coordinates),
+                )
+            ).T
+
+            grid_data_E = grid_data.reshape((*grid_x.shape, -1))
+
+            (et, et_basis), (ez, ez_basis) = basis.split(mode.H)
+            (et_x, et_x_basis), (et_y, et_y_basis) = basis_fix.split(
+                basis_fix.project(et_basis.interpolate(et))
+            )
+
+            coordinates = np.array([grid_x.flatten(), grid_y.flatten()])
+
+            grid_data = np.array(
+                (
+                    et_x_basis.interpolator(et_x)(coordinates),
+                    et_y_basis.interpolator(et_y)(coordinates),
+                    ez_basis.interpolator(ez)(coordinates),
+                )
+            ).T
+
+            grid_data_H = grid_data.reshape((*grid_x.shape, -1))
 
         # Plot the data
 
@@ -662,35 +665,22 @@ class RFSimulatorFEMWELL:
         ax_E = fig.add_subplot(gs[0, 0])
         ax_H = fig.add_subplot(gs[0, 1])
 
-        for ax, data, label in zip(
-            [ax_E, ax_H], [grid_data_E, grid_data_H], [r"$|E(x,y)|$", r"$|H(x,y)|$"]
-        ):
+        for ax, mfield, label in zip([ax_E, ax_H], [mode.E, mode.H], [r"$|E_t(x,y)|$", r"$|H_t(x,y)|$"]):
+            (mfield_x, mfield_y), _ = mode.basis.interpolate(mfield)
+            mfield_mod = np.sqrt(np.abs(mfield_x)**2 + np.abs(mfield_y)**2)
 
-            ax.imshow(
-                np.sqrt(np.sum(np.abs(data)**2, axis=2)),
-                origin="lower",
-                extent=[xmin, xmax, ymin, ymax],
-                cmap=cmap,
-                interpolation="bicubic",
-                aspect="auto",
-            )
+            plot_basis = mode.basis.with_element(ElementDG(ElementTriP1()))
+            mfield_plot = plot_basis.project(mfield_mod)
 
-            ax.streamplot(
-                grid_x,
-                grid_y,
-                data.real[:, :, 0],
-                data.real[:, :, 1],
-                color=color_vectors,
-                linewidth=0.5,
-            )
+            plot_basis.plot(mfield_plot, ax=ax, cmap=cmap, colorbar=True, shading="gouraud")
 
             self.plot_polygons(
-                fig=fig,
-                ax=ax,
-                color_polygon=color_polygons,
-                color_line=color_integral_lines,
-            )
-
+                        fig=fig,
+                        ax=ax,
+                        color_polygon=color_polygons,
+                        color_line=color_integral_lines,
+                    )
+        
             ax.set_xlim(xmin, xmax)
             ax.set_ylim(ymin, ymax)
 
@@ -698,6 +688,32 @@ class RFSimulatorFEMWELL:
             ax.set_ylabel("y (um)")
 
             ax.set_title(label)
+
+        if plot_vectors:
+
+            for ax, data, label in zip(
+                [ax_E, ax_H], [grid_data_E, grid_data_H], [r"$|E(x,y)|$", r"$|H(x,y)|$"]
+            ):
+
+            # ax.imshow(
+            #     np.sqrt(np.sum(np.abs(data)**2, axis=2)),
+            #     origin="lower",
+            #     extent=[xmin, xmax, ymin, ymax],
+            #     cmap=cmap,
+            #     interpolation="bicubic",
+            #     aspect="auto",
+            # )
+
+                ax.streamplot(
+                    grid_x,
+                    grid_y,
+                    data.real[:, :, 0],
+                    data.real[:, :, 1],
+                    color=color_vectors,
+                    linewidth=0.5,
+                )
+
+            
 
     def plot_polygons(
         self,
