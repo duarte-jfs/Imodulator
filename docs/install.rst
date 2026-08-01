@@ -38,6 +38,18 @@ Extras combine, so you can request any subset in one command:
 Instantiating a simulator whose extra is not installed raises a clear error
 telling you which ``pip install`` command to run.
 
+.. note::
+
+   ``solcore`` depends on ``solsesame==2.1a1``, which is a **pre-release**. Plain
+   ``pip`` (including inside a conda environment) installs it automatically
+   because the version is pinned exactly, but ``uv`` rejects pre-releases by
+   default. If you install the ``solcore`` extra with ``uv`` and hit a resolver
+   error, allow pre-releases explicitly:
+
+   .. code-block:: console
+
+      (.venv) $ uv pip install -e '.[solcore]' --prerelease=allow
+
 Alternatively you can clone the repository and install it locally:
 
 .. code-block:: console

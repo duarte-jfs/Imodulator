@@ -43,7 +43,7 @@ dependencies = [
 femwell = ["femwell==0.1.11"]
 # Solcore-based charge transport (ChargeSimulatorSolcore). Install with:
 # pip install imodulator[solcore]
-solcore = ["solcore>=5.10.1"]
+solcore = ["solcore>=5.10.1"] # solcore depends on solsesame==2.1a1 (a pre-release); if install fails, add --prerelease=allow
 # nextnano-based charge transport (ChargeSimulatorNN). Install with:
 # pip install imodulator[nextnanopy]
 nextnanopy = ["nextnanopy>=1.2.0"]
