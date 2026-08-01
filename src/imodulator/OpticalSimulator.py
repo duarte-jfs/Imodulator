@@ -31,18 +31,25 @@ from skfem import Basis, ElementTriP1, ElementVector, ElementDG, Functional
 from skfem.helpers import inner
 from skfem import adaptive_theta
 
-from femwell.mesh import mesh_from_OrderedDict
-from femwell.maxwell.waveguide import (
-    Modes,
-    Mode,
-    compute_modes,
-)
-
 import numpy as np
 import copy
 
+# femwell is an optional dependency (pip install imodulator[femwell]). Import it
+# here without failing so `import imodulator` works when it is absent;
+# OpticalSimulatorFEMWELL raises a clear error at instantiation if it is missing.
+try:
+    from femwell.mesh import mesh_from_OrderedDict
+    from femwell.maxwell.waveguide import (
+        Modes,
+        Mode,
+        compute_modes,
+    )
+except ModuleNotFoundError:
+    pass
+
 from imodulator import PhotonicDevice
 from imodulator.ElectroOpticalModel import ElectroOpticalModel
+from imodulator._optional_deps import require
 import imodulator.Config as Config
 lumapi=Config.config_instance.get_lumapi()
 
@@ -676,6 +683,8 @@ class OpticalSimulatorFEMWELL:
             include_metals: if `True`, :class:`MetalPolygon`s will be included in the simulation. If `False`, they will be ignored and their optical properties assigned to :math:`\epsilon_{opt} = 1`.
 
         '''
+        require("femwell", "femwell")
+
         self.photonicdevice = device
         self.reg = self.photonicdevice.reg
 

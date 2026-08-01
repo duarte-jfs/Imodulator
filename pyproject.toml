@@ -25,9 +25,7 @@ classifiers = [
 license = {file = "LICENSE"}
 keywords = ["integrated photonics", "electro-optic modulators", "photonics simulation", "optical mode solver", "rf mode solver", "charge transport simulation", "electro-optic interaction"]
 dependencies = [
-    "femwell==0.1.11",
     "scikit-fem>=12.0.0",
-    # "femwell @ git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49",
     "matplotlib==3.9.0",
     "numpy>=2.2.6",
     "Pint>=0.24",
@@ -35,12 +33,21 @@ dependencies = [
     "shapely>=2.1.2",
     "pyyaml==6.0.2",
     "pandas==2.3.0",
-    "nextnanopy>=1.2.0",
     "openbandparams>=1.0",
-    "scikit-fem>=11.0.0",
     "pygmsh>=7.1.17",
-    "solcore>=5.10.1"
 ]
+
+[project.optional-dependencies]
+# Optical and RF mode solving (OpticalSimulatorFEMWELL, RFSimulatorFEMWELL,
+# ElectroOpticalSimulator). Install with: pip install imodulator[femwell]
+femwell = ["femwell==0.1.11"]
+# Solcore-based charge transport (ChargeSimulatorSolcore). Install with:
+# pip install imodulator[solcore]
+solcore = ["solcore>=5.10.1"]
+# nextnano-based charge transport (ChargeSimulatorNN). Install with:
+# pip install imodulator[nextnanopy]
+nextnanopy = ["nextnanopy>=1.2.0"]
+all = ["imodulator[femwell,solcore,nextnanopy]"]
 
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
