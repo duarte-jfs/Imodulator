@@ -42,6 +42,9 @@ dependencies = [
     "solcore>=5.10.1"
 ]
 
+[project.optional-dependencies]
+dev = ["ruff==0.16.1"]
+
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
 Documentation = "https://imodulator.readthedocs.io/en/latest/"
@@ -58,3 +61,11 @@ include = [
 # [tool.hatch.build.targets.sdist]
 # include = ["src/**", "README.md", "LICENSE"]
 # exclude = ["build/**", "imgs/**", ".vscode/**", "*.egg-info"]
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
