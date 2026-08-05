@@ -33,7 +33,11 @@ class PhotonicDevice:
 
     """
 
-    def __init__(self, photo_polygons: list[PhotonicPolygon]):
+    def __init__(
+            self, 
+            photo_polygons: list[PhotonicPolygon],
+            line_integral_multi_polygons: list[tuple(str, list[str])] | None = None
+            ):
         """
         Initializes the class.
 
@@ -44,7 +48,11 @@ class PhotonicDevice:
 
         Args:
             photo_polygons: a ``list`` of :class:`PhotonicPolygon` objects. These objects will be used to create the mesh and the dielectric tensors. Note that the polygons in this list will dictate the hierarchy of the polygons for the meshing algorithm. The first polygon in the list will have the highest priority.
-
+            line_integral_multi_polygons: a ``list`` of ``list`` of ``str``. Each inner list contains the names of the polygons that define a line integral polygon. This option may be useful if your metal electrode is complex and you wish to use many polygons with different mesh settings to optimize the total number of mesh elements. Each list of polygon names will result in the respective photo_polygons to be merged into a temporary polygon that will be used to create the line integral object. If None, it will ignore this and compute a line integrals for each photo_polygon with the `calculate_current` flag.
+                >>> line_integral_multi_polygons = [
+                >>>     ("line_current_name1", ["metal1", "metal2"]),
+                >>>     ("line_current_name2", ["metal3", "metal4", "metal5"]),
+                >>> ]
 
         """
         self.reg = UnitRegistry()
@@ -129,20 +137,62 @@ class PhotonicDevice:
                 if key in ["resolution", "SizeMax", "distance"]
             }
 
-            if polygon.calculate_current:
+            #Now we calculate the line integrals
+            if line_integral_multi_polygons is None:
+                if polygon.calculate_current:
+
+                    line = LineString(
+                        polygon.polygon.buffer(
+                            polygon.d_buffer_current, join_style="bevel"
+                        ).exterior
+                    )
+                    self.line_entities[polygon.name + "_line_current"] = line
+
+                    #Transfer the mesh settings to the resolutions dictionaries
+                    # This one is only necessary for the RF simulator
+                    self.resolutions_rf[polygon.name + "_line_current"] = {
+                        key: value
+                        for key, value in polygon.rf_mesh_settings.items()
+                        if key in ["resolution", "SizeMax", "distance"]
+                    }
+
+        if line_integral_multi_polygons is not None:
+            for i, (line_name, polygon_names) in enumerate(line_integral_multi_polygons):
+                ## Check that all polygon names have the calculate_current flag set to True
+                for polygon_name in polygon_names:
+                    polygon = next(
+                        (p for p in self.photo_polygons if p.name == polygon_name), None
+                    )
+                    if polygon is None:
+                        raise ValueError(
+                            f"Polygon with name '{polygon_name}' not found in photo_polygons."
+                        )
+                    if not polygon.calculate_current:
+                        raise ValueError(
+                            f"Polygon with name '{polygon_name}' does not have the calculate_current flag set to True."
+                        )
+                    
+                polygons_to_merge = [
+                    polygon for polygon in self.photo_polygons if polygon.name in polygon_names
+                ]
+                ## Find the polygon with the smallest resolution
+                min_resolution_polygon = min(
+                    polygons_to_merge, key=lambda p: p.rf_mesh_settings["resolution"]
+                )
+                merged_polygon = MultiPolygon([polygon.polygon for polygon in polygons_to_merge])
 
                 line = LineString(
-                    polygon.polygon.buffer(
-                        polygon.d_buffer_current, join_style="bevel"
+                    merged_polygon.buffer(
+                        min_resolution_polygon.d_buffer_current, join_style="bevel"
                     ).exterior
                 )
-                self.line_entities[polygon.name + "line_current"] = line
+                self.line_entities[line_name + "_line_current"] = line
 
-                #Transfer the mesh settings to the resolutions dictionaries
+                # Transfer the mesh settings to the resolutions dictionaries
                 # This one is only necessary for the RF simulator
-                self.resolutions_rf[polygon.name + "line_current"] = {
+                self.resolutions_rf[line_name + "_line_current"] = {
                     key: value
-                    for key, value in polygon.rf_mesh_settings.items()
+                    for key, value in min_resolution_polygon.rf_mesh_settings.items()
                     if key in ["resolution", "SizeMax", "distance"]
                 }
 
