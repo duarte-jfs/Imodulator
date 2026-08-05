@@ -17,19 +17,26 @@ from skfem import Basis, ElementTriP0, ElementTriP1, ElementVector, ElementDG, F
 from skfem.helpers import inner
 from skfem import adaptive_theta
 
-from femwell.mesh import mesh_from_OrderedDict
-from femwell.maxwell.waveguide import (
-    Modes,
-    Mode,
-    calculate_scalar_product,
-    compute_modes,
-)
+# femwell is an optional dependency (pip install imodulator[femwell]). Import it
+# here without failing so `import imodulator` works when it is absent;
+# RFSimulatorFEMWELL raises a clear error at instantiation if it is missing.
+try:
+    from femwell.mesh import mesh_from_OrderedDict
+    from femwell.maxwell.waveguide import (
+        Modes,
+        Mode,
+        calculate_scalar_product,
+        compute_modes,
+    )
+except ModuleNotFoundError:
+    pass
 
 import numpy as np
 import copy
 from pint import Quantity
 
 from imodulator import PhotonicDevice
+from imodulator._optional_deps import require
 from collections import OrderedDict
 import warnings
 
@@ -76,6 +83,7 @@ class RFSimulatorFEMWELL:
             The simulation window MUST be a rectangle. If not, the simulation will fail. Also beware that the definition of the simulation window is how you can make use of symmetry planes through the definition of metal boundaries or not. See `compute_modes` for more information on how to use the symmetry planes.
         
         """
+        require("femwell", "femwell")
 
         self.photodevice = device
         self.reg = self.photodevice.reg

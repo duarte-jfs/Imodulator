@@ -21,7 +21,13 @@ from shapely.geometry import (
 )
 from shapely.ops import clip_by_rect
 
-from femwell.mesh import mesh_from_OrderedDict
+# femwell is an optional dependency (pip install imodulator[femwell]). Import it
+# here without failing so `import imodulator` works when it is absent;
+# ElectroOpticalSimulator raises a clear error at instantiation if it is missing.
+try:
+    from femwell.mesh import mesh_from_OrderedDict
+except ModuleNotFoundError:
+    pass
 
 from skfem.io.meshio import from_meshio
 from skfem.visuals.matplotlib import draw_mesh2d
@@ -36,6 +42,7 @@ from pint import Quantity
 
 from imodulator import PhotonicDevice
 from imodulator.ElectroOpticalModel import ElectroOpticalModel
+from imodulator._optional_deps import require
 
 from imodulator.PhotonicPolygon import (
     SemiconductorPolygon,
@@ -68,7 +75,8 @@ class ElectroOpticalSimulator:
             simulation_window (Polygon, optional): The polygon defining the simulation region. If None, the entire device is used.
             wavelength (float): The wavelength of the optical mode in nanometers. Default is 1550 nm.
         """
-        
+        require("femwell", "femwell")
+
         self.photodevice = device
         self.reg = self.photodevice.reg
         self.wl = wavelength * self.reg.nanometer

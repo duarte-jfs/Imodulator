@@ -29,30 +29,40 @@ from imodulator.PhotonicPolygon import (
     InsulatorPolygon,
 )
 
-####### SOLCORE imports ##########
-from solcore.material_system.material_system import BaseMaterial
-from solcore.material_data.mobility import (
-    calculate_InAlAs,
-    calculate_InGaAs,
-    calculate_InGaAsP,
-    calculate_InGaP,
-    calculate_AlGaAs,
-    mobility_low_field,
-)
 import json
 import inspect
-
-import solcore
-from solcore import config
-from solcore.parameter_system import ParameterSystem
-from solcore.poisson_drift_diffusion.DeviceStructure import DefaultProperties
 from configparser import ConfigParser
 
-from solcore.solar_cell import Junction, SolarCell, Layer
-from solcore.state import State
-from solcore.solar_cell_solver import solar_cell_solver
-
 import gmsh
+
+from imodulator._optional_deps import require
+
+####### SOLCORE imports ##########
+# solcore is an optional dependency (pip install imodulator[solcore]). Import it
+# here without failing so `import imodulator.ChargeSimulator` (and ChargeSimulatorNN,
+# which does not need solcore) works when it is absent. Only ChargeSimulatorSolcore
+# and CustomMaterial_OBP require it, and they raise a clear error at instantiation.
+# BaseMaterial falls back to object so CustomMaterial_OBP can still be defined at
+# import time without solcore installed.
+try:
+    import solcore
+    from solcore import config
+    from solcore.material_system.material_system import BaseMaterial
+    from solcore.material_data.mobility import (
+        calculate_InAlAs,
+        calculate_InGaAs,
+        calculate_InGaAsP,
+        calculate_InGaP,
+        calculate_AlGaAs,
+        mobility_low_field,
+    )
+    from solcore.parameter_system import ParameterSystem
+    from solcore.poisson_drift_diffusion.DeviceStructure import DefaultProperties
+    from solcore.solar_cell import Junction, SolarCell, Layer
+    from solcore.state import State
+    from solcore.solar_cell_solver import solar_cell_solver
+except ModuleNotFoundError:
+    BaseMaterial = object
 
 PhotonicPolygon = SemiconductorPolygon | MetalPolygon | InsulatorPolygon
 Line = LineString | MultiLineString | LinearRing
@@ -147,8 +157,8 @@ class ChargeSimulatorNN:
         self,
         device: PhotonicDevice, 
         simulation_line: LineString,
-        inputfile_name: str ="quicksave", 
-        output_directory:str=nn.config.config['nextnano++']['outputdirectory'],
+        inputfile_name: str ="quicksave",
+        output_directory: str = None,
         temperature: float = 300.0,  # Add temperature parameter
         bias_start_stop_step: list = [0,1,2], #contact1 is the bias electrode decide - or + accordingly
         # save_sim: bool = False,
@@ -166,9 +176,13 @@ class ChargeSimulatorNN:
             bias_start_stop_step: Voltage sweep [start, stop, step]. Defaults to [0,1,1].
             
         """
-             
+        require("nextnanopy", "nextnanopy")
+
+        if output_directory is None:
+            output_directory = nn.config.config['nextnano++']['outputdirectory']
+
         self.temperature = temperature
-        self.inputfile_name = inputfile_name 
+        self.inputfile_name = inputfile_name
         self.output_directory = output_directory
         self.photonicdevice = device
         self.bias_start_stop_step=bias_start_stop_step
@@ -863,6 +877,7 @@ class ChargeSimulatorNN:
 class CustomMaterial_OBP(BaseMaterial):
 
     def __init__(self, name, opb_mat, T = 300, **kwargs):
+        require("solcore", "solcore")
         BaseMaterial.__init__(
             self,
             T=300, 
@@ -1367,6 +1382,8 @@ class ChargeSimulatorSolcore:
             bias_start_stop_step: Voltage sweep [start, stop, steps]. Defaults to [0,1,1].
             
         """
+        require("solcore", "solcore")
+
         self.temperature = temperature
         self.photonicdevice = device
         self.bias_start_stop_step=bias_start_stop_step
