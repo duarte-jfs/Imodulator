@@ -51,7 +51,8 @@ from imodulator import PhotonicDevice
 from imodulator.ElectroOpticalModel import ElectroOpticalModel
 from imodulator._optional_deps import require
 import imodulator.Config as Config
-lumapi=Config.config_instance.get_lumapi()
+
+lumapi = Config.config_instance.get_lumapi()
 
 from collections import OrderedDict
 import warnings
@@ -67,10 +68,10 @@ Line = LineString | MultiLineString | LinearRing
 
 
 class OpticalSimulatorMODE:
-    #The api import can be cleaner dunno how
-    
+    # The api import can be cleaner dunno how
+
     # The default paths for windows
-    
+
     """
     Base class for Mode simulation of a PhotonicDevice based on Lumerical MODE
     """
@@ -83,44 +84,43 @@ class OpticalSimulatorMODE:
         save_sim: bool = True,
         wavelength: float = 1.55,
     ):
+        """
+        Initialize the OpticalSimulatorMODE class for MODE simulation.
 
-        '''
-       Initialize the OpticalSimulatorMODE class for MODE simulation.
+        Creates geometry and material entities from the photonic device.
 
-       Creates geometry and material entities from the photonic device.
-       
-       With every function call the state of the simulation after the 
-       function applied will be saved to the file quicksave.lms.
-       quicksave.lms helps with chenking the state of the simulation and 
-       prevents multiple of mode simulations to reduce the system memory. 
-       
-       Way of working:
+        With every function call the state of the simulation after the
+        function applied will be saved to the file quicksave.lms.
+        quicksave.lms helps with chenking the state of the simulation and
+        prevents multiple of mode simulations to reduce the system memory.
 
-       1. __init__(); runs 
-        1.1 _create_geometry(): creates polygons
-        1.2 _create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters
-       2. create_fde(): sets the required simulation parameters & creates the simulation region" 
-       3. compute_modes(): runs the simulation
-       4. select_modes() #select TE and TM mode index or it will be automatically chosen if the top two modes are the fundamental TE and TM mode
-       5. plot_modes() #plots the electric field magnitudes for TE and TM modes
-       
-        
-        Args:
-            device: The photonic device to simulate
-            simulation_window: The simulation window bounds. If None, uses device bounds
-            include_metals: Whether to include metal polygons in simulation. Defaults to True
-            save_sim: Whether to save simulation files. Defaults to False
-            wavelength: The wavelength **in um** at which each polygon's
-                ``optical_material`` is evaluated to get its permittivity. Defaults to 1.55
+        Way of working:
 
-        .. todo::  
-            Permitivity tensor to input n,k values? Not sure if necesary
-        
+        1. __init__(); runs
+         1.1 _create_geometry(): creates polygons
+         1.2 _create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters
+        2. create_fde(): sets the required simulation parameters & creates the simulation region"
+        3. compute_modes(): runs the simulation
+        4. select_modes() #select TE and TM mode index or it will be automatically chosen if the top two modes are the fundamental TE and TM mode
+        5. plot_modes() #plots the electric field magnitudes for TE and TM modes
 
-        '''
-        
+
+         Args:
+             device: The photonic device to simulate
+             simulation_window: The simulation window bounds. If None, uses device bounds
+             include_metals: Whether to include metal polygons in simulation. Defaults to True
+             save_sim: Whether to save simulation files. Defaults to False
+             wavelength: The wavelength **in um** at which each polygon's
+                 ``optical_material`` is evaluated to get its permittivity. Defaults to 1.55
+
+         .. todo::
+             Permitivity tensor to input n,k values? Not sure if necesary
+
+
+        """
+
         self.photonicdevice = device
-        self.lumapi=lumapi
+        self.lumapi = lumapi
         self.simulation_window = simulation_window
         self.wavelength = wavelength
 
@@ -129,48 +129,44 @@ class OpticalSimulatorMODE:
         # remove metals if not include_metals
         if not include_metals:
             self.optical_photopolygons = [
-                poly
-                for poly in self.optical_photopolygons
-                if not isinstance(poly, MetalPolygon)
+                poly for poly in self.optical_photopolygons if not isinstance(poly, MetalPolygon)
             ]
-            
-        self.polygon_entities = OrderedDict() #?
-        self.junction_entities = OrderedDict() #?
-        self.resolutions = dict()
-        self.modefields = dict() 
-        self.save_sim = save_sim 
 
+        self.polygon_entities = OrderedDict()  # ?
+        self.junction_entities = OrderedDict()  # ?
+        self.resolutions = dict()
+        self.modefields = dict()
+        self.save_sim = save_sim
 
         for polygon in self.optical_photopolygons:
             self.polygon_entities[polygon.name] = polygon.polygon
         # We now have all the photopolygons cut by the plane. Let us finally add the boundaries
 
         self.entities = OrderedDict(
-            list(self.junction_entities.items())
-            + list(self.polygon_entities.items())
+            list(self.junction_entities.items()) + list(self.polygon_entities.items())
         )
         # Transfer the resolutions from the photonic device to the optical_simulator
         for name in self.entities.keys():
             if name in self.photonicdevice.resolutions_optical.keys():
                 self.resolutions[name] = self.photonicdevice.resolutions_optical[name]
-        #Lumerical MODE API starts here      
+        # Lumerical MODE API starts here
         self.mode = self.lumapi.MODE()
         self._create_geometry()
         self._create_materials()
-        self.mode.save("quicksave"+".lms")
+        self.mode.save("quicksave" + ".lms")
 
-    def _create_geometry(self): #implement a priority order
+    def _create_geometry(self):  # implement a priority order
         """
         Create geometric primitives in Lumerical MODE from polygon entities.
-        
+
         Creates polygon objects in MODE for all non-background polygon entities,
         setting their vertices in micron units and saving the simulation file.
         """
         # create the primitives (change into polygons)
         print("List of polygons in simulation:")
         for key in self.polygon_entities.keys():
-        #     if "metal" in key:
-                #     continue
+            #     if "metal" in key:
+            #     continue
             if key == "background":
                 continue
             self.mode.addpoly()
@@ -179,48 +175,44 @@ class OpticalSimulatorMODE:
             # Extract the coordinates from the entitity
             x, y = self.polygon_entities[key].exterior.coords.xy
             # Combine the coordinates into a single array
-            coords = np.column_stack((x, y))* 1e-6 #in microns
+            coords = np.column_stack((x, y)) * 1e-6  # in microns
             # Set the vertices
             self.mode.set("vertices", coords)
-        
-        self.mode.save("quicksave"+".lms")
-        
-        
-        
+
+        self.mode.save("quicksave" + ".lms")
+
     def _add_nonmetal_mat_mode(self):
         """
         Add non-metallic materials to Lumerical MODE simulation.
-        
+
         Creates (n,k) materials in MODE for semiconductor and insulator polygons,
         setting their refractive index and imaginary refractive index based on
         the optical material properties.
         """
         mode_mats = {}
         for polygon in self.optical_photopolygons:
-            if isinstance(polygon, (SemiconductorPolygon,InsulatorPolygon)):
-            
+            if isinstance(polygon, (SemiconductorPolygon, InsulatorPolygon)):
                 lum_materialname = polygon.name + "_m"
                 if self.mode.materialexists(lum_materialname):
                     self.mode.deletematerial(lum_materialname)
                 mode_mats[polygon.name] = self.mode.addmaterial("(n,k) Material")
                 self.mode.setmaterial(mode_mats[polygon.name], "name", lum_materialname)
-                
+
                 # optical_material is a callable f(wavelength in um) returning the
                 # permittivity, so evaluate it before taking the index.
                 n = np.sqrt(complex(polygon.optical_material(self.wavelength)))
 
                 self.mode.setmaterial(lum_materialname, "Refractive Index", n.real)
                 self.mode.setmaterial(lum_materialname, "Imaginary Refractive Index", n.imag)
-    
-    def _add_metal_mat_mode(self) :
+
+    def _add_metal_mat_mode(self):
         ##
         print("placehold")
 
-        
-    def _create_materials(self):#Overwrite meh order for priority
+    def _create_materials(self):  # Overwrite meh order for priority
         """
         Create and assign materials to geometric objects in MODE.
-        
+
         Adds non-metallic materials, assigns random contrasting colors to each material,
         and associates materials with their corresponding geometric objects. Background
         materials are set with reduced alpha for transparency.
@@ -235,139 +227,148 @@ class OpticalSimulatorMODE:
 
         # Ensure contrasting colors
         for i in range(1, N):
-            while np.linalg.norm(colors[i] - colors[i-1]) < 50:  # Adjust the threshold as needed
+            while np.linalg.norm(colors[i] - colors[i - 1]) < 50:  # Adjust the threshold as needed
                 colors[i] = np.random.randint(0, 256, size=3)
 
         # Convert the colors to a list
         cl = [tuple(color) for color in colors]
-        
+
         for i, polygon in enumerate(self.optical_photopolygons):
-            lum_matname=polygon.name+"_m"
-            if polygon.name =='background': #implement in fde
-                alpha_mat=0.1
+            lum_matname = polygon.name + "_m"
+            if polygon.name == "background":  # implement in fde
+                alpha_mat = 0.1
             else:
-                alpha_mat=1
-            self.mode.setmaterial(lum_matname,"color",np.asarray([[cl[i][0] / 255], [cl[i][1] / 255], [cl[i][1] / 255], [alpha_mat]]))
-            
+                alpha_mat = 1
+            self.mode.setmaterial(
+                lum_matname,
+                "color",
+                np.asarray([[cl[i][0] / 255], [cl[i][1] / 255], [cl[i][1] / 255], [alpha_mat]]),
+            )
+
             try:
-                self.mode.setnamed(polygon.name,"material",lum_matname)
+                self.mode.setnamed(polygon.name, "material", lum_matname)
                 print(lum_matname)
-            except lumapi.LumApiError: #There might be more material defined then geometry, except error and continue in the loop
+            except lumapi.LumApiError:  # There might be more material defined then geometry, except error and continue in the loop
                 continue
-        self.mode.save("quicksave"+".lms")
-        
+        self.mode.save("quicksave" + ".lms")
+
     def mesh(self):
-        
+
         for key in self.polygon_entities.keys():
-        #     if "metal" in key:
-                #     continue
+            #     if "metal" in key:
+            #     continue
             if key == "background":
                 continue
             self.mode.addmesh()
-            meshname="mesh_"+key
+            meshname = "mesh_" + key
             self.mode.set("name", meshname)
             self.mode.select(meshname)
-            self.mode.set("based on a structure",1)
-            self.mode.set("structure",key)
-            self.mode.set("buffer",0)
+            self.mode.set("based on a structure", 1)
+            self.mode.set("structure", key)
+            self.mode.set("buffer", 0)
             # self.mode.set("buffer",self.resolutions[key]["distance"])
-            self.mode.set("dx",self.resolutions[key]["resolution"]*1e-6)
-            self.mode.set("dy",self.resolutions[key]["resolution"]*1e-6)
-            
-            
-    def create_fde(self,
-                   num_modes: int = 4,
-                   dx=20e-9,
-                   dy=10e-9,
-                   background_index=1,
-                   bc={"x min bc":"PML",
-                       "x max bc":"PML",
-                       "y min bc":"PML",
-                       "y max bc":"PML",
-                       },
-                   bounds=None,
+            self.mode.set("dx", self.resolutions[key]["resolution"] * 1e-6)
+            self.mode.set("dy", self.resolutions[key]["resolution"] * 1e-6)
+
+    def create_fde(
+        self,
+        num_modes: int = 4,
+        dx=20e-9,
+        dy=10e-9,
+        background_index=1,
+        bc={
+            "x min bc": "PML",
+            "x max bc": "PML",
+            "y min bc": "PML",
+            "y max bc": "PML",
+        },
+        bounds=None,
     ):
         """
         Create and configure the Finite Difference Eigenmode (FDE) solver in Lumerical MODE.
-        
+
         Sets up a 2D Z-normal FDE solver with specified mesh parameters, boundary conditions,
         and simulation region. The solver will find eigenmode solutions for the waveguide
         cross-section defined by the device geometry.
-        
+
         Args:
             num_modes (int, optional): Number of trial modes to calculate. The solver will
                 attempt to find this many eigenmodes. Defaults to 4.
-                
+
             dx (float, optional): Maximum mesh step size in the x-direction in meters.
                 Smaller values give more accurate results but increase computation time.
                 Defaults to 20e-9 (20 nm).
-                
+
             dy (float, optional): Maximum mesh step size in the y-direction in meters.
                 Smaller values give more accurate results but increase computation time.
                 Defaults to 10e-9 (10 nm).
-                
+
             background_index (float, optional): Background refractive index used as the
                 initial guess for the mode search. Should be close to the expected
                 effective index of the fundamental mode. Defaults to 1.
-                
+
             bc (dict, optional): Boundary conditions for each edge of the simulation region.
                 Keys should be "x min bc", "x max bc", "y min bc", "y max bc".
-                Values can be "PML" (Perfectly Matched Layer), "Metal", or "PMC" 
+                Values can be "PML" (Perfectly Matched Layer), "Metal", or "PMC"
                 (Perfect Magnetic Conductor). Defaults to PML on all boundaries.
-                
+
             bounds (list or tuple, optional): Custom simulation region bounds as
                 [x_min, y_min, x_max, y_max] in meters. If None and a
                 ``simulation_window`` was given at initialization, the region is set to
                 that window's bounds. If None and there is no ``simulation_window``,
                 bounds are set from the background polygon with 1 μm padding on all
                 sides. Defaults to None.
-        
+
         Returns:
             None: Configures the FDE solver in the Lumerical MODE session.
-            
+
         Notes:
             - The solver is configured for 2D Z-normal geometry (cross-section analysis)
             - Mesh is defined by maximum step size ("maximum mesh step" method)
             - Mode search uses "near n" method with the background_index as target
             - The "use max index" option is enabled for better convergence
             - Simulation state is automatically saved as "quicksave.lms"
-            
+
         Example:
             >>> # Basic usage with defaults
             >>> Mode.create_fde()
-            
+
             >>> # Custom mesh and more modes
             >>> Mode.create_fde(num_modes=8, dx=10e-9, dy=5e-9, background_index=3.2)
-            
+
             >>> # Custom boundary conditions
-            >>> bc_custom = {"x min bc": "Metal", "x max bc": "Metal", 
-            ...              "y min bc": "PML", "y max bc": "PML"}
+            >>> bc_custom = {
+            ...     "x min bc": "Metal",
+            ...     "x max bc": "Metal",
+            ...     "y min bc": "PML",
+            ...     "y max bc": "PML",
+            ... }
             >>> Mode.create_fde(bc=bc_custom)
-            
+
             >>> # Custom simulation bounds (in meters)
             >>> bounds = [-10e-6, -5e-6, 10e-6, 5e-6]  # 20x10 μm region
             >>> Mode.create_fde(bounds=bounds)
         """
-        
-        scaled_bounds = tuple(element * 1e-6 for element in self.polygon_entities["background"].bounds)
+
+        scaled_bounds = tuple(
+            element * 1e-6 for element in self.polygon_entities["background"].bounds
+        )
 
         self.mode.addfde()
         self.mode.select("FDE")
 
         self.mode.set("solver type", "2D Z normal")
-        #expend the simulation region
+        # expend the simulation region
         if bounds is not None:
             region_bounds = tuple(bounds)
         elif self.simulation_window is not None:
-            region_bounds = tuple(
-                element * 1e-6 for element in self.simulation_window.bounds
-            )
+            region_bounds = tuple(element * 1e-6 for element in self.simulation_window.bounds)
         else:
             region_bounds = (
-                scaled_bounds[0]-1e-6,
-                scaled_bounds[1]-1e-6,
-                scaled_bounds[2]+1e-6,
-                scaled_bounds[3]+1e-6,
+                scaled_bounds[0] - 1e-6,
+                scaled_bounds[1] - 1e-6,
+                scaled_bounds[2] + 1e-6,
+                scaled_bounds[3] + 1e-6,
             )
 
         self.mode.set("x min", region_bounds[0])
@@ -375,7 +376,7 @@ class OpticalSimulatorMODE:
         self.mode.set("x max", region_bounds[2])
         self.mode.set("y max", region_bounds[3])
 
-        #Work on the mesh
+        # Work on the mesh
         # mesh settings
         self.mode.select("FDE")
         self.mode.set("define x mesh by", "maximum mesh step")
@@ -383,26 +384,24 @@ class OpticalSimulatorMODE:
         self.mode.set("dx", dx)
         self.mode.set("dy", dy)
 
-        #Mode search
+        # Mode search
         self.mode.select("FDE")
         self.mode.set("search", "near n")
         self.mode.set("use max index", True)
-        self.mode.set("number of trial modes",num_modes)
-        self.mode.set("index", background_index) #background index
-        
+        self.mode.set("number of trial modes", num_modes)
+        self.mode.set("index", background_index)  # background index
+
         for bc_key in bc.keys():
-            self.mode.set(bc_key,bc[bc_key])
-        
-        self.mode.save("quicksave"+".lms")
-        
-            
-        
+            self.mode.set(bc_key, bc[bc_key])
+
+        self.mode.save("quicksave" + ".lms")
+
     def compute_modes(
         self,
-        ):  
+    ):
         """
         Compute optical modes using the FDE solver.
-        
+
         Args:
             wavelength (float): Operating wavelength in microns. Defaults to 1.55
             voltage_idx (int): Voltage index for electro-optic simulations. Defaults to 0
@@ -410,89 +409,94 @@ class OpticalSimulatorMODE:
             order (int): Mode order. Defaults to 1
             return_modes (bool): Whether to return mode data. Defaults to False
             auto_select (bool): Whether to auto-select TE/TM modes. Defaults to True
-            
+
         Runs the MODE findmodes() solver and optionally saves the simulation file with the device class name used.
         """
         self.mode.findmodes()
-        self.mode.save("quicksave"+".lms")
-        
-        #Save the file if asked
+        self.mode.save("quicksave" + ".lms")
+
+        # Save the file if asked
         if self.save_sim:
-            self.mode.save(self.photonicdevice.__class__.__name__+".lms")
-   
-       
+            self.mode.save(self.photonicdevice.__class__.__name__ + ".lms")
+
     def select_modes(
         self,
         auto_select: bool = False,  # works only if the top two mods are the fundamental modes
-        TE_TM_idx: list[int]| None=None,             
-                     ): 
+        TE_TM_idx: list[int] | None = None,
+    ):
         """
         Select and extract TE and TM mode field data from simulation results.
-        
+
         Args:
             auto_select (bool): If True, automatically selects TE/TM based on polarization fraction.
                                If False, uses provided indices. Defaults to True
             TE_TM_idx (tuple[int,int]): Mode indices for TE and TM modes when auto_select=False.
                                        Defaults to (1,2)
-                                       
+
         Returns:
             tuple[int,int]: The selected TE and TM mode indices
-            
+
         Extracts Ex, Ey, Ez, Hx, Hy, Hz field components and coordinate arrays,
         storing them in self.modefields dictionary structure.
         """
-        if auto_select and TE_TM_idx is None: 
-            mode1TEfrac=self.mode.getresult("FDE::data::mode" + str(1), "TE polarization fraction")
-            mode2TEfrac=self.mode.getresult("FDE::data::mode" + str(2), "TE polarization fraction")
-            if mode2TEfrac>mode1TEfrac: # make sure the order is TE then TM
-                TE_idx=2
-                TM_idx=1
+        if auto_select and TE_TM_idx is None:
+            mode1TEfrac = self.mode.getresult(
+                "FDE::data::mode" + str(1), "TE polarization fraction"
+            )
+            mode2TEfrac = self.mode.getresult(
+                "FDE::data::mode" + str(2), "TE polarization fraction"
+            )
+            if mode2TEfrac > mode1TEfrac:  # make sure the order is TE then TM
+                TE_idx = 2
+                TM_idx = 1
             else:
-                TE_idx=1
-                TM_idx=2 
-            
-            TE_TM_idx=[TE_idx, TM_idx]
+                TE_idx = 1
+                TM_idx = 2
+
+            TE_TM_idx = [TE_idx, TM_idx]
 
         elif TE_TM_idx is None:
             # auto_select=False with no indices given: fall back to documented default
-            TE_TM_idx=[1, 2]
+            TE_TM_idx = [1, 2]
 
         print("TE and TM mode indexes;\n")
-            
-        TE_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "E")
-        TE_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "H")
+
+        TE_Efield = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "E")
+        TE_Hfield = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "H")
         self.TE_Loss = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[0]), "loss")
-        TM_Efield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "E")
-        TM_Hfield=self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "H")
-        self.TM_Loss = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "loss") * 1e-2 #db/cm 
+        TM_Efield = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "E")
+        TM_Hfield = self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "H")
+        self.TM_Loss = (
+            self.mode.getresult("FDE::data::mode" + str(TE_TM_idx[1]), "loss") * 1e-2
+        )  # db/cm
         self.modefields = {
-        "TE": {
-            "Ex": TE_Efield["E"][:, :, 0, 0, 0],
-            "Ey": TE_Efield["E"][:, :, 0, 0, 1],
-            "Ez": TE_Efield["E"][:, :, 0, 0, 2],
-            "Hx": TE_Hfield["H"][:, :, 0, 0, 0],
-            "Hy": TE_Hfield["H"][:, :, 0, 0, 1],
-            "Hz": TE_Hfield["H"][:, :, 0, 0, 2],
-            "x": TE_Efield["x"],
-            "y": TE_Efield["y"]
-        },
-        "TM": {
-            "Ex": TM_Efield["E"][:, :, 0, 0, 0],
-            "Ey": TM_Efield["E"][:, :, 0, 0, 1],
-            "Ez": TM_Efield["E"][:, :, 0, 0, 2],
-            "Hx": TM_Hfield["H"][:, :, 0, 0, 0],
-            "Hy": TM_Hfield["H"][:, :, 0, 0, 1],
-            "Hz": TM_Hfield["H"][:, :, 0, 0, 2],
-            "x": TM_Efield["x"],
-            "y": TM_Efield["y"]
-        },
+            "TE": {
+                "Ex": TE_Efield["E"][:, :, 0, 0, 0],
+                "Ey": TE_Efield["E"][:, :, 0, 0, 1],
+                "Ez": TE_Efield["E"][:, :, 0, 0, 2],
+                "Hx": TE_Hfield["H"][:, :, 0, 0, 0],
+                "Hy": TE_Hfield["H"][:, :, 0, 0, 1],
+                "Hz": TE_Hfield["H"][:, :, 0, 0, 2],
+                "x": TE_Efield["x"],
+                "y": TE_Efield["y"],
+            },
+            "TM": {
+                "Ex": TM_Efield["E"][:, :, 0, 0, 0],
+                "Ey": TM_Efield["E"][:, :, 0, 0, 1],
+                "Ez": TM_Efield["E"][:, :, 0, 0, 2],
+                "Hx": TM_Hfield["H"][:, :, 0, 0, 0],
+                "Hy": TM_Hfield["H"][:, :, 0, 0, 1],
+                "Hz": TM_Hfield["H"][:, :, 0, 0, 2],
+                "x": TM_Efield["x"],
+                "y": TM_Efield["y"],
+            },
         }
 
-        self.mode.save("quicksave"+".lms")
+        self.mode.save("quicksave" + ".lms")
         return TE_TM_idx
 
     def transfer_results_to_device(
-            self,
+        self,
     ):
         """
         This function will transfer the results from the simulation into the self.device.mode dictionary.
@@ -500,18 +504,17 @@ class OpticalSimulatorMODE:
         Returns:
             photonicdevice.mode
         """
-        interpolatordict={}
+        interpolatordict = {}
         for pol in ["TE", "TM"]:
             fields = self.modefields[pol]
             interp_fields = {}
             x = np.unique(fields["x"])
             y = np.unique(fields["y"])
             for comp in ["Ex", "Ey", "Ez", "Hx", "Hy", "Hz"]:
-
                 interp_fields[comp] = RegularGridInterpolator(
-                    (x*1e6, y*1e6),
+                    (x * 1e6, y * 1e6),
                     fields[comp],
-                    method='linear',
+                    method="linear",
                     bounds_error=False,
                     fill_value=None,
                 )
@@ -520,16 +523,16 @@ class OpticalSimulatorMODE:
             interpolatordict[pol] = interp_fields
         interpolatordict["TE"]["loss"] = self.TE_Loss
         interpolatordict["TM"]["loss"] = self.TM_Loss
-        self.photonicdevice.mode=interpolatordict
-           
+        self.photonicdevice.mode = interpolatordict
+
     def _plot_polygons_on_axis(self, ax, color_polygons="white"):
         """
         Helper function to plot polygon outlines on a given matplotlib axis.
-        
+
         Args:
             ax: Matplotlib axes object to plot on
             color_polygons (str): Color for polygon outlines. Defaults to "white"
-            
+
         Converts polygon coordinates to micron scale and plots outlines with
         specified color and transparency.
         """
@@ -540,25 +543,25 @@ class OpticalSimulatorMODE:
                 x_coords = np.array(x_coords) * 1e-6  # Convert to microns to match field data
                 y_coords = np.array(y_coords) * 1e-6  # Convert to microns to match field data
                 ax.plot(x_coords, y_coords, color=color_polygons, linewidth=1, alpha=1)
-            
+
     def plot_mode(
         self,
-        figsize: tuple[float, float] = (10,5),
+        figsize: tuple[float, float] = (10, 5),
         color_polygons: str = "white",
         show_polygons: bool = True,
-        aspect = None,
-        ):
+        aspect=None,
+    ):
         """
         Plot TE and TM mode intensity distributions.
-        
+
         Args:
             figsize: Figure size (width, height). Defaults to (10,5)
             color_polygons: Color for polygon overlays. Defaults to "white"
             show_polygons: Whether to overlay device geometry. Defaults to True
-            aspect: The aspect ratio of the Axes ('equal', 'auto', float, or None). 
-                This parameter is particularly relevant for images since it determines 
+            aspect: The aspect ratio of the Axes ('equal', 'auto', float, or None).
+                This parameter is particularly relevant for images since it determines
                 whether data pixels are square. Defaults to None.
-        
+
         Returns:
             tuple: (figure, (ax1, ax2)) - matplotlib figure and axes objects
 
@@ -576,17 +579,17 @@ class OpticalSimulatorMODE:
         TE_Ez = self.modefields["TE"]["Ez"].transpose()
         TE_x = self.modefields["TE"]["x"]
         TE_y = self.modefields["TE"]["y"]
-        
+
         # Extract TM mode fields
         TM_Ex = self.modefields["TM"]["Ex"].transpose()
         TM_Ey = self.modefields["TM"]["Ey"].transpose()
         TM_Ez = self.modefields["TM"]["Ez"].transpose()
         TM_x = self.modefields["TM"]["x"]
         TM_y = self.modefields["TM"]["y"]
-        
+
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize)
-        
-        # Plot TE mode 
+
+        # Plot TE mode
         TE_intensity = np.abs(TE_Ex) ** 2 + np.abs(TE_Ey) ** 2 + np.abs(TE_Ez) ** 2
         im1 = ax1.imshow(
             TE_intensity,
@@ -598,15 +601,15 @@ class OpticalSimulatorMODE:
                 np.max(TE_y[:, 0]),
             ],
             origin="lower",
-            aspect = aspect
+            aspect=aspect,
         )
-        
+
         # Add polygons to TE plot
         if show_polygons:
             self._plot_polygons_on_axis(ax1, color_polygons)
-        
+
         fig.colorbar(im1, ax=ax1, shrink=0.8)
-        
+
         # Plot TM mode
         TM_intensity = np.abs(TM_Ex) ** 2 + np.abs(TM_Ey) ** 2 + np.abs(TM_Ez) ** 2
         im2 = ax2.imshow(
@@ -620,21 +623,19 @@ class OpticalSimulatorMODE:
             ],
             origin="lower",
             vmin=0,
-            aspect = aspect
+            aspect=aspect,
         )
-        
+
         # Add polygons to TM plot
         if show_polygons:
             self._plot_polygons_on_axis(ax2, color_polygons)
-        
+
         fig.colorbar(im2, ax=ax2, shrink=0.8)
 
         # The polygon overlay spans the whole device, so without this the axes
         # stretch past the region that was actually solved.
         if self.simulation_window is not None:
-            window_bounds = tuple(
-                element * 1e-6 for element in self.simulation_window.bounds
-            )
+            window_bounds = tuple(element * 1e-6 for element in self.simulation_window.bounds)
             for ax in (ax1, ax2):
                 ax.set_xlim(window_bounds[0], window_bounds[2])
                 ax.set_ylim(window_bounds[1], window_bounds[3])
@@ -647,10 +648,10 @@ class OpticalSimulatorMODE:
         ax2.set_ylabel("y (m)")
         ax2.set_xlabel("x (m)")
         ax2.set_title(r"$|E|^2$ | TM")
-        
+
         fig.tight_layout()
-        
-        return fig, (ax1, ax2)   
+
+        return fig, (ax1, ax2)
 
 
 class OpticalSimulatorFEMWELL:
@@ -673,8 +674,7 @@ class OpticalSimulatorFEMWELL:
         simulation_window: Polygon | None = None,
         include_metals: bool = True,
     ):
-
-        '''
+        """
         Initializes the simulator with the photonic device, the simulation window and the include_metals flag.
 
         Args:
@@ -682,7 +682,7 @@ class OpticalSimulatorFEMWELL:
             simulation_window: The simulation window to use for the optical simulation. If None, the entire device is simulated.
             include_metals: if `True`, :class:`MetalPolygon`s will be included in the simulation. If `False`, they will be ignored and their optical properties assigned to :math:`\epsilon_{opt} = 1`.
 
-        '''
+        """
         require("femwell", "femwell")
 
         self.photonicdevice = device
@@ -702,16 +702,13 @@ class OpticalSimulatorFEMWELL:
         # remove metals if not include_metals
         if not include_metals:
             self.optical_photopolygons = [
-                poly
-                for poly in self.optical_photopolygons
-                if not isinstance(poly, MetalPolygon)
+                poly for poly in self.optical_photopolygons if not isinstance(poly, MetalPolygon)
             ]
 
         self.line_entities = OrderedDict()
         self.polygon_entities = OrderedDict()
         self.junction_entities = OrderedDict()
         self.resolutions = dict()
-
 
         # THIS NEEDS A REFACTOR!!!
 
@@ -720,7 +717,7 @@ class OpticalSimulatorFEMWELL:
                 self.junction_entities[name] = poly
 
         elif simulation_window is not None:
-            #Enforce the simulation plane to be a rectangle
+            # Enforce the simulation plane to be a rectangle
             if not np.isclose(
                 simulation_window.minimum_rotated_rectangle.area, simulation_window.area
             ):
@@ -729,9 +726,9 @@ class OpticalSimulatorFEMWELL:
             # Cut all photopolygons by the simulation plane
             idxs_to_pop = []
             for i, poly in enumerate(self.optical_photopolygons):
-                if poly.polygon.intersects(
-                    simulation_window
-                ) and not simulation_window.contains(poly.polygon):
+                if poly.polygon.intersects(simulation_window) and not simulation_window.contains(
+                    poly.polygon
+                ):
                     poly_tmp = clip_by_rect(poly.polygon, *simulation_window.bounds)
 
                     if poly_tmp.is_empty:
@@ -747,10 +744,7 @@ class OpticalSimulatorFEMWELL:
 
             # Select all junctions cutted by the symmetry plane
             for name, poly in self.photonicdevice.junction_entities.items():
-
-                if poly.intersects(simulation_window) and not simulation_window.contains(
-                    poly
-                ):
+                if poly.intersects(simulation_window) and not simulation_window.contains(poly):
                     poly_tmp = clip_by_rect(polygon, *simulation_window.bounds)
 
                     if not poly_tmp.is_empty:
@@ -765,21 +759,13 @@ class OpticalSimulatorFEMWELL:
 
         surf_bounds = self.polygon_entities["background"].bounds
 
-        left = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])]
-        )
+        left = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])])
 
-        bottom = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])]
-        )
+        bottom = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])])
 
-        right = LineString(
-            [(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])]
-        )
+        right = LineString([(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])])
 
-        top = LineString(
-            [(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])]
-        )
+        top = LineString([(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])])
 
         self.line_entities["left"] = left
         self.line_entities["bottom"] = bottom
@@ -788,44 +774,50 @@ class OpticalSimulatorFEMWELL:
 
         # We now need to check if any polygon is fully covered by a higher priority polygon. If so, we remove it from the simulation
         polygons_to_remove = []
-        for i, (poly_name, poly_to_check) in enumerate(reversed(self.polygon_entities.items())): #We loop from lowest priority to highest
-
+        for i, (poly_name, poly_to_check) in enumerate(
+            reversed(self.polygon_entities.items())
+        ):  # We loop from lowest priority to highest
             difference_poly = None
-            for poly_higher_name, poly_higher in list(reversed(self.polygon_entities.items()))[i+1:]: #We loop through all the higher priority polygons and keep removing their area from the poly_to_check
-                difference_poly = poly_to_check.difference(poly_higher) if difference_poly is None else difference_poly.difference(poly_higher)
+            for poly_higher_name, poly_higher in list(
+                reversed(self.polygon_entities.items())
+            )[
+                i + 1 :
+            ]:  # We loop through all the higher priority polygons and keep removing their area from the poly_to_check
+                difference_poly = (
+                    poly_to_check.difference(poly_higher)
+                    if difference_poly is None
+                    else difference_poly.difference(poly_higher)
+                )
 
                 if difference_poly.is_empty:
                     polygons_to_remove.append(poly_name)
-                    print(f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.')
+                    print(
+                        f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.'
+                    )
                     break
-        
-        #Remove the polygons that are fully covered by higher priority polygons
+
+        # Remove the polygons that are fully covered by higher priority polygons
         for poly_name in polygons_to_remove:
             self.polygon_entities.pop(poly_name)
-            
+
         self.entities = OrderedDict(
             list(self.line_entities.items())
             + list(self.junction_entities.items())
             + list(self.polygon_entities.items())
         )
 
-
-
         # Transfer the resolutions from the photonic device to the optical_simulator
         for name in self.entities.keys():
             if name in self.photonicdevice.resolutions_optical.keys():
                 self.resolutions[name] = self.photonicdevice.resolutions_optical[name]
 
-    def get_epsilon_optical(
-        self,
-        wavelength: float = 1.55
-    ):
+    def get_epsilon_optical(self, wavelength: float = 1.55):
         """
-        This function will return the :math:`\epsilon_{opt}` tensor with the signature ``self.epsilon_optical[vertice_idx]`` where ``vertice_idx`` is the index of the vertice in the mesh 
+        This function will return the :math:`\epsilon_{opt}` tensor with the signature ``self.epsilon_optical[vertice_idx]`` where ``vertice_idx`` is the index of the vertice in the mesh
 
         Args:
             wavelength: The wavelength at which to evaluate the optical permittivity. This can be used to account for dispersion if the optical_material properties of the polygons are defined as functions of wavelength.
-        
+
         """
 
         if self.mesh is None:
@@ -833,9 +825,7 @@ class OpticalSimulatorFEMWELL:
                 "Cannot attribute an optical epsilon. The mesh of the optical simulator is not yet generated"
             )
 
-        self.epsilon_optical = np.zeros(
-            (3, 3, self.mesh.nvertices), dtype=np.complex128
-        )
+        self.epsilon_optical = np.zeros((3, 3, self.mesh.nvertices), dtype=np.complex128)
 
         self.epsilon_optical[0, 0, :] = 1
         self.epsilon_optical[1, 1, :] = 1
@@ -844,7 +834,7 @@ class OpticalSimulatorFEMWELL:
         # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
         # Here, however, if we loop through the photo_polygons from idx 0 to idx N
         # the hierarchy on the boundaries will be inverted. That is,
-        #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
+        # lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
         # loop over the inverted list of photo_polygons
 
         for photo_polygon in self.optical_photopolygons[::-1]:
@@ -856,38 +846,34 @@ class OpticalSimulatorFEMWELL:
             vertices_idxs = np.unique(triangles.flatten())
 
             for i in range(3):
-                self.epsilon_optical[i, i, vertices_idxs] = (
-                    photo_polygon.optical_material(wavelength)
+                self.epsilon_optical[i, i, vertices_idxs] = photo_polygon.optical_material(
+                    wavelength
                 )
 
-    def plot_epsilon_optical(
-            self,
-            cmap: str  = 'jet',
-            plot_structure: bool = True
-    ):
-        
+    def plot_epsilon_optical(self, cmap: str = "jet", plot_structure: bool = True):
+
         self.get_epsilon_optical()
 
-        fig = plt.figure(figsize = (8,4))
+        fig = plt.figure(figsize=(8, 4))
 
-        gs = fig.add_gridspec(1,2)
-        ax1 = fig.add_subplot(gs[0,0])
-        ax2 = fig.add_subplot(gs[0,1])
+        gs = fig.add_gridspec(1, 2)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
 
         self.basis.plot(
-            self.epsilon_optical[0,0].real,
-            ax = ax1,
+            self.epsilon_optical[0, 0].real,
+            ax=ax1,
             colorbar=True,
             cmap=cmap,
         )
 
         self.basis.plot(
-            self.epsilon_optical[0,0].imag,
-            ax = ax2,
+            self.epsilon_optical[0, 0].imag,
+            ax=ax2,
             colorbar=True,
             cmap=cmap,
         )
-        
+
         ax1.set_title(r"$\epsilon_{xx}$ real part")
         ax2.set_title(r"$\epsilon_{xx}$ imaginary part")
         ax1.set_xlabel("x (um)")
@@ -897,19 +883,19 @@ class OpticalSimulatorFEMWELL:
 
         if plot_structure:
             self.plot_polygons(
-                fig = fig,
-                ax = ax1,
+                fig=fig,
+                ax=ax1,
             )
 
             self.plot_polygons(
-                fig = fig,
-                ax = ax2,
+                fig=fig,
+                ax=ax2,
             )
 
         plt.tight_layout()
 
         return fig, [ax1, ax2]
-    
+
     def make_mesh(
         self,
         default_resolution_min: float = 1e-12,
@@ -967,7 +953,7 @@ class OpticalSimulatorFEMWELL:
             order: Order of the basis functions to use in the EM solver.
             metallic_boundaries: The boundaries to treat as metallic. If `False`, no boundaries are treated as metallic. If `True`, all boundaries are treated as metallic. If a list of strings, the boundaries with the given names are treated as metallic. At the moment, the simulation window is treated as a square, therefore, the metallic boundaries can be ``left``, ``right``, ``top`` and ``bottom`` boundaries.
             n_guess: Initial guess for the effective index.
-            return_modes: Whether to return the computed modes. 
+            return_modes: Whether to return the computed modes.
             use_charge_transport_data: Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a :math:`\sigma(x,y,V)`. Make sure your mesh is appropriate for it.
 
         Returns:
@@ -978,7 +964,7 @@ class OpticalSimulatorFEMWELL:
 
         modes = compute_modes(
             self.basis,
-            self.epsilon_optical[0,0,:],
+            self.epsilon_optical[0, 0, :],
             wavelength,
             mu_r=1,
             num_modes=num_modes,
@@ -991,11 +977,8 @@ class OpticalSimulatorFEMWELL:
 
         if return_modes:
             return self.modes
-        
-    def refine_mesh(
-            self,
-            mode_for_refinement: Mode = None
-    ):
+
+    def refine_mesh(self, mode_for_refinement: Mode = None):
         """
         Refines the mesh based on the computed optical modes.
 
@@ -1005,11 +988,10 @@ class OpticalSimulatorFEMWELL:
 
         Returns:
             None
-       
+
         """
 
         old_mesh = self.mesh
-
 
         elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
 
@@ -1019,20 +1001,17 @@ class OpticalSimulatorFEMWELL:
         self.basis = Basis(self.mesh, ElementTriP1())
 
     def plot_mode(
-        self,
-        mode: Mode,
-        figsize: tuple[float, float] = (10,3),
-        color_polygons: str = "black"
+        self, mode: Mode, figsize: tuple[float, float] = (10, 3), color_polygons: str = "black"
     ):
         """
         Plots the electric and magnetic fields components of a given mode. The plotting is handled by `skfem`_.
 
         Args:
             mode: The mode object containing the electric and magnetic field data to be plotted.
-            
-            figsize: Figure size as (width, height). 
-            
-            color_polygons: Color of the polygons in the plot. 
+
+            figsize: Figure size as (width, height).
+
+            color_polygons: Color of the polygons in the plot.
 
         Returns
         -------
@@ -1041,21 +1020,20 @@ class OpticalSimulatorFEMWELL:
 
 
         """
-        
-        fig = plt.figure(figsize = figsize)
-        gs = GridSpec(1,3)
-        ax1 = fig.add_subplot(gs[0,0])
-        ax2 = fig.add_subplot(gs[0,1])
-        ax3 = fig.add_subplot(gs[0,2])
 
-        self.plot_polygons(fig = fig, ax = ax1, color_polygon=color_polygons)
-        self.plot_polygons(fig = fig, ax = ax2, color_polygon=color_polygons)
-        self.plot_polygons(fig = fig, ax = ax3, color_polygon=color_polygons)
+        fig = plt.figure(figsize=figsize)
+        gs = GridSpec(1, 3)
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
 
+        self.plot_polygons(fig=fig, ax=ax1, color_polygon=color_polygons)
+        self.plot_polygons(fig=fig, ax=ax2, color_polygon=color_polygons)
+        self.plot_polygons(fig=fig, ax=ax3, color_polygon=color_polygons)
 
-        mode.plot_component('E', 'x', colorbar = True, ax = ax1)
-        mode.plot_component('E', 'y', colorbar = True, ax = ax2)
-        mode.plot_component('E', 'z', colorbar = True, ax = ax3)
+        mode.plot_component("E", "x", colorbar=True, ax=ax1)
+        mode.plot_component("E", "y", colorbar=True, ax=ax2)
+        mode.plot_component("E", "z", colorbar=True, ax=ax3)
 
         ax1.set_xlabel("x (um)")
         ax1.set_ylabel("y (um)")
@@ -1065,7 +1043,7 @@ class OpticalSimulatorFEMWELL:
         ax3.set_ylabel("y (um)")
 
         fig.tight_layout()
-    
+
     def plot_polygons(
         self,
         color_polygon="black",
@@ -1127,12 +1105,8 @@ class OpticalSimulatorFEMWELL:
             self.plot_polygons(color_polygon="red", fig=fig, ax=ax)
 
         return fig, ax
-    
 
-    def transfer_results_to_device(
-            self,
-            TE_TM_idx = [0,1]
-    ):
+    def transfer_results_to_device(self, TE_TM_idx=[0, 1]):
         """
         Transfers the optical mode to a new mesh. The created objects will be used by the :class:`ElectroOpticalSimulator` to compute the electro-optical response of the device. It creates objects of the shape ``(3, new_mesh.p.shape[1])`` where the first axis is the component of the field and the second axis is the vertice index.
 
@@ -1146,62 +1120,62 @@ class OpticalSimulatorFEMWELL:
 
         interpolatordict = {}
 
-        for opt_mode_idx, label in zip(TE_TM_idx, ['TE', 'TM']):
+        for opt_mode_idx, label in zip(TE_TM_idx, ["TE", "TM"]):
             opt_mode = self.modes[opt_mode_idx]
             basis = opt_mode.basis
 
             (et, et_basis), (ez, ez_basis) = opt_mode.basis.split(opt_mode.E)
             (ht, ht_basis), (hz, hz_basis) = opt_mode.basis.split(opt_mode.H)
 
-            #Projecting the FEM fields defined with the Nedelec elements into linear polynomials leads to very bad projection. It is best to sample the fields with the nedelec elements into the nodal points instead.
+            # Projecting the FEM fields defined with the Nedelec elements into linear polynomials leads to very bad projection. It is best to sample the fields with the nedelec elements into the nodal points instead.
             ex, ey = et_basis.interpolator(et)(basis.mesh.p)
             hx, hy = ht_basis.interpolator(ht)(basis.mesh.p)
 
             from scipy.interpolate import LinearNDInterpolator
+
             Ex_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 ex,
-                fill_value = 0,
+                fill_value=0,
             )
 
             Ey_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 ey,
-                fill_value = 0,
+                fill_value=0,
             )
 
             Ez_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 ez,
-                fill_value = 0,
+                fill_value=0,
             )
 
             Hx_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 hx,
-                fill_value = 0,
+                fill_value=0,
             )
 
             Hy_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 hy,
-                fill_value = 0,
+                fill_value=0,
             )
 
             Hz_interp = LinearNDInterpolator(
                 self.mesh.p.T,
                 hz,
-                fill_value = 0,
+                fill_value=0,
             )
 
             interpolatordict[label] = {
-                'Ex': Ex_interp,
-                'Ey': Ey_interp,
-                'Ez': Ez_interp,
-                'Hx': Hx_interp,
-                'Hy': Hy_interp,
-                'Hz': Hz_interp,
+                "Ex": Ex_interp,
+                "Ey": Ey_interp,
+                "Ez": Ez_interp,
+                "Hx": Hx_interp,
+                "Hy": Hy_interp,
+                "Hz": Hz_interp,
             }
-
 
         self.photonicdevice.mode = interpolatordict
