@@ -9,10 +9,48 @@ To use Imodulator, simply install via pip:
 .. code-block:: console
 
    (.venv) $ pip install imodulator
-   (.venv) $ pip install --no-deps git+https://github.com/HelgeGehring/femwell.git@36e2ff1d8507e3839f29b5f14c298a091b463c49
 
-The second line has been added as a temporary measure. New changes have been made in FEMWELL on the mesh refinement which have not been made into a release yet. Once a new FEMWELL release is made, it shall be added to the dependencies of Imodulator and the second line can be omitted.
-Alternatively you can close the repository and install it locally:
+The simulation backends are optional dependencies, installed as *extras* so you
+only pull in what you need:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Extra
+     - Enables
+   * - ``imodulator[femwell]``
+     - Optical and RF mode solving (``OpticalSimulatorFEMWELL``, ``RFSimulatorFEMWELL``, ``ElectroOpticalSimulator``)
+   * - ``imodulator[solcore]``
+     - Solcore-based charge transport (``ChargeSimulatorSolcore``)
+   * - ``imodulator[nextnanopy]``
+     - nextnano-based charge transport (``ChargeSimulatorNN``)
+   * - ``imodulator[all]``
+     - All of the above
+
+Extras combine, so you can request any subset in one command:
+
+.. code-block:: console
+
+   (.venv) $ pip install imodulator[femwell]
+   (.venv) $ pip install imodulator[nextnanopy,femwell]
+   (.venv) $ pip install imodulator[all]
+
+Instantiating a simulator whose extra is not installed raises a clear error
+telling you which ``pip install`` command to run.
+
+.. note::
+
+   ``solcore`` depends on ``solsesame==2.1a1``, which is a **pre-release**. Plain
+   ``pip`` (including inside a conda environment) installs it automatically
+   because the version is pinned exactly, but ``uv`` rejects pre-releases by
+   default. If you install the ``solcore`` extra with ``uv`` and hit a resolver
+   error, allow pre-releases explicitly:
+
+   .. code-block:: console
+
+      (.venv) $ uv pip install -e '.[solcore]' --prerelease=allow
+
+Alternatively you can clone the repository and install it locally:
 
 .. code-block:: console
 
