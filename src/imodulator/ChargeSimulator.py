@@ -70,12 +70,14 @@ Line = LineString | MultiLineString | LinearRing
 # from imodulator.ElectroOpticalModel import InGaAsPElectroOpticalModel
 ##Configured imports
 from imodulator.Config import config_instance
+
 # Get access to imported modules
 nn = config_instance.get_nextnanopy()
 
 
-#References
+# References
 # https://www.nextnano.com/documentation/tools/nextnanopy/index.html
+
 
 def get_normalized_vector(line: LineString):
     start = np.array(line.coords[0])
@@ -85,6 +87,7 @@ def get_normalized_vector(line: LineString):
     if norm == 0:
         return np.zeros_like(vector)
     return vector / norm
+
 
 ## Functions to be used on the Solcore solver to get the interpolated values of the charge transport simulation on the 2D geometry of the photonic device.
 def make_interp(poly_union, interp_y, unit):
@@ -96,7 +99,9 @@ def make_interp(poly_union, interp_y, unit):
         vals = np.where(inside, vals, 0.0)
 
         return vals * unit
+
     return f
+
 
 def make_vector_interp(poly_union, interp_y, vec, unit):
     def f(x, y):
@@ -107,63 +112,72 @@ def make_vector_interp(poly_union, interp_y, vec, unit):
         vals = np.where(inside, vals, 0.0)
 
         return vals[..., np.newaxis] * vec * unit
+
     return f
 
+
 class ChargeSimulatorNN:
-    #The api import can be cleaner dunno how
-    
+    # The api import can be cleaner dunno how
+
     # The default paths for windows
-    
+
     """
-        Initialize the ChargeSimulatorNN.
-        Compatible with NextNano version 2026-02-05
-        Args:
-            device (PhotonicDevice): The photonic device to simulate.
-            simulation_line (LineString): The line along which to perform 1D simulation.
-            inputfile_name (str, optional): Name for the nextnano input file. Defaults to "quicksave".
-            output_directory (str, optional): Directory for simulation output. Defaults to config value.
-            temperature (float, optional): Simulation temperature in Kelvin. Defaults to 300.0.
-            bias_start_stop_step (list, optional): Voltage sweep [start, stop, step]. Defaults to [0,1,1].
-    
-        Way of working:
+    Initialize the ChargeSimulatorNN.
+    Compatible with NextNano version 2026-02-05
+    Args:
+        device (PhotonicDevice): The photonic device to simulate.
+        simulation_line (LineString): The line along which to perform 1D simulation.
+        inputfile_name (str, optional): Name for the nextnano input file. Defaults to "quicksave".
+        output_directory (str, optional): Directory for simulation output. Defaults to config value.
+        temperature (float, optional): Simulation temperature in Kelvin. Defaults to 300.0.
+        bias_start_stop_step (list, optional): Voltage sweep [start, stop, step]. Defaults to [0,1,1].
 
-        1. The PhotonicDevice should be passed
-        2. The simualtion line should be defined as shapely.geometry.LineString. 
-        
-        .. warning::
-            Note that this linestring will define the field direction that will later be used for the electro optic calculations, meaning that the order of the points also matters!!
-        
-        3. The boundaries of the simulation line will act as contacts of 10nm where the starting point will be contact1...
-        and the end of the line will be contact2 
-        
-        4. The defined voltage will be applied thru contact1
-        
-        5. Check your simulation line in the geometry via
+    Way of working:
 
-            >>> self.plot_with_simulation_line()
-        
-        6. In order to run the NNInfile: #the commands are from the nextnanopy
+    1. The PhotonicDevice should be passed
+    2. The simualtion line should be defined as shapely.geometry.LineString.
 
-            >>> self.NNinputf.execute(show_log=False,convergenceCheck=True,convergence_check_mode="continue")
-        
-        7. In order to load already completed results
+    .. warning::
+        Note that this linestring will define the field direction that will later be used for the electro optic calculations, meaning that the order of the points also matters!!
 
-            >>> self.load_output_data(folderpath=r"AbsolutePath") #right click on the folder with the self.inputfile_name and copy path
+    3. The boundaries of the simulation line will act as contacts of 10nm where the starting point will be contact1...
+    and the end of the line will be contact2
 
-        8. In case you will use EO and RF module, move results to photonic device as interpolators to be used by other modules
+    4. The defined voltage will be applied thru contact1
+
+    5. Check your simulation line in the geometry via
+
+        >>> self.plot_with_simulation_line()
+
+    6. In order to run the NNInfile: #the commands are from the nextnanopy
+
+        >>> self.NNinputf.execute(
+        ...     show_log=False, convergenceCheck=True, convergence_check_mode="continue"
+        ... )
+
+    7. In order to load already completed results
+
+        >>> self.load_output_data(
+        ...     folderpath=r"AbsolutePath"
+        ... )  # right click on the folder with the self.inputfile_name and copy path
+
+    8. In case you will use EO and RF module, move results to photonic device as interpolators to be used by other modules
     """
 
     def __init__(
         self,
-        device: PhotonicDevice, 
+        device: PhotonicDevice,
         simulation_line: LineString,
-        inputfile_name: str ="quicksave",
+        inputfile_name: str = "quicksave",
         output_directory: str = None,
         temperature: float = 300.0,  # Add temperature parameter
-        bias_start_stop_step: list = [0,1,2], #contact1 is the bias electrode decide - or + accordingly
+        bias_start_stop_step: list = [
+            0,
+            1,
+            2,
+        ],  # contact1 is the bias electrode decide - or + accordingly
         # save_sim: bool = False,
     ):
-        
         """
         Initialize the ChargeSimulatorNN.
 
@@ -174,18 +188,18 @@ class ChargeSimulatorNN:
             output_directory: Directory for simulation output. Defaults to config value.
             temperature: Simulation temperature in Kelvin. Defaults to 300.0.
             bias_start_stop_step: Voltage sweep [start, stop, step]. Defaults to [0,1,1].
-            
+
         """
         require("nextnanopy", "nextnanopy")
 
         if output_directory is None:
-            output_directory = nn.config.config['nextnano++']['outputdirectory']
+            output_directory = nn.config.config["nextnano++"]["outputdirectory"]
 
         self.temperature = temperature
         self.inputfile_name = inputfile_name
         self.output_directory = output_directory
         self.photonicdevice = device
-        self.bias_start_stop_step=bias_start_stop_step
+        self.bias_start_stop_step = bias_start_stop_step
 
         self.optical_photopolygons = copy.deepcopy(self.photonicdevice.photo_polygons)
 
@@ -193,7 +207,7 @@ class ChargeSimulatorNN:
 
         for polygon in self.optical_photopolygons:
             self.polygon_entities[polygon.name] = polygon.polygon
-        
+
         self._select_line(simulation_line=simulation_line)
         self._create_in_file()
 
@@ -203,9 +217,10 @@ class ChargeSimulatorNN:
         # self.input_file = nn.InputFile(inputfile_name+".in")
         # self.input_file.config = nn.config
 
-    def _select_line(self,
-                simulation_line: LineString, #to select the region
-                ): 
+    def _select_line(
+        self,
+        simulation_line: LineString,  # to select the region
+    ):
         """
         Find intersections between the simulation line and device polygons.
 
@@ -220,7 +235,7 @@ class ChargeSimulatorNN:
         names_to_print = []
         for polygon_name, polygon_geom in self.polygon_entities.items():
             # Find intersection between simulation line and polygon
-            
+
             intersection = simulation_line.intersection(polygon_geom)
             if (polygon_name == "substrate") or (polygon_name == "background"):
                 continue
@@ -229,8 +244,8 @@ class ChargeSimulatorNN:
                 continue
 
             # If intersection is a single LineString
-            if intersection.geom_type == 'LineString':
-                line_segments[f'{polygon_name}'] = intersection
+            if intersection.geom_type == "LineString":
+                line_segments[f"{polygon_name}"] = intersection
 
                 ## Loop over the photopolygons of the PhotonicDevice to find the proper PhotonicPolygon that will allow for charge transport data to be loaded on:
                 for poly in self.photonicdevice.photo_polygons:
@@ -239,28 +254,27 @@ class ChargeSimulatorNN:
 
                 names_to_print.append(polygon_name)
 
-        print('Charge transport will take place with:')
-        print(*names_to_print, sep='\n')
+        print("Charge transport will take place with:")
+        print(*names_to_print, sep="\n")
 
         # Store the line segments for later use
         self.line_segments = line_segments
         self.simulation_line = simulation_line
 
     def _create_in_file(self):
-        
         """
         Create and write the nextnano input file from PhotonicDevice data.
 
         Returns:
             None. Writes file to disk and stores input file object.
         """
-        
-        output_path = os.path.join(self.output_directory, f"{self.inputfile_name}.in") 
+
+        output_path = os.path.join(self.output_directory, f"{self.inputfile_name}.in")
         # Ensure output directory exists
         output_dir = os.path.dirname(output_path)
         if output_dir and not os.path.exists(output_dir):
-            os.makedirs(output_dir, exist_ok=True)    
-            
+            os.makedirs(output_dir, exist_ok=True)
+
         # Build the complete file content
         content_sections = [
             self._create_global_section(),
@@ -271,18 +285,18 @@ class ChargeSimulatorNN:
             self._create_poisson_section(),
             self._create_currents_section(),
             self._create_contacts_section(),
-            self._create_run_section()
+            self._create_run_section(),
         ]
-            # Join all sections
+        # Join all sections
         self.complete_content = "\n".join(content_sections)
-            # Write to file
-        with open(output_path, 'w') as f:
+        # Write to file
+        with open(output_path, "w") as f:
             f.write(self.complete_content)
-            
+
         print(f"Input file created: {output_path}")
-        self.NNinputf=nn.InputFile(output_path)
-        self.NNinputf.config=nn.config#makes sure you use the config
-        
+        self.NNinputf = nn.InputFile(output_path)
+        self.NNinputf.config = nn.config  # makes sure you use the config
+
     def _create_global_section(self):
         """Create the global section of the nextnano input file"""
         output = f"""
@@ -304,35 +318,48 @@ class ChargeSimulatorNN:
 
     def _create_grid_section(self):
         """Create the grid section based on line segments"""
-        line_definitions=[]
-        cummulative_pos=0
-        total_items=len(self.line_segments.items())
+        line_definitions = []
+        cummulative_pos = 0
+        total_items = len(self.line_segments.items())
         for i, (segment_name, line_segment) in enumerate(self.line_segments.items()):
-            spacing = self.photonicdevice.resolutions_charge[segment_name]["resolution"]*1e3 #convert from um to nm
-            if i == 0: #first contact + initial position 
-                #start of the contact
-                line_definitions.append(f"\tline{{pos = {round(-10+line_segment.xy[1][0]*10**3,2)} spacing = 2}}")
+            spacing = (
+                self.photonicdevice.resolutions_charge[segment_name]["resolution"] * 1e3
+            )  # convert from um to nm
+            if i == 0:  # first contact + initial position
+                # start of the contact
+                line_definitions.append(
+                    f"\tline{{pos = {round(-10 + line_segment.xy[1][0] * 10**3, 2)} spacing = 2}}"
+                )
                 # layer1
-                line_definitions.append(f"\t\t\tline{{pos = {round(line_segment.xy[1][0]*10**3,2)} spacing = {spacing}}}")
+                line_definitions.append(
+                    f"\t\t\tline{{pos = {round(line_segment.xy[1][0] * 10**3, 2)} spacing = {spacing}}}"
+                )
                 # cummulative_pos=+line_segment.length*10**3
-                cummulative_pos=line_segment.xy[1][1]*10**3
-       
-            # elif i == 1: 
-            #     line_definitions.append(f"\t\tline{{pos = {round(cummulative_pos,2)} spacing = {spacing}}}")
-       
-            elif 1 <= i < total_items-1:  #non contact lines
-                line_definitions.append(f"\t\t\tline{{pos = {round(cummulative_pos,2)} spacing = {spacing}}}")
-                cummulative_pos+=line_segment.length*10**3
-            
-            elif i == total_items-1: #last contact
-                line_definitions.append(f"\t\t\tline{{pos = {round(cummulative_pos,2)} spacing = {spacing}}}")
-                cummulative_pos+=line_segment.length*10**3
-                line_definitions.append(f"\t\t\tline{{pos = {round(cummulative_pos,2)} spacing = 2}}")
-                cummulative_pos+=10
-                line_definitions.append(f"\t\t\tline{{pos = {round(cummulative_pos,2)} spacing = 2}}")
-            
+                cummulative_pos = line_segment.xy[1][1] * 10**3
 
-        joined_line_definitions="\n".join(line_definitions)
+            # elif i == 1:
+            #     line_definitions.append(f"\t\tline{{pos = {round(cummulative_pos,2)} spacing = {spacing}}}")
+
+            elif 1 <= i < total_items - 1:  # non contact lines
+                line_definitions.append(
+                    f"\t\t\tline{{pos = {round(cummulative_pos, 2)} spacing = {spacing}}}"
+                )
+                cummulative_pos += line_segment.length * 10**3
+
+            elif i == total_items - 1:  # last contact
+                line_definitions.append(
+                    f"\t\t\tline{{pos = {round(cummulative_pos, 2)} spacing = {spacing}}}"
+                )
+                cummulative_pos += line_segment.length * 10**3
+                line_definitions.append(
+                    f"\t\t\tline{{pos = {round(cummulative_pos, 2)} spacing = 2}}"
+                )
+                cummulative_pos += 10
+                line_definitions.append(
+                    f"\t\t\tline{{pos = {round(cummulative_pos, 2)} spacing = 2}}"
+                )
+
+        joined_line_definitions = "\n".join(line_definitions)
         output = f"""
         grid{{
             xgrid{{
@@ -342,25 +369,27 @@ class ChargeSimulatorNN:
         }}
         """
 
-        return output#"\n".join(output)
-    
+        return output  # "\n".join(output)
+
     def _create_structure_section(self):
         """Create the structure section based on PhotonicDevice polygons"""
-        total_items=len(self.line_segments.items())
-        region_definitions=[]
-        cummulative_pos=0
-        self.contact_thickness=10
+        total_items = len(self.line_segments.items())
+        region_definitions = []
+        cummulative_pos = 0
+        self.contact_thickness = 10
         for i, (segment_name, line_segment) in enumerate(self.line_segments.items()):
             for polygon_idx, polygon in enumerate(self.optical_photopolygons):
-                x_coords = f"x = [{line_segment.xy[1][0]*10**3:.2f},{line_segment.xy[1][1]*10**3:.2f}]"
-                if segment_name==polygon.name:
-                    segment_charge_kwargs=polygon.charge_transport_simulator_kwargs
-                    #Kwarg checks
+                x_coords = (
+                    f"x = [{line_segment.xy[1][0] * 10**3:.2f},{line_segment.xy[1][1] * 10**3:.2f}]"
+                )
+                if segment_name == polygon.name:
+                    segment_charge_kwargs = polygon.charge_transport_simulator_kwargs
+                    # Kwarg checks
                     if segment_charge_kwargs["material_definition"] == None:
                         material_def = "Ga(x)In(1-x)As(y)P(1-y)"
                     else:
                         material_def = segment_charge_kwargs["material_definition"]
-                    #alloy type
+                    # alloy type
                     alloy_type = segment_charge_kwargs.get("alloy_type", "quaternary_constant")
                     if alloy_type is None:
                         alloy_type = "quaternary_constant"
@@ -369,18 +398,18 @@ class ChargeSimulatorNN:
                         alloy_coords = f"{x_coords}"
                     else:
                         alloy_coords = ""
-                    #make sure its a list for compatibility with linear    
+                    # make sure its a list for compatibility with linear
                     alloy_x = segment_charge_kwargs["alloy_x"]
                     if not isinstance(alloy_x, list):
-                        alloy_x = list(np.atleast_1d(alloy_x))    
+                        alloy_x = list(np.atleast_1d(alloy_x))
                     alloy_y = segment_charge_kwargs["alloy_y"]
                     if not isinstance(alloy_y, list):
                         alloy_y = list(np.atleast_1d(alloy_y))
-                    ### Start of the definition    
-                    if i == 0: #first contact + initial position 
-                        cummulative_pos=-self.contact_thickness+line_segment.xy[1][0]*10**3
-                        line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos+self.contact_thickness:.2f}] }}"
-                    
+                    ### Start of the definition
+                    if i == 0:  # first contact + initial position
+                        cummulative_pos = -self.contact_thickness + line_segment.xy[1][0] * 10**3
+                        line = f"line{{x = [{cummulative_pos:.2f},{cummulative_pos + self.contact_thickness:.2f}] }}"
+
                         region_definitions.append(f"""
             region{{
                 {line}
@@ -388,7 +417,7 @@ class ChargeSimulatorNN:
             }}
             """)
                     ######################################################
-                    #non contact lines
+                    # non contact lines
                     line = f"line{{{x_coords}}}"
                     region_definitions.append(f"""
             region{{
@@ -408,8 +437,8 @@ class ChargeSimulatorNN:
             }}
             """)
                     #####################################################
-                    if i == total_items - 1: #last contact
-                        line = f"line{{x = [{line_segment.xy[1][1]*10**3:.2f},{self.contact_thickness+line_segment.xy[1][1]*10**3:.2f}] }}"
+                    if i == total_items - 1:  # last contact
+                        line = f"line{{x = [{line_segment.xy[1][1] * 10**3:.2f},{self.contact_thickness + line_segment.xy[1][1] * 10**3:.2f}] }}"
 
                         region_definitions.append(f"""
             region{{
@@ -417,12 +446,12 @@ class ChargeSimulatorNN:
                 {f"contact{{name = contact2}}"}
             }}
             """)
-                    
+
                     break
                 else:
                     continue
 
-        joined_region_definitions="".join(region_definitions)
+        joined_region_definitions = "".join(region_definitions)
         output = f"""
         structure{{
             output_region_index{{ }}
@@ -442,8 +471,8 @@ class ChargeSimulatorNN:
         }}
         """
 
-        return output#"\n".join(output)
-    
+        return output  # "\n".join(output)
+
     def _create_impurities_section(self):
         """Create the impurities section"""
         return f"""
@@ -451,7 +480,7 @@ class ChargeSimulatorNN:
             donor {{ name = "n-type" energy = -1 degeneracy = 2 }}
             acceptor {{ name = "p-type" energy = -1 degeneracy = 4 }}
         }}"""
-    
+
     def _create_classical_section(self):
         """Create the classical section"""
         return """
@@ -466,7 +495,7 @@ class ChargeSimulatorNN:
             output_bandedges{ averaged = yes}
             output_carrier_densities{}
         }"""
-    
+
     def _create_poisson_section(self):
         """Create the poisson section"""
         return """
@@ -474,7 +503,7 @@ class ChargeSimulatorNN:
             charge_neutral{}
             output_electric_field{}
         }"""
-    
+
     def _create_currents_section(self):
         """Create the currents section"""
         return """
@@ -482,15 +511,15 @@ class ChargeSimulatorNN:
             output_mobilities{}
             recombination_model{} #required by the runner
         }"""
-    
+
     def _create_contacts_section(self):
         """Create the contacts section with voltage sweep parameters"""
         return f"""
         contacts{{
-            ohmic{{ name = "contact1" bias = [{self.bias_start_stop_step[0]}, {self.bias_start_stop_step[1]}] steps = {self.bias_start_stop_step[2]-1}}}
+            ohmic{{ name = "contact1" bias = [{self.bias_start_stop_step[0]}, {self.bias_start_stop_step[1]}] steps = {self.bias_start_stop_step[2] - 1}}}
             ohmic{{ name = "contact2" bias = 0.0 }}
         }}"""
-    
+
     def _create_run_section(self):
         """Create the run section"""
         return """
@@ -500,8 +529,8 @@ class ChargeSimulatorNN:
                 output_log = yes
             }
         }"""
-        
-    def load_output_data(self,folderpath=None):
+
+    def load_output_data(self, folderpath=None):
         """
         Load and store simulation output data from nextnano results.
 
@@ -513,10 +542,10 @@ class ChargeSimulatorNN:
 
         Creates instance variables:
             grid: Spatial grid positions [nm]
-            Ec: Conduction band edge energy [eV] 
+            Ec: Conduction band edge energy [eV]
             Ev: Valence band edge energy [eV]
             Efn: Electron quasi-Fermi level [eV]
-            Efp: Hole quasi-Fermi level [eV] 
+            Efp: Hole quasi-Fermi level [eV]
             density_electron: Electron density [cm⁻³]
             density_hole: Hole density [cm⁻³]
             electric_field: Electric field [V/cm]
@@ -527,47 +556,78 @@ class ChargeSimulatorNN:
         """
 
         if folderpath == None:
-            nndata=nn.DataFolder(self.NNinputf.folder_output)
+            nndata = nn.DataFolder(self.NNinputf.folder_output)
         else:
-            nndata=nn.DataFolder(folderpath)
-        #file locations to be processed
-        f_iv = [f for f in nndata.files if 'IV_characteristics.dat' in f][0]
-        self.V= pd.read_csv(f_iv,delim_whitespace=True).iloc[:,0]
-        f_grid = [f for f in nndata.files if 'grid_x.dat' in f][0]
-        self.grid = pd.read_csv(f_grid,delim_whitespace=True)["Position[nm]"].values.tolist()
+            nndata = nn.DataFolder(folderpath)
+        # file locations to be processed
+        f_iv = [f for f in nndata.files if "IV_characteristics.dat" in f][0]
+        self.V = pd.read_csv(f_iv, delim_whitespace=True).iloc[:, 0]
+        f_grid = [f for f in nndata.files if "grid_x.dat" in f][0]
+        self.grid = pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist()
 
-        self.Ec = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.Ev = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.Efn = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.Efp = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.N = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.P = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.Efield = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.mun = np.zeros(shape=(len(self.V),len(self.grid)))
-        self.mup = np.zeros(shape=(len(self.V),len(self.grid)))
-        #Loops over the bias000x folders, skipping the "Structure" folder
+        self.Ec = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.Ev = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.Efn = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.Efp = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.N = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.P = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.Efield = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.mun = np.zeros(shape=(len(self.V), len(self.grid)))
+        self.mup = np.zeros(shape=(len(self.V), len(self.grid)))
+        # Loops over the bias000x folders, skipping the "Structure" folder
         bias_folders = [
-            folder for folder in nndata.folders
+            folder
+            for folder in nndata.folders
             if os.path.basename(folder.fullpath.rstrip("\\/")).lower() != "structure"
         ]
         for i, v in enumerate(self.V):
-            #first get the file locations for each data needed
-            nnfiles=bias_folders[i].files
+            # first get the file locations for each data needed
+            nnfiles = bias_folders[i].files
             # Read each .dat file into DataFrames
-            self.Ec[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["Gamma[eV]"]
-            self.Ev[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["HH[eV]"]
-            self.Efn[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["electron_Fermi_level[eV]"]
-            self.Efp[i] = pd.read_csv([f for f in nnfiles if 'bandedges.dat' in f][0], delim_whitespace=True)["hole_Fermi_level[eV]"]
-            self.N[i] = pd.read_csv([f for f in nnfiles if 'density_electron.dat' in f][0], delim_whitespace=True).iloc[:,1] * 1e18
-            self.P[i] = pd.read_csv([f for f in nnfiles if 'density_hole.dat' in f][0], delim_whitespace=True).iloc[:,1] * 1e18
-            self.Efield[i][1::] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[:,1]
-            self.Efield[i][0] = pd.read_csv([f for f in nnfiles if 'electric_field.dat' in f][0], delim_whitespace=True).iloc[0,1]
-            self.mun[i][1::] = pd.read_csv([f for f in nnfiles if 'mobility_electron.dat' in f][0], delim_whitespace=True).iloc[:,1]
-            self.mun[i][0] = pd.read_csv([f for f in nnfiles if 'mobility_electron.dat' in f][0], delim_whitespace=True).iloc[0,1]
-            self.mup[i][1::] = pd.read_csv([f for f in nnfiles if 'mobility_hole.dat' in f][0], delim_whitespace=True).iloc[:,1]
-            self.mup[i][0] = pd.read_csv([f for f in nnfiles if 'mobility_hole.dat' in f][0], delim_whitespace=True).iloc[0,1]
-    
-    def plot_results(self,V_idx=None, cmap = 'tab10'):
+            self.Ec[i] = pd.read_csv(
+                [f for f in nnfiles if "bandedges.dat" in f][0], delim_whitespace=True
+            )["Gamma[eV]"]
+            self.Ev[i] = pd.read_csv(
+                [f for f in nnfiles if "bandedges.dat" in f][0], delim_whitespace=True
+            )["HH[eV]"]
+            self.Efn[i] = pd.read_csv(
+                [f for f in nnfiles if "bandedges.dat" in f][0], delim_whitespace=True
+            )["electron_Fermi_level[eV]"]
+            self.Efp[i] = pd.read_csv(
+                [f for f in nnfiles if "bandedges.dat" in f][0], delim_whitespace=True
+            )["hole_Fermi_level[eV]"]
+            self.N[i] = (
+                pd.read_csv(
+                    [f for f in nnfiles if "density_electron.dat" in f][0], delim_whitespace=True
+                ).iloc[:, 1]
+                * 1e18
+            )
+            self.P[i] = (
+                pd.read_csv(
+                    [f for f in nnfiles if "density_hole.dat" in f][0], delim_whitespace=True
+                ).iloc[:, 1]
+                * 1e18
+            )
+            self.Efield[i][1::] = pd.read_csv(
+                [f for f in nnfiles if "electric_field.dat" in f][0], delim_whitespace=True
+            ).iloc[:, 1]
+            self.Efield[i][0] = pd.read_csv(
+                [f for f in nnfiles if "electric_field.dat" in f][0], delim_whitespace=True
+            ).iloc[0, 1]
+            self.mun[i][1::] = pd.read_csv(
+                [f for f in nnfiles if "mobility_electron.dat" in f][0], delim_whitespace=True
+            ).iloc[:, 1]
+            self.mun[i][0] = pd.read_csv(
+                [f for f in nnfiles if "mobility_electron.dat" in f][0], delim_whitespace=True
+            ).iloc[0, 1]
+            self.mup[i][1::] = pd.read_csv(
+                [f for f in nnfiles if "mobility_hole.dat" in f][0], delim_whitespace=True
+            ).iloc[:, 1]
+            self.mup[i][0] = pd.read_csv(
+                [f for f in nnfiles if "mobility_hole.dat" in f][0], delim_whitespace=True
+            ).iloc[0, 1]
+
+    def plot_results(self, V_idx=None, cmap="tab10"):
         """
         Plot simulation results in a 2x1 subplot layout.
 
@@ -579,49 +639,68 @@ class ChargeSimulatorNN:
             tuple: Figure and axes objects
         """
         if V_idx is None:
-            V_idx = [0, len(self.V)-1]
+            V_idx = [0, len(self.V) - 1]
 
         cmap = plt.get_cmap(cmap)
         norm = plt.Normalize(vmin=min(V_idx), vmax=max(V_idx))
         colors = [cmap(norm(v)) for v in V_idx]
-        
+
         if V_idx == None:
-            V_idx = [0,len(self.V)-1]
-            
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 8),sharex=True)
+            V_idx = [0, len(self.V) - 1]
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 8), sharex=True)
         # ax2r = ax2.twinx()
         for i, v in enumerate(V_idx):
-            ax1.plot(self.grid, self.Ec[v], "-", color=colors[i], label=r"$E_c(eV) @ V={{{:.1f}}} V)$".format(self.V[v]))
+            ax1.plot(
+                self.grid,
+                self.Ec[v],
+                "-",
+                color=colors[i],
+                label=r"$E_c(eV) @ V={{{:.1f}}} V)$".format(self.V[v]),
+            )
             ax1.plot(self.grid, self.Ev[v], "-", color=colors[i])
             # Plot quasi-Fermi levels
             ax1.plot(self.grid, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
             ax1.plot(self.grid, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
-        # Configure first subplot
-                        
+            # Configure first subplot
+
             # ax2 = ax1.twinx()
-            ax2.plot(self.grid,  self.N[v],"-", color=colors[i], label=r"e conc. @ V={{{:.1f}}} V)$".format(self.V[v]))
-            ax2.plot(self.grid, -self.P[v],"-.", color=colors[i], label=r"-h conc. @ V={{{:.1f}}} V)$".format(self.V[v]))
-            
-            ax3.plot(self.grid,self.Efield[v],label=r"EField@ V={{{:.1f}}} V)$".format(v), color = colors[i])
-            ax3.set_ylim(-300,100)
-            
-        ax1.set_ylabel('Energy (eV)')
+            ax2.plot(
+                self.grid,
+                self.N[v],
+                "-",
+                color=colors[i],
+                label=r"e conc. @ V={{{:.1f}}} V)$".format(self.V[v]),
+            )
+            ax2.plot(
+                self.grid,
+                -self.P[v],
+                "-.",
+                color=colors[i],
+                label=r"-h conc. @ V={{{:.1f}}} V)$".format(self.V[v]),
+            )
+
+            ax3.plot(
+                self.grid,
+                self.Efield[v],
+                label=r"EField@ V={{{:.1f}}} V)$".format(v),
+                color=colors[i],
+            )
+            ax3.set_ylim(-300, 100)
+
+        ax1.set_ylabel("Energy (eV)")
         ax1.grid(True, alpha=0.3)
-        ax1.legend(loc='best')
-        
+        ax1.legend(loc="best")
+
         ax2.set_ylabel(r"Carrier conc. ($cm^{-3}$)")
         ax2.grid(True, alpha=0.3)
-        ax2.legend(loc='best')
-        
+        ax2.legend(loc="best")
+
         ax3.set_ylabel(r"Electric field (kV/cm)")
         ax3.grid(True, alpha=0.3)
-        ax3.legend(loc='best')
-        
-    def transfer_results_to_device(self,
-                        dx=0.05,
-                        xmin=None,
-                        xmax=None):
-        
+        ax3.legend(loc="best")
+
+    def transfer_results_to_device(self, dx=0.05, xmin=None, xmax=None):
         """
         Interpolate 1D simulation data onto a new 2D mesh.
 
@@ -636,17 +715,23 @@ class ChargeSimulatorNN:
         Returns:
             None. Stores interpolators in self.photonicdevice.charge.
         """
-        
+
         if xmin is None or xmax is None:
-            raise ValueError("Both xmin and xmax must be provided as numeric values. (e.g. waveguide boundaries)")
+            raise ValueError(
+                "Both xmin and xmax must be provided as numeric values. (e.g. waveguide boundaries)"
+            )
         if xmin >= xmax:
-            raise ValueError(f"xmin ({xmin}) must be smaller than xmax ({xmax}), otherwise the x mesh is empty.")
+            raise ValueError(
+                f"xmin ({xmin}) must be smaller than xmax ({xmax}), otherwise the x mesh is empty."
+            )
 
         reg = self.photonicdevice.reg
         # First part is to make data into 2d and fit the wg
         x = np.arange(xmin, xmax, dx)
         if len(x) == 0:
-            raise ValueError(f"Empty x mesh: dx ({dx}) is larger than the span xmax - xmin ({xmax - xmin}).")
+            raise ValueError(
+                f"Empty x mesh: dx ({dx}) is larger than the span xmax - xmin ({xmax - xmin})."
+            )
         y = np.array(self.grid) * 1e-3  # Convert list to numpy array first
 
         xx, yy = np.meshgrid(x, y)
@@ -682,12 +767,12 @@ class ChargeSimulatorNN:
             mun_2d[i] = np.broadcast_to(self.mun[i][:, np.newaxis], (len(y), len(x)))
             mup_2d[i] = np.broadcast_to(self.mup[i][:, np.newaxis], (len(y), len(x)))
 
-        #Transform the Efield into a 3d vector field of shape (Ny, Nx, 3)
-        Efield_2d = Efield_2d[..., np.newaxis]*self.sim_vector_norm
-        
-        #this part needs to poop out the interpolators 
-        #if the interpolator is called the out of bound points should return the boundary values
-            # Initialize interpolator dictionaries
+        # Transform the Efield into a 3d vector field of shape (Ny, Nx, 3)
+        Efield_2d = Efield_2d[..., np.newaxis] * self.sim_vector_norm
+
+        # this part needs to poop out the interpolators
+        # if the interpolator is called the out of bound points should return the boundary values
+        # Initialize interpolator dictionaries
         Ec_int = []
         Ev_int = []
         Efn_int = []
@@ -697,98 +782,130 @@ class ChargeSimulatorNN:
         Efield_int = []
         mun_int = []
         mup_int = []
-        
-        for i ,v in enumerate(self.V):
+
+        for i, v in enumerate(self.V):
             Ec_int.append(
-                lambda x,y, arr=Ec_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
+                lambda x, y, arr=Ec_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.eV
+                )
             )
 
             Ev_int.append(
-                lambda x,y, arr=Ev_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
+                lambda x, y, arr=Ev_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.eV
+                )
             )
 
             Efn_int.append(
-                lambda x,y, arr=Efn_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
+                lambda x, y, arr=Efn_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.eV
+                )
             )
 
             Efp_int.append(
-                lambda x,y, arr=Efp_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.eV
+                lambda x, y, arr=Efp_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.eV
+                )
             )
 
             N_int.append(
-                lambda x,y, arr=N_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**-3
+                lambda x, y, arr=N_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.cm**-3
+                )
             )
 
             P_int.append(
-                lambda x,y, arr=P_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**-3
+                lambda x, y, arr=P_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.cm**-3
+                )
             )
 
             Efield_int.append(
-                lambda x,y, arr=Efield_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.kV / reg.cm
+                lambda x, y, arr=Efield_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.kV
+                    / reg.cm
+                )
             )
 
             mun_int.append(
-                lambda x,y, arr=mun_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**2 / reg.V / reg.s
+                lambda x, y, arr=mun_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.cm**2
+                    / reg.V
+                    / reg.s
+                )
             )
 
             mup_int.append(
-                lambda x,y, arr=mup_2d[i]: RegularGridInterpolator(
-                    (self.y_2d, self.x_2d),
-                    arr,
-                    method='linear',
-                    bounds_error=False,
-                    fill_value=None,
-                )((y, x)) * reg.cm**2 / reg.V / reg.s
+                lambda x, y, arr=mup_2d[i]: (
+                    RegularGridInterpolator(
+                        (self.y_2d, self.x_2d),
+                        arr,
+                        method="linear",
+                        bounds_error=False,
+                        fill_value=None,
+                    )((y, x))
+                    * reg.cm**2
+                    / reg.V
+                    / reg.s
+                )
             )
-            
+
         self.photonicdevice.charge = {
             "Ec": Ec_int,
             "Ev": Ev_int,
@@ -801,11 +918,11 @@ class ChargeSimulatorNN:
             "mup": mup_int,
             "V": self.V,
         }
-          
+
     def plot_with_simulation_line(
         self,
         color_polygon="black",
-        color_line="green", 
+        color_line="green",
         color_junctions="blue",
         color_simulation_line="red",
         fill_polygons=False,
@@ -815,17 +932,17 @@ class ChargeSimulatorNN:
     ):
         """
         Plot the device polygons with the simulation line overlay.
-        
+
         Args:
             color_polygon: Color for device polygons
-            color_line: Color for current calculation lines  
+            color_line: Color for current calculation lines
             color_junctions: Color for junction regions
             color_simulation_line: Color for the simulation line
             fill_polygons: Whether to fill the polygons
             linewidth_simulation: Line width for simulation line
             fig: Existing figure object (optional)
             ax: Existing axis object (optional)
-            
+
         Returns:
             fig, ax: matplotlib figure and axis objects
         """
@@ -842,48 +959,41 @@ class ChargeSimulatorNN:
                 if fill_polygons:
                     ax.fill(
                         *poly.exterior.xy,
-                        color=np.random.rand(3,),
+                        color=np.random.rand(
+                            3,
+                        ),
                         alpha=0.5,
                     )
-                    
+
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
 
-        
         # Plot the simulation line if it exists
-        if hasattr(self, 'simulation_line') and self.simulation_line is not None:
+        if hasattr(self, "simulation_line") and self.simulation_line is not None:
             ax.plot(
-                *self.simulation_line.xy, 
-                color=color_simulation_line, 
+                *self.simulation_line.xy,
+                color=color_simulation_line,
                 linewidth=linewidth_simulation,
-                label="Simulation Line"
+                label="Simulation Line",
             )
             ax.legend()
-            
+
             if len(self.line_segments) > 0:
                 ax.legend()
-        
+
         ax.set_xlabel("x (m)")
         ax.set_ylabel("y (m)")
         ax.set_title("PhotonicDevice with Simulation Line")
         ax.grid(True, alpha=0.3)
-        ax.set_aspect('equal')
-        
-        return fig, ax
-    
+        ax.set_aspect("equal")
 
+        return fig, ax
 
 
 class CustomMaterial_OBP(BaseMaterial):
-
-    def __init__(self, name, opb_mat, T = 300, **kwargs):
+    def __init__(self, name, opb_mat, T=300, **kwargs):
         require("solcore", "solcore")
-        BaseMaterial.__init__(
-            self,
-            T=300, 
-            material_string = name,
-            **kwargs
-        )
+        BaseMaterial.__init__(self, T=300, material_string=name, **kwargs)
 
         ########## Universal constants ##########
         kb = solcore.constants.kb  # Boltzmann constant in J/K
@@ -918,190 +1028,207 @@ class CustomMaterial_OBP(BaseMaterial):
         config["Materials", mat_name] = folder
 
         self.obp_mat = opb_mat
-        self.Na = kwargs.get('Na',1)
-        self.Nd = kwargs.get('Nd', 1)
+        self.Na = kwargs.get("Na", 1)
+        self.Nd = kwargs.get("Nd", 1)
         self.T = T
 
         # solcore_property: openbandparams_property
         # Map the properties from openbandparams to solcore
         property_map = {
-            'lattice_constant': 'a',
-            'Eg_Gamma': 'Eg_Gamma',
-            'Eg_X': 'Eg_X',
-            'Eg_L': 'Eg_L',
-            'spin_orbit_splitting': 'Delta_SO',
-            'interband_matrix_element': 'Ep',
-            'gamma1': 'luttinger1',
-            'gamma2': 'luttinger2',
-            'gamma3': 'luttinger3',
-            'relative_permittivity': 'dielectric',
-            'eff_mass_split_off': 'meff_SO',
-            'valence_band_offset': 'VBO',
-            'a_c': 'a_c',
-            'a_v': 'a_v',
-            'c11': 'c11',
-            'c12': 'c12',
-            'c44': 'c44',
-            'b': 'b',
-            'd': 'd',
-            'F': 'F',
-            'eff_mass_electron_Gamma': 'meff_e_Gamma',
-            'eff_mass_electron_long_L': 'meff_e_L_long',
-            'eff_mass_electron_trans_L': 'meff_e_L_trans',
-            'eff_mass_electron_long_X': 'meff_e_X_long',
-            'eff_mass_electron_trans_X': 'meff_e_X_trans',
-            'eff_mass_DOS_L': 'meff_e_L_DOS',
-            'eff_mass_DOS_X': 'meff_e_X_DOS',
-            'electron_affinity': 'electron_affinity'
+            "lattice_constant": "a",
+            "Eg_Gamma": "Eg_Gamma",
+            "Eg_X": "Eg_X",
+            "Eg_L": "Eg_L",
+            "spin_orbit_splitting": "Delta_SO",
+            "interband_matrix_element": "Ep",
+            "gamma1": "luttinger1",
+            "gamma2": "luttinger2",
+            "gamma3": "luttinger3",
+            "relative_permittivity": "dielectric",
+            "eff_mass_split_off": "meff_SO",
+            "valence_band_offset": "VBO",
+            "a_c": "a_c",
+            "a_v": "a_v",
+            "c11": "c11",
+            "c12": "c12",
+            "c44": "c44",
+            "b": "b",
+            "d": "d",
+            "F": "F",
+            "eff_mass_electron_Gamma": "meff_e_Gamma",
+            "eff_mass_electron_long_L": "meff_e_L_long",
+            "eff_mass_electron_trans_L": "meff_e_L_trans",
+            "eff_mass_electron_long_X": "meff_e_X_long",
+            "eff_mass_electron_trans_X": "meff_e_X_trans",
+            "eff_mass_DOS_L": "meff_e_L_DOS",
+            "eff_mass_DOS_X": "meff_e_X_DOS",
+            "electron_affinity": "electron_affinity",
         }
 
         # Loop over attributes and assign them
         for attr, func_name in property_map.items():
             try:
-                if func_name == 'meff_SO':  # special case
+                if func_name == "meff_SO":  # special case
                     value = opb_mat.meff_SO(literature_value=True, T=T)
                 else:
                     func = getattr(opb_mat, func_name)
                     value = func(T=T)
 
                 if attr in [
-                    'Eg_Gamma', 
-                    'Eg_X', 
-                    'Eg_L', 
-                    'spin_orbit_splitting', 
-                    'interband_matrix_element',
-                    'valence_band_offset',
-                    'a_c',
-                    'a_v',
-                    'b',
-                    'd',
-                    'electron_affinity',
+                    "Eg_Gamma",
+                    "Eg_X",
+                    "Eg_L",
+                    "spin_orbit_splitting",
+                    "interband_matrix_element",
+                    "valence_band_offset",
+                    "a_c",
+                    "a_v",
+                    "b",
+                    "d",
+                    "electron_affinity",
                 ]:
-                    setattr(self, attr, value*q) #Energies are stored in eV in obp and J in solcore
+                    setattr(
+                        self, attr, value * q
+                    )  # Energies are stored in eV in obp and J in solcore
 
                 elif attr in [
-                    'c11',
-                    'c12',
-                    'c44',
+                    "c11",
+                    "c12",
+                    "c44",
                 ]:
-                    setattr(self, attr, value*1e9)  # Convert GPa to Pa for solcore
+                    setattr(self, attr, value * 1e9)  # Convert GPa to Pa for solcore
 
-                elif attr in [
-                    'lattice_constant'
-                ]:
-                    setattr(self, attr, value*1e-10)  # Convert Angstrom to m for solcore
+                elif attr in ["lattice_constant"]:
+                    setattr(self, attr, value * 1e-10)  # Convert Angstrom to m for solcore
                 else:
                     setattr(self, attr, value)
             except AttributeError:
                 # print(f"The material {name} does not have a defined '{func_name}'")
                 pass
 
-
         self.band_gap = min(self.Eg_Gamma, self.Eg_X, self.Eg_L)
-        self.lowest_band = ['Gamma', 'X', 'L'][[self.Eg_Gamma, self.Eg_X, self.Eg_L].index(self.band_gap)]
-        self.m0 = self.eff_mass_split_off*(self.gamma1 - self.interband_matrix_element*self.spin_orbit_splitting/(3*self.band_gap*(self.band_gap+self.spin_orbit_splitting)))
-        self.eff_mass_hh_z = opb_mat.meff_hh_100(T = T)
-        self.eff_mass_hh_110 = opb_mat.meff_hh_110(T = T)
-        self.eff_mass_hh_111 = opb_mat.meff_hh_111(T = T)
-        self.eff_mass_lh_z = opb_mat.meff_lh_100(T = T)
-        self.eff_mass_lh_110 = opb_mat.meff_lh_110(T = T)
-        self.eff_mass_lh_111 = opb_mat.meff_lh_111(T = T)
-        self.eff_mass_electron = opb_mat.meff_e_Gamma(T = T)
-        self.permittivity = opb_mat.dielectric(T = T)*8.854187817e-12
+        self.lowest_band = ["Gamma", "X", "L"][
+            [self.Eg_Gamma, self.Eg_X, self.Eg_L].index(self.band_gap)
+        ]
+        self.m0 = self.eff_mass_split_off * (
+            self.gamma1
+            - self.interband_matrix_element
+            * self.spin_orbit_splitting
+            / (3 * self.band_gap * (self.band_gap + self.spin_orbit_splitting))
+        )
+        self.eff_mass_hh_z = opb_mat.meff_hh_100(T=T)
+        self.eff_mass_hh_110 = opb_mat.meff_hh_110(T=T)
+        self.eff_mass_hh_111 = opb_mat.meff_hh_111(T=T)
+        self.eff_mass_lh_z = opb_mat.meff_lh_100(T=T)
+        self.eff_mass_lh_110 = opb_mat.meff_lh_110(T=T)
+        self.eff_mass_lh_111 = opb_mat.meff_lh_111(T=T)
+        self.eff_mass_electron = opb_mat.meff_e_Gamma(T=T)
+        self.permittivity = opb_mat.dielectric(T=T) * 8.854187817e-12
 
         self.electron_mobility, self.hole_mobility = self._calculate_mobility()
 
         default_properties = DefaultProperties
 
-        #Missing parameters
-        #electron_minority_lifetime
-        #hole_minority_lifetime
-        #electron_auger_recombination
-        #hole_auger_recombination
-        #radiative_recombination
+        # Missing parameters
+        # electron_minority_lifetime
+        # hole_minority_lifetime
+        # electron_auger_recombination
+        # hole_auger_recombination
+        # radiative_recombination
 
         # Calculate the ni, Nc and Nv
 
         me = self.eff_mass_electron * m0
-        self.Nc = 2*(2*np.pi*me*kb*T/h**2)**(3/2)  # Effective density of states in the conduction band in m^-3
+        self.Nc = 2 * (2 * np.pi * me * kb * T / h**2) ** (
+            3 / 2
+        )  # Effective density of states in the conduction band in m^-3
 
-        mh = (self.eff_mass_hh_z**(3/2)+self.eff_mass_lh_z**(3/2))**(2/3) * m0
-        self.Nv = 2*(2*np.pi*mh*kb*T/h**2)**(3/2) # Effective density of states in the valence band in m^-3
+        mh = (self.eff_mass_hh_z ** (3 / 2) + self.eff_mass_lh_z ** (3 / 2)) ** (2 / 3) * m0
+        self.Nv = 2 * (2 * np.pi * mh * kb * T / h**2) ** (
+            3 / 2
+        )  # Effective density of states in the valence band in m^-3
 
-        self.ni = np.sqrt(self.Nc) * np.sqrt(self.Nv) * np.exp(-self.band_gap/((2*kb*T)))  # Intrinsic carrier concentration in m^-3
+        self.ni = (
+            np.sqrt(self.Nc) * np.sqrt(self.Nv) * np.exp(-self.band_gap / (2 * kb * T))
+        )  # Intrinsic carrier concentration in m^-3
 
-        #InP values
-        self.electron_minority_lifetime = kwargs.get('electron_minority_lifetime', 1e-9)
-        self.hole_minority_lifetime = kwargs.get('hole_minority_lifetime', 1e-9)
-        self.electron_auger_recombination = kwargs.get('electron_auger_recombination', 9e-31*1e-12)  # Convert from cm^6/s to m^6/s. Taken from ioffe
-        self.hole_auger_recombination = kwargs.get('hole_auger_recombination', 9e-31*1e-12)  # Convert from cm^6/s to m^6/s. Taken from ioffe
-        self.radiative_recombination = kwargs.get('radiative_recombination', 1.2e-10*1e-6)  # Convert from cm^3/s to m^3/s. Taken from ioffe
-
+        # InP values
+        self.electron_minority_lifetime = kwargs.get("electron_minority_lifetime", 1e-9)
+        self.hole_minority_lifetime = kwargs.get("hole_minority_lifetime", 1e-9)
+        self.electron_auger_recombination = kwargs.get(
+            "electron_auger_recombination", 9e-31 * 1e-12
+        )  # Convert from cm^6/s to m^6/s. Taken from ioffe
+        self.hole_auger_recombination = kwargs.get(
+            "hole_auger_recombination", 9e-31 * 1e-12
+        )  # Convert from cm^6/s to m^6/s. Taken from ioffe
+        self.radiative_recombination = kwargs.get(
+            "radiative_recombination", 1.2e-10 * 1e-6
+        )  # Convert from cm^3/s to m^3/s. Taken from ioffe
 
         new_params = [
-            'band_gap',
-            'lowest_band',
-            'm0',
-            'eff_mass_hh_z',
-            'eff_mass_hh_110',
-            'eff_mass_hh_111',
-            'eff_mass_lh_z',
-            'eff_mass_lh_110',
-            'eff_mass_lh_111',
-            'eff_mass_electron',
-            'permittivity',
-            'electron_mobility',
-            'hole_mobility'
+            "band_gap",
+            "lowest_band",
+            "m0",
+            "eff_mass_hh_z",
+            "eff_mass_hh_110",
+            "eff_mass_hh_111",
+            "eff_mass_lh_z",
+            "eff_mass_lh_110",
+            "eff_mass_lh_111",
+            "eff_mass_electron",
+            "permittivity",
+            "electron_mobility",
+            "hole_mobility",
         ]
 
         units_dict = {
-            'lattice_constant': 'Angstrom',
-            'Eg_Gamma': 'eV',
-            'Eg_X': 'eV',
-            'Eg_L': 'eV',
-            'spin_orbit_splitting': 'eV',
-            'interband_matrix_element': 'eV',
-            'gamma1': '',
-            'gamma2': '',
-            'gamma3': '',
-            'relative_permittivity': '',
-            'eff_mass_split_off': '',
-            'valence_band_offset': 'eV',
-            'a_c': 'eV',
-            'a_v': 'eV',
-            'c11': 'GPa',
-            'c12': 'GPa',
-            'c44': 'GPa',
-            'b': 'eV',
-            'd': 'eV',
-            'F': '',
-            'eff_mass_electron_Gamma': '',
-            'eff_mass_electron_long_L': '',
-            'eff_mass_electron_trans_L': '',
-            'eff_mass_electron_long_X': '',
-            'eff_mass_electron_trans_X': '',
-            'eff_mass_DOS_L': '',
-            'eff_mass_DOS_X': '',
-            'electron_affinity': 'eV',
-            'band_gap': 'eV',
-            'lowest_band': '',
-            'm0': '',
-            'eff_mass_hh_z': '',
-            'eff_mass_hh_110': '',
-            'eff_mass_hh_111': '',
-            'eff_mass_lh_z': '',
-            'eff_mass_lh_110': '',
-            'eff_mass_lh_111': '',
-            'eff_mass_electron': '',
-            'permittivity': 'F/m',
-            'electron_mobility': 'm^2/(V·s)',
-            'hole_mobility': 'm^2/(V·s)'
+            "lattice_constant": "Angstrom",
+            "Eg_Gamma": "eV",
+            "Eg_X": "eV",
+            "Eg_L": "eV",
+            "spin_orbit_splitting": "eV",
+            "interband_matrix_element": "eV",
+            "gamma1": "",
+            "gamma2": "",
+            "gamma3": "",
+            "relative_permittivity": "",
+            "eff_mass_split_off": "",
+            "valence_band_offset": "eV",
+            "a_c": "eV",
+            "a_v": "eV",
+            "c11": "GPa",
+            "c12": "GPa",
+            "c44": "GPa",
+            "b": "eV",
+            "d": "eV",
+            "F": "",
+            "eff_mass_electron_Gamma": "",
+            "eff_mass_electron_long_L": "",
+            "eff_mass_electron_trans_L": "",
+            "eff_mass_electron_long_X": "",
+            "eff_mass_electron_trans_X": "",
+            "eff_mass_DOS_L": "",
+            "eff_mass_DOS_X": "",
+            "electron_affinity": "eV",
+            "band_gap": "eV",
+            "lowest_band": "",
+            "m0": "",
+            "eff_mass_hh_z": "",
+            "eff_mass_hh_110": "",
+            "eff_mass_hh_111": "",
+            "eff_mass_lh_z": "",
+            "eff_mass_lh_110": "",
+            "eff_mass_lh_111": "",
+            "eff_mass_electron": "",
+            "permittivity": "F/m",
+            "electron_mobility": "m^2/(V·s)",
+            "hole_mobility": "m^2/(V·s)",
         }
 
         all_params = list(property_map.keys()) + new_params
 
-        parameter_source = 'params_file_tmp.txt'
-        with open(parameter_source, 'w') as f:
+        parameter_source = "params_file_tmp.txt"
+        with open(parameter_source, "w") as f:
             f.write(f"[{mat_name}]\n")
             for param in all_params:
                 try:
@@ -1110,36 +1237,40 @@ class CustomMaterial_OBP(BaseMaterial):
                     value = None
 
                 if param in [
-                    'Eg_Gamma', 
-                    'Eg_X', 
-                    'Eg_L', 
-                    'spin_orbit_splitting', 
-                    'interband_matrix_element',
-                    'valence_band_offset',
-                    'a_c',
-                    'a_v',
-                    'b',
-                    'd',
-                    'electron_affinity',
+                    "Eg_Gamma",
+                    "Eg_X",
+                    "Eg_L",
+                    "spin_orbit_splitting",
+                    "interband_matrix_element",
+                    "valence_band_offset",
+                    "a_c",
+                    "a_v",
+                    "b",
+                    "d",
+                    "electron_affinity",
                 ]:
-                    value = value/q #while energies are stored in J in solcore, we need to write this file with energies in eV
+                    value = (
+                        value / q
+                    )  # while energies are stored in J in solcore, we need to write this file with energies in eV
 
                 elif param in [
-                    'c11',
-                    'c12',
-                    'c44',
+                    "c11",
+                    "c12",
+                    "c44",
                 ]:
-                    value = value*1e-9 # While these values are stored in Pa in solcore, we need to write this file with GPa
+                    value = (
+                        value * 1e-9
+                    )  # While these values are stored in Pa in solcore, we need to write this file with GPa
 
-                elif param in [
-                    'lattice_constant'
-                ]:
-                    value = value/1e-10  # while these values are stored in m in solcore, we need to write this file with Angstrom
+                elif param in ["lattice_constant"]:
+                    value = (
+                        value / 1e-10
+                    )  # while these values are stored in m in solcore, we need to write this file with Angstrom
 
                 if value is not None:
                     if isinstance(value, (int, float)):
                         f.write(f"{param}={value:.2f} {units_dict[param]}\n")
-                        
+
                     elif isinstance(value, str):
                         f.write(f"{param}='{value} {units_dict[param]}'\n")
 
@@ -1157,12 +1288,11 @@ class CustomMaterial_OBP(BaseMaterial):
 
         if os.path.exists(parameter_source):
             os.remove(parameter_source)
-                    
 
     def _calculate_mobility(self):
 
         N = float(self.Nd)  # Carrier concentration in cm^-3
-        P = float(self.Na) # Hole concentration in cm^-3
+        P = float(self.Na)  # Hole concentration in cm^-3
         T = self.T  # Temperature in K
 
         elements = self.obp_mat.elements
@@ -1179,102 +1309,75 @@ class CustomMaterial_OBP(BaseMaterial):
         elif len(elements) == 4:
             quaternary = True
 
-        #From the elements of the openbandparams material, we will see which alloy it corresponds to on the solcore side
+        # From the elements of the openbandparams material, we will see which alloy it corresponds to on the solcore side
 
         if quaternary:
-            if set(elements) == set(['In', 'Ga', 'As', 'P']):
+            if set(elements) == set(["In", "Ga", "As", "P"]):
                 d_e = calculate_InGaAsP(
-                    x = fractions[elements.index('In')],
-                    y = fractions[elements.index('P')],
-                    i = 1,
-                    T = 300
+                    x=fractions[elements.index("In")], y=fractions[elements.index("P")], i=1, T=300
                 )
 
                 d_h = calculate_InGaAsP(
-                    x = fractions[elements.index('In')],
-                    y = fractions[elements.index('P')],
-                    i = 2,
-                    T = 300
+                    x=fractions[elements.index("In")], y=fractions[elements.index("P")], i=2, T=300
                 )
 
             else:
-                raise ValueError(f"Quaternary alloy {elements} not recognised. It is not allowed at the moment")
-            
+                raise ValueError(
+                    f"Quaternary alloy {elements} not recognised. It is not allowed at the moment"
+                )
+
         elif ternary:
-            if set(elements) == set(['In', 'Ga', 'As']):
+            if set(elements) == set(["In", "Ga", "As"]):
                 d_e = calculate_InGaAs(
-                    x = fractions[elements.index('In')],
-                    i = 1,
+                    x=fractions[elements.index("In")],
+                    i=1,
                 )
 
                 d_h = calculate_InGaAs(
-                    x = fractions[elements.index('In')],
-                    i = 2,
+                    x=fractions[elements.index("In")],
+                    i=2,
                 )
 
-            elif set(elements) == set(['Ga', 'In', 'P']):
-                d_e = calculate_InGaP(
-                    x = fractions[elements.index('In')],
-                    i = 1,
-                    T = 300
-                )
+            elif set(elements) == set(["Ga", "In", "P"]):
+                d_e = calculate_InGaP(x=fractions[elements.index("In")], i=1, T=300)
 
-                d_h = calculate_InGaP(
-                    x = fractions[elements.index('In')],
-                    i = 2,
-                    T = 300
-                )
-            elif set(elements) == set(['Al', 'Ga', 'As']):
-                d_e = calculate_AlGaAs(
-                    x = fractions[elements.index('Al')],
-                    i = 1,
-                    T = 300
-                )
+                d_h = calculate_InGaP(x=fractions[elements.index("In")], i=2, T=300)
+            elif set(elements) == set(["Al", "Ga", "As"]):
+                d_e = calculate_AlGaAs(x=fractions[elements.index("Al")], i=1, T=300)
 
-                d_h = calculate_AlGaAs(
-                    x = fractions[elements.index('Al')],
-                    i = 2,
-                    T = 300
-                )
-            elif set(elements) == set(['Al', 'In', 'As']):
-                d_e = calculate_InAlAs(
-                    x = fractions[elements.index('Al')],
-                    i = 1,
-                    T = 300
-                )
+                d_h = calculate_AlGaAs(x=fractions[elements.index("Al")], i=2, T=300)
+            elif set(elements) == set(["Al", "In", "As"]):
+                d_e = calculate_InAlAs(x=fractions[elements.index("Al")], i=1, T=300)
 
-                d_h = calculate_InAlAs(
-                    x = fractions[elements.index('Al')],
-                    i = 2,
-                    T = 300
-                )
+                d_h = calculate_InAlAs(x=fractions[elements.index("Al")], i=2, T=300)
             else:
-                raise ValueError(f"Ternary alloy {elements} not recognised. It is not allowed at the moment")
-            
+                raise ValueError(
+                    f"Ternary alloy {elements} not recognised. It is not allowed at the moment"
+                )
+
         elif binary:
             this_dir = os.path.dirname(inspect.getfile(solcore.material_data))
             parameters = os.path.join(this_dir, "mobility_parameters.json")
             f = open(parameters, mode="r")
             data = json.load(f)
 
-            if set(elements) == set(['In', 'As']):
+            if set(elements) == set(["In", "As"]):
                 d_e = data["InAs"][1]
                 d_h = data["InAs"][2]
-            elif set(elements) == set(['Al', 'As']):
+            elif set(elements) == set(["Al", "As"]):
                 d_e = data["AlAs"][1]
                 d_h = data["AlAs"][2]
-            elif set(elements) == set(['Ga', 'As']):
+            elif set(elements) == set(["Ga", "As"]):
                 d_e = data["GaAs"][1]
                 d_h = data["GaAs"][2]
-            elif set(elements) == set(['In', 'P']):
+            elif set(elements) == set(["In", "P"]):
                 d_e = data["InP"][1]
                 d_h = data["InP"][2]
-            elif set(elements) == set(['Ga', 'P']):
+            elif set(elements) == set(["Ga", "P"]):
                 d_e = data["GaP"][1]
                 d_h = data["GaP"][2]
-            
 
-        #electrons
+        # electrons
         muMin_e = d_e["muMin"]
         muMax_e = d_e["muMax"]
         Nref_e = d_e["Nref"]
@@ -1282,7 +1385,9 @@ class CustomMaterial_OBP(BaseMaterial):
         t1_e = d_e["t1"]
         t2_e = d_e["t2"]
 
-        m_e = mobility_low_field(N / 1e6, muMin_e, muMax_e, Nref_e, l_e, t1_e, t2_e, T) / 10000  # To convert it from cm2 to m2
+        m_e = (
+            mobility_low_field(N / 1e6, muMin_e, muMax_e, Nref_e, l_e, t1_e, t2_e, T) / 10000
+        )  # To convert it from cm2 to m2
 
         muMin_h = d_h["muMin"]
         muMax_h = d_h["muMax"]
@@ -1291,86 +1396,91 @@ class CustomMaterial_OBP(BaseMaterial):
         t1_h = d_h["t1"]
         t2_h = d_h["t2"]
 
-        m_h = mobility_low_field(P / 1e6, muMin_h, muMax_h, Nref_h, l_h, t1_h, t2_h, T) / 10000  # To convert it from cm2 to m2
+        m_h = (
+            mobility_low_field(P / 1e6, muMin_h, muMax_h, Nref_h, l_h, t1_h, t2_h, T) / 10000
+        )  # To convert it from cm2 to m2
 
         return m_e, m_h
-    
+
     def print_properties(self):
         params = [
-        'lattice_constant'
-        ,'Eg_Gamma'
-        ,'Eg_X'
-        ,'Eg_L'
-        ,'spin_orbit_splitting'
-        ,'interband_matrix_element'
-        ,'gamma1'
-        ,'gamma2'
-        ,'gamma3'
-        ,'relative_permittivity'
-        ,'eff_mass_split_off'
-        ,'valence_band_offset'
-        ,'a_c'
-        ,'a_v'
-        ,'c11'
-        ,'c12'
-        ,'c44'
-        ,'b'
-        ,'d'
-        ,'F'
-        ,'eff_mass_electron_Gamma'
-        ,'eff_mass_electron_long_L'
-        ,'eff_mass_electron_trans_L'
-        ,'eff_mass_electron_long_X'
-        ,'eff_mass_electron_trans_X'
-        ,'eff_mass_DOS_L'
-        ,'eff_mass_DOS_X'
-        ,'electron_affinity'
-        ,'band_gap'
-        ,'lowest_band'
-        ,'m0'
-        ,'eff_mass_hh_z'
-        ,'eff_mass_hh_110'
-        ,'eff_mass_hh_111'
-        ,'eff_mass_lh_z'
-        ,'eff_mass_lh_110'
-        ,'eff_mass_lh_111'
-        ,'eff_mass_electron'
-        ,'permittivity'
-        ,'electron_mobility'
-        ,'hole_mobility'
-        ,'electron_minority_lifetime'
+            "lattice_constant",
+            "Eg_Gamma",
+            "Eg_X",
+            "Eg_L",
+            "spin_orbit_splitting",
+            "interband_matrix_element",
+            "gamma1",
+            "gamma2",
+            "gamma3",
+            "relative_permittivity",
+            "eff_mass_split_off",
+            "valence_band_offset",
+            "a_c",
+            "a_v",
+            "c11",
+            "c12",
+            "c44",
+            "b",
+            "d",
+            "F",
+            "eff_mass_electron_Gamma",
+            "eff_mass_electron_long_L",
+            "eff_mass_electron_trans_L",
+            "eff_mass_electron_long_X",
+            "eff_mass_electron_trans_X",
+            "eff_mass_DOS_L",
+            "eff_mass_DOS_X",
+            "electron_affinity",
+            "band_gap",
+            "lowest_band",
+            "m0",
+            "eff_mass_hh_z",
+            "eff_mass_hh_110",
+            "eff_mass_hh_111",
+            "eff_mass_lh_z",
+            "eff_mass_lh_110",
+            "eff_mass_lh_111",
+            "eff_mass_electron",
+            "permittivity",
+            "electron_mobility",
+            "hole_mobility",
+            "electron_minority_lifetime",
         ]
 
-        print(f'********************{self.name}*******************')
+        print(f"********************{self.name}*******************")
         for prop in params:
             try:
                 value = getattr(self, prop)
-                print(f'{prop:25}: {value:15.2E}')
+                print(f"{prop:25}: {value:15.2E}")
             except:
-                print(f'{prop:15} not found in {self.name}')
-
+                print(f"{prop:15} not found in {self.name}")
 
 
 class ChargeSimulatorSolcore:
-    '''
+    """
 
-        Each SemiconductorPolygon can have the following charge_transport_kwargs:
-            - sol_obp_material: a openbandparams material object,
-            - sol_Na: concentration of acceptors in cm^-3,
-            - sol_Nd: concentration of donors in cm^-3,
-            - sol_electron_minority_lifetime: electron minority lifetime in seconds,
-            - sol_hole_minority_lifetime: hole minority lifetime in seconds,
+    Each SemiconductorPolygon can have the following charge_transport_kwargs:
+        - sol_obp_material: a openbandparams material object,
+        - sol_Na: concentration of acceptors in cm^-3,
+        - sol_Nd: concentration of donors in cm^-3,
+        - sol_electron_minority_lifetime: electron minority lifetime in seconds,
+        - sol_hole_minority_lifetime: hole minority lifetime in seconds,
 
-        .. warning::
-            This solver has a current issue with the ordering of the voltages when it outputs the results. Please visit https://github.com/qpv-research-group/solcore5/issues/294 for more details.
-    '''
+    .. warning::
+        This solver has a current issue with the ordering of the voltages when it outputs the results. Please visit https://github.com/qpv-research-group/solcore5/issues/294 for more details.
+    """
 
     def __init__(
         self,
-        device: PhotonicDevice, 
+        device: PhotonicDevice,
         simulation_line: LineString,
         temperature: float = 300.0,  # Add temperature parameter
-        bias_start_stop_step: list = [0,1,1], #contact1 is the bias electrode decide - or + accordingly
+        bias_start_stop_step: list = [
+            0,
+            1,
+            1,
+        ],  # contact1 is the bias electrode decide - or + accordingly
     ):
         """
         Initialize the ChargeSimulatorNN.
@@ -1380,13 +1490,13 @@ class ChargeSimulatorSolcore:
             simulation_line: LineString defining the simulation line along which to perform 1D simulation.
             temperature: Simulation temperature in Kelvin. Defaults to 300.0.
             bias_start_stop_step: Voltage sweep [start, stop, steps]. Defaults to [0,1,1].
-            
+
         """
         require("solcore", "solcore")
 
         self.temperature = temperature
         self.photonicdevice = device
-        self.bias_start_stop_step=bias_start_stop_step
+        self.bias_start_stop_step = bias_start_stop_step
 
         self.optical_photopolygons = copy.deepcopy(self.photonicdevice.photo_polygons)
 
@@ -1394,7 +1504,7 @@ class ChargeSimulatorSolcore:
 
         for polygon in self.optical_photopolygons:
             self.polygon_entities[polygon.name] = polygon.polygon
-        
+
         self.sim_vector_norm = get_normalized_vector(simulation_line)
         self.sim_vector_norm = np.array([self.sim_vector_norm[0], self.sim_vector_norm[1], 0])
 
@@ -1402,34 +1512,32 @@ class ChargeSimulatorSolcore:
         self._create_materials()
         self._create_mesh()
         self._create_junction()
-        
+
     def _create_junction(self):
         """
-            Create the solcore.Junction object that will be passed to the solcore PoissonDriftDiffusion simulator.
+        Create the solcore.Junction object that will be passed to the solcore PoissonDriftDiffusion simulator.
 
-            It will update the attribute self.junction
+        It will update the attribute self.junction
         """
         junction_layers = []
         for name, line in self.line_segments.items():
-
             x0, x1 = line.xy[0]
             y0, y1 = line.xy[1]
             D = y1 - y0  # Distance between the two points in the y direction
-            layer = Layer(D*1e-6, material=self.solcore_materials[name])
+            layer = Layer(D * 1e-6, material=self.solcore_materials[name])
             junction_layers.append(layer)
 
         # Create the junction
-        self.junction = Junction(
-            junction_layers,
-            kind = 'sesame_PDD'
-        )
+        self.junction = Junction(junction_layers, kind="sesame_PDD")
 
-        #Add the mesh to the junction
-        self.junction.mesh = self.mesh*1e-6 # Convert from um to m
+        # Add the mesh to the junction
+        self.junction.mesh = self.mesh * 1e-6  # Convert from um to m
 
         ## For some reason the solver always crashes if the mesh does not start at 0. Therefore, we will set the initial point of the mesh to 0.
         # self.junction.mesh -= np.min(self.junction.mesh)
-        self.junction.mesh -= min(self.junction.mesh, key=lambda x: abs(x - self.simulation_line.coords[0][1]*1e-6))
+        self.junction.mesh -= min(
+            self.junction.mesh, key=lambda x: abs(x - self.simulation_line.coords[0][1] * 1e-6)
+        )
 
     def _create_materials(self):
         """
@@ -1442,20 +1550,40 @@ class ChargeSimulatorSolcore:
 
         solcore_materials = OrderedDict()
         for name, segment in self.line_segments.items():
-            photo_poly = next((photo_poly for photo_poly in self.optical_photopolygons if photo_poly.name == name), None)
+            photo_poly = next(
+                (
+                    photo_poly
+                    for photo_poly in self.optical_photopolygons
+                    if photo_poly.name == name
+                ),
+                None,
+            )
 
-            obp_mat = photo_poly.charge_transport_simulator_kwargs.get('sol_obp_material', None)
+            obp_mat = photo_poly.charge_transport_simulator_kwargs.get("sol_obp_material", None)
             if obp_mat is None:
-                raise ValueError(f"PhotonicPolygon {photo_poly.name} does not have a valid 'sol_obp_material' in charge_transport_kwargs.")
-            sol_Na = photo_poly.charge_transport_simulator_kwargs.get('sol_Na', 1)*1e6 # # Convert from cm^-3 to m^-3
-            sol_Nd = photo_poly.charge_transport_simulator_kwargs.get('sol_Nd', 1)*1e6 # # Convert from cm^-3 to m^-3
-            sol_electron_minority_lifetime = photo_poly.charge_transport_simulator_kwargs.get('sol_electron_minority_lifetime', 1e-9)
-            sol_hole_minority_lifetime = photo_poly.charge_transport_simulator_kwargs.get('sol_hole_minority_lifetime', 1e-9)
+                raise ValueError(
+                    f"PhotonicPolygon {photo_poly.name} does not have a valid 'sol_obp_material' in charge_transport_kwargs."
+                )
+            sol_Na = (
+                photo_poly.charge_transport_simulator_kwargs.get("sol_Na", 1) * 1e6
+            )  # # Convert from cm^-3 to m^-3
+            sol_Nd = (
+                photo_poly.charge_transport_simulator_kwargs.get("sol_Nd", 1) * 1e6
+            )  # # Convert from cm^-3 to m^-3
+            sol_electron_minority_lifetime = photo_poly.charge_transport_simulator_kwargs.get(
+                "sol_electron_minority_lifetime", 1e-9
+            )
+            sol_hole_minority_lifetime = photo_poly.charge_transport_simulator_kwargs.get(
+                "sol_hole_minority_lifetime", 1e-9
+            )
 
-            #No need to default the minority lifetimes as they are already defaulted in the CustomMaterial_OBP class
+            # No need to default the minority lifetimes as they are already defaulted in the CustomMaterial_OBP class
 
             # Create the material
-            if sol_electron_minority_lifetime is not None and sol_hole_minority_lifetime is not None:
+            if (
+                sol_electron_minority_lifetime is not None
+                and sol_hole_minority_lifetime is not None
+            ):
                 material = CustomMaterial_OBP(
                     name=name,
                     opb_mat=obp_mat,
@@ -1470,7 +1598,7 @@ class ChargeSimulatorSolcore:
                     opb_mat=obp_mat,
                     Na=sol_Na,
                     Nd=sol_Nd,
-                    electron_minority_lifetime=sol_electron_minority_lifetime
+                    electron_minority_lifetime=sol_electron_minority_lifetime,
                 )
             elif sol_electron_minority_lifetime is None and sol_hole_minority_lifetime is not None:
                 material = CustomMaterial_OBP(
@@ -1478,7 +1606,7 @@ class ChargeSimulatorSolcore:
                     opb_mat=obp_mat,
                     Na=sol_Na,
                     Nd=sol_Nd,
-                    hole_minority_lifetime=sol_hole_minority_lifetime
+                    hole_minority_lifetime=sol_hole_minority_lifetime,
                 )
             else:
                 material = CustomMaterial_OBP(
@@ -1496,39 +1624,43 @@ class ChargeSimulatorSolcore:
 
     def _create_mesh(self):
         """
-        Here we create a mesh for the device based on the line segments. 
+        Here we create a mesh for the device based on the line segments.
 
         This meshing is handled by gmsh.
 
         The mesh is stored in self.mesh as a numpy array of x-coordinates.
 
         """
-        
+
         gmsh.initialize()
 
-        gmsh.model.add('mesh1d')
+        gmsh.model.add("mesh1d")
 
         point_tags = []
-        #Add all the points that comprise our line to the GMSH model
+        # Add all the points that comprise our line to the GMSH model
         for name, segment in self.line_segments.items():
             x0, x1 = segment.xy[0]
             y0, y1 = segment.xy[1]
 
-            tag = gmsh.model.geo.addPoint(y0, 0, 0, self.photonicdevice.resolutions_charge[name]['resolution'])
-            
+            tag = gmsh.model.geo.addPoint(
+                y0, 0, 0, self.photonicdevice.resolutions_charge[name]["resolution"]
+            )
+
             point_tags.append(tag)
 
-        #Add the final point
+        # Add the final point
         x0, x1 = segment.xy[0]
         y0, y1 = segment.xy[1]
 
-        tag = gmsh.model.geo.addPoint(y1, 0, 0, self.photonicdevice.resolutions_charge[name]['resolution'])
+        tag = gmsh.model.geo.addPoint(
+            y1, 0, 0, self.photonicdevice.resolutions_charge[name]["resolution"]
+        )
 
         point_tags.append(tag)
 
-        #Add the lines
+        # Add the lines
         for i in range(len(point_tags) - 1):
-            gmsh.model.geo.addLine(point_tags[i], point_tags[i+1])
+            gmsh.model.geo.addLine(point_tags[i], point_tags[i + 1])
 
         gmsh.model.geo.synchronize()
 
@@ -1543,11 +1675,10 @@ class ChargeSimulatorSolcore:
 
         self.mesh = np.asarray(node_coords)
 
-            
-
-    def _select_line(self,
-                simulation_line: LineString, #to select the region
-                ): 
+    def _select_line(
+        self,
+        simulation_line: LineString,  # to select the region
+    ):
         """
         Find intersections between the simulation line and device polygons.
 
@@ -1562,7 +1693,7 @@ class ChargeSimulatorSolcore:
         names_to_print = []
         for polygon_name, polygon_geom in self.polygon_entities.items():
             # Find intersection between simulation line and polygon
-            
+
             intersection = simulation_line.intersection(polygon_geom)
             if (polygon_name == "substrate") or (polygon_name == "background"):
                 continue
@@ -1571,8 +1702,8 @@ class ChargeSimulatorSolcore:
                 continue
 
             # If intersection is a single LineString
-            if intersection.geom_type == 'LineString':
-                line_segments[f'{polygon_name}'] = intersection
+            if intersection.geom_type == "LineString":
+                line_segments[f"{polygon_name}"] = intersection
 
                 ## Loop over the photopolygons of the PhotonicDevice to find the proper PhotonicPolygon that will allow for charge transport data to be loaded on:
                 for poly in self.photonicdevice.photo_polygons:
@@ -1581,26 +1712,25 @@ class ChargeSimulatorSolcore:
 
                 names_to_print.append(polygon_name)
 
-        print('Charge transport will take place with:')
-        print(*names_to_print, sep='\n')
+        print("Charge transport will take place with:")
+        print(*names_to_print, sep="\n")
 
-        #The order of the line segments in line_Segments is dependent on the order of the self.polygon_entities. However, in this case, we must ensure that the line segments are stored in such a way that the polygons to which they belong appear as if we are to walk along the beggining of the simulation line to the end.
+        # The order of the line segments in line_Segments is dependent on the order of the self.polygon_entities. However, in this case, we must ensure that the line segments are stored in such a way that the polygons to which they belong appear as if we are to walk along the beggining of the simulation line to the end.
 
-        #To do this we will simple walk the line: we start at point 0 of the line. Then we find the point halfway through point 0 and 1, and find to which polygon it belongs to. Then we move on to point 1 and find the one halfway between 1 and 2 and look for the corresponding polygon. We continue until we're done.
-        
+        # To do this we will simple walk the line: we start at point 0 of the line. Then we find the point halfway through point 0 and 1, and find to which polygon it belongs to. Then we move on to point 1 and find the one halfway between 1 and 2 and look for the corresponding polygon. We continue until we're done.
+
         start_point = np.asarray(simulation_line.xy).T[0]
         end_point = np.asarray(simulation_line.xy).T[1]
 
         new_line_segments = OrderedDict()
 
-        current_point = start_point #This will be updated as we walk the line
+        current_point = start_point  # This will be updated as we walk the line
 
-        #The starting point must appear only once, so finding the first line segment is easy.
-        #For the second point we will loop over all the line segments except those already found, and find the one that contains the current point
-        k=0
+        # The starting point must appear only once, so finding the first line segment is easy.
+        # For the second point we will loop over all the line segments except those already found, and find the one that contains the current point
+        k = 0
         while not np.isclose(current_point, end_point).all():
             for name, line in line_segments.items():
-
                 if name in new_line_segments:
                     continue
                 # print(name, np.asarray(line.xy))
@@ -1615,21 +1745,21 @@ class ChargeSimulatorSolcore:
                     break
 
             k += 1
-            if k > 10_000: #This is just a timeout safety measure
-                raise ValueError('Something went wrong, could not find all line segments')
+            if k > 10_000:  # This is just a timeout safety measure
+                raise ValueError("Something went wrong, could not find all line segments")
 
         # Store the line segments for later use
         self.line_segments = new_line_segments
         self.simulation_line = simulation_line
 
     def solve_PDD(
-            self,
-            verbose = False,
-            tol = 1e-6,
-            max_iter = 100,
-            htp = 1,
-            smooth_output = False,
-            savgol_window = 15,
+        self,
+        verbose=False,
+        tol=1e-6,
+        max_iter=100,
+        htp=1,
+        smooth_output=False,
+        savgol_window=15,
     ):
         """
         Solve the Poisson Drift Diffusion equations for the device.
@@ -1656,7 +1786,7 @@ class ChargeSimulatorSolcore:
             htp (int): Number of homotopic Newton loops to perform
 
             .. Note::
-               For more details on these arguments please consult solcore.sesame_drift_diffusion.solve_pdd 
+               For more details on these arguments please consult solcore.sesame_drift_diffusion.solve_pdd
 
             smooth_output (bool): If True, it will apply a savitzky-golay filter to each of the attributes specified above. The reasoning behind this is to numerical artifacts with big spikes in the charge distributions and electrical fields. For more details please check https://github.com/qpv-research-group/solcore5/discussions/293
             savgol_window (int): The window size for the savitzky-golay filter. Default is 15. It should be an odd number.
@@ -1674,7 +1804,7 @@ class ChargeSimulatorSolcore:
         options.voltages = np.linspace(Vstart, Vstop, Vsteps)
         options.internal_voltages = options.voltages.copy()
 
-        #PDD solver options
+        # PDD solver options
         options.sesame_verbose = verbose
         options.sesame_tol = tol
         options.sesame_max_iterations = max_iter
@@ -1682,20 +1812,20 @@ class ChargeSimulatorSolcore:
         options.sesame_periodic = False
 
         solar_cell_sesame = SolarCell([self.junction])
-        solar_cell_solver(solar_cell_sesame, 'iv', options)
+        solar_cell_solver(solar_cell_sesame, "iv", options)
 
         if smooth_output:
             from scipy.signal import savgol_filter
-            
+
             for key in self.junction.pdd_output.keys():
-                if key in ['Ec', 'Ev', 'Efe', 'Efh', 'potential', 'n', 'p']:
+                if key in ["Ec", "Ev", "Efe", "Efh", "potential", "n", "p"]:
                     for idx_voltage in range(len(self.junction.pdd_output[key])):
                         self.junction.pdd_output[key][idx_voltage] = savgol_filter(
                             self.junction.pdd_output[key][idx_voltage], savgol_window, 1
                         )
 
         # Extract the results from the solar cell solver
-        #Process the output to retrieve the mobilities
+        # Process the output to retrieve the mobilities
         junction = self.junction
         un = np.zeros_like(junction.mesh)
         up = np.zeros_like(junction.mesh)
@@ -1714,27 +1844,30 @@ class ChargeSimulatorSolcore:
             un[idx] = un_layer
             x0 += width
 
-        un = np.broadcast_to(un[np.newaxis,:], (len(junction.pdd_output['potential']), len(junction.mesh)))
-        up = np.broadcast_to(up[np.newaxis, :], (len(junction.pdd_output['potential']), len(junction.mesh)))
+        un = np.broadcast_to(
+            un[np.newaxis, :], (len(junction.pdd_output["potential"]), len(junction.mesh))
+        )
+        up = np.broadcast_to(
+            up[np.newaxis, :], (len(junction.pdd_output["potential"]), len(junction.mesh))
+        )
 
         # Retrieve the electric field
-        E_field = np.zeros_like(junction.pdd_output['potential'])
-        for i in range(len(junction.pdd_output['potential'])):
-            E_field[i] = -np.gradient(junction.pdd_output['potential'][i], junction.mesh)
+        E_field = np.zeros_like(junction.pdd_output["potential"])
+        for i in range(len(junction.pdd_output["potential"])):
+            E_field[i] = -np.gradient(junction.pdd_output["potential"][i], junction.mesh)
 
-        self.Ec = junction.pdd_output['Ec']
-        self.Ev = junction.pdd_output['Ev']
-        self.Efn = junction.pdd_output['Efe']
-        self.Efp = junction.pdd_output['Efh']
+        self.Ec = junction.pdd_output["Ec"]
+        self.Ev = junction.pdd_output["Ev"]
+        self.Efn = junction.pdd_output["Efe"]
+        self.Efp = junction.pdd_output["Efh"]
         self.V = junction.voltage
-        self.N = junction.pdd_output['n']/1e6 # Convert from m^-3 to cm^-3
-        self.P = junction.pdd_output['p']/1e6 # Convert from m^-3 to cm^-3
-        self.Efield = E_field / 1e5 # Convert from V/m to kV/cm
-        self.mun = un * 1e4 # Convert from m^2/(V·s) to cm^2/(V·s)
-        self.mup = up * 1e4 # Convert from m^2/(V·s) to cm^2/(V·s)
+        self.N = junction.pdd_output["n"] / 1e6  # Convert from m^-3 to cm^-3
+        self.P = junction.pdd_output["p"] / 1e6  # Convert from m^-3 to cm^-3
+        self.Efield = E_field / 1e5  # Convert from V/m to kV/cm
+        self.mun = un * 1e4  # Convert from m^2/(V·s) to cm^2/(V·s)
+        self.mup = up * 1e4  # Convert from m^2/(V·s) to cm^2/(V·s)
 
-    def transfer_results_to_device(self, dx = 0.05, polygons_to_map = None):
-        
+    def transfer_results_to_device(self, dx=0.05, polygons_to_map=None):
         """
         Interpolate 1D simulation data onto a new 2D mesh.
 
@@ -1752,7 +1885,7 @@ class ChargeSimulatorSolcore:
         if polygons_to_map is None:
             polygons_to_map = self.line_segments.keys()
 
-        #All the polygons that are NOT on the simulation line have not had their flag of has_charge_Transport_Data changed to True, so we need to do it here to make sure that the data gets mapped correctly in the end
+        # All the polygons that are NOT on the simulation line have not had their flag of has_charge_Transport_Data changed to True, so we need to do it here to make sure that the data gets mapped correctly in the end
         else:
             for poly in self.photonicdevice.photo_polygons:
                 if poly.name in polygons_to_map and not poly.name in self.line_segments.keys():
@@ -1761,13 +1894,12 @@ class ChargeSimulatorSolcore:
         reg = self.photonicdevice.reg
         y = np.array(self.mesh)  # Convert list to numpy array first
 
-        poly_union = shapely.union_all([
-            next(
-                p for p in self.photonicdevice.photo_polygons
-                if p.name == poly_name
-            ).polygon
-            for poly_name in polygons_to_map
-        ])
+        poly_union = shapely.union_all(
+            [
+                next(p for p in self.photonicdevice.photo_polygons if p.name == poly_name).polygon
+                for poly_name in polygons_to_map
+            ]
+        )
 
         Ec_int = []
         Ev_int = []
@@ -1778,8 +1910,8 @@ class ChargeSimulatorSolcore:
         Efield_int = []
         mun_int = []
         mup_int = []
-        
-        for i ,v in enumerate(self.V):
+
+        for i, v in enumerate(self.V):
             Ec_int_interp = interp1d(y, self.Ec[i], bounds_error=False, fill_value=0)
             Ev_int_interp = interp1d(y, self.Ev[i], bounds_error=False, fill_value=0)
             Efn_int_interp = interp1d(y, self.Efn[i], bounds_error=False, fill_value=0)
@@ -1796,11 +1928,14 @@ class ChargeSimulatorSolcore:
             Efp_int.append(make_interp(poly_union, Efp_int_interp, reg.eV))
             N_int.append(make_interp(poly_union, N_int_interp, reg.cm**-3))
             P_int.append(make_interp(poly_union, P_int_interp, reg.cm**-3))
-            Efield_int.append(make_vector_interp(poly_union, Efield_int_interp, self.sim_vector_norm, reg.kV / reg.cm))
+            Efield_int.append(
+                make_vector_interp(
+                    poly_union, Efield_int_interp, self.sim_vector_norm, reg.kV / reg.cm
+                )
+            )
             mun_int.append(make_interp(poly_union, mun_int_interp, reg.cm**2 / reg.V / reg.s))
             mup_int.append(make_interp(poly_union, mup_int_interp, reg.cm**2 / reg.V / reg.s))
 
-            
         self.photonicdevice.charge = {
             "Ec": Ec_int,
             "Ev": Ev_int,
@@ -1814,11 +1949,10 @@ class ChargeSimulatorSolcore:
             "V": self.V,
         }
 
-
     def plot_with_simulation_line(
         self,
         color_polygon="black",
-        color_line="green", 
+        color_line="green",
         color_junctions="blue",
         color_simulation_line="red",
         fill_polygons=False,
@@ -1828,17 +1962,17 @@ class ChargeSimulatorSolcore:
     ):
         """
         Plot the device polygons with the simulation line overlay.
-        
+
         Args:
             color_polygon: Color for device polygons
-            color_line: Color for current calculation lines  
+            color_line: Color for current calculation lines
             color_junctions: Color for junction regions
             color_simulation_line: Color for the simulation line
             fill_polygons: Whether to fill the polygons
             linewidth_simulation: Line width for simulation line
             fig: Existing figure object (optional)
             ax: Existing axis object (optional)
-            
+
         Returns:
             fig, ax: matplotlib figure and axis objects
         """
@@ -1855,41 +1989,37 @@ class ChargeSimulatorSolcore:
                 if fill_polygons:
                     ax.fill(
                         *poly.exterior.xy,
-                        color=np.random.rand(3,),
+                        color=np.random.rand(
+                            3,
+                        ),
                         alpha=0.5,
                     )
-                    
+
             elif isinstance(poly, Line):
                 ax.plot(*poly.xy, color=color_line)
 
-        
         # Plot the simulation line if it exists
-        if hasattr(self, 'simulation_line') and self.simulation_line is not None:
+        if hasattr(self, "simulation_line") and self.simulation_line is not None:
             ax.plot(
-                *self.simulation_line.xy, 
-                color=color_simulation_line, 
+                *self.simulation_line.xy,
+                color=color_simulation_line,
                 linewidth=linewidth_simulation,
-                label="Simulation Line"
+                label="Simulation Line",
             )
             ax.legend()
-            
+
             if len(self.line_segments) > 0:
                 ax.legend()
-        
+
         ax.set_xlabel("x (m)")
         ax.set_ylabel("y (m)")
         ax.set_title("PhotonicDevice with Simulation Line")
         ax.grid(True, alpha=0.3)
-        ax.set_aspect('equal')
-        
+        ax.set_aspect("equal")
+
         return fig, ax
-    
-    def plot_results(
-            self,
-            V_idx=None, 
-            cmap = 'tab10',
-            log_scale_carriers = True,
-            plot_limits = True):
+
+    def plot_results(self, V_idx=None, cmap="tab10", log_scale_carriers=True, plot_limits=True):
         """
         Plot simulation results in a 2x1 subplot layout.
 
@@ -1904,27 +2034,27 @@ class ChargeSimulatorSolcore:
             tuple: Figure and axes objects
         """
         if V_idx is None:
-            V_idx = [0, len(self.V)-1]
+            V_idx = [0, len(self.V) - 1]
 
         cmap = plt.get_cmap(cmap)
         norm = plt.Normalize(vmin=min(self.V), vmax=max(self.V))
         colors = [cmap(norm(self.V[v])) for v in V_idx]
 
         if V_idx == None:
-            V_idx = [0,len(self.V)-1]
-            
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 8),sharex=True)
+            V_idx = [0, len(self.V) - 1]
 
-        ax11 = ax1.twinx() #Ax to plot the vertical lines of the boundaries
-        ax21 = ax2.twinx() #Ax to plot the vertical lines of the boundaries
-        ax31 = ax3.twinx() #Ax to plot the vertical lines of the boundaries
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 8), sharex=True)
+
+        ax11 = ax1.twinx()  # Ax to plot the vertical lines of the boundaries
+        ax21 = ax2.twinx()  # Ax to plot the vertical lines of the boundaries
+        ax31 = ax3.twinx()  # Ax to plot the vertical lines of the boundaries
 
         ax11.set_axis_off()
         ax21.set_axis_off()
         ax31.set_axis_off()
 
         for ax in [ax11, ax21, ax31]:
-            ax.set_ylim(0,1)
+            ax.set_ylim(0, 1)
             ax.set_yticks([])
 
         # ax2r = ax2.twinx()
@@ -1934,13 +2064,13 @@ class ChargeSimulatorSolcore:
             # Plot quasi-Fermi levels
             ax1.plot(self.mesh, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
             ax1.plot(self.mesh, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
-        # Configure first subplot
-                        
+            # Configure first subplot
+
             # ax2 = ax1.twinx()
-            ax2.plot(self.mesh,  self.N[v],"-", color=colors[i])
-            ax2.plot(self.mesh, self.P[v],"-.", color=colors[i])
-            
-            ax3.plot(self.mesh,self.Efield[v], color = colors[i])
+            ax2.plot(self.mesh, self.N[v], "-", color=colors[i])
+            ax2.plot(self.mesh, self.P[v], "-.", color=colors[i])
+
+            ax3.plot(self.mesh, self.Efield[v], color=colors[i])
             # ax3.set_ylim(-300,100)
 
         if plot_limits:
@@ -1949,11 +2079,10 @@ class ChargeSimulatorSolcore:
                     x0, x1 = segment.xy[0]
                     y0, y1 = segment.xy[1]
 
-                    ax.plot([y0, y0], [0,1], 'r-', label=f'Segment {name}', alpha = 0.2)
-                    ax.plot([y1, y1], [0,1], 'r-', label=f'Segment {name}', alpha = 0.2)
+                    ax.plot([y0, y0], [0, 1], "r-", label=f"Segment {name}", alpha=0.2)
+                    ax.plot([y1, y1], [0, 1], "r-", label=f"Segment {name}", alpha=0.2)
 
-            
-        ax1.set_ylabel('Energy (eV)')
+        ax1.set_ylabel("Energy (eV)")
         ax1.grid(True, alpha=0.3)
         # ax1.legend(loc='best')
 
@@ -1961,13 +2090,13 @@ class ChargeSimulatorSolcore:
         ax2.grid(True, alpha=0.3)
         # ax2.legend(loc='best')
         if log_scale_carriers:
-            ax2.set_yscale('log')
-        ax2.set_ylim(1e15,1e19)
+            ax2.set_yscale("log")
+        ax2.set_ylim(1e15, 1e19)
 
-        #Add dummy lines so that we can put a legend for electron and hole
-        l1, = ax2.plot([],[], 'k-', label='Electrons')
-        l2, = ax2.plot([],[], 'k--', label='Holes')
-        ax2.legend(handles=[l1,l2], loc='best')
+        # Add dummy lines so that we can put a legend for electron and hole
+        (l1,) = ax2.plot([], [], "k-", label="Electrons")
+        (l2,) = ax2.plot([], [], "k--", label="Holes")
+        ax2.legend(handles=[l1, l2], loc="best")
 
         ax3.set_ylabel(r"Electric field (kV/cm)")
         ax3.grid(True, alpha=0.3)
@@ -1978,24 +2107,23 @@ class ChargeSimulatorSolcore:
         norm_cbar = plt.Normalize(vmin=self.V[min(V_idx)], vmax=self.V[max(V_idx)])
 
         divider = make_axes_locatable(ax1)
-        cax = divider.append_axes('top', size='8%', pad=0.1)
+        cax = divider.append_axes("top", size="8%", pad=0.1)
 
-        ax11.set_ylim(0,1.17) #A small compensation so that the lines are nice
+        ax11.set_ylim(0, 1.17)  # A small compensation so that the lines are nice
 
         sm = plt.cm.ScalarMappable(norm=norm_cbar, cmap=cmap)
         sm.set_array([])  # required in older mpl versions
 
-        cb = fig.colorbar(sm, cax=cax, orientation='horizontal')
-        cb.ax.xaxis.set_ticks_position('top')
-        cb.ax.xaxis.set_label_position('top')
+        cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
+        cb.ax.xaxis.set_ticks_position("top")
+        cb.ax.xaxis.set_label_position("top")
 
-        cb.set_label('Bias Voltage (V)')
+        cb.set_label("Bias Voltage (V)")
 
         for v in [self.V[vi] for vi in V_idx]:
-            cb.ax.axvline(v, color='k', lw=1.5)
+            cb.ax.axvline(v, color="k", lw=1.5)
 
     def plot_mesh(self):
-
         """
 
         Plot the mesh points along the simulation line.
@@ -2003,7 +2131,7 @@ class ChargeSimulatorSolcore:
         Returns:
             fig, ax: matplotlib figure and axis objects
         """
-        
+
         fig, ax = plt.subplots(figsize=(10, 5))
         ax1 = ax.twinx()
 
@@ -2014,14 +2142,19 @@ class ChargeSimulatorSolcore:
             x0, x1 = segment.xy[0]
             y0, y1 = segment.xy[1]
 
-            ax.plot([y0, y0], [0,1], 'r-', label=f'Segment {name}')
-            ax.plot([y1, y1], [0,1], 'r-', label=f'Segment {name}')
+            ax.plot([y0, y0], [0, 1], "r-", label=f"Segment {name}")
+            ax.plot([y1, y1], [0, 1], "r-", label=f"Segment {name}")
 
-            ax.text(y0, 0.5, f'{name} start', rotation=90, verticalalignment='center')
+            ax.text(y0, 0.5, f"{name} start", rotation=90, verticalalignment="center")
 
-        ax1.plot(np.linspace(y0_min, y0_max, len(self.mesh)), self.junction.mesh, marker= 'o', label='Mesh points')
+        ax1.plot(
+            np.linspace(y0_min, y0_max, len(self.mesh)),
+            self.junction.mesh,
+            marker="o",
+            label="Mesh points",
+        )
 
-        ax.set_ylabel('Mesh point')
-        ax.set_xlabel('Real space (um)')
+        ax.set_ylabel("Mesh point")
+        ax.set_xlabel("Real space (um)")
 
         return fig, ax

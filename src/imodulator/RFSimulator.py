@@ -81,7 +81,7 @@ class RFSimulatorFEMWELL:
 
         .. note::
             The simulation window MUST be a rectangle. If not, the simulation will fail. Also beware that the definition of the simulation window is how you can make use of symmetry planes through the definition of metal boundaries or not. See `compute_modes` for more information on how to use the symmetry planes.
-        
+
         """
         require("femwell", "femwell")
 
@@ -130,9 +130,9 @@ class RFSimulatorFEMWELL:
             # Cut all photopolygons by the simulation window
             idxs_to_pop = []
             for i, poly in enumerate(self.rf_photopolygons):
-                if poly.polygon.intersects(
-                    simulation_window
-                ) and not simulation_window.contains(poly.polygon):
+                if poly.polygon.intersects(simulation_window) and not simulation_window.contains(
+                    poly.polygon
+                ):
                     poly_tmp = clip_by_rect(poly.polygon, *simulation_window.bounds)
 
                     if poly_tmp.is_empty:
@@ -149,9 +149,7 @@ class RFSimulatorFEMWELL:
             # Cut all the line entities by the simulation window
             keys_to_pop = []
             for key, poly in self.line_entities.items():
-                if poly.intersects(simulation_window) and not simulation_window.contains(
-                    poly
-                ):
+                if poly.intersects(simulation_window) and not simulation_window.contains(poly):
                     poly_tmp = clip_by_rect(poly, *simulation_window.bounds)
 
                     if type(poly_tmp) == MultiLineString:
@@ -169,10 +167,7 @@ class RFSimulatorFEMWELL:
 
             # Select all junctions cutted by the simulation window
             for name, poly in self.photodevice.junction_entities.items():
-
-                if poly.intersects(simulation_window) and not simulation_window.contains(
-                    poly
-                ):
+                if poly.intersects(simulation_window) and not simulation_window.contains(poly):
                     poly_tmp = clip_by_rect(polygon, *simulation_window.bounds)
 
                     if not poly_tmp.is_empty:
@@ -187,21 +182,13 @@ class RFSimulatorFEMWELL:
 
         surf_bounds = self.polygon_entities["background"].bounds
 
-        left = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])]
-        )
+        left = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])])
 
-        bottom = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])]
-        )
+        bottom = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])])
 
-        right = LineString(
-            [(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])]
-        )
+        right = LineString([(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])])
 
-        top = LineString(
-            [(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])]
-        )
+        top = LineString([(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])])
 
         self.line_entities["left"] = left
         self.line_entities["bottom"] = bottom
@@ -210,21 +197,32 @@ class RFSimulatorFEMWELL:
 
         # We now need to check if any polygon is fully covered by a higher priority polygon. If so, we remove it from the simulation
         polygons_to_remove = []
-        for i, (poly_name, poly_to_check) in enumerate(reversed(self.polygon_entities.items())): #We loop from lowest priority to highest
-
+        for i, (poly_name, poly_to_check) in enumerate(
+            reversed(self.polygon_entities.items())
+        ):  # We loop from lowest priority to highest
             difference_poly = None
-            for poly_higher_name, poly_higher in list(reversed(self.polygon_entities.items()))[i+1:]: #We loop through all the higher priority polygons and keep removing their area from the poly_to_check
-                difference_poly = poly_to_check.difference(poly_higher) if difference_poly is None else difference_poly.difference(poly_higher)
+            for poly_higher_name, poly_higher in list(
+                reversed(self.polygon_entities.items())
+            )[
+                i + 1 :
+            ]:  # We loop through all the higher priority polygons and keep removing their area from the poly_to_check
+                difference_poly = (
+                    poly_to_check.difference(poly_higher)
+                    if difference_poly is None
+                    else difference_poly.difference(poly_higher)
+                )
 
                 if difference_poly.is_empty:
                     polygons_to_remove.append(poly_name)
-                    print(f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.')
+                    print(
+                        f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.'
+                    )
                     break
-        
-        #Remove the polygons that are fully covered by higher priority polygons
+
+        # Remove the polygons that are fully covered by higher priority polygons
         for poly_name in polygons_to_remove:
             self.polygon_entities.pop(poly_name)
-            
+
         self.entities = OrderedDict(
             list(self.line_entities.items())
             + list(self.junction_entities.items())
@@ -280,9 +278,9 @@ class RFSimulatorFEMWELL:
         self.basis = Basis(self.mesh, ElementTriP0())
 
     def refine_mesh(
-            self,
-            N_nearest_neighbours: int = 200,
-            mode_for_refinement: Mode = None,
+        self,
+        N_nearest_neighbours: int = 200,
+        mode_for_refinement: Mode = None,
     ):
         """
         Refines the mesh based on the computed RF modes.
@@ -293,31 +291,26 @@ class RFSimulatorFEMWELL:
 
         Returns:
             None
-       
+
         """
 
         old_mesh = self.mesh
-
 
         elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
 
         new_mesh = old_mesh.refined(elements_to_refine)
 
         new_boundaries = get_named_boundaries_in_refined_mesh(
-            old_mesh, 
-            new_mesh, 
-            N=N_nearest_neighbours
+            old_mesh, new_mesh, N=N_nearest_neighbours
         )
 
         self.mesh = new_mesh
         self.mesh._boundaries = new_boundaries
         self.basis = Basis(self.mesh, ElementTriP0())
 
-
-    def get_epsilon_rf(self, 
-                       frequency: float,
-                       use_charge_transport_data: bool = False,
-                       voltage_idx: int = 0):
+    def get_epsilon_rf(
+        self, frequency: float, use_charge_transport_data: bool = False, voltage_idx: int = 0
+    ):
         """
         This function will return the :math:`\epsilon_{RF}` tensor with the signature ``self.epsilon_rf[element_idx, voltage_idx]`` where ``element_idx`` is the index of the element in the mesh and `voltage_idx` is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the ``voltage_idx`` must be 0 as the second axis of the array will have size 1.
 
@@ -337,7 +330,7 @@ class RFSimulatorFEMWELL:
         # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
         # Here, however, if we loop through the photo_polygons from idx 0 to idx N
         # the hierarchy on the boundaries will be inverted. That is,
-        #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
+        # lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
         # loop over the inverted list of photo_polygons
         for photo_polygon in self.rf_photopolygons[::-1]:
             dofs_idxs = self._dofs_of(photo_polygon)
@@ -351,18 +344,16 @@ class RFSimulatorFEMWELL:
             #         N_bias_points = len(photo_poly.Ec)
             #         break
 
-            N_bias_points = len(self.photodevice.charge['V'])
+            N_bias_points = len(self.photodevice.charge["V"])
 
             if self.epsilon_rf is None:
                 self.epsilon_rf = np.zeros((self.basis.N, N_bias_points), dtype=np.complex128)
 
-            elif self.epsilon_rf.shape[1] == 1:  
-                # This is to account for the case where it has been first initialized 
-                #with the charge transport data so we extend the array to another dimension
+            elif self.epsilon_rf.shape[1] == 1:
+                # This is to account for the case where it has been first initialized
+                # with the charge transport data so we extend the array to another dimension
                 self.epsilon_rf = (
-                    np.tile(self.epsilon_rf[:, 0], N_bias_points)
-                    .reshape(N_bias_points, -1)
-                    .T
+                    np.tile(self.epsilon_rf[:, 0], N_bias_points).reshape(N_bias_points, -1).T
                 )
 
             for voltage_idx in range(N_bias_points):
@@ -370,25 +361,29 @@ class RFSimulatorFEMWELL:
                 # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
                 # Here, however, if we loop through the photo_polygons from idx 0 to idx N
                 # the hierarchy on the boundaries will be inverted. That is,
-                #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
+                # lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
                 # loop over the inverted list of photo_polygons
                 for photo_polygon in self.rf_photopolygons[::-1]:
                     dofs_idxs = self._dofs_of(photo_polygon)
 
                     if (
-                        isinstance(photo_polygon, SemiconductorPolygon) and
-                        photo_polygon.has_charge_transport_data
+                        isinstance(photo_polygon, SemiconductorPolygon)
+                        and photo_polygon.has_charge_transport_data
                     ):
                         x, y = self._centroids_of(photo_polygon)
 
-                        self.epsilon_rf[dofs_idxs, voltage_idx] = photo_polygon.rf_eps(omega).real + (
+                        self.epsilon_rf[dofs_idxs, voltage_idx] = photo_polygon.rf_eps(
+                            omega
+                        ).real + (
                             -1j
                             * (
                                 self.e
-                                * (self.photodevice.charge['N'][voltage_idx](x,y) * 
-                                   self.photodevice.charge['mun'][voltage_idx](x,y) + 
-                                   self.photodevice.charge['P'][voltage_idx](x,y) * 
-                                   self.photodevice.charge['mup'][voltage_idx](x,y))
+                                * (
+                                    self.photodevice.charge["N"][voltage_idx](x, y)
+                                    * self.photodevice.charge["mun"][voltage_idx](x, y)
+                                    + self.photodevice.charge["P"][voltage_idx](x, y)
+                                    * self.photodevice.charge["mup"][voltage_idx](x, y)
+                                )
                                 / omega
                                 / self.e0
                             )
@@ -451,15 +446,17 @@ class RFSimulatorFEMWELL:
             order: Order of the basis functions to use in the EM solver.
             metallic_boundaries: The boundaries to treat as metallic. If `False`, no boundaries are treated as metallic. If `True`, all boundaries are treated as metallic. If a list of strings, the boundaries with the given names are treated as metallic. At the moment, the simulation window is treated as a square, therefore, the metallic boundaries can be ``left`, ``right``, ``top`` and ``bottom`` boundaries.
             n_guess: Initial guess for the effective index.
-            return_modes: Whether to return the computed modes. 
+            return_modes: Whether to return the computed modes.
             use_charge_transport_data: Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a :math:`\sigma(x,y,V)`. Make sure your mesh is appropriate for it.
 
         Returns:
             The computed modes if `return_modes` is `True`.
-       
+
         """
 
-        self.get_epsilon_rf(frequency, use_charge_transport_data=use_charge_transport_data, voltage_idx=voltage_idx)
+        self.get_epsilon_rf(
+            frequency, use_charge_transport_data=use_charge_transport_data, voltage_idx=voltage_idx
+        )
 
         modes = compute_modes(
             self.basis,
@@ -471,7 +468,6 @@ class RFSimulatorFEMWELL:
             metallic_boundaries=metallic_boundaries,
             n_guess=n_guess,
         )
-        
 
         self.modes = modes.sorted(lambda mode: mode.n_eff.real)
 
@@ -479,18 +475,17 @@ class RFSimulatorFEMWELL:
             return self.modes
 
     def plot_eps_rf(
-            self,
-            frequency: float = 10,
-            voltage_idx: int = 0,
-            use_charge_transport_data: bool = False,
-            log_scale_im: bool = True,
-            log_scale_re: bool = True,
-            cmap = "jet",
+        self,
+        frequency: float = 10,
+        voltage_idx: int = 0,
+        use_charge_transport_data: bool = False,
+        log_scale_im: bool = True,
+        log_scale_re: bool = True,
+        cmap="jet",
     ):
-
         """
         Plots the real and imaginary parts of the RF permittivity tensor.
-        
+
         Args:
             frequency: The frequency at which to compute the permittivity tensor. The frequency must be in GHz.
             voltage_idx: The index of the voltage to use for the permittivity tensor.
@@ -498,20 +493,22 @@ class RFSimulatorFEMWELL:
             log_scale_im: Whether to plot the imaginary part of the permittivity tensor in logarithmic scale.
             log_scale_re: Whether to plot the real part of the permittivity tensor in logarithmic scale.
             cmap: The colormap to use for plotting.
-        
+
         returns:
             fig: The matplotlib figure containing the plots.
             ax1: The axis for the imaginary part of the permittivity tensor.
             ax2: The axis for the real part of the permittivity tensor.
-        
+
         """
-        self.get_epsilon_rf(frequency=frequency, use_charge_transport_data=use_charge_transport_data)
+        self.get_epsilon_rf(
+            frequency=frequency, use_charge_transport_data=use_charge_transport_data
+        )
 
         fig = plt.figure(figsize=(10, 6))
         ax1 = fig.add_subplot(121)
         ax2 = fig.add_subplot(122)
 
-        #Plot the polygons
+        # Plot the polygons
         self.plot_polygons(
             ax=ax1,
         )
@@ -519,13 +516,13 @@ class RFSimulatorFEMWELL:
             ax=ax2,
         )
 
-        #Plot the imaginary part of the permittivity
+        # Plot the imaginary part of the permittivity
         data_to_plot_im = self.epsilon_rf[:, voltage_idx].imag
         data_to_plot_re = self.epsilon_rf[:, voltage_idx].real
 
         if log_scale_im:
             data_to_plot_im = np.log10(-data_to_plot_im)
-        if log_scale_re:    
+        if log_scale_re:
             data_to_plot_re = np.log10(data_to_plot_re)
 
         self.basis.plot(
@@ -544,15 +541,22 @@ class RFSimulatorFEMWELL:
 
         if use_charge_transport_data:
             if log_scale_im:
-                ax1.set_title(f"log10(Im(-$\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V")
+                ax1.set_title(
+                    f"log10(Im(-$\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                )
             else:
-                ax1.set_title(f"Im(-$\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V")
+                ax1.set_title(
+                    f"Im(-$\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                )
             if log_scale_re:
-                ax2.set_title(f"log10(Re($\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V")
+                ax2.set_title(
+                    f"log10(Re($\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                )
             else:
-                ax2.set_title(f"Re($\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V")
+                ax2.set_title(
+                    f"Re($\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                )
 
-            
         else:
             if log_scale_im:
                 ax1.set_title(f"log10(Im(-$\epsilon_{{RF}}$)) at {frequency} GHz")
@@ -572,7 +576,6 @@ class RFSimulatorFEMWELL:
         return fig, ax1, ax2
 
     def plot_mode(
-        
         self,
         mode: Mode,
         Nx: int = 50,
@@ -596,16 +599,16 @@ class RFSimulatorFEMWELL:
             mode: The mode object containing the electric and magnetic field data to be plotted.
             Nx: Number of grid points along the x-axis.
             Ny: Number of grid points along the y-axis.
-            xmin: Minimum x-coordinate for the plot. 
-            xmax: Maximum x-coordinate for the plot. 
-            ymin: Minimum y-coordinate for the plot. 
-            ymax: Maximum y-coordinate for the plot. 
-            figsize: Figure size as (width, height). 
+            xmin: Minimum x-coordinate for the plot.
+            xmax: Maximum x-coordinate for the plot.
+            ymin: Minimum y-coordinate for the plot.
+            ymax: Maximum y-coordinate for the plot.
+            figsize: Figure size as (width, height).
             wspace: The amount of width reserved for blank space between subplots.
             color_polygons: Color of the polygons in the plot.
-            color_integral_lines: Color of the integral lines in the plot. 
-            cmap: Colormap used for plotting the magnitude of the fields. 
-            color_vectors: Color of the vector field streamlines. 
+            color_integral_lines: Color of the integral lines in the plot.
+            cmap: Colormap used for plotting the magnitude of the fields.
+            color_vectors: Color of the vector field streamlines.
             plot_vectors: Whether to plot the vector field streamlines. If ``False``, intensity of the transverse fields will be plotted. The advantage of this is that the projection of the mode into a rectangular grid is quite heavy and if you request too many points it can take a while. Plotting the intensity only though is very fast.
         Returns:
             None: This method does not return any value. It generates a plot.
@@ -620,9 +623,7 @@ class RFSimulatorFEMWELL:
 
         """
         if plot_vectors:
-            grid_x, grid_y = np.meshgrid(
-                np.linspace(xmin, xmax, Nx), np.linspace(ymin, ymax, Ny)
-            )
+            grid_x, grid_y = np.meshgrid(np.linspace(xmin, xmax, Nx), np.linspace(ymin, ymax, Ny))
 
             # Transform the data onto a rectangular regular grid
             grid_data_E = np.zeros((Ny, Nx, 3), dtype=complex)
@@ -673,9 +674,11 @@ class RFSimulatorFEMWELL:
         ax_E = fig.add_subplot(gs[0, 0])
         ax_H = fig.add_subplot(gs[0, 1])
 
-        for ax, mfield, label in zip([ax_E, ax_H], [mode.E, mode.H], [r"$|E_t(x,y)|$", r"$|H_t(x,y)|$"]):
+        for ax, mfield, label in zip(
+            [ax_E, ax_H], [mode.E, mode.H], [r"$|E_t(x,y)|$", r"$|H_t(x,y)|$"]
+        ):
             (mfield_x, mfield_y), _ = mode.basis.interpolate(mfield)
-            mfield_mod = np.sqrt(np.abs(mfield_x)**2 + np.abs(mfield_y)**2)
+            mfield_mod = np.sqrt(np.abs(mfield_x) ** 2 + np.abs(mfield_y) ** 2)
 
             plot_basis = mode.basis.with_element(ElementDG(ElementTriP1()))
             mfield_plot = plot_basis.project(mfield_mod)
@@ -683,12 +686,12 @@ class RFSimulatorFEMWELL:
             plot_basis.plot(mfield_plot, ax=ax, cmap=cmap, colorbar=True, shading="gouraud")
 
             self.plot_polygons(
-                        fig=fig,
-                        ax=ax,
-                        color_polygon=color_polygons,
-                        color_line=color_integral_lines,
-                    )
-        
+                fig=fig,
+                ax=ax,
+                color_polygon=color_polygons,
+                color_line=color_integral_lines,
+            )
+
             ax.set_xlim(xmin, xmax)
             ax.set_ylim(ymin, ymax)
 
@@ -698,19 +701,17 @@ class RFSimulatorFEMWELL:
             ax.set_title(label)
 
         if plot_vectors:
-
             for ax, data, label in zip(
                 [ax_E, ax_H], [grid_data_E, grid_data_H], [r"$|E(x,y)|$", r"$|H(x,y)|$"]
             ):
-
-            # ax.imshow(
-            #     np.sqrt(np.sum(np.abs(data)**2, axis=2)),
-            #     origin="lower",
-            #     extent=[xmin, xmax, ymin, ymax],
-            #     cmap=cmap,
-            #     interpolation="bicubic",
-            #     aspect="auto",
-            # )
+                # ax.imshow(
+                #     np.sqrt(np.sum(np.abs(data)**2, axis=2)),
+                #     origin="lower",
+                #     extent=[xmin, xmax, ymin, ymax],
+                #     cmap=cmap,
+                #     interpolation="bicubic",
+                #     aspect="auto",
+                # )
 
                 ax.streamplot(
                     grid_x,
@@ -720,8 +721,6 @@ class RFSimulatorFEMWELL:
                     color=color_vectors,
                     linewidth=0.5,
                 )
-
-            
 
     def plot_polygons(
         self,
@@ -821,10 +820,8 @@ class RFSimulatorFEMWELL:
         impedances = {}
 
         for line_name, line in self.line_entities.items():
-            if 'line_current' in line_name:
-                facet_basis = ht_basis.boundary(
-                    facets=self.mesh.boundaries[line_name]
-                )
+            if "line_current" in line_name:
+                facet_basis = ht_basis.boundary(facets=self.mesh.boundaries[line_name])
                 i0 = current_form.assemble(facet_basis, H=facet_basis.interpolate(ht))
                 currents[line_name] = i0
                 impedances[line_name] = p0 / np.abs(i0) ** 2
@@ -932,9 +929,7 @@ class RFSimulatorFEMWELL:
 
         C = C_form.assemble(
             mode.basis,
-            epsilon=basis_eps.interpolate(
-                epsilon * e0.to(reg.farad / reg.micrometer).magnitude
-            ),
+            epsilon=basis_eps.interpolate(epsilon * e0.to(reg.farad / reg.micrometer).magnitude),
             mu=mu0.to(reg.henry / reg.micrometer).magnitude,
             i0=i0,
             omega=omega.to(reg.second**-1).magnitude,
@@ -947,9 +942,7 @@ class RFSimulatorFEMWELL:
 
         L = L_form.assemble(
             mode.basis,
-            epsilon=basis_eps.interpolate(
-                epsilon * e0.to(reg.farad / reg.micrometer).magnitude
-            ),
+            epsilon=basis_eps.interpolate(epsilon * e0.to(reg.farad / reg.micrometer).magnitude),
             mu=mu0.to(reg.henry / reg.micrometer).magnitude,
             i0=i0,
             omega=omega.to(reg.second**-1).magnitude,
@@ -962,9 +955,7 @@ class RFSimulatorFEMWELL:
 
         G = G_form.assemble(
             mode.basis,
-            epsilon=basis_eps.interpolate(
-                epsilon * e0.to(reg.farad / reg.micrometer).magnitude
-            ),
+            epsilon=basis_eps.interpolate(epsilon * e0.to(reg.farad / reg.micrometer).magnitude),
             mu=mu0.to(reg.henry / reg.micrometer).magnitude,
             i0=i0,
             omega=omega.to(reg.second**-1).magnitude,
@@ -977,9 +968,7 @@ class RFSimulatorFEMWELL:
 
         R = R_form.assemble(
             mode.basis,
-            epsilon=basis_eps.interpolate(
-                epsilon * e0.to(reg.farad / reg.micrometer).magnitude
-            ),
+            epsilon=basis_eps.interpolate(epsilon * e0.to(reg.farad / reg.micrometer).magnitude),
             mu=mu0.to(reg.henry / reg.micrometer).magnitude,
             i0=i0,
             omega=omega.to(reg.second**-1).magnitude,
@@ -1012,8 +1001,8 @@ class RFSimulatorFEMWELL:
             P_l = \int_V \frac{\sigma}{2}|E|^2dv + \frac{\omega}{2}\int_V(\Im\{\epsilon\}|E|^2 + \Im\{\mu\}|H|^2)dv
 
 
-        .. warning:: This part is not developed yet. 
-        
+        .. warning:: This part is not developed yet.
+
         Args:
             mode: The mode object containing the electric and magnetic field data to be used for the calculation.
             frequency: The frequency at which to compute the power loss. The frequency must be in GHz.
@@ -1052,9 +1041,7 @@ class RFSimulatorFEMWELL:
                 )
             ).imag * 1e4  # To get W/cm
 
-            power_lost_all[photo_polygon.name] = (
-                power_lost * self.reg.watt / self.reg.centimeter
-            )
+            power_lost_all[photo_polygon.name] = power_lost * self.reg.watt / self.reg.centimeter
 
         return power_lost_all
 
@@ -1110,14 +1097,13 @@ class RFSimulatorFEMWELL:
             S11.to(self.reg.dimensionless).magnitude,
             S12.to(self.reg.dimensionless).magnitude,
         )
-    
 
 
 def get_named_boundaries_in_refined_mesh(
-        old_mesh, 
-        new_mesh, 
-        N=100,
-        ):
+    old_mesh,
+    new_mesh,
+    N=100,
+):
     """
     For each named boundary in old_mesh, it find the corresponding facets in the new mesh that lie along the same geometric boundary as those in the old mesh. It does so by finding the N nearest midpoints of the new facets to the midpoints of the old facets, and then checking which of those midpoints lie along the old facet.
 
@@ -1155,74 +1141,77 @@ def get_named_boundaries_in_refined_mesh(
         new_orientations[named_boundary] = []
 
         old_facets_idx = old_mesh.boundaries[named_boundary]
-        old_midpoints = np.mean(p_old[:, old_mesh.facets[:,old_facets_idx]], axis=1).T
-        
-        #We now find the N nearest fine midpoints to that are closest to each of the midpoints of the old facets of a given boundary
+        old_midpoints = np.mean(p_old[:, old_mesh.facets[:, old_facets_idx]], axis=1).T
+
+        # We now find the N nearest fine midpoints to that are closest to each of the midpoints of the old facets of a given boundary
         dists, idx = tree.query(old_midpoints, k=N)
 
-        #Now we loop over each of the N new midpoints and see which of those actually lie in the along the facet of the old midpoint
+        # Now we loop over each of the N new midpoints and see which of those actually lie in the along the facet of the old midpoint
 
         for i, old_facet_idx in enumerate(old_facets_idx):
-
             for j in range(N):
-                new_midpoint = new_midpoints[idx[i,j]]
+                new_midpoint = new_midpoints[idx[i, j]]
                 # Check if the new midpoint is on the old facet
                 facet_nodes = old_mesh.facets[:, old_facet_idx]
                 points_facet = old_mesh.p[:, facet_nodes]
 
-                vec_paralell = points_facet[:,1] - points_facet[:,0]
+                vec_paralell = points_facet[:, 1] - points_facet[:, 0]
                 vec_normal = np.array([-vec_paralell[1], vec_paralell[0]])
 
                 # Check if the new midpoint is on the old facet
                 # It is on the facet if the vector of one of the endpoints of the old facet to the new midpoint is perpendicular to the normal vector of the old facet
-                vec_endpoint_to_newmid = new_midpoint - points_facet[:,0]
+                vec_endpoint_to_newmid = new_midpoint - points_facet[:, 0]
 
-                #normalize the vectors
+                # normalize the vectors
                 res = np.dot(vec_endpoint_to_newmid, vec_normal) / np.linalg.norm(vec_normal)
-
 
                 if abs(res) < 1e-10:
                     # Project new midpoint onto the facet direction
-                    t = np.dot(vec_endpoint_to_newmid, vec_paralell) / np.dot(vec_paralell, vec_paralell)
-                    
+                    t = np.dot(vec_endpoint_to_newmid, vec_paralell) / np.dot(
+                        vec_paralell, vec_paralell
+                    )
+
                     # Check if it's within the segment
                     if 0 - 1e-12 <= t <= 1 + 1e-12:
+                        # We now know that it belongs to the same facet as the old mesh facet. Let's just order the points in the new facet so that
 
-                        #We now know that it belongs to the same facet as the old mesh facet. Let's just order the points in the new facet so that 
-
-                        vec_old_facet = points_facet[:,1] - points_facet[:,0]
-                        new_facet_nodes = new_mesh.facets[:, idx[i,j]]
+                        vec_old_facet = points_facet[:, 1] - points_facet[:, 0]
+                        new_facet_nodes = new_mesh.facets[:, idx[i, j]]
                         points_new_facet = new_mesh.p[:, new_facet_nodes]
-                        vec_new_facet = points_new_facet[:,1] - points_new_facet[:,0]
+                        vec_new_facet = points_new_facet[:, 1] - points_new_facet[:, 0]
 
-                        #If the two vectors have the same direction, we keep the same orientation
+                        # If the two vectors have the same direction, we keep the same orientation
                         if np.dot(vec_old_facet, vec_new_facet) < 0:
-                            new_mesh.facets[:, idx[i,j]] = new_mesh.facets[::-1, idx[i,j]]  #Flip the facet orientation in the new mesh
+                            new_mesh.facets[:, idx[i, j]] = new_mesh.facets[
+                                ::-1, idx[i, j]
+                            ]  # Flip the facet orientation in the new mesh
 
                         # Now we need to find the ori attribute. We will do this by finding the element of the new facet which is inside the element of the OrientedBoundary facet in the old mesh. Then we store that index as the ori attribute
 
-                        
                         old_boundary = old_mesh.boundaries[named_boundary]
                         element_old_facet = old_mesh.f2t[old_boundary.ori[i], old_facet_idx]
-                        points_of_element_old_facet = old_mesh.p[:, old_mesh.t[:, element_old_facet]]
+                        points_of_element_old_facet = old_mesh.p[
+                            :, old_mesh.t[:, element_old_facet]
+                        ]
                         old_triangle = Polygon(points_of_element_old_facet.T)
 
-                        elements_new_facet = new_mesh.f2t[:, idx[i,j]]
+                        elements_new_facet = new_mesh.f2t[:, idx[i, j]]
 
-                        
                         triangles = []
                         for element_new_facet in elements_new_facet:
                             if element_new_facet == -1:
                                 continue
-                            points_of_element_new_facet = new_mesh.p[:, new_mesh.t[:, element_new_facet]]
+                            points_of_element_new_facet = new_mesh.p[
+                                :, new_mesh.t[:, element_new_facet]
+                            ]
                             new_triangle = Polygon(points_of_element_new_facet.T)
                             triangles.append(new_triangle)
 
                         for k, triangle in enumerate(triangles):
                             if old_triangle.contains(triangle.centroid):
                                 new_orientations[named_boundary].append(k)
-                 
-                        new_boundaries[named_boundary].append(int(idx[i,j]))
+
+                        new_boundaries[named_boundary].append(int(idx[i, j]))
 
         ## Define them as an OrientedBoundary
         for named_boundary in new_boundaries.keys():

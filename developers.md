@@ -3,6 +3,21 @@
 I'm using the Git branching model described
 [here](http://nvie.com/posts/a-successful-git-branching-model/).
 
+# Code formatting
+
+This project uses [Ruff](https://docs.astral.sh/ruff/) as its formatter. The rules live
+in `[tool.ruff]` / `[tool.ruff.format]` in `pyproject.toml` and are auto-discovered — no
+editor setup is required.
+
+- Install the pinned Ruff: `pip install -e ".[dev]"`
+- Format: `ruff format .` (or a single file, e.g. `ruff format src/imodulator/PhotonicPolygon.py`)
+- Check without writing: `ruff format --check .`
+
+Ruff discovers the project config by walking up from the file being formatted, so any
+editor that runs `ruff format` picks up the same rules. Personal CLI `--config`/flag
+overrides win over the project file — drop those when working on this repo so your
+formatting matches everyone else's.
+
 # Documentation
 
 Documentation is handled by Sphinx. To force sphinx to rebuild all the html files run `python -m sphinx-build -M html . ./_build -a` in the cmd when you're in the docs folder.

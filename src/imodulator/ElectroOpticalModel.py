@@ -6,6 +6,7 @@ from scipy.special import exp1, expi
 from scipy.integrate import simpson
 import os
 
+
 def _get_n(E, y=0):
     """
     This file contains the code to generate the real refractive index as well as the
@@ -83,15 +84,17 @@ Efield: Quantity,
 reg: UnitRegistry,
 
 """
+
+
 class ElectroOpticalModel:
     """
     A base class for all the electro optical models
     """
 
-class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
+class InGaAsPElectroOpticalModel(ElectroOpticalModel):
     n_effects: int = 5  # This is a MUST
-    
+
     def __init__(
         self,
         mup: Quantity,
@@ -108,7 +111,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         y: float = 0,
         bandgap_model: str = "jain",
         BF_model: str = "vinchant",
-        wavelength: float = 1550
+        wavelength: float = 1550,
     ):
         """
         Base model for In_{1-x}Ga_{x}As_{y}P_{1-y}. It gives the changes in absorption and
@@ -186,9 +189,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         self.mhl = (0.12 - 0.078 * self.y + 0.002 * self.y**2) * self.m0
 
         # Formulas [2]
-        self.Nc = 2 * (
-            (self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5
-        ).to(
+        self.Nc = 2 * ((self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5).to(
             self.reg.centimeter**-3
         )  # cm^-3
         self.Nv = 2 * (
@@ -199,22 +200,15 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
                 / (2 * np.pi * self.hbar**2)
             )
             ** 1.5
-        ).to(
-            self.reg.centimeter**-3
-        )  # cm^-3
+        ).to(self.reg.centimeter**-3)  # cm^-3
 
-        self.so = (
-            0.119 + 0.30 * self.y - 0.107 * self.y**2
-        ) * self.reg.eV  # eV. Taken from [5]
+        self.so = (0.119 + 0.30 * self.y - 0.107 * self.y**2) * self.reg.eV  # eV. Taken from [5]
 
         self.eps_s = self.get_eps_s()
 
         # Taken from [2]
         self.C = (
-            4.4e12
-            * self.reg.centimeter**-1
-            * self.reg.second**-0.5
-            * np.sqrt(self.hbar)
+            4.4e12 * self.reg.centimeter**-1 * self.reg.second**-0.5 * np.sqrt(self.hbar)
         )  # Taken from Bennet 1990
         # The sqrt(hbar) comes from the fact that C comes from an earlier paper that fits an absorption curve to frequency rather than energy
 
@@ -238,28 +232,36 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         self.mue, self.muh = self.get_mobility()
 
         # Parameters for piezo effects. Taken from [3]
-        self.S11 = (
-            1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        )  # mechanical compliance
+        self.S11 = 1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1  # mechanical compliance
         self.S12 = -0.589e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
         self.S44 = 2.26e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        self.e14 = (
-            -0.083 * self.reg.coulomb * self.reg.meter**-2
-        )  # piezoelectric stress constant.
+        self.e14 = -0.083 * self.reg.coulomb * self.reg.meter**-2  # piezoelectric stress constant.
 
         # Load data for bandfilling effect
         if BF_model == "BGN":
             data_BF = np.load(
-                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_w_BGN.npz")
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "InGaAsPElectroOpticalModel_support",
+                    "BF_data_w_BGN.npz",
+                )
             )
 
         elif BF_model == "no BGN":
             data_BF = np.load(
-                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_wo_BGN.npz")
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "InGaAsPElectroOpticalModel_support",
+                    "BF_data_wo_BGN.npz",
+                )
             )
         elif BF_model == "vinchant":
             data_BF = np.load(
-                os.path.join(os.path.dirname(__file__), "InGaAsPElectroOpticalModel_support", "BF_data_vinchant.npz")
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "InGaAsPElectroOpticalModel_support",
+                    "BF_data_vinchant.npz",
+                )
             )
 
         wl_values = data_BF["wl_values"]
@@ -270,27 +272,35 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         dalpha_n = data_BF["dalpha_n"]
         dalpha_p = data_BF["dalpha_p"]
 
-        self.dn_n_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dn_n, bounds_error=False, fill_value=None)
-        self.dn_p_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dn_p, bounds_error=False, fill_value=None)
-        self.dalpha_n_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dalpha_n, bounds_error=False, fill_value=None)
-        self.dalpha_p_interp_BF = RegularGridInterpolator((wl_values, y_values, doping_values), dalpha_p, bounds_error=False, fill_value=None)
+        self.dn_n_interp_BF = RegularGridInterpolator(
+            (wl_values, y_values, doping_values), dn_n, bounds_error=False, fill_value=None
+        )
+        self.dn_p_interp_BF = RegularGridInterpolator(
+            (wl_values, y_values, doping_values), dn_p, bounds_error=False, fill_value=None
+        )
+        self.dalpha_n_interp_BF = RegularGridInterpolator(
+            (wl_values, y_values, doping_values), dalpha_n, bounds_error=False, fill_value=None
+        )
+        self.dalpha_p_interp_BF = RegularGridInterpolator(
+            (wl_values, y_values, doping_values), dalpha_p, bounds_error=False, fill_value=None
+        )
 
-        #Density
-        self.rho = (4.81+0.74*y) * self.reg.g*self.reg.centimeter**-3  # g cm^-3
-        self.s = (5.2-0.372*y-0.144*y**2)*1e5 * self.reg.cm/self.reg.second  # cm s^-1 
+        # Density
+        self.rho = (4.81 + 0.74 * y) * self.reg.g * self.reg.centimeter**-3  # g cm^-3
+        self.s = (5.2 - 0.372 * y - 0.144 * y**2) * 1e5 * self.reg.cm / self.reg.second  # cm s^-1
 
-        #Energy transitions
-        self.E10 = (0.61+0.182*y+0.105*y**2) * self.reg.eV
-        self.E20 = (3.38+0.549*y-0.208*y**2) * self.reg.eV
+        # Energy transitions
+        self.E10 = (0.61 + 0.182 * y + 0.105 * y**2) * self.reg.eV
+        self.E20 = (3.38 + 0.549 * y - 0.208 * y**2) * self.reg.eV
 
-        #Phonon energies
-        self.Eac = (24-2.84*y+1.57*y**2) * self.reg.meV
-        self.Eop = (42.6-21.1*y+2.87*y**2) * self.reg.meV
+        # Phonon energies
+        self.Eac = (24 - 2.84 * y + 1.57 * y**2) * self.reg.meV
+        self.Eop = (42.6 - 21.1 * y + 2.87 * y**2) * self.reg.meV
 
-        #Deformation potential
-        self.Edef = (7.95-2.04*y+0.839*y**2) * self.reg.eV
+        # Deformation potential
+        self.Edef = (7.95 - 2.04 * y + 0.839 * y**2) * self.reg.eV
 
-        #refractive index
+        # refractive index
         self.eps_s = self.get_eps_s()
         self.n0 = np.real(np.sqrt(self.eps_s.magnitude)) * self.eps_s.units
 
@@ -385,9 +395,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             )
 
             BGN_p = (
-                A * P.magnitude ** (1 / 3)
-                + B * P.magnitude**0.25
-                + C * P.magnitude**0.5
+                A * P.magnitude ** (1 / 3) + B * P.magnitude**0.25 + C * P.magnitude**0.5
             ) * self.reg.eV
 
         elif model == "none":
@@ -425,9 +433,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             )
 
             BGN_n = (
-                A * N.magnitude ** (1 / 3)
-                + B * N.magnitude**0.25
-                + C * N.magnitude**0.5
+                A * N.magnitude ** (1 / 3) + B * N.magnitude**0.25 + C * N.magnitude**0.5
             ) * self.reg.eV
 
         elif model == "none":
@@ -517,25 +523,21 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         values = {
             "mu_max": {
                 "n": (
-                    y * values_InGaAs["mu_max"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["n_out"]
+                    y * values_InGaAs["mu_max"]["n_out"] + (1 - y) * values_InGaP["mu_max"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_max"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["p_out"]
+                    y * values_InGaAs["mu_max"]["p_out"] + (1 - y) * values_InGaP["mu_max"]["p_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
             },
             "mu_min": {
                 "n": (
-                    y * values_InGaAs["mu_min"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["n_out"]
+                    y * values_InGaAs["mu_min"]["n_out"] + (1 - y) * values_InGaP["mu_min"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_min"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["p_out"]
+                    y * values_InGaAs["mu_min"]["p_out"] + (1 - y) * values_InGaP["mu_min"]["p_out"]
                 ),
             },
             "Nref": {
@@ -552,34 +554,28 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             },
             "lambda": {
                 "n": (
-                    y * values_InGaAs["lambda"]["n_out"]
-                    + (1 - y) * values_InGaP["lambda"]["n_out"]
+                    y * values_InGaAs["lambda"]["n_out"] + (1 - y) * values_InGaP["lambda"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["lambda"]["p_out"]
-                    + (1 - y) * values_InGaP["lambda"]["p_out"]
+                    y * values_InGaAs["lambda"]["p_out"] + (1 - y) * values_InGaP["lambda"]["p_out"]
                 ),
             },
             "theta1": {
                 "n": (
-                    y * values_InGaAs["theta1"]["n_out"]
-                    + (1 - y) * values_InGaP["theta1"]["n_out"]
+                    y * values_InGaAs["theta1"]["n_out"] + (1 - y) * values_InGaP["theta1"]["n_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["theta1"]["p_out"]
-                    + (1 - y) * values_InGaP["theta1"]["p_out"]
+                    y * values_InGaAs["theta1"]["p_out"] + (1 - y) * values_InGaP["theta1"]["p_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
             },
             "theta2": {
                 "n": (
-                    y * values_InGaAs["theta2"]["n_out"]
-                    + (1 - y) * values_InGaP["theta2"]["n_out"]
+                    y * values_InGaAs["theta2"]["n_out"] + (1 - y) * values_InGaP["theta2"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["theta2"]["p_out"]
-                    + (1 - y) * values_InGaP["theta2"]["p_out"]
+                    y * values_InGaAs["theta2"]["p_out"] + (1 - y) * values_InGaP["theta2"]["p_out"]
                 ),
             },
         }
@@ -587,10 +583,9 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         T = self.T.to(self.reg.kelvin).magnitude
         N = self.N.to(self.reg.centimeter**-3).magnitude
         P = self.P.to(self.reg.centimeter**-3).magnitude
-        
+
         mobility_n = values["mu_min"]["n"] + (
-            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"]
-            - values["mu_min"]["n"]
+            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"] - values["mu_min"]["n"]
         ) / (
             1
             + (N / (values["Nref"]["n"] * (300 / T) ** values["theta2"]["n"]))
@@ -598,8 +593,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         )
 
         mobility_p = values["mu_min"]["p"] + (
-            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"]
-            - values["mu_min"]["p"]
+            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"] - values["mu_min"]["p"]
         ) / (
             1
             + (P / (values["Nref"]["p"] * (300 / T) ** values["theta2"]["p"]))
@@ -628,7 +622,23 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         """
 
-        return self.dalpha_n_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.N.to(self.reg.centimeter**-3).magnitude)) + self.dalpha_p_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.P.to(self.reg.centimeter**-3).magnitude)) * self.reg.centimeter**-1
+        return (
+            self.dalpha_n_interp_BF(
+                (
+                    self.wl.to(self.reg.nanometer).magnitude,
+                    self.y,
+                    self.N.to(self.reg.centimeter**-3).magnitude,
+                )
+            )
+            + self.dalpha_p_interp_BF(
+                (
+                    self.wl.to(self.reg.nanometer).magnitude,
+                    self.y,
+                    self.P.to(self.reg.centimeter**-3).magnitude,
+                )
+            )
+            * self.reg.centimeter**-1
+        )
 
     def get_alpha_sqrt(self, E=None, bandgap_model=None):
         E = self.energy
@@ -645,7 +655,19 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         Returns the change in refractive index based only on the band filling effect based on the kramers kronig relations.
         """
 
-        return self.dn_n_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.N.to(self.reg.centimeter**-3).magnitude)) + self.dn_p_interp_BF((self.wl.to(self.reg.nanometer).magnitude, self.y, self.P.to(self.reg.centimeter**-3).magnitude))
+        return self.dn_n_interp_BF(
+            (
+                self.wl.to(self.reg.nanometer).magnitude,
+                self.y,
+                self.N.to(self.reg.centimeter**-3).magnitude,
+            )
+        ) + self.dn_p_interp_BF(
+            (
+                self.wl.to(self.reg.nanometer).magnitude,
+                self.y,
+                self.P.to(self.reg.centimeter**-3).magnitude,
+            )
+        )
 
     def get_dalpha_plasma(self):
         """
@@ -777,15 +799,15 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             ]
         )
 
-        alpha_imp_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_imp, kind="linear"
-        )(np.log10(x))
-        alpha_ac_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_ac, kind="linear"
-        )(np.log10(x))
-        alpha_op_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_op, kind="linear"
-        )(np.log10(x))
+        alpha_imp_interp = lambda x: interp1d(np.log10(dopings), alpha_imp, kind="linear")(
+            np.log10(x)
+        )
+        alpha_ac_interp = lambda x: interp1d(np.log10(dopings), alpha_ac, kind="linear")(
+            np.log10(x)
+        )
+        alpha_op_interp = lambda x: interp1d(np.log10(dopings), alpha_op, kind="linear")(
+            np.log10(x)
+        )
 
         lam0 = 10e-6 * self.reg.meter
 
@@ -799,25 +821,34 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             + alpha_ac_interp(doping) * (wv_ratio) ** 1.5
         )
 
-        ## Now we must also account for the interband transitions 
+        ## Now we must also account for the interband transitions
         # Returns the fermi level calculated assuming degenerate semiconductors. It uses equation 26a from [1] which is the known Joyce-Dixon approximation. Assume Ec=0.
         # It assumes that only uncompensated materials are given.
         # It assumes full ionization and the carrier concentration.
-
 
         # References:
         # 1) Sze, S. M., and Kwok Kwok Ng. Physics of Semiconductor Devices. 3rd ed. Hoboken, N.J: Wiley-Interscience, 2007.
         Ef = (np.log(self.N / self.Nc) + 1 / np.sqrt(8) * self.N / self.Nc) * self.kb * self.T
 
-        A = (1.4+1.85*self.y)*1e-5 * (
-            self.me.units**1.5 *
-            self.Eac.units * 
-            self.Edef.units *
-            1/self.rho.units *
-            1/self.s.units**2 *
-            1/self.reg.eV**3 *
-            self.reg.eV**2
-        )**-1 * self.reg.cm**-1 * 1.3e65 #The factor of is necessary to make the calculations match the ones from fiedler paper
+        A = (
+            (1.4 + 1.85 * self.y)
+            * 1e-5
+            * (
+                self.me.units**1.5
+                * self.Eac.units
+                * self.Edef.units
+                * 1
+                / self.rho.units
+                * 1
+                / self.s.units**2
+                * 1
+                / self.reg.eV**3
+                * self.reg.eV**2
+            )
+            ** -1
+            * self.reg.cm**-1
+            * 1.3e65
+        )  # The factor of is necessary to make the calculations match the ones from fiedler paper
 
         if (E + self.Eac - self.E10).to(self.reg.eV).magnitude > 0:
             u_plus = 0 * self.reg.eV
@@ -829,28 +860,66 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         else:
             u_minus = self.E10 - E + self.Eac
 
-        a1 = A*(self.me)**1.5*self.Eac*self.Edef/self.n0/self.rho/self.s**2/(np.exp(self.Eac/(self.kb*self.T))-1)
-        a2 = 1/((self.E20 - E)**2 * E)
-        a3 = np.exp(self.Eac/self.kb/self.T)
+        a1 = (
+            A
+            * (self.me) ** 1.5
+            * self.Eac
+            * self.Edef
+            / self.n0
+            / self.rho
+            / self.s**2
+            / (np.exp(self.Eac / (self.kb * self.T)) - 1)
+        )
+        a2 = 1 / ((self.E20 - E) ** 2 * E)
+        a3 = np.exp(self.Eac / self.kb / self.T)
 
         energy_integrand_a4 = np.linspace(u_plus.to(self.reg.eV).magnitude, 100, 1000) * self.reg.eV
 
-        a4_integrand = energy_integrand_a4[..., None]**0.5 * (energy_integrand_a4[...,None]-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a4[...,None]-Ef[None,...])/self.kb/self.T)+1)
-        a4_integrand = np.nan_to_num(a4_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
-        a4 = simpson(a4_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a4.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
+        a4_integrand = (
+            energy_integrand_a4[..., None] ** 0.5
+            * (energy_integrand_a4[..., None] - self.E10 + E + self.Eac) ** 0.5
+            / (np.exp((energy_integrand_a4[..., None] - Ef[None, ...]) / self.kb / self.T) + 1)
+        )
+        a4_integrand = np.nan_to_num(
+            a4_integrand
+        )  # This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a4 = (
+            simpson(
+                a4_integrand.to(self.reg.eV).magnitude,
+                x=energy_integrand_a4.to(self.reg.eV).magnitude,
+                axis=0,
+            )
+            * self.reg.eV**2
+        )
 
+        energy_integrand_a5 = (
+            np.linspace(u_minus.to(self.reg.eV).magnitude, 100, 10000) * self.reg.eV
+        )
+        a5_integrand = (
+            energy_integrand_a5[..., None] ** 0.5
+            * (energy_integrand_a5[..., None] - self.E10 + E + self.Eac) ** 0.5
+            / (np.exp((energy_integrand_a5[..., None] - Ef[None, ...]) / self.kb / self.T) + 1)
+        )
+        a5_integrand = np.nan_to_num(
+            a5_integrand
+        )  # This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a5 = (
+            simpson(
+                a5_integrand.to(self.reg.eV).magnitude,
+                x=energy_integrand_a5.to(self.reg.eV).magnitude,
+                axis=0,
+            )
+            * self.reg.eV**2
+        )
 
-        energy_integrand_a5 = np.linspace(u_minus.to(self.reg.eV).magnitude, 100, 10000) * self.reg.eV
-        a5_integrand = energy_integrand_a5[..., None]**0.5 * (energy_integrand_a5[...,None]-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a5[...,None]-Ef[None,...])/self.kb/self.T)+1)
-        a5_integrand = np.nan_to_num(a5_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
-        a5 = simpson(a5_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a5.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
-
-        alpha_IB = a1*a2*(a3*a4+a5)
+        alpha_IB = a1 * a2 * (a3 * a4 + a5)
 
         Eg = self.Ec - self.Ev
-        alpha_VC = (3e3 * np.exp(-100*(Eg-E).to(self.reg.eV).magnitude)) * self.reg.centimeter**-1
+        alpha_VC = (
+            3e3 * np.exp(-100 * (Eg - E).to(self.reg.eV).magnitude)
+        ) * self.reg.centimeter**-1
 
-        return (alpha) * self.reg.centimeter**-1 + alpha_VC + alpha_IB 
+        return (alpha) * self.reg.centimeter**-1 + alpha_VC + alpha_IB
 
     def get_dn_plasma(self, E=None):
         """
@@ -869,9 +938,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             -1
             / 2
             * (
-                self.N
-                * self.e**2
-                / (self.me * self.e0 * E**2 / self.hbar**2 * np.sqrt(self.eps_s))
+                self.N * self.e**2 / (self.me * self.e0 * E**2 / self.hbar**2 * np.sqrt(self.eps_s))
             ).to(self.reg.dimensionless)
         )
         # mass=(self.mhh**-2+self.mhl**-2)**-0.5
@@ -953,9 +1020,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         """
         E = self.energy
-        Efield = (
-            self.Efield.T
-        )  # The transpose stems from the fact that I'm reusing old code that requires an Efield of shape (3, N)
+        Efield = self.Efield.T  # The transpose stems from the fact that I'm reusing old code that requires an Efield of shape (3, N)
         bandgap_model = self.bandgap_model
 
         def g(chi):
@@ -1055,9 +1120,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             * self.e14
         )
 
-        pockels_tensor = (
-            np.zeros((6, 3, *Efield.shape[1:])) * r41_free / r41_free.magnitude
-        )
+        pockels_tensor = np.zeros((6, 3, *Efield.shape[1:])) * r41_free / r41_free.magnitude
 
         pockels_tensor[3, 0] = r41_free + r41_piezo
         pockels_tensor[4, 1] = r41_free + r41_piezo
@@ -1125,21 +1188,13 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         C_TM = -5.60e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
 
         A_mat = (
-            np.asarray(
-                [[A_TE, 0   , 0], 
-                 [0   , A_TM, 0], 
-                 [0   , 0   , A_TE]]
-            )
+            np.asarray([[A_TE, 0, 0], [0, A_TM, 0], [0, 0, A_TE]])
             * self.reg.eV
             / (self.reg.volt * self.reg.meter)
         )
 
         B_mat = (
-            np.asarray(
-                [[B_TE, 0   , 0], 
-                 [0   , B_TM, 0], 
-                 [0   , 0   , B_TE]]
-            )
+            np.asarray([[B_TE, 0, 0], [0, B_TM, 0], [0, 0, B_TE]])
             * self.reg.eV ** (-3 / 2)
             * self.reg.volt
             / self.reg.meter
@@ -1152,7 +1207,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # print((2*np.pi*self.c/(Eg/self.hbar)).to(self.reg.nanometer))
         Efield_mag_sq = np.einsum("ij,ij -> j", Efield.conjugate(), Efield).real
-        
+
         dalpha = (
             A_mat[..., None]
             * wl
@@ -1169,9 +1224,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         )
         dalpha = dalpha.to(self.reg.meter**-1)
 
-        dperm_imag = (
-            np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
-        )
+        dperm_imag = np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
 
         S11 = C_TE * E**2 / (self.eps_s**2 * (Eg**2 - E**2) ** 2)
         S12 = C_TM * E**2 / (self.eps_s**2 * (Eg**2 - E**2) ** 2)
@@ -1209,7 +1262,6 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # Return to symmetric shape
         deta_real = symmetric(np.einsum("ijk,jk->ik", S_mat, Efield_voigt))
-        
 
         # build the permitivity tensor
         perm = np.zeros((3, 3, *Efield.shape[1:])) * self.e0.units
@@ -1219,10 +1271,9 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # find the change in permitivity
         dperm = (
-            np.einsum("ikt,klt,ljt->ijt", perm, deta_real, perm) * -1 / self.e0
-            + 1j * dperm_imag
+            np.einsum("ikt,klt,ljt->ijt", perm, deta_real, perm) * -1 / self.e0 + 1j * dperm_imag
         )
-        
+
         np.nan_to_num(
             dperm, 0
         )  # This is to avoid some nan values that happen where the field is 0. This causes some numerical errors
@@ -1230,9 +1281,9 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         return dperm.to(self.e0.units)
 
     def get_dperm(
-            self,
-            fractions: bool = False,
-        ) -> np.ndarray:
+        self,
+        fractions: bool = False,
+    ) -> np.ndarray:
         """This function returns the change in permitivity tensor"""
 
         eps_s = self.get_eps_s()
@@ -1248,9 +1299,7 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         dalpha_iv = self.get_dalpha_iv()
 
         dk_BF = (dalpha_BF / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
-        dk_plasma = (dalpha_plasma / 2 / (2 * np.pi / self.wl)).to(
-            self.reg.dimensionless
-        )
+        dk_plasma = (dalpha_plasma / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
         dk_iv = (dalpha_iv / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
 
         dn_BF = self.get_dn_BF()
@@ -1280,30 +1329,30 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             * self.reg.dimensionless
         )
 
-        dperm_BF_1d = 2*n0*dn_BF + 1j*dk_BF
+        dperm_BF_1d = 2 * n0 * dn_BF + 1j * dk_BF
 
-        dperm_plasma_1d = 2*n0*dn_plasma + 1j*dk_plasma
+        dperm_plasma_1d = 2 * n0 * dn_plasma + 1j * dk_plasma
 
-        dperm_iv_1d = 2*n0*dn_iv + 1j*dk_iv
+        dperm_iv_1d = 2 * n0 * dn_iv + 1j * dk_iv
 
         dperm_BF = (
             np.asarray(
                 [
-                        [
-                            dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_BF_1d.shape),
-                            np.zeros(dperm_BF_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_BF_1d.shape),
-                            dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_BF_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_BF_1d.shape),
-                            np.zeros(dperm_BF_1d.shape),
-                            dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-                        ],
+                    [
+                        dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_BF_1d.shape),
+                        np.zeros(dperm_BF_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_BF_1d.shape),
+                        dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_BF_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_BF_1d.shape),
+                        np.zeros(dperm_BF_1d.shape),
+                        dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+                    ],
                 ]
             )
             * self.reg.dimensionless
@@ -1311,48 +1360,46 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         dperm_plasma = (
             np.asarray(
+                [
                     [
-                        [
-                            dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_plasma_1d.shape),
-                            np.zeros(dperm_plasma_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_plasma_1d.shape),
-                            dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_plasma_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_plasma_1d.shape),
-                            np.zeros(dperm_plasma_1d.shape),
-                            dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-                        ],
-                    ]
+                        dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_plasma_1d.shape),
+                        np.zeros(dperm_plasma_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_plasma_1d.shape),
+                        dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_plasma_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_plasma_1d.shape),
+                        np.zeros(dperm_plasma_1d.shape),
+                        dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+                    ],
+                ]
             )
             * self.reg.dimensionless
         )
 
         dperm_iv = (
             np.asarray(
-                
+                [
                     [
-                        [
-                            dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_iv_1d.shape),
-                            np.zeros(dperm_iv_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_iv_1d.shape),
-                            dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-                            np.zeros(dperm_iv_1d.shape),
-                        ],
-                        [
-                            np.zeros(dperm_iv_1d.shape),
-                            np.zeros(dperm_iv_1d.shape),
-                            dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-                        ],
-                    ]
-                
+                        dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_iv_1d.shape),
+                        np.zeros(dperm_iv_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_iv_1d.shape),
+                        dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+                        np.zeros(dperm_iv_1d.shape),
+                    ],
+                    [
+                        np.zeros(dperm_iv_1d.shape),
+                        np.zeros(dperm_iv_1d.shape),
+                        dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+                    ],
+                ]
             )
             * self.reg.dimensionless
         )
@@ -1360,33 +1407,22 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         dperm_pockels = self.get_dperm_pockels() / self.e0
         dperm_kerr = self.get_dperm_kerr() / self.e0
 
-        dperm_BF = np.nan_to_num(
-            dperm_BF, nan = 0
-        ) 
+        dperm_BF = np.nan_to_num(dperm_BF, nan=0)
 
-        dperm_plasma = np.nan_to_num(
-            dperm_plasma, nan = 0
-        ) 
+        dperm_plasma = np.nan_to_num(dperm_plasma, nan=0)
 
-        dperm_iv = np.nan_to_num(
-            dperm_iv, nan = 0
-        ) 
+        dperm_iv = np.nan_to_num(dperm_iv, nan=0)
 
-        dperm_pockels = np.nan_to_num(
-            dperm_pockels, nan = 0
-        ) 
+        dperm_pockels = np.nan_to_num(dperm_pockels, nan=0)
 
-        dperm_kerr = np.nan_to_num(
-            dperm_kerr, nan = 0
-        ) 
-
+        dperm_kerr = np.nan_to_num(dperm_kerr, nan=0)
 
         # print(np.isnan(dperm_pockels.imag))
         if not fractions:
             return dperm_BF + dperm_plasma + dperm_iv + dperm_pockels + dperm_kerr
         else:
             return (
-                ['Bandfilling', 'Plasma', 'Intervalence', 'Pockels', 'Kerr'],
+                ["Bandfilling", "Plasma", "Intervalence", "Pockels", "Kerr"],
                 dperm_BF.to(self.reg.dimensionless).magnitude,
                 dperm_plasma.to(self.reg.dimensionless).magnitude,
                 dperm_iv.to(self.reg.dimensionless).magnitude,
@@ -1394,134 +1430,129 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
                 dperm_kerr.to(self.reg.dimensionless).magnitude,
             )
 
+    # def get_dperm_fractions(self) -> np.ndarray:
 
-    #def get_dperm_fractions(self) -> np.ndarray:
+    # eps_s = self.get_eps_s()
 
+    # alpha = self.get_alpha_sqrt()
+    # alpha = np.nan_to_num(alpha, nan=0)
 
-        # eps_s = self.get_eps_s()
+    # n0 = np.sqrt(eps_s)
+    # k0 = (alpha / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
 
-        # alpha = self.get_alpha_sqrt()
-        # alpha = np.nan_to_num(alpha, nan=0)
+    # dalpha_BF = self.get_dalpha_BF()
+    # dalpha_plasma = self.get_dalpha_plasma()
+    # dalpha_iv = self.get_dalpha_iv()
 
-        # n0 = np.sqrt(eps_s)
-        # k0 = (alpha / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
+    # dk_BF = (dalpha_BF / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
+    # dk_plasma = (dalpha_plasma / 2 / (2 * np.pi / self.wl)).to(
+    #     self.reg.dimensionless
+    # )
+    # dk_iv = (dalpha_iv / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
 
-        # dalpha_BF = self.get_dalpha_BF()
-        # dalpha_plasma = self.get_dalpha_plasma()
-        # dalpha_iv = self.get_dalpha_iv()
+    # dn_BF = self.get_dn_BF()
+    # dn_plasma = self.get_dn_plasma()
+    # dn_iv = self.get_dn_iv()
 
-        # dk_BF = (dalpha_BF / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
-        # dk_plasma = (dalpha_plasma / 2 / (2 * np.pi / self.wl)).to(
-        #     self.reg.dimensionless
-        # )
-        # dk_iv = (dalpha_iv / 2 / (2 * np.pi / self.wl)).to(self.reg.dimensionless)
+    # dperm_BF_1d = 2*n0*dn_BF + 1j*dk_BF
 
-        # dn_BF = self.get_dn_BF()
-        # dn_plasma = self.get_dn_plasma()
-        # dn_iv = self.get_dn_iv()
+    # dperm_plasma_1d = 2*n0*dn_plasma + 1j*dk_plasma
 
-        # dperm_BF_1d = 2*n0*dn_BF + 1j*dk_BF
+    # dperm_iv_1d = 2*n0*dn_iv + 1j*dk_iv
 
-        # dperm_plasma_1d = 2*n0*dn_plasma + 1j*dk_plasma
+    # dperm_BF = (
+    #     np.asarray(
+    #         [
+    #                 [
+    #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                     np.zeros(dperm_BF_1d.shape),
+    #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
+    #                 ],
+    #         ]
+    #     )
+    #     * self.reg.dimensionless
+    # )
 
-        # dperm_iv_1d = 2*n0*dn_iv + 1j*dk_iv
+    # dperm_plasma = (
+    #     np.asarray(
+    #             [
+    #                 [
+    #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                     np.zeros(dperm_plasma_1d.shape),
+    #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
+    #                 ],
+    #             ]
+    #     )
+    #     * self.reg.dimensionless
+    # )
 
-        # dperm_BF = (
-        #     np.asarray(
-        #         [
-        #                 [
-        #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                     np.zeros(dperm_BF_1d.shape),
-        #                     dperm_BF_1d.to(self.reg.dimensionless).magnitude,
-        #                 ],
-        #         ]
-        #     )
-        #     * self.reg.dimensionless
-        # )
+    # dperm_iv = (
+    #     np.asarray(
 
-        # dperm_plasma = (
-        #     np.asarray(
-        #             [
-        #                 [
-        #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                     np.zeros(dperm_plasma_1d.shape),
-        #                     dperm_plasma_1d.to(self.reg.dimensionless).magnitude,
-        #                 ],
-        #             ]
-        #     )
-        #     * self.reg.dimensionless
-        # )
+    #             [
+    #                 [
+    #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                 ],
+    #                 [
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                     np.zeros(dperm_iv_1d.shape),
+    #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
+    #                 ],
+    #             ]
 
-        # dperm_iv = (
-        #     np.asarray(
-                
-        #             [
-        #                 [
-        #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                 ],
-        #                 [
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                     np.zeros(dperm_iv_1d.shape),
-        #                     dperm_iv_1d.to(self.reg.dimensionless).magnitude,
-        #                 ],
-        #             ]
-                
-        #     )
-        #     * self.reg.dimensionless
-        # )
+    #     )
+    #     * self.reg.dimensionless
+    # )
 
-        # dperm_pockels = self.get_dperm_pockels() / self.e0
-        # dperm_kerr = self.get_dperm_kerr() / self.e0
+    # dperm_pockels = self.get_dperm_pockels() / self.e0
+    # dperm_kerr = self.get_dperm_kerr() / self.e0
 
-        # dperm_BF = np.nan_to_num(
-        #     dperm_BF, nan = 0
-        # ) 
+    # dperm_BF = np.nan_to_num(
+    #     dperm_BF, nan = 0
+    # )
 
-        # dperm_plasma = np.nan_to_num(
-        #     dperm_plasma, nan = 0
-        # ) 
+    # dperm_plasma = np.nan_to_num(
+    #     dperm_plasma, nan = 0
+    # )
 
-        # dperm_iv = np.nan_to_num(
-        #     dperm_iv, nan = 0
-        # ) 
+    # dperm_iv = np.nan_to_num(
+    #     dperm_iv, nan = 0
+    # )
 
-        # dperm_pockels = np.nan_to_num(
-        #     dperm_pockels, nan = 0
-        # ) 
+    # dperm_pockels = np.nan_to_num(
+    #     dperm_pockels, nan = 0
+    # )
 
-        # dperm_kerr = np.nan_to_num(
-        #     dperm_kerr, nan = 0
-        # ) 
+    # dperm_kerr = np.nan_to_num(
+    #     dperm_kerr, nan = 0
+    # )
 
-        # # print(np.isnan(dperm_pockels.imag))
-        # return (dperm_BF, dperm_plasma, dperm_iv, dperm_pockels, dperm_kerr)
-
-
-
+    # # print(np.isnan(dperm_pockels.imag))
+    # return (dperm_BF, dperm_plasma, dperm_iv, dperm_pockels, dperm_kerr)

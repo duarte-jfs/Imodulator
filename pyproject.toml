@@ -1,9 +1,6 @@
 [build-system]
-requires = ["hatchling", "pip"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.hatch.build.hooks.custom]
-path = "hatch_build.py"
 
 [project]
 name = "imodulator"
@@ -48,6 +45,8 @@ solcore = ["solcore>=5.10.1"] # solcore depends on solsesame==2.1a1 (a pre-relea
 # pip install imodulator[nextnanopy]
 nextnanopy = ["nextnanopy>=1.2.0"]
 all = ["imodulator[femwell,solcore,nextnanopy]"]
+# Formatting toolchain. Install with: pip install -e ".[dev]"
+dev = ["ruff==0.16.1"]
 
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
@@ -62,6 +61,14 @@ include = [
     "imodulator/**/*.yml"
 ]
 
-# [tool.hatch.build.targets.sdist]
-# include = ["src/**", "README.md", "LICENSE"]
-# exclude = ["build/**", "imgs/**", ".vscode/**", "*.egg-info"]
+[tool.uv]
+prerelease = "allow"
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+extend-exclude = ["build"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
