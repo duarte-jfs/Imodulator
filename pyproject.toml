@@ -48,6 +48,8 @@ solcore = ["solcore>=5.10.1"] # solcore depends on solsesame==2.1a1 (a pre-relea
 # pip install imodulator[nextnanopy]
 nextnanopy = ["nextnanopy>=1.2.0"]
 all = ["imodulator[femwell,solcore,nextnanopy]"]
+# Formatting toolchain. Install with: pip install -e ".[dev]"
+dev = ["ruff==0.16.1"]
 
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
