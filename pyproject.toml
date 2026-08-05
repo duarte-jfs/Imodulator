@@ -65,6 +65,8 @@ include = [
 [tool.ruff]
 line-length = 100
 indent-width = 4
+# `build/` holds committed build artifacts and is not in ruff's default excludes.
+extend-exclude = ["build"]
 
 [tool.ruff.format]
 quote-style = "double"
