@@ -90,22 +90,22 @@ class RFSimulatorFEMWELL:
         self.simulation_window = simulation_window
 
         self.rf_photopolygons = copy.deepcopy(self.photodevice.photo_polygons)
-        self.line_entities = OrderedDict()
+        self.line_entities = copy.deepcopy(self.photodevice.line_entities)
         self.polygon_entities = OrderedDict()
         self.junction_entities = OrderedDict()
         self.resolutions = dict()
 
-        # Add the lines for line integrals of currents
-        for polygon in self.rf_photopolygons:
+        # # Add the lines for line integrals of currents
+        # for polygon in self.rf_photopolygons:
 
-            if polygon.calculate_current:
+        #     if polygon.calculate_current:
 
-                line = LineString(
-                    polygon.polygon.buffer(
-                        polygon.d_buffer_current, join_style="bevel"
-                    ).exterior
-                )
-                self.line_entities[polygon.name + "line_current"] = line
+        #         line = LineString(
+        #             polygon.polygon.buffer(
+        #                 polygon.d_buffer_current, join_style="bevel"
+        #             ).exterior
+        #         )
+        #         self.line_entities[polygon.name + "line_current"] = line
 
         # THIS NEEDS A REFACTOR!!!
         if simulation_window is None:
@@ -812,14 +812,14 @@ class RFSimulatorFEMWELL:
         currents = {}
         impedances = {}
 
-        for photopoly in self.rf_photopolygons:
-            if photopoly.calculate_current:
+        for line_name, line in self.line_entities.items():
+            if 'line_current' in line_name:
                 facet_basis = ht_basis.boundary(
-                    facets=self.mesh.boundaries[photopoly.name + "line_current"]
+                    facets=self.mesh.boundaries[line_name]
                 )
                 i0 = current_form.assemble(facet_basis, H=facet_basis.interpolate(ht))
-                currents[photopoly.name] = i0
-                impedances[photopoly.name] = p0 / np.abs(i0) ** 2
+                currents[line_name] = i0
+                impedances[line_name] = p0 / np.abs(i0) ** 2
 
         return p0, currents, impedances
 
