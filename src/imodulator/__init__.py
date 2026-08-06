@@ -18,5 +18,5 @@ __all__ = [
     "RFSimulatorFEMWELL",
     "OpticalSimulatorFEMWELL",
     "OpticalSimulatorMODE",
-    "ElectroOpticalSimulator"
+    "ElectroOpticalSimulator",
 ]

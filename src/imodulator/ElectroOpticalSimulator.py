@@ -21,13 +21,18 @@ from shapely.geometry import (
 )
 from shapely.ops import clip_by_rect
 
-from femwell.mesh import mesh_from_OrderedDict
+# femwell is an optional dependency (pip install imodulator[femwell]). Import it
+# here without failing so `import imodulator` works when it is absent;
+# ElectroOpticalSimulator raises a clear error at instantiation if it is missing.
+try:
+    from femwell.mesh import mesh_from_OrderedDict
+except ModuleNotFoundError:
+    pass
 
 from skfem.io.meshio import from_meshio
 from skfem.visuals.matplotlib import draw_mesh2d
 from skfem import Basis, ElementTriP1, ElementVector, ElementDG, Functional
 from skfem.helpers import inner, cross
-
 
 
 import numpy as np
@@ -36,6 +41,7 @@ from pint import Quantity
 
 from imodulator import PhotonicDevice
 from imodulator.ElectroOpticalModel import ElectroOpticalModel
+from imodulator._optional_deps import require
 
 from imodulator.PhotonicPolygon import (
     SemiconductorPolygon,
@@ -51,24 +57,24 @@ Line = LineString | MultiLineString | LinearRing
 
 
 class ElectroOpticalSimulator:
-
     def __init__(
-            self,
-            device: PhotonicDevice,
-            simulation_window: Polygon | None = None,
-            wavelength: float = 1550
+        self,
+        device: PhotonicDevice,
+        simulation_window: Polygon | None = None,
+        wavelength: float = 1550,
     ):
         """
         Initializes the ElectroOpticalSimulator with a PhotonicDevice and an optional simulation window.
 
-        The simulation windows will define the electro optical simulation region. 
+        The simulation windows will define the electro optical simulation region.
 
         Args:
             device (PhotonicDevice): The photonic device to simulate.
             simulation_window (Polygon, optional): The polygon defining the simulation region. If None, the entire device is used.
             wavelength (float): The wavelength of the optical mode in nanometers. Default is 1550 nm.
         """
-        
+        require("femwell", "femwell")
+
         self.photodevice = device
         self.reg = self.photodevice.reg
         self.wl = wavelength * self.reg.nanometer
@@ -94,7 +100,7 @@ class ElectroOpticalSimulator:
                 self.junction_entities[name] = poly
 
         elif simulation_window is not None:
-            #Enforce the simulation plane to be a rectangle
+            # Enforce the simulation plane to be a rectangle
             if not np.isclose(
                 simulation_window.minimum_rotated_rectangle.area, simulation_window.area
             ):
@@ -103,9 +109,9 @@ class ElectroOpticalSimulator:
             # Cut all photopolygons by the simulation window
             idxs_to_pop = []
             for i, poly in enumerate(self.eo_photopolygons):
-                if poly.polygon.intersects(
-                    simulation_window
-                ) and not simulation_window.contains(poly.polygon):
+                if poly.polygon.intersects(simulation_window) and not simulation_window.contains(
+                    poly.polygon
+                ):
                     poly_tmp = clip_by_rect(poly.polygon, *simulation_window.bounds)
 
                     if poly_tmp.is_empty:
@@ -121,10 +127,7 @@ class ElectroOpticalSimulator:
 
             # Select all junctions cutted by the symmetry plane
             for name, poly in self.photodevice.junction_entities.items():
-
-                if poly.intersects(simulation_window) and not simulation_window.contains(
-                    poly
-                ):
+                if poly.intersects(simulation_window) and not simulation_window.contains(poly):
                     poly_tmp = clip_by_rect(polygon, *simulation_window.bounds)
 
                     if not poly_tmp.is_empty:
@@ -139,21 +142,13 @@ class ElectroOpticalSimulator:
 
         surf_bounds = self.polygon_entities["background"].bounds
 
-        left = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])]
-        )
+        left = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[0], surf_bounds[3])])
 
-        bottom = LineString(
-            [(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])]
-        )
+        bottom = LineString([(surf_bounds[0], surf_bounds[1]), (surf_bounds[2], surf_bounds[1])])
 
-        right = LineString(
-            [(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])]
-        )
+        right = LineString([(surf_bounds[2], surf_bounds[1]), (surf_bounds[2], surf_bounds[3])])
 
-        top = LineString(
-            [(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])]
-        )
+        top = LineString([(surf_bounds[0], surf_bounds[3]), (surf_bounds[2], surf_bounds[3])])
 
         self.line_entities["left"] = left
         self.line_entities["bottom"] = bottom
@@ -162,18 +157,29 @@ class ElectroOpticalSimulator:
 
         # We now need to check if any polygon is fully covered by a higher priority polygon. If so, we remove it from the simulation
         polygons_to_remove = []
-        for i, (poly_name, poly_to_check) in enumerate(reversed(self.polygon_entities.items())): #We loop from lowest priority to highest
-
+        for i, (poly_name, poly_to_check) in enumerate(
+            reversed(self.polygon_entities.items())
+        ):  # We loop from lowest priority to highest
             difference_poly = None
-            for poly_higher_name, poly_higher in list(reversed(self.polygon_entities.items()))[i+1:]: #We loop through all the higher priority polygons and keep removing their area from the poly_to_check
-                difference_poly = poly_to_check.difference(poly_higher) if difference_poly is None else difference_poly.difference(poly_higher)
+            for poly_higher_name, poly_higher in list(
+                reversed(self.polygon_entities.items())
+            )[
+                i + 1 :
+            ]:  # We loop through all the higher priority polygons and keep removing their area from the poly_to_check
+                difference_poly = (
+                    poly_to_check.difference(poly_higher)
+                    if difference_poly is None
+                    else difference_poly.difference(poly_higher)
+                )
 
                 if difference_poly.is_empty:
                     polygons_to_remove.append(poly_name)
-                    print(f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.')
+                    print(
+                        f'The polygon "{poly_name}" is fully covered by a higher priority polygons. It will be removed from the simulation.'
+                    )
                     break
-        
-        #Remove the polygons that are fully covered by higher priority polygons
+
+        # Remove the polygons that are fully covered by higher priority polygons
         for poly_name in polygons_to_remove:
             self.polygon_entities.pop(poly_name)
 
@@ -259,7 +265,7 @@ class ElectroOpticalSimulator:
             self.plot_polygons(color_polygon="red", fig=fig, ax=ax)
 
         return fig, ax
-    
+
     def get_epsilon_optical(
         self,
     ):
@@ -281,7 +287,7 @@ class ElectroOpticalSimulator:
 
         Args:
             None
-        
+
         Returns:
             None
 
@@ -292,14 +298,12 @@ class ElectroOpticalSimulator:
                 "Cannot attribute an optical epsilon. The mesh of the optical simulator is not yet generated"
             )
 
-
-        N_bias_points = len(self.photodevice.charge['V'])
-
+        N_bias_points = len(self.photodevice.charge["V"])
 
         # Account for the case where the user wants tot epsilon optical to be fractioned into the various effects that the electro optical models gives
         epsilon_optical_all = {}
 
-        #Loop over all the polygons and find all the electro optic models present
+        # Loop over all the polygons and find all the electro optic models present
         for photo_polygon in self.eo_photopolygons:
             # print(photo_polygon.electro_optic_module)
             # print(issubclass(photo_polygon.electro_optic_module,ElectroOpticalModel))
@@ -308,49 +312,52 @@ class ElectroOpticalSimulator:
                     if issubclass(photo_polygon.electro_optic_module, ElectroOpticalModel):
                         if photo_polygon.electro_optic_module.__name__ not in epsilon_optical_all:
                             epsilon_optical_all[photo_polygon.electro_optic_module.__name__] = {
-                                'dperms': np.zeros(
-                                    (3, 3, self.mesh.nvertices, N_bias_points, photo_polygon.electro_optic_module.n_effects), dtype=np.complex128
+                                "dperms": np.zeros(
+                                    (
+                                        3,
+                                        3,
+                                        self.mesh.nvertices,
+                                        N_bias_points,
+                                        photo_polygon.electro_optic_module.n_effects,
+                                    ),
+                                    dtype=np.complex128,
                                 ),
-                                'labels': []
+                                "labels": [],
                             }
-                        
 
         # the self.photo_polygons is created so that idx 0 has higher priority over idx 1
         # Here, however, if we loop through the photo_polygons from idx 0 to idx N
         # the hierarchy on the boundaries will be inverted. That is,
-        #lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
+        # lower lying polygons in hierarchy will dominate the boundaries. Therefore, we need to
         # loop over the inverted list of photo_polygons
 
         for photo_polygon in self.eo_photopolygons[::-1]:
-
-
-            if hasattr(photo_polygon, "electro_optic_module") and hasattr(photo_polygon, "has_charge_transport_data"):
+            if hasattr(photo_polygon, "electro_optic_module") and hasattr(
+                photo_polygon, "has_charge_transport_data"
+            ):
                 if photo_polygon.electro_optic_module is not None:
                     if issubclass(photo_polygon.electro_optic_module, ElectroOpticalModel):
-                        
-
                         elements_idxs = self.mesh.subdomains[photo_polygon.name]
                         triangles = self.mesh.t[:, elements_idxs]
                         vertices_idxs = np.unique(triangles.flatten())
 
                         # Loop through all the voltages
-                            
+
                         EO_model_name = photo_polygon.electro_optic_module.__name__
 
                         for voltage_idx in range(N_bias_points):
-
                             x = self.mesh.p[0, vertices_idxs]
                             y = self.mesh.p[1, vertices_idxs]
 
-                            mun = self.photodevice.charge['mun'][voltage_idx](x,y)
-                            mup = self.photodevice.charge['mup'][voltage_idx](x,y)
-                            Ec = self.photodevice.charge['Ec'][voltage_idx](x,y)
-                            Ev = self.photodevice.charge['Ev'][voltage_idx](x,y)
-                            Efp = self.photodevice.charge['Efp'][voltage_idx](x,y)
-                            Efn = self.photodevice.charge['Efn'][voltage_idx](x,y)
-                            P = self.photodevice.charge['P'][voltage_idx](x,y)
-                            N = self.photodevice.charge['N'][voltage_idx](x,y)
-                            Efield = self.photodevice.charge['Efield'][voltage_idx](x,y)
+                            mun = self.photodevice.charge["mun"][voltage_idx](x, y)
+                            mup = self.photodevice.charge["mup"][voltage_idx](x, y)
+                            Ec = self.photodevice.charge["Ec"][voltage_idx](x, y)
+                            Ev = self.photodevice.charge["Ev"][voltage_idx](x, y)
+                            Efp = self.photodevice.charge["Efp"][voltage_idx](x, y)
+                            Efn = self.photodevice.charge["Efn"][voltage_idx](x, y)
+                            P = self.photodevice.charge["P"][voltage_idx](x, y)
+                            N = self.photodevice.charge["N"][voltage_idx](x, y)
+                            Efield = self.photodevice.charge["Efield"][voltage_idx](x, y)
 
                             data = photo_polygon.electro_optic_module(
                                 mup=mup,
@@ -365,33 +372,30 @@ class ElectroOpticalSimulator:
                                 reg=self.photodevice.reg,
                                 wavelength=self.wl.to(self.photodevice.reg.nanometer).magnitude,
                                 **photo_polygon.electro_optic_module_kwargs,
-                            ).get_dperm(fractions = True)
+                            ).get_dperm(fractions=True)
 
                             labels = data[0]
                             perms = data[1:]
 
-
-
                             for perm_idx, perm in enumerate(perms):
-                                epsilon_optical_all[EO_model_name]['dperms'][:, :, vertices_idxs, voltage_idx, perm_idx] = perm
-                            
-                            epsilon_optical_all[EO_model_name]['labels'] = labels
+                                epsilon_optical_all[EO_model_name]["dperms"][
+                                    :, :, vertices_idxs, voltage_idx, perm_idx
+                                ] = perm
 
-                                
-            
+                            epsilon_optical_all[EO_model_name]["labels"] = labels
+
         self.epsilon_optical = epsilon_optical_all
 
     def _calculate_eo_integrand(
-            self,
-            voltage_idx: int,
-            rot_x: float = 0,
-            rot_y: float = 0,
-            rot_z: float = 0,
-            base_epsilon_voltage_idx: int = 0,
-            optical_mode_a: str = 'TE',
-            optical_mode_b: str = 'TE',
+        self,
+        voltage_idx: int,
+        rot_x: float = 0,
+        rot_y: float = 0,
+        rot_z: float = 0,
+        base_epsilon_voltage_idx: int = 0,
+        optical_mode_a: str = "TE",
+        optical_mode_b: str = "TE",
     ):
-        
         """
         This function is used to calculate the integrands for the change in propagation constant due to change in epsilon optical.
 
@@ -435,13 +439,13 @@ class ElectroOpticalSimulator:
             ElectroOpticalModelName: {
                 'integrand': np.zeros((self.mesh.nvertices, N_effects), dtype=np.complex128),
                 'labels': [label1, label2, ...]
-            },  
+            },
 
             ElectroOpticalModelName2: {
                 'integrand': np.zeros((self.mesh.nvertices, N_effects), dtype=np.complex128),
                 'labels': [label1, label2, ...]
             }
-        }  
+        }
 
         Args:
             voltage_idx (int): The index of the voltage to use for the electro optical effects.
@@ -457,75 +461,84 @@ class ElectroOpticalSimulator:
         """
 
         def Rz(alpha):
-            mat=np.array([[np.cos(alpha), -np.sin(alpha), 0],
-                        [np.sin(alpha), np.cos(alpha), 0],
-                        [0,0,1]])
+            mat = np.array(
+                [[np.cos(alpha), -np.sin(alpha), 0], [np.sin(alpha), np.cos(alpha), 0], [0, 0, 1]]
+            )
             return mat
 
         def Ry(beta):
-            mat=np.array([[np.cos(beta), 0, np.sin(beta)],
-                        [0           , 1, 0],
-                        [-np.sin(beta),0,np.cos(beta)]])
+            mat = np.array(
+                [[np.cos(beta), 0, np.sin(beta)], [0, 1, 0], [-np.sin(beta), 0, np.cos(beta)]]
+            )
             return mat
 
         def Rx(gamma):
-            mat=np.array([[1           , 0            , 0],
-                        [0           , np.cos(gamma), -np.sin(gamma)],
-                        [0           , np.sin(gamma),np.cos(gamma)]])
+            mat = np.array(
+                [[1, 0, 0], [0, np.cos(gamma), -np.sin(gamma)], [0, np.sin(gamma), np.cos(gamma)]]
+            )
             return mat
 
-        ALPHA=rot_z
-        BETA=rot_y
-        GAMMA=rot_x
+        ALPHA = rot_z
+        BETA = rot_y
+        GAMMA = rot_x
 
-        rot= Rx(GAMMA) @ Ry(BETA) @ Rz(ALPHA)
+        rot = Rx(GAMMA) @ Ry(BETA) @ Rz(ALPHA)
 
-        #Generate the optical field
+        # Generate the optical field
         x = self.mesh.p[0, :]
         y = self.mesh.p[1, :]
 
-        self.Eopt_a = np.asarray([
-            self.photodevice.mode[optical_mode_a]['Ex']((x, y)),
-            self.photodevice.mode[optical_mode_a]['Ey']((x, y)),
-            self.photodevice.mode[optical_mode_a]['Ez']((x, y))
-        ])
-        self.Hopt_a = np.asarray([
-            self.photodevice.mode[optical_mode_a]['Hx']((x, y)),
-            self.photodevice.mode[optical_mode_a]['Hy']((x, y)),
-            self.photodevice.mode[optical_mode_a]['Hz']((x, y))
-        ])
-        
-        self.Eopt_b = np.asarray([
-            self.photodevice.mode[optical_mode_b]['Ex']((x, y)),
-            self.photodevice.mode[optical_mode_b]['Ey']((x, y)),
-            self.photodevice.mode[optical_mode_b]['Ez']((x, y))
-        ])
-        self.Hopt_b = np.asarray([
-            self.photodevice.mode[optical_mode_b]['Hx']((x, y)),
-            self.photodevice.mode[optical_mode_b]['Hy']((x, y)),
-            self.photodevice.mode[optical_mode_b]['Hz']((x, y))
-        ])
-            
+        self.Eopt_a = np.asarray(
+            [
+                self.photodevice.mode[optical_mode_a]["Ex"]((x, y)),
+                self.photodevice.mode[optical_mode_a]["Ey"]((x, y)),
+                self.photodevice.mode[optical_mode_a]["Ez"]((x, y)),
+            ]
+        )
+        self.Hopt_a = np.asarray(
+            [
+                self.photodevice.mode[optical_mode_a]["Hx"]((x, y)),
+                self.photodevice.mode[optical_mode_a]["Hy"]((x, y)),
+                self.photodevice.mode[optical_mode_a]["Hz"]((x, y)),
+            ]
+        )
+
+        self.Eopt_b = np.asarray(
+            [
+                self.photodevice.mode[optical_mode_b]["Ex"]((x, y)),
+                self.photodevice.mode[optical_mode_b]["Ey"]((x, y)),
+                self.photodevice.mode[optical_mode_b]["Ez"]((x, y)),
+            ]
+        )
+        self.Hopt_b = np.asarray(
+            [
+                self.photodevice.mode[optical_mode_b]["Hx"]((x, y)),
+                self.photodevice.mode[optical_mode_b]["Hy"]((x, y)),
+                self.photodevice.mode[optical_mode_b]["Hz"]((x, y)),
+            ]
+        )
+
         integrands = {}
 
         for electro_optic_model_name, data in self.epsilon_optical.items():
-            dperms = data['dperms']
-            labels = data['labels']
+            dperms = data["dperms"]
+            labels = data["labels"]
 
-            
             integrands_tmp = np.zeros((self.mesh.nvertices, len(labels)), dtype=np.complex128)
-            for dperm_idx in range(dperms.shape[-1]): #The last index is the neffects index
-                base_epsilon = dperms[:, :, :, base_epsilon_voltage_idx, dperm_idx] # shape (3,3,self.mesh.nvertices)
+            for dperm_idx in range(dperms.shape[-1]):  # The last index is the neffects index
+                base_epsilon = dperms[
+                    :, :, :, base_epsilon_voltage_idx, dperm_idx
+                ]  # shape (3,3,self.mesh.nvertices)
 
-                rot_epsilon = (np.einsum('ir,rkl,kj->ijl', rot, dperms[:,:,:,voltage_idx, dperm_idx], rot.T) - 
-                            np.einsum('ir,rkl,kj->ijl', rot, base_epsilon, rot.T))
+                rot_epsilon = np.einsum(
+                    "ir,rkl,kj->ijl", rot, dperms[:, :, :, voltage_idx, dperm_idx], rot.T
+                ) - np.einsum("ir,rkl,kj->ijl", rot, base_epsilon, rot.T)
 
-                integrands_tmp[:,dperm_idx] = np.einsum('ik,ijk,jk->k', self.Eopt_a.conjugate(), rot_epsilon, self.Eopt_b)
+                integrands_tmp[:, dperm_idx] = np.einsum(
+                    "ik,ijk,jk->k", self.Eopt_a.conjugate(), rot_epsilon, self.Eopt_b
+                )
 
-            integrands[electro_optic_model_name] = {
-                'integrand': integrands_tmp,
-                'labels': labels
-            }
+            integrands[electro_optic_model_name] = {"integrand": integrands_tmp, "labels": labels}
 
         return integrands
 
@@ -536,9 +549,9 @@ class ElectroOpticalSimulator:
         rot_y: float = 0,
         rot_z: float = 0,
         base_epsilon_voltage_idx: int = 0,
-        optical_mode_a: str = 'TE',
-        optical_mode_b: str = 'TM',
-        wavelength: float = 1.55
+        optical_mode_a: str = "TE",
+        optical_mode_b: str = "TM",
+        wavelength: float = 1.55,
     ):
         r"""
         This function calculates the electro optical response of the device.
@@ -567,13 +580,13 @@ class ElectroOpticalSimulator:
 
             results = {
                 ElectroOpticalModelName: {
-                    'results': np.zeros((N_effects), dtype=np.complex128),
-                    'labels': [label1, label2, ...]
+                    "results": np.zeros((N_effects), dtype=np.complex128),
+                    "labels": [label1, label2, ...],
                 },
                 ElectroOpticalModelName2: {
-                    'results': np.zeros((N_effects), dtype=np.complex128),
-                    'labels': [label1, label2, ...]
-                }
+                    "results": np.zeros((N_effects), dtype=np.complex128),
+                    "labels": [label1, label2, ...],
+                },
             }
 
         Args:
@@ -590,48 +603,60 @@ class ElectroOpticalSimulator:
             dict: A dictionary containing the results of the electro optical effects.
             The keys are the names of the electro optical models and the values are
             dictionaries with the results and labels.
-            
+
         """
-        
+
         @Functional(dtype=np.complex128)
         def integral_form(w):
             return w.integrand
-        
 
         integrands = self._calculate_eo_integrand(
-            voltage_idx, rot_x, rot_y, rot_z, base_epsilon_voltage_idx, optical_mode_a, optical_mode_b)
-        
-        I_integrand_a = (np.cross(self.Eopt_a.T.conjugate(), self.Hopt_a.T) + np.cross(self.Eopt_a.T, self.Hopt_a.T.conjugate()))[:,2]
-        power_a = integral_form.assemble(self.basis, integrand = I_integrand_a)
+            voltage_idx,
+            rot_x,
+            rot_y,
+            rot_z,
+            base_epsilon_voltage_idx,
+            optical_mode_a,
+            optical_mode_b,
+        )
 
-        I_integrand_b = (np.cross(self.Eopt_b.T.conjugate(), self.Hopt_b.T) + np.cross(self.Eopt_b.T, self.Hopt_b.T.conjugate()))[:,2]
-        power_b = integral_form.assemble(self.basis, integrand = I_integrand_b)
+        I_integrand_a = (
+            np.cross(self.Eopt_a.T.conjugate(), self.Hopt_a.T)
+            + np.cross(self.Eopt_a.T, self.Hopt_a.T.conjugate())
+        )[:, 2]
+        power_a = integral_form.assemble(self.basis, integrand=I_integrand_a)
 
-        #Loop over all the integrands and remove any nan values that may be present
+        I_integrand_b = (
+            np.cross(self.Eopt_b.T.conjugate(), self.Hopt_b.T)
+            + np.cross(self.Eopt_b.T, self.Hopt_b.T.conjugate())
+        )[:, 2]
+        power_b = integral_form.assemble(self.basis, integrand=I_integrand_b)
+
+        # Loop over all the integrands and remove any nan values that may be present
 
         for electro_optic_model_name, data in integrands.items():
-            data['integrand']= np.nan_to_num(data['integrand'], nan=0)
-        
+            data["integrand"] = np.nan_to_num(data["integrand"], nan=0)
+
         results = {}
 
         for electro_optic_model_name, data in integrands.items():
+            results_tmp = np.zeros(data["integrand"].shape[-1], dtype=np.complex128)
 
-            results_tmp = np.zeros(data['integrand'].shape[-1], dtype=np.complex128)
-
-            for idx in range(data['integrand'].shape[-1]): #Loop over the effects
-                
-                integ = data['integrand'][:, idx]
+            for idx in range(data["integrand"].shape[-1]):  # Loop over the effects
+                integ = data["integrand"][:, idx]
 
                 # print('INSIDE THE SIM', integ)
-                integral_result = integral_form.assemble(self.basis, integrand = integ/np.abs(np.sqrt(power_a)*np.sqrt(power_b))) 
-                integral_result *= 2 * np.pi * 3e8 / (wavelength*1e-6) * 8.85e-12
+                integral_result = integral_form.assemble(
+                    self.basis, integrand=integ / np.abs(np.sqrt(power_a) * np.sqrt(power_b))
+                )
+                integral_result *= 2 * np.pi * 3e8 / (wavelength * 1e-6) * 8.85e-12
 
                 results_tmp[idx] = integral_result
 
             if electro_optic_model_name not in results:
                 results[electro_optic_model_name] = {}
 
-            results[electro_optic_model_name]['results'] = results_tmp
-            results[electro_optic_model_name]['labels'] = data['labels']
-            
+            results[electro_optic_model_name]["results"] = results_tmp
+            results[electro_optic_model_name]["labels"] = data["labels"]
+
         return results
