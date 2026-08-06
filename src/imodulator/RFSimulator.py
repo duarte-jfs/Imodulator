@@ -1045,6 +1045,52 @@ class RFSimulatorFEMWELL:
 
         return power_lost_all
 
+    def confinement_factor(self, mode: Mode, polygons: str | list[str]) -> float:
+        r"""
+        The fraction of the mode's electric-field energy that sits inside the given polygons:
+
+        .. math::
+
+            \Gamma = \frac{\int_{S_{poly}} |E|^2 dS}{\int_{S} |E|^2 dS}
+
+        where :math:`|E|^2 = |E_t|^2 + |E_z|^2` and :math:`S` is the whole meshed cross-section. This is the geometric (energy) confinement factor, not the group-velocity-corrected optical one, so it is bounded to :math:`[0, 1]` and is meant for identifying which physical structure a mode belongs to -- e.g. telling an electrode mode confined to the waveguide mesa apart from a delocalised substrate or box mode.
+
+        Args:
+            mode: The mode object containing the electric field data to be used for the calculation.
+            polygons: Name, or list of names, of the polygons whose combined area forms the confinement region. Each must be a subdomain of the mesh.
+
+        Returns:
+            confinement (float): The fraction of :math:`|E|^2` inside ``polygons``, between 0 and 1.
+        """
+
+        @Functional
+        def energy(w):
+            return inner(np.conj(w["E"][0]), w["E"][0]) + np.conj(w["E"][1]) * w["E"][1]
+
+        names = [polygons] if isinstance(polygons, str) else list(polygons)
+
+        missing = [name for name in names if name not in self.mesh.subdomains]
+        if missing:
+            raise KeyError(
+                f"polygons {missing} are not subdomains of the RF mesh. "
+                f"Available: {sorted(self.mesh.subdomains)}"
+            )
+
+        elements = np.unique(
+            np.concatenate(
+                [np.asarray(self.mesh.subdomains[name], dtype=int) for name in names]
+            )
+        )
+        if elements.size == 0:
+            return 0.0
+
+        sub_basis = mode.basis.with_elements(elements)
+
+        inside = energy.assemble(sub_basis, E=sub_basis.interpolate(mode.E)).real
+        total = energy.assemble(mode.basis, E=mode.basis.interpolate(mode.E)).real
+
+        return float(inside / total) if total != 0 else float("nan")
+
     def get_S(
         self,
         gamma: Quantity,
