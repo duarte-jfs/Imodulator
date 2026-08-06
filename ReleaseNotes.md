@@ -8,3 +8,4 @@
 - Added wavelength dependence to `InGaAsPElectroOpticalModel` and on the `ElectroOpticalSimulator`. The `InGaAsPElectroOpticalModel` can now be used for the simulation accross the telecomunications bands. 
 - Fixed the `epsilon_rf` generation. The real part was not respecting the polygon hierarchy.+
 - Added material dispersion compatibility in `PhotonicPolygon.optical_material` and subsequent compatibility with `OpticalSimulatorFEMWELL`.
+- `PhotonicDevice` now allows the user to specify `PhotonicPolygon`s to combine into a `MultiPolygon` for current line integral calculations, through the argument `line_integral_multi_polygons`. This is useful if a user has a complex metalic contact which might allow for different meshing resolutions for more efficient computation, while the current calculation remains over the whole metalic contact.
