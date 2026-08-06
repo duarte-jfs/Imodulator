@@ -27,6 +27,7 @@ try:
         Mode,
         calculate_scalar_product,
         compute_modes,
+        eval_error_estimator,
     )
 except ModuleNotFoundError:
     pass
@@ -296,7 +297,9 @@ class RFSimulatorFEMWELL:
 
         old_mesh = self.mesh
 
-        elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
+        elements_to_refine = adaptive_theta(
+            eval_error_estimator(mode_for_refinement.basis, mode_for_refinement.E), theta=0.5
+        )
 
         new_mesh = old_mesh.refined(elements_to_refine)
 
