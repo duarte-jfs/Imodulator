@@ -1,7 +1,7 @@
 """
 The role of the OpticalSimulatorFEMWELL is to:
 
-- generate the optical mesh;
+ generate the optical mesh;
 - Apply a simulation window;
 - Generate field visualizations of the optical modes;
 - Generate mesh visuals;
@@ -353,6 +353,11 @@ class OpticalSimulatorMODE:
         scaled_bounds = tuple(
             element * 1e-6 for element in self.polygon_entities["background"].bounds
         )
+
+        if self.mode.getnamednumber("FDE") > 0:
+            self.mode.switchtolayout()
+            self.mode.select("FDE")
+            self.mode.delete()
 
         self.mode.addfde()
         self.mode.select("FDE")
