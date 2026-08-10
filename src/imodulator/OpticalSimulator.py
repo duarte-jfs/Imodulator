@@ -169,6 +169,12 @@ class OpticalSimulatorMODE:
             #     continue
             if key == "background":
                 continue
+            if self.polygon_entities[key].is_empty:
+                warnings.warn(
+                    f"Polygon '{key}' is empty and will not be created.",
+                    stacklevel=2,
+                )
+                continue
             self.mode.addpoly()
             self.mode.set("name", key)
             self.mode.select(key)
