@@ -150,6 +150,8 @@ Alternatively you can clone the repository and install it locally:
    (.venv) $ pip install .
 
 For development purposes, you can install the package in "editable" mode:
+In that case we suggest you checkout to development branch for the latest 
+changes and fixes. 
 
 .. code-block:: console
 
@@ -160,17 +162,119 @@ For development purposes, you can install the package in "editable" mode:
 Configuring nextnano and Lumerical paths
 ----------------------------------------
 
-If you plan to use the `ChargeSimmulatorNN` or the `OpticalSimulatorMODE`, you must provide some more information relative to the licences and the paths to the api's. To do so, you must go to `imodulator/src/config_template.yaml` and create a copy named `config.yaml` where you fill in the required information. Namely:
+``ChargeSimulatorNN`` (nextnano) and ``OpticalSimulatorMODE`` (Lumerical MODE)
+drive third-party software that Imodulator cannot install for you. You have to
+tell it where those tools live by writing a ``config.yaml``. Every other
+simulator works without it.
+
+Step 1 — find where the file goes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``config.yaml`` is read from the *installed package directory*, i.e. next to
+``Config.py`` — not from your working directory or your home folder. Print that
+directory with:
+
+.. code-block:: console
+
+   $ python -c "import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)"
+
+If you installed from a clone (``uv sync`` or ``pip install -e .``) this is just
+``src/imodulator/`` in the repository.
+
+Step 2 — copy the template
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The package ships a ``config_template.yaml`` in that same directory. Copy it,
+dropping the ``_template`` suffix:
+
+.. code-block:: console
+
+   $ cd "$(python -c 'import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)')"
+   $ cp config_template.yaml config.yaml
+
+On Windows (PowerShell):
+
+.. code-block:: powershell
+
+   > cd (python -c "import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)")
+   > Copy-Item config_template.yaml config.yaml
+
+Step 3 — fill in the paths
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open ``config.yaml`` and replace the placeholders. A filled-in file looks like
+this — copy it and edit the values to match your machine:
 
 .. code-block:: yaml
 
-   lumerical_api: 
-      path: "path to lumapi python package lumapi.py"
+   lumerical_api:
+     path: "C:/Program Files/Lumerical/v242/api/python/lumapi.py"
 
    nextnano:
-      nextnano++:
-         exe: "path to nextnano++ executable"
-         license: "path to nextnano++ license file"
-         database: "path to nextnano++ database file"
-         output: "path to nextnano++ output folder"
+     nextnano++:
+       exe: "C:/Program Files/nextnano/2024_12_16/nextnano++/bin/nextnano++_Intel_64bit.exe"
+       license: "C:/Users/<you>/Documents/nextnano/License/License_nnp.lic"
+       database: "C:/Program Files/nextnano/2024_12_16/nextnano++/Syntax/database_nnp.in"
+       output: "C:/Users/<you>/Documents/nextnano/Output"
+
+What each key means:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Key
+     - Value
+   * - ``lumerical_api.path``
+     - Full path **to the** ``lumapi.py`` **file itself**, not to the folder
+       containing it. It is loaded directly as a module file, so a directory
+       path fails.
+   * - ``nextnano.nextnano++.exe``
+     - The nextnano++ executable (pick the ``Intel_64bit`` build unless you
+       have reason not to).
+   * - ``nextnano.nextnano++.license``
+     - Your ``.lic`` license file, usually under
+       ``Documents/nextnano/License``.
+   * - ``nextnano.nextnano++.database``
+     - The ``database_nnp.in`` material database shipped with nextnano.
+   * - ``nextnano.nextnano++.output``
+     - A folder where simulation results are written. Imodulator creates an
+       ``nn_output`` subfolder inside it, so point this at a parent directory
+       you own — it does not need to exist beforehand.
+
+Use forward slashes ``/`` even on Windows, and quote every path — backslashes
+inside a quoted YAML string are escape characters and will corrupt the path.
+
+You only need to fill in the section for the tool you actually use; the
+Lumerical and nextnano blocks are read independently, and only at the moment
+that tool is first requested. Keep both top-level keys present, though — remove
+the ``lumerical_api`` key entirely and importing ``lumapi`` raises a
+``KeyError`` instead of a helpful message.
+
+Step 4 — check it worked
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   from imodulator.Config import config_instance as config
+
+   config.get_lumapi()       # -> "Successfully imported lumapi"
+   config.get_nextnanopy()   # -> "Successfully imported nextnanopy"
+                             #    "Successfully configured nextnano++ settings"
+
+If instead you see::
+
+   WARNING: Configuration file not found: .../imodulator/config.yaml. Using template file instead.
+
+the file is missing or misnamed — it fell back to the template, whose
+placeholder paths point nowhere, and the import will fail afterwards. Re-check
+Step 1 and Step 2, and make sure the name is exactly ``config.yaml``.
+
+.. note::
+
+   ``config.yaml`` is git-ignored, so your local paths and license location are
+   never committed. The flip side: because it lives inside the package
+   directory, reinstalling or upgrading Imodulator into a fresh environment
+   does not carry it over. Keep a copy somewhere outside the package if you
+   rebuild environments often.
 
