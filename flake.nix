@@ -1,0 +1,171 @@
+{
+  description = "imodulator — reproducible Python environment (uv2nix, built from uv.lock)";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      uv2nix,
+      pyproject-nix,
+      pyproject-build-systems,
+      ...
+    }:
+    let
+      inherit (nixpkgs) lib;
+
+      # x86_64-linux is the tested target; aarch64-darwin (Apple Silicon) reuses the
+      # macOS wheels, which are self-contained (no autoPatchelf/libGLU needed there).
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      forAllSystems = lib.genAttrs systems;
+
+      # Load the uv workspace (pyproject.toml + uv.lock) from this repo.
+      workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
+
+      # Prefer prebuilt wheels: reuse the manylinux wheels that ship the hard bits already
+      # compiled (solcore's Fortran PDD ddModel.so, gmsh's libgmsh, scipy, shapely), so nix
+      # never has to build gfortran/f2py/etc. Native .so's that dlopen system libs are fixed
+      # up per-package below with autoPatchelfHook.
+      overlay = workspace.mkPyprojectOverlay {
+        sourcePreference = "wheel";
+      };
+
+      # Everything system-specific lives in this one builder, so the file stays flat.
+      mkEnv =
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+
+          # pyproject.toml pins requires-python = ">=3.11,<3.12".
+          python = pkgs.python311;
+
+          # Native libs the prebuilt wheels dlopen at runtime but do NOT bundle. gmsh's
+          # libgmsh.so lists all of these as NEEDED (see: ldd on libgmsh.so). In buildInputs
+          # they get baked into the wheel's RPATH by autoPatchelfHook, so the env works with
+          # no nix-ld / LD_LIBRARY_PATH hacks.
+          gmshRuntimeLibs = with pkgs; [
+            libGLU
+            libGL
+            zlib
+            fontconfig
+            stdenv.cc.cc.lib # libstdc++.so.6, libgomp.so.1
+            libx11
+            libxcursor
+            libxext
+            libxfixes
+            libxft
+            libxinerama
+            libxrender
+          ];
+
+          # Per-package fixups on top of the uv2nix-generated overlay.
+          pyprojectOverrides = final: prev: {
+            # femwell declares `meshwell` as a dependency, but neither femwell nor
+            # imodulator imports it at runtime (verified by grep). meshwell drags in a
+            # heavy, unused closure — cadquery -> {cadquery-ocp (VTK), numba (TBB),
+            # trame -> wslink} — whose wheels need extensive native patching. Drop the
+            # edge so mkVirtualEnv never pulls that subtree. (pyvista/vtk only enter via
+            # nextnanopy, which this env already excludes.)
+            femwell = prev.femwell.overrideAttrs (old: {
+              passthru = (old.passthru or { }) // {
+                dependencies = builtins.removeAttrs (old.passthru.dependencies or { }) [ "meshwell" ];
+              };
+            });
+          }
+          # Linux-only native-lib fixups. On macOS the wheels resolve their own dylibs
+          # via @rpath (and autoPatchelfHook doesn't exist there), so these are skipped.
+          // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+            # gmsh wheel: patch libGLU/X11/etc. into libgmsh.so's RPATH.
+            gmsh = prev.gmsh.overrideAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
+              buildInputs = (old.buildInputs or [ ]) ++ gmshRuntimeLibs;
+            });
+
+            # solcore wheel: ddModel is a compiled Fortran extension; make libgfortran/
+            # libquadmath and the C++ runtime resolvable for its .so.
+            solcore = prev.solcore.overrideAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
+              buildInputs = (old.buildInputs or [ ]) ++ [
+                pkgs.gfortran.cc.lib # libgfortran.so, libquadmath.so
+                pkgs.stdenv.cc.cc.lib
+              ];
+            });
+          };
+
+          # Base set from pyproject.nix's build infra, then layer: build-system backends,
+          # the uv2nix overlay from uv.lock, and our native-lib fixups.
+          pythonSet = (pkgs.callPackage pyproject-nix.build.packages { inherit python; }).overrideScope (
+            lib.composeManyExtensions [
+              pyproject-build-systems.overlays.default
+              overlay
+              pyprojectOverrides
+            ]
+          );
+
+          # imodulator with the FOSS solver extras (femwell + solcore). nextnanopy is
+          # Windows/commercial and deliberately excluded.
+          venv = pythonSet.mkVirtualEnv "imodulator-env" {
+            imodulator = [
+              "femwell"
+              "solcore"
+            ];
+          };
+        in
+        {
+          inherit pkgs venv;
+        };
+    in
+    {
+      # `nix build`   -> a venv with imodulator + the FOSS solvers (femwell + solcore).
+      packages = forAllSystems (system: { default = (mkEnv system).venv; });
+
+      # `nix develop` -> same venv on PATH, plus uv for lock edits.
+      devShells = forAllSystems (
+        system:
+        let
+          inherit (mkEnv system) pkgs venv;
+        in
+        {
+          default = pkgs.mkShell {
+            packages = [
+              venv
+              pkgs.uv
+            ];
+            env = {
+              # Reproducible env from uv.lock — don't let uv sync/download a 2nd interpreter.
+              UV_NO_SYNC = "1";
+              UV_PYTHON = "${venv}/bin/python";
+              UV_PYTHON_DOWNLOADS = "never";
+            };
+            shellHook = ''
+              echo "imodulator uv2nix env — python: $(python --version)"
+            '';
+          };
+        }
+      );
+    };
+}
