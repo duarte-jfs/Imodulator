@@ -1,7 +1,7 @@
 """
 The role of the OpticalSimulatorFEMWELL is to:
 
-- generate the optical mesh;
+ generate the optical mesh;
 - Apply a simulation window;
 - Generate field visualizations of the optical modes;
 - Generate mesh visuals;
@@ -43,6 +43,7 @@ try:
         Modes,
         Mode,
         compute_modes,
+        eval_error_estimator,
     )
 except ModuleNotFoundError:
     pass
@@ -168,6 +169,12 @@ class OpticalSimulatorMODE:
             #     if "metal" in key:
             #     continue
             if key == "background":
+                continue
+            if self.polygon_entities[key].is_empty:
+                warnings.warn(
+                    f"Polygon '{key}' is empty and will not be created.",
+                    stacklevel=2,
+                )
                 continue
             self.mode.addpoly()
             self.mode.set("name", key)
@@ -353,6 +360,11 @@ class OpticalSimulatorMODE:
         scaled_bounds = tuple(
             element * 1e-6 for element in self.polygon_entities["background"].bounds
         )
+
+        if self.mode.getnamednumber("FDE") > 0:
+            self.mode.switchtolayout()
+            self.mode.select("FDE")
+            self.mode.delete()
 
         self.mode.addfde()
         self.mode.select("FDE")
@@ -993,7 +1005,9 @@ class OpticalSimulatorFEMWELL:
 
         old_mesh = self.mesh
 
-        elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
+        elements_to_refine = adaptive_theta(
+            eval_error_estimator(mode_for_refinement.basis, mode_for_refinement.E), theta=0.5
+        )
 
         new_mesh = old_mesh.refined(elements_to_refine)
 

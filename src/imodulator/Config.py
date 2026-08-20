@@ -97,12 +97,84 @@ class Config:
                 nn.config.set("nextnano3", "database", nnp_config["database"])
                 print("Successfully configured nextnano3 settings")  # Fixed the message
 
+            # Confirm the configured paths actually exist before they are used
+            # by a simulation, where a wrong path would otherwise fail cryptically.
+            self.validate_nextnano_paths()
+
         except ImportError as e:
             print(f"Failed to import nextnanopy: {e}")
             self.nn = None
 
         self._nn_imported = True
         return self.nn
+
+    def validate_nextnano_paths(self, verbose=True):
+        """
+        Verify that the nextnano paths tagged on the nextnanopy API point to
+        files/directories that actually exist.
+
+        This is a "test step" for the configuration: after ``get_nextnanopy`` has
+        imported nextnanopy and tagged the API via ``nn.config.set(...)``, this
+        method reads those values back from ``nn.config`` and checks each one on
+        disk. It catches placeholder template paths (e.g. ``path/to/nn++.exe``)
+        and typos before they cause an obscure failure inside a simulation.
+
+        Args:
+            verbose (bool): If True (default) print the outcome for each path.
+
+        Returns:
+            dict: Mapping of ``"<variant>.<key>"`` to a tuple
+            ``(path, is_valid)`` for every path that was checked. The output
+            directory is created if it does not exist, so it is always valid.
+        """
+        results = {}
+
+        if self.nn is None:
+            if verbose:
+                print("Cannot validate nextnano paths: nextnanopy is not imported.")
+            return results
+
+        # Only validate the variants imodulator actually configured in
+        # config.yaml (rather than every variant present in nextnanopy's global
+        # config), so unused variants don't produce spurious warnings.
+        configured_variants = list(self.config.get("nextnano", {}).keys())
+
+        # exe/license/database must exist on disk; the output directory is
+        # created on demand rather than required to pre-exist.
+        keys = ("exe", "license", "database")
+
+        all_valid = True
+        for variant in configured_variants:
+            if variant not in self.nn.config.config:
+                continue
+
+            for key in keys:
+                path = self.nn.config.config[variant].get(key)
+                is_valid = bool(path) and os.path.exists(path)
+                results[f"{variant}.{key}"] = (path, is_valid)
+                if not is_valid:
+                    all_valid = False
+                if verbose:
+                    status = "OK" if is_valid else "MISSING"
+                    print(f"  [{status}] {variant} {key}: {path}")
+
+            output_dir = self.nn.config.config[variant].get("outputdirectory")
+            if output_dir:
+                os.makedirs(output_dir, exist_ok=True)
+                results[f"{variant}.outputdirectory"] = (output_dir, True)
+                if verbose:
+                    print(f"  [OK] {variant} outputdirectory: {output_dir}")
+
+        if verbose:
+            if all_valid:
+                print("nextnano configuration test passed: all paths are valid.")
+            else:
+                print(
+                    "WARNING: some nextnano paths are invalid. "
+                    "Update config.yaml with the correct paths."
+                )
+
+        return results
 
 
 config_instance = Config()
