@@ -1,6 +1,16 @@
 {
   description = "imodulator — reproducible Python environment (uv2nix, built from uv.lock)";
 
+  # CI populates this cache, so `nix develop` fetches the prebuilt env instead of
+  # rebuilding gmsh/solcore locally. Only applied for nix trusted-users; everyone
+  # else silently falls back to building from source.
+  nixConfig = {
+    extra-substituters = [ "https://imodulator.cachix.org" ];
+    extra-trusted-public-keys = [
+      "imodulator.cachix.org-1:nNgtAAmkkOFHmwd9uOEFlraIqvtkIsRvJnTVwSms5wY="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
