@@ -593,9 +593,12 @@ class RFSimulatorFEMWELL:
         cmap: str = "jet",
         color_vectors: str = "black",
         plot_vectors: bool = True,
+        vector_density: float = 1.0,
+        axes = None,
+        fig = None
     ):
         """
-        Plots the electric and magnetic fields of a mode.
+        Plots the transverse components of the electric and magnetic fields of a mode.
 
         Args:
             mode: The mode object containing the electric and magnetic field data to be plotted.
@@ -612,6 +615,9 @@ class RFSimulatorFEMWELL:
             cmap: Colormap used for plotting the magnitude of the fields.
             color_vectors: Color of the vector field streamlines.
             plot_vectors: Whether to plot the vector field streamlines. If ``False``, intensity of the transverse fields will be plotted. The advantage of this is that the projection of the mode into a rectangular grid is quite heavy and if you request too many points it can take a while. Plotting the intensity only though is very fast.
+            vector_density: Density of the vector field streamlines. Higher values result in more streamlines.
+            axes: The matplotlib axes to plot on. If ``None``, new axes will be created. axes[0] is for the electric field and axes[1] is for the magnetic field.
+            fig: The matplotlib figure to plot on. If ``None``, a new figure will be created.
         Returns:
             None: This method does not return any value. It generates a plot.
 
@@ -670,11 +676,15 @@ class RFSimulatorFEMWELL:
 
         # Plot the data
 
-        fig = plt.figure(figsize=figsize)
-        gs = GridSpec(1, 2, wspace=wspace)
+        if axes is not None:
+            fig = fig
+            ax_E, ax_H = axes
+        else:
+            fig = plt.figure(figsize=figsize)
+            gs = GridSpec(1, 2, wspace=wspace)
 
-        ax_E = fig.add_subplot(gs[0, 0])
-        ax_H = fig.add_subplot(gs[0, 1])
+            ax_E = fig.add_subplot(gs[0, 0])
+            ax_H = fig.add_subplot(gs[0, 1])
 
         for ax, mfield, label in zip(
             [ax_E, ax_H], [mode.E, mode.H], [r"$|E_t(x,y)|$", r"$|H_t(x,y)|$"]
@@ -722,6 +732,7 @@ class RFSimulatorFEMWELL:
                     data.real[:, :, 1],
                     color=color_vectors,
                     linewidth=0.5,
+                    density=vector_density
                 )
 
     def plot_polygons(
@@ -763,6 +774,7 @@ class RFSimulatorFEMWELL:
     def plot_mesh(
         self,
         plot_polygons: bool = True,
+        ax = None
     ):
         """
         Plots the mesh of the photonic device.
@@ -774,7 +786,11 @@ class RFSimulatorFEMWELL:
             fig: The matplotlib figure.
             ax: The matplotlib axis.
         """
-        ax = draw_mesh2d(self.mesh)
+
+        if ax is None:
+            ax = draw_mesh2d(self.mesh)
+        else:
+            draw_mesh2d(self.mesh, ax=ax)
         ax.set_axis_on()
 
         fig = ax.get_figure()
