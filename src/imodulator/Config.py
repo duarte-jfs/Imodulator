@@ -6,7 +6,7 @@ import os
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, config_dir=None):
         """
         Configuration manager for the imodulator package.
 
@@ -25,6 +25,10 @@ class Config:
         lumapi = config.get_lumapi()
         InGaAsP_models = config.get_ingaasp_models()
 
+        Args:
+            config_dir (str | Path | None): Directory containing 'config.yaml'.
+                If omitted, the directory of this module is used.
+
         Attributes:
             config_dir (Path): Directory containing the configuration file
             config_file (Path): Path to the config.yaml file
@@ -32,8 +36,11 @@ class Config:
             lumapi: Lumerical API module (if successfully imported)
             nn: nextnanopy module (if successfully imported)
         """
-        # Get the directory where this config.py file is located
-        self.config_dir = Path(__file__).resolve().parent
+        # If path is not defined get the directory where this config.py file is located
+        if config_dir is None:
+            self.config_dir = Path(__file__).resolve().parent
+        else:
+            self.config_dir = Path(config_dir).resolve()
 
         # Load the configuration from YAML file
         self.config_file = self.config_dir / "config.yaml"
