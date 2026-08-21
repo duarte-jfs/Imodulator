@@ -1,6 +1,16 @@
 {
   description = "imodulator — reproducible Python environment (uv2nix, built from uv.lock)";
 
+  # CI populates this cache, so `nix develop` fetches the prebuilt env instead of
+  # rebuilding gmsh/solcore locally. Only applied for nix trusted-users; everyone
+  # else silently falls back to building from source.
+  nixConfig = {
+    extra-substituters = [ "https://imodulator.cachix.org" ];
+    extra-trusted-public-keys = [
+      "imodulator.cachix.org-1:nNgtAAmkkOFHmwd9uOEFlraIqvtkIsRvJnTVwSms5wY="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -95,6 +105,33 @@
                 dependencies = builtins.removeAttrs (old.passthru.dependencies or { }) [ "meshwell" ];
               };
             });
+
+            # solcore seeds ~/.solcore on first import via shutil.copy2, which
+            # preserves the source's mode bits. Copied out of the read-only nix store
+            # that yields an unwritable ~/.solcore/solcore_config.txt, so the next
+            # config write dies with EACCES on any machine that has no ~/.solcore yet.
+            # Chmod the copy so the user's own config stays writable.
+            solcore = prev.solcore.overrideAttrs (
+              old:
+              {
+                postInstall = (old.postInstall or "") + ''
+                  substituteInPlace $out/${python.sitePackages}/solcore/config_tools.py \
+                    --replace-fail \
+                      'shutil.copy2(self.default_config, self.user_config)' \
+                      'shutil.copy2(self.default_config, self.user_config); os.chmod(self.user_config, 0o644)'
+                '';
+              }
+              # solcore wheel: ddModel is a compiled Fortran extension; make libgfortran/
+              # libquadmath and the C++ runtime resolvable for its .so. Linux-only --
+              # on macOS the wheel resolves its own dylibs via @rpath.
+              // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
+                buildInputs = (old.buildInputs or [ ]) ++ [
+                  pkgs.gfortran.cc.lib # libgfortran.so, libquadmath.so
+                  pkgs.stdenv.cc.cc.lib
+                ];
+              }
+            );
           }
           # Linux-only native-lib fixups. On macOS the wheels resolve their own dylibs
           # via @rpath (and autoPatchelfHook doesn't exist there), so these are skipped.
@@ -103,16 +140,6 @@
             gmsh = prev.gmsh.overrideAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
               buildInputs = (old.buildInputs or [ ]) ++ gmshRuntimeLibs;
-            });
-
-            # solcore wheel: ddModel is a compiled Fortran extension; make libgfortran/
-            # libquadmath and the C++ runtime resolvable for its .so.
-            solcore = prev.solcore.overrideAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
-              buildInputs = (old.buildInputs or [ ]) ++ [
-                pkgs.gfortran.cc.lib # libgfortran.so, libquadmath.so
-                pkgs.stdenv.cc.cc.lib
-              ];
             });
           };
 

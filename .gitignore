@@ -7,3 +7,6 @@ src/imodulator/config.yaml
 *tempCodeRunnerFile.py
 *checkpoint.ipynb
 *.pptx
+# build output symlink
+result
+result-*
