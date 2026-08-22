@@ -27,8 +27,14 @@ try:
         Mode,
         calculate_scalar_product,
         compute_modes,
-        eval_error_estimator,
     )
+
+    try:
+        from femwell.maxwell.waveguide import eval_error_estimator
+    except ImportError:
+        # femwell turned it into Mode.eval_error_estimator after 0.1.11, which is
+        # the version pinned by the femwell extra. Only refine_mesh needs it.
+        eval_error_estimator = None
 except ModuleNotFoundError:
     pass
 
