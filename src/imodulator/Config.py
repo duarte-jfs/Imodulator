@@ -95,7 +95,8 @@ class Config:
             self.config_file = self.config_dir / "config_template.yaml"
 
         with open(self.config_file, "r") as file:
-            self.config = yaml.safe_load(file)
+            # An all-comments or zero-byte file parses to None, not {}.
+            self.config = yaml.safe_load(file) or {}
 
         self.lumapi = None
         self.nn = None
@@ -106,7 +107,16 @@ class Config:
         if self._lumapi_imported:
             return self.lumapi
 
-        self.lumerical_api_path = self.config["lumerical_api"]["path"]
+        self._lumapi_imported = True
+        self.lumerical_api_path = self.config.get("lumerical_api", {}).get("path")
+
+        if not self.lumerical_api_path:
+            print(
+                f"WARNING: no lumerical_api.path in {self.config_file}. "
+                "Lumerical-backed simulators are unavailable on this machine."
+            )
+            return None
+
         try:
             spec = importlib.util.spec_from_file_location("lumapi", self.lumerical_api_path)
             lumapi = importlib.util.module_from_spec(spec)
@@ -117,7 +127,6 @@ class Config:
             print(f"Failed to import lumapi: {e}")
             self.lumapi = None
 
-        self._lumapi_imported = True
         return self.lumapi
 
     def get_nextnanopy(self):
