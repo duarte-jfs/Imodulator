@@ -27,7 +27,6 @@ try:
         Mode,
         calculate_scalar_product,
         compute_modes,
-        eval_error_estimator,
     )
 except ModuleNotFoundError:
     pass
@@ -50,6 +49,7 @@ from imodulator.PhotonicPolygon import (
 PhotonicPolygon = SemiconductorPolygon | MetalPolygon | InsulatorPolygon
 Line = LineString | MultiLineString | LinearRing
 
+from scipy.spatial import cKDTree
 
 class RFSimulatorFEMWELL:
     """
@@ -297,9 +297,7 @@ class RFSimulatorFEMWELL:
 
         old_mesh = self.mesh
 
-        elements_to_refine = adaptive_theta(
-            eval_error_estimator(mode_for_refinement.basis, mode_for_refinement.E), theta=0.5
-        )
+        elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
 
         new_mesh = old_mesh.refined(elements_to_refine)
 
@@ -428,6 +426,129 @@ class RFSimulatorFEMWELL:
             self.mesh.p[1, triangles].mean(axis=0),
         )
 
+    def get_pml_epsilon_rf(
+            self, 
+            frequency: float, 
+            voltage_idx: int = 0,
+            use_charge_transport_data: bool = False,
+            PML_boundaries: list | str | bool = None,
+            PML_params: dict = {'sigma_val': 0.05, 'a_val': 2.5, 'thickness_val': 200, 'pml_degree': 4},
+            symmetry_line: str | None = '-y',
+        ):
+
+        self.PML_params = PML_params
+        self.PML_boundaries = PML_boundaries
+
+        self.get_epsilon_rf(
+                frequency, use_charge_transport_data=use_charge_transport_data, voltage_idx=voltage_idx
+            )
+
+        if PML_boundaries is not None and len(PML_boundaries) > 0:
+        
+            self.pml_basis = Basis(self.mesh, ElementVector(ElementTriP0(),3))
+
+            ## PML params
+            sigma_val = PML_params['sigma_val'] #Ohm**-1
+            a_val = PML_params['a_val'] #adimensional
+            thickness_val = PML_params['thickness_val'] #um
+            pml_degree = PML_params['pml_degree']
+            eta0 = 376.730313668 #ohm
+
+            mesh = self.mesh
+
+            PML_nodes = []
+
+            for boundary in PML_boundaries:
+                facets = mesh.boundaries[boundary]
+                nodes = np.unique(mesh.facets[:, facets])
+                PML_nodes += nodes.tolist()
+
+            coords_x,coords_y = mesh.p[:, PML_nodes]
+
+            # fig = plt.figure()
+            # ax = fig.add_subplot(111)
+
+            # ax.scatter(coords_x, coords_y, s=100, c = rf_sim.epsilon_rf[PML_nodes,0].imag)
+
+            x_max = np.max(coords_x)
+            x_min = np.min(coords_x)
+            y_min = np.min(coords_y)
+            y_max = np.max(coords_y)
+
+            if symmetry_line == '-y':
+                x_min = -x_max
+            elif symmetry_line == '+y':
+                x_max = -x_min
+            elif symmetry_line == '-x':
+                y_min = -y_max
+            elif symmetry_line == '+x':
+                y_max = -x_min
+
+            boundary_coords = mesh.p[:, PML_nodes].T   # shape (N_boundary, 2)
+            element_coords = self.basis.doflocs.T #The centroids of the elements
+            tree = cKDTree(boundary_coords)
+            distances, _ = tree.query(element_coords)
+            PML_elements = np.where(distances <= thickness_val)[0]
+
+            coords_x = element_coords[PML_elements, 0]
+            coords_y = element_coords[PML_elements, 1]
+
+            ## Now we compute a local coordinate system for each PML node, and compute the distance to the boundary in that local coordinate system. This will allow us to define the PML parameters as a function of distance to the boundary.
+            x_pml = np.maximum(
+                x_min + thickness_val - coords_x,
+                coords_x - (x_max - thickness_val)
+            )
+            x_pml = np.maximum(x_pml, 0)
+
+            y_pml = np.maximum(
+                y_min + thickness_val - coords_y,
+                coords_y - (y_max - thickness_val)
+            )
+            y_pml = np.maximum(y_pml, 0)
+
+            a_x = 1+a_val * (x_pml/thickness_val)**pml_degree
+            a_y = 1+a_val * (y_pml/thickness_val)**pml_degree
+            sigma_x = sigma_val * np.sin(np.pi*x_pml/2/thickness_val)**2
+            sigma_y = sigma_val * np.sin(np.pi*y_pml/2/thickness_val)**2
+
+            s_x = a_x*(1-1j*eta0*sigma_x)
+            s_y = a_y*(1-1j*eta0*sigma_y)
+            s_z = 1
+
+            S = np.zeros((len(PML_elements), 3), dtype=np.complex64)
+            S[:, 0] = s_y/s_x
+            S[:, 1] = s_x/s_y
+            S[:, 2] = s_x*s_y/s_z
+
+
+            eps = self.epsilon_rf
+            new_eps = eps[:, None, :] * np.ones(3)[None, :,None]
+
+            PML_new_eps = new_eps[PML_elements, :, :]
+            PML_new_eps = PML_new_eps*S[:,:,None]
+
+            new_eps[PML_elements, :, :] = PML_new_eps
+
+            ##Now we create a new mu_r
+            new_mu = self.pml_basis.ones().reshape(-1,3).astype(np.complex128)
+            new_mu[PML_elements, 0] = s_y/s_x
+            new_mu[PML_elements, 1] = s_x/s_y
+            new_mu[PML_elements, 2] = s_x*s_y/s_z
+
+            self.pml_mu_r = new_mu
+
+            self._S = self.pml_basis.ones().reshape(-1,3).astype(np.complex128)
+            self._S[PML_elements, 0] = s_x
+            self._S[PML_elements, 1] = s_y
+            self._S[PML_elements, 2] = s_z
+
+            # self.basis.plot(s_x, colorbar=True, ax=None, cmap='jet', title='s_x')
+            # self.basis.plot(s_y, colorbar=True, ax=None, cmap='jet', title='s_y')
+            # self.basis.plot(s_z, colorbar=True, ax=None, cmap='jet', title='s_z')
+
+            self.pml_epsilon_rf = new_eps
+
+
     def compute_modes(
         self,
         frequency: float = 10,
@@ -435,6 +556,9 @@ class RFSimulatorFEMWELL:
         num_modes: int = 1,
         order: int = 1,
         metallic_boundaries: list | str | bool = False,
+        PML_boundaries: list | str | bool = None,
+        PML_params: dict = {'sigma_val': 0.05, 'a_val': 2.5, 'thickness_val': 200, 'pml_degree': 4},
+        symmetry_line: str | None = '-y',
         n_guess: float = 4.0,
         return_modes: bool = False,
         use_charge_transport_data: bool = False,
@@ -448,6 +572,11 @@ class RFSimulatorFEMWELL:
             num_modes: The number of modes to compute.
             order: Order of the basis functions to use in the EM solver.
             metallic_boundaries: The boundaries to treat as metallic. If `False`, no boundaries are treated as metallic. If `True`, all boundaries are treated as metallic. If a list of strings, the boundaries with the given names are treated as metallic. At the moment, the simulation window is treated as a square, therefore, the metallic boundaries can be ``left`, ``right``, ``top`` and ``bottom`` boundaries.
+            symmetry_line: The line of symmetry for the simulation. If `None`, no symmetry is assumed. If a string, the simulation is assumed to be symmetric about the given line. This is only used for the PML boundary calculation.
+                - if `-y`, the simulation is assumed to be symmetric about the line `y=0` the region to simulate is on 'x>0'
+                - if '+y', the simulation is assumed to be symmetric about the line `y=0` the region to simulate is on 'x<0'
+                - if `-x`, the simulation is assumed to be symmetric about the line `x=0` the region to simulate is on 'y>0'
+                - if `+x`, the simulation is assumed to be symmetric about the line `x=0` the region to simulate is on 'y<0'
             n_guess: Initial guess for the effective index.
             return_modes: Whether to return the computed modes.
             use_charge_transport_data: Whether to use the charge transport data to compute the permittivity tensor. Doing so will yield a :math:`\sigma(x,y,V)`. Make sure your mesh is appropriate for it.
@@ -457,20 +586,34 @@ class RFSimulatorFEMWELL:
 
         """
 
-        self.get_epsilon_rf(
-            frequency, use_charge_transport_data=use_charge_transport_data, voltage_idx=voltage_idx
-        )
-
-        modes = compute_modes(
-            self.basis,
-            self.epsilon_rf[:, voltage_idx],
-            (self.c / (frequency * self.reg.GHz)).to(self.reg.micrometer).magnitude,
-            mu_r=1,
-            num_modes=num_modes,
-            order=order,
-            metallic_boundaries=metallic_boundaries,
-            n_guess=n_guess,
-        )
+        if PML_boundaries is not None and len(PML_boundaries) > 0:
+            self.get_pml_epsilon_rf(
+                frequency, voltage_idx=voltage_idx, use_charge_transport_data=use_charge_transport_data, PML_boundaries=PML_boundaries, PML_params=PML_params, symmetry_line=symmetry_line
+            )
+            modes = compute_modes(
+                        self.pml_basis,
+                        self.pml_epsilon_rf[:,:, voltage_idx].flatten(),
+                        (self.c / (frequency * self.reg.GHz)).to(self.reg.micrometer).magnitude,
+                        mu_r=1,
+                        num_modes=num_modes,
+                        order=order,
+                        metallic_boundaries=metallic_boundaries,
+                        n_guess=n_guess,
+                    )
+        else:
+            self.get_epsilon_rf(
+                        frequency, use_charge_transport_data=use_charge_transport_data, voltage_idx=voltage_idx
+                    )
+            modes = compute_modes(
+                self.basis,
+                self.epsilon_rf[:, voltage_idx],
+                (self.c / (frequency * self.reg.GHz)).to(self.reg.micrometer).magnitude,
+                mu_r=1,
+                num_modes=num_modes,
+                order=order,
+                metallic_boundaries=metallic_boundaries,
+                n_guess=n_guess,
+            )
 
         self.modes = modes.sorted(lambda mode: mode.n_eff.real)
 
@@ -577,6 +720,138 @@ class RFSimulatorFEMWELL:
         ax2.set_ylabel("y (um)")
 
         return fig, ax1, ax2
+
+    def plot_pml_eps_rf(
+            self,
+            frequency: float = 10,
+            voltage_idx: int = 0,
+            use_charge_transport_data: bool = False,
+            log_scale_im: bool = True,
+            log_scale_re: bool = True,
+            PML_boundaries: list | str | bool = None,
+            PML_params: dict = {'sigma_val': 0.05, 'a_val': 2.5, 'thickness_val': 100, 'pml_degree': 4},
+            symmetry_line: str | None = '-y',
+            cmap="jet",
+            figsize = (8,8)
+    ):
+
+        self.get_pml_epsilon_rf(
+            frequency, 
+            voltage_idx=voltage_idx, 
+            use_charge_transport_data=use_charge_transport_data, 
+            PML_boundaries=PML_boundaries, 
+            PML_params=PML_params, 
+            symmetry_line=symmetry_line
+        )
+
+        fig = plt.figure(figsize=figsize)
+        gs = fig.add_gridspec(3, 2)
+        ax11 = fig.add_subplot(gs[0, 0])
+        ax12 = fig.add_subplot(gs[0, 1])
+        ax21 = fig.add_subplot(gs[1, 0])
+        ax22 = fig.add_subplot(gs[1, 1])
+        ax31 = fig.add_subplot(gs[2, 0])
+        ax32 = fig.add_subplot(gs[2, 1])
+
+        # Plot the polygons
+        for ax in [ax11, ax12, ax21, ax22, ax31, ax32]:
+            self.plot_polygons(
+                ax=ax,
+            )
+       
+        for ax1, ax2, idx in zip([ax11, ax21, ax31], [ax12, ax22, ax32], range(3)):
+
+            # Plot the imaginary part of the permittivity
+            data_to_plot_im = self.pml_epsilon_rf[:, idx, voltage_idx].imag
+            data_to_plot_re = self.pml_epsilon_rf[:, idx, voltage_idx].real
+
+            if log_scale_im:
+                data_to_plot_im = np.log10(-data_to_plot_im)
+            if log_scale_re:
+                data_to_plot_re = np.log10(data_to_plot_re)
+
+            self.basis.plot(
+                data_to_plot_im,
+                cmap=cmap,
+                colorbar=True,
+                ax=ax1,
+            )
+
+            self.basis.plot(
+                data_to_plot_re,
+                cmap=cmap,
+                colorbar=True,
+                ax=ax2,
+            )
+
+            if use_charge_transport_data:
+                if log_scale_im:
+                    ax1.set_title(
+                        f"log10(Im(-$\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                    )
+                else:
+                    ax1.set_title(
+                        f"Im(-$\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                    )
+                if log_scale_re:
+                    ax2.set_title(
+                        f"log10(Re($\epsilon_{{RF}}$)) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                    )
+                else:
+                    ax2.set_title(
+                        f"Re($\epsilon_{{RF}}$) at {frequency} GHz, V={self.photodevice.charge['V'][voltage_idx]} V"
+                    )
+
+            else:
+                if log_scale_im:
+                    ax1.set_title(f"log10(Im(-$\epsilon_{{RF}}$)) at {frequency} GHz")
+                else:
+                    ax1.set_title(f"Im(-$\epsilon_{{RF}}$) at {frequency} GHz")
+                if log_scale_re:
+                    ax2.set_title(f"log10(Re($\epsilon_{{RF}}$)) at {frequency} GHz")
+                else:
+                    ax2.set_title(f"Re($\epsilon_{{RF}}$) at {frequency} GHz")
+
+            ax1.set_xlabel("x (um)")
+            ax1.set_ylabel("y (um)")
+
+            ax2.set_xlabel("x (um)")
+            ax2.set_ylabel("y (um)")
+
+        fig.tight_layout()
+
+        return fig, ax1, ax2
+
+        
+    def _get_elements_PML(
+            self,
+    ):
+
+        PML_params = self.PML_params
+        PML_boundaries = self.PML_boundaries
+        ## PML params
+        thickness_val = PML_params['thickness_val'] #um
+
+        mesh = self.mesh
+
+        PML_nodes = []
+
+        for boundary in PML_boundaries:
+            facets = mesh.boundaries[boundary]
+            nodes = np.unique(mesh.facets[:, facets])
+            PML_nodes += nodes.tolist()
+
+        coords_x,coords_y = mesh.p[:, PML_nodes]
+
+
+        boundary_coords = mesh.p[:, PML_nodes].T   # shape (N_boundary, 2)
+        element_coords = self.basis.doflocs.T #The centroids of the elements
+        tree = cKDTree(boundary_coords)
+        distances, _ = tree.query(element_coords)
+        PML_elements = np.where(distances <= thickness_val)[0]
+
+        return PML_elements
+        
 
     def plot_mode(
         self,
