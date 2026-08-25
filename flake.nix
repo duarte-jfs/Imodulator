@@ -100,7 +100,15 @@
             # trame -> wslink} — whose wheels need extensive native patching. Drop the
             # edge so mkVirtualEnv never pulls that subtree. (pyvista/vtk only enter via
             # nextnanopy, which this env already excludes.)
+            #
+            # femwell is pinned to a git commit (see the femwell extra in pyproject.toml),
+            # so uv2nix builds it from the sdist rather than fetching a PyPI wheel. uv.lock
+            # has no build-system metadata for git sources, so the hatchling build backend
+            # femwell declares in its own pyproject.toml has to be supplied here explicitly.
             femwell = prev.femwell.overrideAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
+                hatchling = [ ];
+              };
               passthru = (old.passthru or { }) // {
                 dependencies = builtins.removeAttrs (old.passthru.dependencies or { }) [ "meshwell" ];
               };
