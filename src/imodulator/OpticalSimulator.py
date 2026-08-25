@@ -27,7 +27,7 @@ from scipy.interpolate import RegularGridInterpolator
 
 from skfem.io.meshio import from_meshio
 from skfem.visuals.matplotlib import draw_mesh2d
-from skfem import Basis, ElementTriP1, ElementVector, ElementDG, Functional
+from skfem import Basis, ElementTriP0, ElementVector, ElementDG, Functional
 from skfem.helpers import inner
 from skfem import adaptive_theta
 
@@ -824,7 +824,10 @@ class OpticalSimulatorFEMWELL:
 
     def get_epsilon_optical(self, wavelength: float = 1.55):
         """
-        This function will return the :math:`\epsilon_{opt}` tensor with the signature ``self.epsilon_optical[vertice_idx]`` where ``vertice_idx`` is the index of the vertice in the mesh
+        This function will return the :math:`\epsilon_{opt}` tensor with the signature ``self.epsilon_optical[element_idx]`` where ``element_idx`` is the index of the element in the mesh.
+
+        .. note::
+            The permittivity is piecewise constant per element, so every element takes the value of exactly one polygon and material interfaces stay sharp.
 
         Args:
             wavelength: The wavelength at which to evaluate the optical permittivity. This can be used to account for dispersion if the optical_material properties of the polygons are defined as functions of wavelength.
@@ -836,7 +839,7 @@ class OpticalSimulatorFEMWELL:
                 "Cannot attribute an optical epsilon. The mesh of the optical simulator is not yet generated"
             )
 
-        self.epsilon_optical = np.zeros((3, 3, self.mesh.nvertices), dtype=np.complex128)
+        self.epsilon_optical = np.zeros((3, 3, self.basis.N), dtype=np.complex128)
 
         self.epsilon_optical[0, 0, :] = 1
         self.epsilon_optical[1, 1, :] = 1
@@ -851,15 +854,28 @@ class OpticalSimulatorFEMWELL:
         for photo_polygon in self.optical_photopolygons[::-1]:
             if photo_polygon.name not in self.mesh.subdomains:
                 continue
-            # Retrieve all vertice idxs that belong to the polygon
-            elements_idxs = self.mesh.subdomains[photo_polygon.name]
-            triangles = self.mesh.t[:, elements_idxs]
-            vertices_idxs = np.unique(triangles.flatten())
+
+            dofs_idxs = self._dofs_of(photo_polygon)
 
             for i in range(3):
-                self.epsilon_optical[i, i, vertices_idxs] = photo_polygon.optical_material(
+                self.epsilon_optical[i, i, dofs_idxs] = photo_polygon.optical_material(
                     wavelength
                 )
+
+    def _dofs_of(self, photo_polygon) -> np.ndarray:
+        """
+        The ``self.basis`` dofs owned by a photopolygon, together with those of any junction entity that falls inside it. With ``ElementTriP0`` there is exactly one dof per element.
+        """
+        elements_idxs = np.asarray(self.mesh.subdomains[photo_polygon.name], dtype=int)
+
+        # Sweep through all the junctions and see which fall within the semiconductor
+        for name, junction_poly in self.junction_entities.items():
+            if photo_polygon.polygon.contains(junction_poly):
+                elements_idxs = np.concatenate(
+                    (elements_idxs, np.asarray(self.mesh.subdomains[name], dtype=int))
+                )
+
+        return self.basis.element_dofs[:, elements_idxs].flatten()
 
     def plot_epsilon_optical(self, cmap: str = "jet", plot_structure: bool = True):
 
@@ -943,8 +959,7 @@ class OpticalSimulatorFEMWELL:
                 mesh_scaling_factor=mesh_scaling_factor,
             )
         )
-        # Choosing each element as ElementTriP1 is crucial as the dofs that assumes are the mesh vertices
-        self.basis = Basis(self.mesh, ElementTriP1(), intorder=4)
+        self.basis = Basis(self.mesh, ElementTriP0())
 
     def compute_modes(
         self,
@@ -1011,7 +1026,7 @@ class OpticalSimulatorFEMWELL:
         new_mesh = old_mesh.refined(elements_to_refine)
 
         self.mesh = new_mesh
-        self.basis = Basis(self.mesh, ElementTriP1())
+        self.basis = Basis(self.mesh, ElementTriP0())
 
     def plot_mode(
         self, mode: Mode, figsize: tuple[float, float] = (10, 3), color_polygons: str = "black"
