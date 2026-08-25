@@ -169,31 +169,43 @@
               "solcore"
             ];
           };
+
+          # devShell-only venv: same solver extras, plus "dev" (ruff, ipykernel — the
+          # latter registers this env as the "imodulator_venv" Jupyter kernel the
+          # docs/Tutorials notebooks expect). Kept separate from `venv` so `nix build`'s
+          # output stays the minimal, production-shaped env.
+          devVenv = pythonSet.mkVirtualEnv "imodulator-dev-env" {
+            imodulator = [
+              "femwell"
+              "solcore"
+              "dev"
+            ];
+          };
         in
         {
-          inherit pkgs venv;
+          inherit pkgs venv devVenv;
         };
     in
     {
       # `nix build`   -> a venv with imodulator + the FOSS solvers (femwell + solcore).
       packages = forAllSystems (system: { default = (mkEnv system).venv; });
 
-      # `nix develop` -> same venv on PATH, plus uv for lock edits.
+      # `nix develop` -> devVenv (solver extras + dev tooling) on PATH, plus uv for lock edits.
       devShells = forAllSystems (
         system:
         let
-          inherit (mkEnv system) pkgs venv;
+          inherit (mkEnv system) pkgs devVenv;
         in
         {
           default = pkgs.mkShell {
             packages = [
-              venv
+              devVenv
               pkgs.uv
             ];
             env = {
               # Reproducible env from uv.lock — don't let uv sync/download a 2nd interpreter.
               UV_NO_SYNC = "1";
-              UV_PYTHON = "${venv}/bin/python";
+              UV_PYTHON = "${devVenv}/bin/python";
               UV_PYTHON_DOWNLOADS = "never";
             };
             shellHook = ''
