@@ -37,17 +37,21 @@ When you want to release a new version, follow these directions.
 (https://packaging.python.org/en/latest/tutorials/packaging-projects/#generating-distribution-archives)
 
 1. Make sure you merge proper commits to from the development to the main branch
-2. Bump the version number in the `pyproject.toml`
-3. Bump the version number in `docs/conf.py`
-4. Build the docs locally
-5. Build the docs in ReadTheDocs
-6. Generate the distribution archives by running
+2. Replace the `femwell` git pin in the `femwell` extra of `pyproject.toml` with a released
+   version (`femwell==<x.y.z>`) and re-run `uv lock`. PyPI and TestPyPI reject any
+   distribution whose metadata contains a direct URL dependency, so `twine upload` fails
+   with a 400 while the `git+https://...` requirement is in place.
+3. Bump the version number in the `pyproject.toml`
+4. Bump the version number in `docs/conf.py`
+5. Build the docs locally
+6. Build the docs in ReadTheDocs
+7. Generate the distribution archives by running
 
 > python -m build
 
-7. Upload the .tar.gz and .whl files to the github release section
+8. Upload the .tar.gz and .whl files to the github release section
 >pip install --upgrade twine
 
 >twine upload --repository testpypi dist/*
-8. Test uploading the package to TestPyPI to make sure it all goes well
-9. If it all went ok, then go to PyPI and hope for the best
+9. Test uploading the package to TestPyPI to make sure it all goes well
+10. If it all went ok, then go to PyPI and hope for the best
