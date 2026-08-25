@@ -6,34 +6,83 @@ import os
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, config_dir=None):
         """
         Configuration manager for the imodulator package.
 
         This class handles loading configuration settings from a YAML file and provides
-        methods to import and configure external simulation tools like Lumerical,
-        nextnano, and InGaAsP models.
+        methods to import and configure external simulation tools: Lumerical
+        (via lumapi) and nextnano (via nextnanopy). It manages system paths,
+        software paths, and licensing information for those tools.
 
-        The configuration file should be located in the same directory as this module
-        and named 'config.yaml'. It manages system paths, software paths, and licensing
-        information for various photonic simulation tools.
+        Which file gets loaded:
 
-        Example:
+        Step 1 -- pick the directory. If ``config_dir`` is not given, it
+        defaults to the folder this Config.py lives in, i.e. the imodulator
+        package folder itself (``src/imodulator/`` in a source checkout or
+        editable install, or the installed package directory otherwise).
+        That folder is where the package ships its own config.yaml and
+        config_template.yaml.
+
+        Step 2 -- pick the file inside that directory. The filename is always
+        appended by this class, which is why ``config_dir`` is a *directory*
+        and not a file: pass ``".../my_project"`` and NOT
+        ``".../my_project/config.yaml"`` -- the latter would be looked up as
+        ``".../my_project/config.yaml/config.yaml"``. Within the chosen
+        directory:
+
+        1. ``config.yaml`` is used if it exists;
+        2. otherwise ``config_template.yaml`` is used, after printing a
+           warning. This fallback keeps a fresh checkout importable, but it
+           means a typo in ``config_dir`` does not raise immediately -- you
+           silently get the template's placeholder paths instead. Check
+           ``self.config_file`` if the loaded settings look wrong.
+
+        So with no arguments you get ``<imodulator package>/config.yaml``,
+        falling back to ``<imodulator package>/config_template.yaml``.
+
+        A ``config_dir`` that does not exist, or that holds neither file,
+        raises ``FileNotFoundError`` when the YAML is opened.
+
+        Using the default instance:
 
         from imodulator.Config import config_instance as config
         nn = config.get_nextnanopy()
         lumapi = config.get_lumapi()
-        InGaAsP_models = config.get_ingaasp_models()
+
+        Pointing at your own config directory:
+
+        import imodulator.Config as config_module
+        from imodulator.Config import Config
+
+        config = Config("D:/Repos/my_project")
+        config_module.config_instance = config
+
+        Rebinding ``config_instance`` only affects code that reads it *after*
+        this point. Modules that already ran
+        ``from imodulator.Config import config_instance`` hold a reference to
+        the old object, so in a notebook restart the kernel and do this before
+        importing the rest of imodulator. See the module-level
+        ``config_instance`` note below.
+
+        Args:
+            config_dir (str | Path | None): Directory containing 'config.yaml'.
+                If omitted, the directory of this module is used, i.e. the
+                config.yaml shipped inside the installed package.
 
         Attributes:
-            config_dir (Path): Directory containing the configuration file
-            config_file (Path): Path to the config.yaml file
+            config_dir (Path): Resolved directory containing the configuration file
+            config_file (Path): Path to the file actually loaded -- either
+                config.yaml or the config_template.yaml fallback
             config (dict): Loaded configuration data from YAML file
             lumapi: Lumerical API module (if successfully imported)
             nn: nextnanopy module (if successfully imported)
         """
-        # Get the directory where this config.py file is located
-        self.config_dir = Path(__file__).resolve().parent
+        # If path is not defined get the directory where this config.py file is located
+        if config_dir is None:
+            self.config_dir = Path(__file__).resolve().parent
+        else:
+            self.config_dir = Path(config_dir).resolve()
 
         # Load the configuration from YAML file
         self.config_file = self.config_dir / "config.yaml"
@@ -46,7 +95,8 @@ class Config:
             self.config_file = self.config_dir / "config_template.yaml"
 
         with open(self.config_file, "r") as file:
-            self.config = yaml.safe_load(file)
+            # An all-comments or zero-byte file parses to None, not {}.
+            self.config = yaml.safe_load(file) or {}
 
         self.lumapi = None
         self.nn = None
@@ -57,7 +107,16 @@ class Config:
         if self._lumapi_imported:
             return self.lumapi
 
-        self.lumerical_api_path = self.config["lumerical_api"]["path"]
+        self._lumapi_imported = True
+        self.lumerical_api_path = self.config.get("lumerical_api", {}).get("path")
+
+        if not self.lumerical_api_path:
+            print(
+                f"WARNING: no lumerical_api.path in {self.config_file}. "
+                "Lumerical-backed simulators are unavailable on this machine."
+            )
+            return None
+
         try:
             spec = importlib.util.spec_from_file_location("lumapi", self.lumerical_api_path)
             lumapi = importlib.util.module_from_spec(spec)
@@ -68,7 +127,6 @@ class Config:
             print(f"Failed to import lumapi: {e}")
             self.lumapi = None
 
-        self._lumapi_imported = True
         return self.lumapi
 
     def get_nextnanopy(self):
@@ -177,5 +235,13 @@ class Config:
         return results
 
 
+#: Default, package-local Config, built at import time from the config.yaml
+#: that sits next to this module. Importing imodulator therefore always reads
+#: (or warns about) that file, even if you later build your own Config.
+#:
+#: To use a different config directory, rebind this attribute *before* the
+#: rest of imodulator is imported -- see Config.__init__ for the caveats:
+#:
+#:     import imodulator.Config as config_module
+#:     config_module.config_instance = config_module.Config("D:/Repos/my_project")
 config_instance = Config()
-# Create an instance of the Config class
