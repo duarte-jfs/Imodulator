@@ -682,6 +682,9 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         2) Dumke, W. P., M. R. Lorenz, and G. D. Pettit. “Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP.” Physical Review B 1, no. 12 (June 15, 1970): 4668–73. https://doi.org/10.1103/PhysRevB.1.4668.
 
+        3) F. Fiedler and A. Schlachetzki, “Optical parameters of InP-based waveguides,” Solid-State Electronics, vol. 30, no. 1, pp. 73–83, Jan. 1987, doi: 10.1016/0038-1101(87)90032-3.
+
+
         """
 
         E = self.energy
@@ -828,6 +831,8 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         # References:
         # 1) Sze, S. M., and Kwok Kwok Ng. Physics of Semiconductor Devices. 3rd ed. Hoboken, N.J: Wiley-Interscience, 2007.
+
+        # We now compute the remaining contributions from [3]
         Ef = (np.log(self.N / self.Nc) + 1 / np.sqrt(8) * self.N / self.Nc) * self.kb * self.T
 
         A = (
@@ -1152,6 +1157,8 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
 
         References:
         [1] - Maat, Derk Hendrik Pieter. InP-Based Integrated MZI Switches for Optical Communication, 2001.
+        [2] - G. Hagn, “Electro-optic effects and their application in indium phosphide waveguide devices for fibre optic access networks,” ETH Zurich, 2001. doi: 10.3929/ETHZ-A-004353336.
+
 
 
         """
@@ -1176,14 +1183,27 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
             return y
 
         # Taken from [1]
-        A_TE = 0.25e3
-        A_TM = 0.20e3
-        B_TE = 0.71e9
-        B_TM = 0.48e9
+        # A_TE = 0.25e3
+        # A_TM = 0.20e3
+        # B_TE = 0.71e9
+        # B_TM = 0.48e9
+
+        ## Used the model of [1] to fit the data of [2]
+        # A_TE = 0.065e3
+        # A_TM = 0.072e3
+        # B_TE = 0.15e9
+        # B_TM = 0.12e9
+
+        #These allow the replication of the results of [1] while using the Imodulator.
+        A_TE = 0.9e3
+        A_TM = 1.7e3
+        B_TE = 0.42e9
+        B_TM = 0.42e9
 
         # C_TE=-1.79e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
         # C_TM=-1.82e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
 
+        # Adapted constants from [1]
         C_TE = -3.10e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
         C_TM = -5.60e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
 

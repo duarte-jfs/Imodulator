@@ -330,12 +330,14 @@ Now that we have defined all the necessary physical properties needed to do our 
 Band filling effect
 ~~~~~~~~~~~~~~~~~~~
 
-When doping a semiconductor with additional donors, the fermi level gets closer to the conduction band, which ultimately can cause the occupation of energy levels above the minimum of the conduction band to be occupied. This means that the excitation of electrons will only occur at higher energy levels than the bandgap energy. This change in the absorption spectrum will translate into a change in the refractive index via the Kramers-Kronig relations. Here we follow the work of :cite:t:`bennett_carrier-induced_1990`, with the difference that the quasi-fermi levels will be taken from numerical calculations of the charge transport simulator.
+When doping a semiconductor with additional donors, the fermi level gets closer to the conduction band, which ultimately can cause the occupation of energy levels above the minimum of the conduction band to be occupied. This means that the excitation of electrons will only occur at higher energy levels than the bandgap energy. This change in the absorption spectrum will translate into a change in the refractive index via the Kramers-Kronig relations. For this effect we have found 2 works that seems to the most used throughout the literature: :cite:t:`bennett_carrier-induced_1990` and :cite:t:`vinchant_inpgainasp_1992`. In this package we allow the user to use either model, all of which complete with a model for :math:`\Delta \alpha(\lambda, y, N, P)` and :math:`\Delta n(\lambda, y, N, P)`.
 
-The absorption due to the bandfilling effect is:
+Bennet's model with BGN
+:::::::::::::::::::::::
 
-.. warning::
-    In the models below, we do not consider the bandgap narrowing as a separate effect. Instead we consider it in-built into every model that is dependent on the bandgap value by considering :math:`E_g \to E_g - \Delta E_{BGN}`
+Here we follow the work of :cite:t:`bennett_carrier-induced_1990`, with the difference that the quasi-fermi levels will be taken from numerical calculations of the charge transport simulator.
+
+In this model, we do not consider the bandgap narrowing as a separate effect. Instead we consider it in-built into every model that is dependent on the bandgap value by considering :math:`E_g \to E_g - \Delta E_{BGN}`
 
 .. math::
     \begin{aligned}
@@ -388,156 +390,63 @@ The constants :math:`C_{hh}` and :math:`C_{lh}` are now calculated as:
 
 The change in refractive index can now be calculated via the Kramers-Kronig integral. We have found, in accordance to the literature :cite:`vinchant_inpgainasp_1992`, that for all relevant alloys, the dependence with carrier concentration is linear. Therefore, we now emply the following slopes from :math:`\Delta n = m_n N + m_p P`:
 
-.. list-table:: Our model with bandgap narrowing
-    :widths: 8 8 8
-    :align: center
-    :header-rows: 1
+To enable efficient simulation, we have generated a 3 dimensional array for both P and N dopants with::
 
-    * - x
-      - :math:`m_n` 
-      - :math:`m_p`
-    * - 0.0
-      - -4.935e-21
-      - -1.339e-21
-    * - 0.1
-      - -6.053e-21
-      - -1.582e-21
-    * - 0.2
-      - -7.589e-21
-      - -1.884e-21
-    * - 0.3
-      - -9.738e-21
-      - -2.266e-21
-    * - 0.4
-      - -12.96e-21
-      - -2.758e-21
-    * - 0.53
-      - -20.48e-21
-      - -3.6560e-21
-    * - 0.6
-      - -28.27e-21
-      - -4.340e-21
-    * - 0.7
-      - -58.43e-21
-      - -5.789e-21
-    
-.. list-table:: Our model without bandgap narrowing
-    :widths: 8 8 8
-    :align: center
-    :header-rows: 1
+  wl_values = np.linspace(1280,1650, 10) #wavelength in nm
+  y_values=[0,0.1,0.2,0.3,0.4,0.53,0.6,0.7,0.8] #As concentration
+  doping=10**np.linspace(16,18,10) #P or N doping in cm^-3
 
-    * - x
-      - :math:`m_n` 
-      - :math:`m_p`
-    * - 0.0
-      - -3.520e-21
-      - -1.258e-21
-    * - 0.1
-      - -4.284e-21
-      - -1.479e-21
-    * - 0.2
-      - -5.276e-21
-      - -1.752e-21
-    * - 0.3
-      - -6.597e-21
-      - -2.092e-21
-    * - 0.4
-      - -8.410e-21
-      - -2.523e-21
-    * - 0.53
-      - -12.01e-21
-      - -3.289e-21
-    * - 0.6
-      - -21.67e-21
-      - -4.982e-21
-    * - 0.7
-      - -35.52e-21
-      - -6.936e-21
+And we can create a ``scipy.interpolate.RegularGridInterpolator`` for both :math:`\Delta \alpha(\lambda, y, N, P)` and :math:`\Delta n(\lambda, y, N, P)`.
 
-.. list-table:: Vinchant model
-   :align: center
-   :header-rows: 1
+Bennet's model without BGN
+:::::::::::::::::::::::
 
-   * - x
-     - :math:`m_n` 
-     - :math:`m_p`
-   * - -0.003
-     - -5.625e-21
-     - 0
-   * - 0.047
-     - -6.192e-21
-     - 0
-   * - 0.089
-     - -6.637e-21
-     - 0
-   * - 0.127
-     - -7.122e-21
-     - 0
-   * - 0.166
-     - -7.446e-21
-     - 0
-   * - 0.2
-     - -7.932e-21
-     - 0
-   * - 0.235
-     - -8.255e-21
-     - 0
-   * - 0.27
-     - -8.984e-21
-     - 0
-   * - 0.307
-     - -9.469e-21
-     - 0
-   * - 0.352
-     - -10.85e-21
-     - 0
-   * - 0.398
-     - -12.06e-21
-     - 0
-   * - 0.44
-     - -13.35e-21
-     - 0
-   * - 0.473
-     - -14.65e-21
-     - 0
-   * - 0.515
-     - -16.43e-21
-     - 0
-   * - 0.557
-     - -18.86e-21
-     - 0
-   * - 0.603
-     - -21.93e-21
-     - 0
-   * - 0.636
-     - -25.33e-21
-     - 0
-   * - 0.669
-     - -28.25e-21
-     - 0
-   * - 0.692
-     - -31.48e-21
-     - 0
-   * - 0.72
-     - -36.34e-21
-     - 0
-   * - 0.742
-     - -40.87e-21
-     - 0
-   * - 0.762
-     - -47.35e-21
-     - 0
-   * - 0.778
-     - -52.85e-21
-     - 0
-   * - 0.793
-     - -58.35e-21
-     - 0
+This model is exactly the same as the one above, with the exception that the bandgap narrowing is excluded. 
+
+Vinchant's model
+::::::::::::::::
+
+Vinchan't model :cite:t:`vinchant_inpgainasp_1992` follows the same methodology as Bennet's model, with the exception that the bandgap narrowing effect is not accounted for in the absorption coefficient calculation, and a phenomenological scaling factor is applied to the absorption spectrum so as to fit measurements at :math:`E_g + 0.2eV`. However, such scaling factor is not disclosed in the paper, which has made the exact replication of their results hard. For this reason, we implement this model by resorting to digital data extraction for figure 4 from the paper and subsequently build a limited interpolator. The limiting factor in this model is the wavelength dependence, as we are bound to only 2 data point for 1300nm and 1520nm.
+
+Model comparison
+::::::::::::::::
+
+Given these 3 models, it is up to the user to select which one they prefer. In the figure below we plot the approximated linear slope for the relation :math:`\Delta n = A(\lambda) N`. We can see that when :math:`N>10^{17} cm^{-3}`, the inclusion of the BGN effect creates a large deviation between the models. On the other hand, ignoring the BGN effect will lead to a better match of the models acrross a wider range of the carrier concentrations. Despite this mismatch in the models, The cases where the bandfilling effect is leveraged will rely on doping concentrations :math:`N<10^{17} cm^{-3}` such that carriers can be efficiently depleted with reasonable voltages (i.e. far away from breakdown voltage). For this reason, it is not too important which model to consider, as long as the user is aware keeps the doping concentrations within a reasonable range.
+
+.. list-table::
+   :widths: 50 50
+   :class: image-row
+
+   * - .. figure:: images_ingaasp/vinchant_vs_model_bgn.png
+          :width: 100%
+
+          Comparison betweem Vinchant's model and Bennet's model with BGN.
+
+     - .. figure:: images_ingaasp/vinchant_vs_model_no_bgn.png
+          :width: 100%
+
+          Comparison betweem Vinchant's model and Bennet's model without BGN.
 
 Plasma effect
 ~~~~~~~~~~~~~
 
-In this model we only consider the plasma effect coming from n-dopants. The reason for this is that, in p-dopants, the inter-valence absorption mechanism is so much stronger that scattering effects in holes are negligible. We follow the model from :cite:t:`walukiewicz_electron_1980`, which is in accordance with :cite:t:`dumke_intra-_1970`. The change in absorption is given by:
+The plasma effect considered in this package is in fact an umbrella term used to account for several contributions to the change in absorption caused by free carriers, namely:
+
+- :math:`\alpha_{imp}`: the loss due to scattering of electrons with ionized impurities
+- :math:`\alpha_{op}`: the loss due to scattering of electrons with optical phonons
+- :math:`\alpha_{ac}`: the loss due to scattering of electrons with acoustic phonons
+- :math:`\alpha_{IB}`: the loss due to intraband absorption, which is the case when an electron at the :math:`\Gamma` valley is excited to the :math:`X` or :math:`L` valleys.
+- :math:`\alpha_{VC}`: The loss from direct interband transitions, which is the case when a valence electron is excited directly through the bandgap
+
+The intervalence absorption effect is considered as a separate effect and will be explored later.
+
+.. figure:: images_ingaasp/Fiedler_1987_fig4.png
+   :width: 50%
+   :align: center
+
+   Image retrieved from :cite:t:`fiedler_optical_1987`, which shows the different contributions to the change in absorption due to free carriers.
+
+We follow the model from :cite:t:`walukiewicz_electron_1980`, which is in accordance with :cite:t:`dumke_intra-_1970`, for the estimation of :math:`\alpha_{imp}`, :math:`\alpha_{op}`, and :math:`\alpha_{ac}`. The change in absorption is given by:
 
 .. math::
     \Delta \alpha(N, \lambda) = A_{\text{imp}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{3.5} 
@@ -669,6 +578,46 @@ As for the change in refractive index, we consider the simple Lorentz model:
 .. math::
     \Delta n(E) = -\frac{1}{2}  \frac{N e^2}{m_e \epsilon_0 (E/\hbar)^2 n_0}
 
+For the intraband absorption, :math:`\alpha_{IB}`, we follow the treatment by :cite:t:`fiedler_optical_1987` and compute the following integral:
+
+.. math::
+  \begin{aligned}
+   \alpha_{IB} ={}&
+   A m_e^{3/2}
+   \frac{E_{ac} E_{def}}{n \rho s^2}
+   \frac{1}{\exp(E_{ac}/kT) - 1}
+   \frac{1}{(E_{20} - \hbar \omega)^2 \hbar \omega}
+   \\[6pt]
+   &\times \left\{
+   \exp(E_{ac}/kT)
+   \int_{u^+}^{\infty}
+   \frac{
+      E^{1/2}
+      (E - E_{10} + \hbar \omega + E_{ac})^{1/2}
+   }{
+      \exp[(E - E_F)/kT] + 1
+   } \, dE
+   \right.
+   \\[6pt]
+   &\qquad
+   \left.
+   + \int_{u^-}^{\infty}
+   \frac{
+      E^{1/2}
+      (E - E_{10} + \hbar \omega - E_{ac})^{1/2}
+   }{
+      \exp[(E - E_F)/kT] + 1
+   } \, dE
+   \right\}.
+   \end{aligned}
+
+Please refer to :cite:t:`fiedler_optical_1987` for the definition of all the constants employed.
+
+Finally, for the interband absorption, :math:`\alpha_{VC}`, we follow again the work of :cite:t:`fiedler_optical_1987` and compute the following integral:
+
+.. math::
+  \alpha_{VC} = 3.0\times 10^3 e^{-100(E_g - \hbar \omega)}
+
 Intervalence absorption
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -765,27 +714,148 @@ and the constants for the binaries are found in the table below:
 Kerr effect
 ~~~~~~~~~~~
 
-The kerr effect is due to the Franz-Keldysh effect, which causes a ripple in the absorption band-edge, which translates to a quadratic change in the refractive index. Here, we follow the work of :cite:t:`adachi_quadratic_1984` and :cite:t:`maat_inp-based_2001`. Contrary to other materials, like ferroelectric materials like lithium niobate, the quadratic response to an electric field is complex. This is a consequence of the Franz Keldysh effect. The absorption for TE and TM polarization is given by:
+The kerr effect is due to the Franz-Keldysh effect, which causes a ripple in the absorption band-edge, which translates to a quadratic change in the refractive index. Here, we follow the work of :cite:t:`maat_inp-based_2001` and :cite:t:`hagnElectroopticEffectsTheir2001`. 
+
+Real part
+:::::::::
+
+We start with the real part of the the change in permitivity. For this component we follow the phenomenological description of the the Kerr effect and we consider the change in the index ellipsoind constants as:
 
 .. math::
-    \Delta \alpha (E)_{TE,TM} = A_{TE,TM}\lambda \frac{|E_ext|}{E_g - E} 10^{-B_{TE,TM}\frac{(E_g-E)^{3/2}}{|E_{ext}|}}
+  \Delta\left(\frac{1}{n^2}\right)_i
+   =
+   \sum_{l,m=x,y,z}
+   S_{ilm} E_l E_m
+   \qquad (i=1,\ldots,6),
 
-As for the :math:`S_{11}` and :math:`S_{12}`, they are given by:
-
-.. math::
-    \begin{aligned}
-        S_{11} &= C_{TE} \frac{E^2}{\epsilon_r^2(E_g^2 - E^2)^2} \\
-        S_{12} &= C_{TM} \frac{E^2}{\epsilon_r^2(E_g^2 - E^2)^2}
-    \end{aligned}
-
-and the constants :math:`C_{TE}` and :math:`C_{TM}`:
+where the S tensor, follows the voigt contracted notation and for isotropic crystals with :math:`\bar{4}3m` symmetry is given by:
 
 .. math::
-    \begin{aligned}
+  \mathbf{S} =
+   \begin{pmatrix}
+   S_{11} & S_{12} & S_{12} & 0 & 0 & 0 \\
+   S_{12} & S_{11} & S_{12} & 0 & 0 & 0 \\
+   S_{12} & S_{12} & S_{11} & 0 & 0 & 0 \\
+   0 & 0 & 0 & S_{44} & 0 & 0 \\
+   0 & 0 & 0 & 0 & S_{44} & 0 \\
+   0 & 0 & 0 & 0 & 0 & S_{44}
+   \end{pmatrix}
+
+where :math:`S_{44} = S_{11} - S_{12}`. The :math:`S_{12,11}` are given by:
+
+.. math::
+  S_{12,11} = C_{TE,TM} \frac{E_{photon}^2}{n^4(E_g^2-E_{photon})}
+
+where the constants :math:`C_{TE,TM}` have been found to be 
+
+.. math::
+  \begin{aligned}
         C_{TE} &= -3.10\times 10^{-18} eV^2 m^2 V^{-2} \\
         C_{TM} &= -5.60\times 10^{-18} eV^2 m^2 V^{-2}
+  \end{aligned}
+
+.. warning::
+  In :cite:t:`maat_inp-based_2001`, in the main text it is claimed that with experimental data retrieved with the COBRA platform which uses Q1.25 as the core material, and with the wavelength of 1.55um, the values of :math:`S_{11}` and :math:`S_{12}` are
+
+  .. math::
+
+    \begin{aligned}
+    S_{11} &= 21.5\times10^{-20}\,\mathrm{m^2/V^2} \\
+    S_{12} &= 11.9\times10^{-20}\,\mathrm{m^2/V^2}
     \end{aligned}
 
+  These values, however, are accompanied by some inconsistencies. The first
+  arises from direct inspection of the plots presented (Figure 3.3). Looking at the Q1.3  curve, we obtain
+
+  .. math::
+
+    \begin{aligned}
+    S_{11} &= 18.3\times10^{-20}\,\mathrm{m^2/V^2}, &
+    S_{12} &= 10.5\times10^{-20}\,\mathrm{m^2/V^2},
+    \end{aligned}
+
+  corresponding to deviations of 14\% and 11\%, respectively.
+
+  Secondly, following the formula given for the coefficients, we would use
+
+  .. math::
+
+    C_{TE} = 1.79\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
+    \qquad
+    C_{TM} = 1.82\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.
+
+  Combined with the refractive index :math:`n=3.35`, these values yield
+
+  .. math::
+
+    S_{11} = 6.86\times10^{-20}\,\mathrm{m^2/V^2},
+    \qquad
+    S_{12} = 6.98\times10^{-20}\,\mathrm{m^2/V^2},
+
+  which not only eliminates any difference between TE and TM modulation, but
+  also represents deviations of 42\% and 67\% from the reported experimental
+  fit values.
+
+  For these reasons, we take the reported values
+
+  .. math::
+
+    S_{11} = 21.5\times10^{-20}\,\mathrm{m^2/V^2},
+    \qquad
+    S_{12} = 11.9\times10^{-20}\,\mathrm{m^2/V^2}
+
+  as the reference values and calculate :math:`C_{TE}` and :math:`C_{TM}`
+  ourselves. This yields
+
+  .. math::
+
+    C_{TE} = 3.10\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
+    \qquad
+    C_{TM} = 5.60\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.
+
+  .. figure:: images_ingaasp/maat_kerr.png
+   :width: 50%
+   :align: center
+
+   Analysis of the quadratic electro-optic coefficients according to :cite:t:`maat_inp-based_2001`. The solid lines are the reproced model in the `Imodulator` and the dotted-dashed line are the digitally extracted lines from Fig. 3.3 of :cite:t:`maat_inp-based_2001` for the Q1.3 curve. The dashed black lines indicate the :math:`S_{11,12}` parameters according to the published plot and the solid black lines are the :math:`S_{11,12}` used in our model, :math:`S_{11} = 21.5\times10^{-20}\,\mathrm{m^2/V^2}` and :math:`S_{12} = 11.9\times10^{-20}\,\mathrm{m^2/V^2}`.
+
+
+Imaginary part
+::::::::::::::
+
+The imaginary component of the Kerr effect has also been subject to customization as inconsistencies have been found in the literature. To best understand them, we shall compare the models adopted by :cite:t:`maat_inp-based_2001` and :cite:t:`hagnElectroopticEffectsTheir2001`. The change in absorption is then given by:
+
+.. math::
+  \begin{aligned}
+   \text{(Maat)} \qquad & \Delta \alpha (E)_{TE,TM} = A_{TE,TM}\lambda \frac{|E_ext|}{E_g - E} 10^{-B_{TE,TM}\frac{(E_g-E)^{3/2}}{|E_{ext}|}} \\
+   \text{(Hagn)} \qquad & \Delta \alpha (E)_{TE,TM} = C\frac{\mu_{TE,TM}}{E/\hbar}\frac{|E_{ext}|}{E_g-E}e^{-\frac{4}{3} 2\hbar \sqrt{\mu_{TE,TM}}\frac{(E_g-E)^{\frac{3}{2}}}{e |E_{ext}|}}
+  \end{aligned}
+
+Based on these equations, a number of inconsistencies have been found:
+
+1. Comparing these two equations, we see that they demonstrate the same dependencies, with the incoming photon energy and material bandgap energy. However, :cite:t:`maat_inp-based_2001` aproach contains 4 fitting parameters, where :cite:t:`hagnElectroopticEffectsTheir2001` only contains 3. However, the constant :math:`C` from :cite:t:`hagnElectroopticEffectsTheir2001` contains a dependency on :math:`\mu_x \mu_y \mu_z` according to equation 3.37 and 3.23 from their main text. Therefore, Maat's approach is preferred.
+
+2. In the main text from Hagn, it is mentioned that with :math:`C=4.8\times 10^{24}`, :math:`\mu_{TE}=0.037m_0` and :math:`\mu_{TM}=0.01m_0`, a good agreement between experiment and theoretical model is achieved. The constant :math:`C=4.8\times 10^{24}` is given without units and even with custom adjustments, reproducing the results from their Fig.4.4 was not possible.
+
+3. Yet another attempt was made to fit the experimental data of :cite:t:`hagnElectroopticEffectsTheir2001` by following the work from :cite:t:`bennettElectrorefractionElectroabsorptionInP1987` and :cite:t:`aspnesElectricFieldEffects1967`. The fit was not successful.
+
+4. The values reported in :cite:t:`maat_inp-based_2001` for :math:`B_{TE,TM}` and :math:`A_{TE,TM}` underestimate the electro-absorption and do not coincide with the change in absorption reported by :cite:t:`hagnElectroopticEffectsTheir2001` in Fig. 4.4 for the same detuning values (:math:`E_g-E`).
+
+
+For these reasons, we have decided recreate the measurements done by :cite:t:`maat_inp-based_2001` in Fig.3.2 of the main text and manually fit the parameters :math:`A_{TE,TM}` and :math:`B_{TE,TM}` to the data. One additional constraint we have imposed is the fact that :math:`B_{TE}=B_{TM}`. The reason for this constraint stems from the theoretical treatment of :cite:t:`aspnesElectricFieldEffects1967` where the constant inside the exponential (i.e. :math:`B_{TE,TM}`) does not have any dependency on the incoming photon polarization, depending only on the reduced effective mass of the electron. The constant :math:`A_{TE,TM}`, on the other hand, has a dependency on the momentum matrix element :math:`|\rangle \psi_c|E \cdot p |\psi_v \rangle |`which in turn will lead to an optical anisotropic response. The adapted values are:
+
+.. math::
+  \begin{aligned}
+    A_{TE} &= 0.9\times 10^{3} \quad \frac{eV}{Vm} \\
+    A_{TM} &= 1.7\times 10^{3} \quad \frac{eV}{Vm} \\
+    B_{TE,TM} &= 0.42\times 10^9 \quad \frac{V}{eV^{-3/2}m}
+  \end{aligned}
+
+.. figure:: images_ingaasp/maat_kerr_absorption.png
+   :width: 80%
+   :align: center
+
+   Results from the benchmark. The code to reproduce this plot can be found in :doc:`Benchmarks\Maat_2001\EO_simulation`
 
 .. autoclass:: imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel
    :members:

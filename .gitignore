@@ -7,3 +7,5 @@ src/imodulator/config.yaml
 *tempCodeRunnerFile.py
 *checkpoint.ipynb
 *.pptx
+
+docs/Benchmarks/Maat_2001/output_nn/

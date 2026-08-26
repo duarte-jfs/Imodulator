@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpticalSimulatorMODE &mdash; Imodulator 1.0.0 documentation</title>
+  <title>OpticalSimulatorMODE &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,7 +47,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -150,7 +163,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -159,6 +171,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
 </ul>
 
         </div>
@@ -190,11 +206,11 @@
 <p>The <cite>OpticalSimulatorMODE</cite> is a mode solver built around the well-known commercial software Lumerical MODE. With this tool we can calculate the optical modes supported by our structure. We can retrieve the effective index, group index, and field profiles of the modes supported by our waveguide structure.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="imodulator.OpticalSimulator.OpticalSimulatorMODE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.OpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">OpticalSimulatorMODE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.OpticalSimulator.OpticalSimulatorMODE" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.OpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">OpticalSimulatorMODE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.55</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.OpticalSimulator.OpticalSimulatorMODE" title="Link to this definition"></a></dt>
 <dd><p>Base class for Mode simulation of a PhotonicDevice based on Lumerical MODE</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.OpticalSimulator.OpticalSimulatorMODE.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.OpticalSimulator.OpticalSimulatorMODE.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_metals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.55</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.OpticalSimulator.OpticalSimulatorMODE.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize the OpticalSimulatorMODE class for MODE simulation.</p>
 <p>Creates geometry and material entities from the photonic device.</p>
 <p>With every function call the state of the simulation after the
@@ -204,19 +220,27 @@ prevents multiple of mode simulations to reduce the system memory.</p>
 <p>Way of working:</p>
 <ol class="arabic simple">
 <li><p>__init__(); runs</p></li>
-<li><p>create_geometry(): creates polygons</p></li>
-<li><p>create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters</p></li>
+</ol>
+<blockquote>
+<div><p>1.1 _create_geometry(): creates polygons
+1.2 _create_materials(): creates the material in lumerical material library for each geometry object and assigns them accordingly. The rest will be run by the user to control the simulation parameters</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
 <li><p>create_fde(): sets the required simulation parameters &amp; creates the simulation region”</p></li>
 <li><p>compute_modes(): runs the simulation</p></li>
 <li><p>select_modes() #select TE and TM mode index or it will be automatically chosen if the top two modes are the fundamental TE and TM mode</p></li>
 <li><p>plot_modes() #plots the electric field magnitudes for TE and TM modes</p></li>
 </ol>
 <blockquote>
-<div><dl class="simple">
+<div><dl>
 <dt>Args:</dt><dd><p>device: The photonic device to simulate
 simulation_window: The simulation window bounds. If None, uses device bounds
 include_metals: Whether to include metal polygons in simulation. Defaults to True
-save_sim: Whether to save simulation files. Defaults to False</p>
+save_sim: Whether to save simulation files. Defaults to False
+wavelength: The wavelength <strong>in um</strong> at which each polygon’s</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">optical_material</span></code> is evaluated to get its permittivity. Defaults to 1.55</p>
+</div></blockquote>
 </dd>
 </dl>
 <div class="admonition-todo admonition" id="id1">
@@ -271,9 +295,11 @@ Keys should be “x min bc”, “x max bc”, “y min bc”, “y max bc”.
 Values can be “PML” (Perfectly Matched Layer), “Metal”, or “PMC”
 (Perfect Magnetic Conductor). Defaults to PML on all boundaries.</p></li>
 <li><p><strong>bounds</strong> (<em>list</em><em> or </em><em>tuple</em><em>, </em><em>optional</em>) – Custom simulation region bounds as
-[x_min, y_min, x_max, y_max] in meters. If None, automatically sets
-bounds based on the background polygon with 1 μm padding on all sides.
-Defaults to None.</p></li>
+[x_min, y_min, x_max, y_max] in meters. If None and a
+<code class="docutils literal notranslate"><span class="pre">simulation_window</span></code> was given at initialization, the region is set to
+that window’s bounds. If None and there is no <code class="docutils literal notranslate"><span class="pre">simulation_window</span></code>,
+bounds are set from the background polygon with 1 μm padding on all
+sides. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -301,8 +327,12 @@ Defaults to None.</p></li>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Custom boundary conditions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bc_custom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x min bc&quot;</span><span class="p">:</span> <span class="s2">&quot;Metal&quot;</span><span class="p">,</span> <span class="s2">&quot;x max bc&quot;</span><span class="p">:</span> <span class="s2">&quot;Metal&quot;</span><span class="p">,</span>
-<span class="gp">... </span>             <span class="s2">&quot;y min bc&quot;</span><span class="p">:</span> <span class="s2">&quot;PML&quot;</span><span class="p">,</span> <span class="s2">&quot;y max bc&quot;</span><span class="p">:</span> <span class="s2">&quot;PML&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bc_custom</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;x min bc&quot;</span><span class="p">:</span> <span class="s2">&quot;Metal&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;x max bc&quot;</span><span class="p">:</span> <span class="s2">&quot;Metal&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;y min bc&quot;</span><span class="p">:</span> <span class="s2">&quot;PML&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;y max bc&quot;</span><span class="p">:</span> <span class="s2">&quot;PML&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Mode</span><span class="o">.</span><span class="n">create_fde</span><span class="p">(</span><span class="n">bc</span><span class="o">=</span><span class="n">bc_custom</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -337,6 +367,9 @@ whether data pixels are square. Defaults to None.</p></li>
 </dl>
 <p>Creates side-by-side plots of <span class="math notranslate nohighlight">\(|E|^2\)</span> intensity for TE and TM modes with
 optional device geometry overlay and colorbars.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">simulation_window</span></code> was given at initialization, both axes are limited
+to its bounds. Otherwise the axes are left to fit whatever is drawn, which
+includes the full device geometry when <code class="docutils literal notranslate"><span class="pre">show_polygons</span></code> is True.</p>
 </dd></dl>
 
 <dl class="py method">

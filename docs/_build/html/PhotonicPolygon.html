@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Photonic Polygons &mdash; Imodulator 1.0.0 documentation</title>
+  <title>Photonic Polygons &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/documentation_options.js?v=1ed6394b"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -45,7 +45,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -148,7 +161,6 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -157,6 +169,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
 </ul>
 
         </div>
@@ -222,10 +238,10 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material">
 <span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material" title="Link to this definition"></a></dt>
-<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dd><p>The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str | complex</p>
+<dd class="field-odd"><p>str | complex | float | int | np.ndarray | list | Callable[[float], float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -236,7 +252,7 @@
 <dd><p>The relative permittivity of the polygon. Material information for RF simulations if charge transport simulation. Internally, it will be converted to a callable function of the type f(omega). If you input a float, then it is constant for all frequencies, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature. Note that the charge transport data will only be used to retrieve the conductivity values. You must always insert the real part of the permitivity. Otherwise it will consider it 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float | complex | int | np.ndarray | list</p>
+<dd class="field-odd"><p>float | complex | int | np.ndarray | list | Callable[[float], float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -335,11 +351,12 @@
 <dd><p>Additional keyword arguments for the charge transport simulator.
 charge_transport_simulator_kwargs;</p>
 <blockquote>
-<div><p>“material_definition”:None, If not defined, default is “Ga(x)In(1-x)As(y)P(1-y)” should be available in Nextnano
-“doping_conc”: None,
-“doping_type”: None,
-“alloy_y”: None,
-“alloy_x”:None,</p>
+<div><p>“material_definition”:Union[None,str], If not defined, default is “Ga(x)In(1-x)As(y)P(1-y)” should be available in Nextnano
+“doping_conc”: Union[None,float],
+“doping_type”: Union[None,str],
+“alloy_type”:Union[None,str], If not defined, default is “quaternary_constant{}” should be available in Nextnano
+“alloy_y”: Union[None,list],
+“alloy_x”:Union[None,list],</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -379,10 +396,10 @@ charge_transport_simulator_kwargs;</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imodulator.PhotonicPolygon.MetalPolygon.optical_material">
 <span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.MetalPolygon.optical_material" title="Link to this definition"></a></dt>
-<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dd><p>The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str or complex</p>
+<dd class="field-odd"><p>str | complex | float | int | np.ndarray | list | Callable[[float], float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -508,10 +525,10 @@ charge_transport_simulator_kwargs;</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imodulator.PhotonicPolygon.InsulatorPolygon.optical_material">
 <span class="sig-name descname"><span class="pre">optical_material</span></span><a class="headerlink" href="#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material" title="Link to this definition"></a></dt>
-<dd><p>The optical material properties of the polygon. This will be deprecated in the future.</p>
+<dd><p>The optical material properties of the polygon. Internally, it will be converted to a callable function of the type f(wavelength). If you input a float, then it is constant for all wavelengths, and if you give it a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of shape <cite>(2,N)</cite> then it will interpolate to give a callable of the same signature. The wavelength values are assumed to be in micrometers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str or complex</p>
+<dd class="field-odd"><p>str | complex | float | int | np.ndarray | list | Callable[[float], float]</p>
 </dd>
 </dl>
 </dd></dl>

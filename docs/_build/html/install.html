@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Install &mdash; Imodulator 1.0.0 documentation</title>
+  <title>Install &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/documentation_options.js?v=1ed6394b"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -45,7 +45,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -148,7 +161,6 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -157,6 +169,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
 </ul>
 
         </div>
@@ -189,30 +205,250 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator
 </pre></div>
 </div>
-<p>Alternatively you can close the repository and install it locally:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/imodulator.git
-<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>imodulator
+<section id="using-uv-recommended">
+<h2>Using uv (recommended)<a class="headerlink" href="#using-uv-recommended" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://docs.astral.sh/uv/">uv</a> creates the virtual environment and resolves
+dependencies in one step, and is considerably faster than <code class="docutils literal notranslate"><span class="pre">pip</span></code>. Install it
+once (see the <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">uv installation guide</a>),
+then:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>venv
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">venv</span></code> creates <code class="docutils literal notranslate"><span class="pre">.venv</span></code> in the current directory. Activate it with
+<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">.venv/bin/activate</span></code> (<code class="docutils literal notranslate"><span class="pre">.venv\Scripts\activate</span></code> on Windows), or skip
+activation entirely by prefixing commands with <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span></code>.</p>
+<p>Add the extras you need in the same command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>femwell<span class="o">]</span>
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>femwell,solcore<span class="o">]</span>
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>all<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="reproducible-installs-with-uv-lock">
+<h2>Reproducible installs with uv.lock<a class="headerlink" href="#reproducible-installs-with-uv-lock" title="Link to this heading"></a></h2>
+<p>The repository ships a <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> file. It records the exact version of every
+package in the dependency tree — direct and transitive, across all extras — so
+that everyone working from a clone builds the <em>same</em> environment instead of
+whatever happens to be newest on PyPI that day.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code>, which installs strictly from the lockfile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/duarte-jfs/Imodulator.git
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>Imodulator
+<span class="gp">$ </span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code> creates <code class="docutils literal notranslate"><span class="pre">.venv</span></code> if needed, installs the project in editable mode,
+and removes anything not in the lockfile, so the environment matches exactly.
+Pick a subset with <code class="docutils literal notranslate"><span class="pre">--extra</span></code> instead of <code class="docutils literal notranslate"><span class="pre">--all-extras</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>femwell
+<span class="gp">$ </span>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>femwell<span class="w"> </span>--extra<span class="w"> </span>solcore
+<span class="gp">$ </span>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>dev<span class="w">          </span><span class="c1"># formatting toolchain (ruff)</span>
+</pre></div>
+</div>
+<p>Run commands inside that environment without activating it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>my_simulation.py
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span></code> does <strong>not</strong> read <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> — it resolves fresh every
+time. Only <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code> and <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span></code> use the lockfile. If you want the
+pinned, reproducible environment, use <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code>.</p>
+</div>
+<p>To verify your environment matches the lockfile without changing anything —
+useful in CI, where it should fail rather than silently re-resolve:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras<span class="w"> </span>--locked
+</pre></div>
+</div>
+<p>After editing dependencies in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, regenerate the lockfile and
+commit it along with your change:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uv<span class="w"> </span>lock
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> only governs installs from a clone. Users installing the
+published package with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">imodulator</span></code> resolve dependencies normally
+against the constraints in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+</section>
+<section id="optional-extras">
+<h2>Optional extras<a class="headerlink" href="#optional-extras" title="Link to this heading"></a></h2>
+<p>The simulation backends are optional dependencies, installed as <em>extras</em> so you
+only pull in what you need:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Extra</p></th>
+<th class="head"><p>Enables</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imodulator[femwell]</span></code></p></td>
+<td><p>Optical and RF mode solving (<code class="docutils literal notranslate"><span class="pre">OpticalSimulatorFEMWELL</span></code>, <code class="docutils literal notranslate"><span class="pre">RFSimulatorFEMWELL</span></code>, <code class="docutils literal notranslate"><span class="pre">ElectroOpticalSimulator</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imodulator[solcore]</span></code></p></td>
+<td><p>Solcore-based charge transport (<code class="docutils literal notranslate"><span class="pre">ChargeSimulatorSolcore</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imodulator[nextnanopy]</span></code></p></td>
+<td><p>nextnano-based charge transport (<code class="docutils literal notranslate"><span class="pre">ChargeSimulatorNN</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imodulator[all]</span></code></p></td>
+<td><p>All of the above</p></td>
+</tr>
+</tbody>
+</table>
+<p>Extras combine, so you can request any subset in one command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>femwell<span class="o">]</span>
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>nextnanopy,femwell<span class="o">]</span>
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator<span class="o">[</span>all<span class="o">]</span>
+</pre></div>
+</div>
+<p>Instantiating a simulator whose extra is not installed raises a clear error
+telling you which <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> command to run.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">solcore</span></code> depends on <code class="docutils literal notranslate"><span class="pre">solsesame==2.1a1</span></code>, which is a <strong>pre-release</strong>.
+<code class="docutils literal notranslate"><span class="pre">pip</span></code> installs it without complaint because the version is pinned exactly,
+and current <code class="docutils literal notranslate"><span class="pre">uv</span></code> resolves it too. To keep that from depending on the
+resolver’s default behaviour, this project sets <code class="docutils literal notranslate"><span class="pre">prerelease</span> <span class="pre">=</span> <span class="pre">&quot;allow&quot;</span></code>
+under <code class="docutils literal notranslate"><span class="pre">[tool.uv]</span></code> in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, so no extra flags are needed when
+working from a clone.</p>
+<p>If you do hit a pre-release resolver error — an older <code class="docutils literal notranslate"><span class="pre">uv</span></code>, or installing
+the published package outside a clone — pass the flag explicitly:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;imodulator[solcore]&#39;</span><span class="w"> </span>--prerelease<span class="o">=</span>allow
+</pre></div>
+</div>
+</div>
+</section>
+<section id="installing-from-source">
+<h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Link to this heading"></a></h2>
+<p>Alternatively you can clone the repository and install it locally:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/duarte-jfs/Imodulator.git
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>Imodulator
 <span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
-<p>For development purposes, you can install the package in “editable” mode:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/imodulator.git
-<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>imodulator
+<p>For development purposes, you can install the package in “editable” mode:
+In that case we suggest you checkout to development branch for the latest
+changes and fixes.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/duarte-jfs/Imodulator.git
+<span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>Imodulator
 <span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<p>If you plan to use the <cite>ChargeSimmulatorNN</cite> or the <cite>OpticalSimulatorMODE</cite>, you must provide some more information relative to the licences and the paths to the api’s. To do so, you must go to <cite>imodulator/src/config_template.yaml</cite> and create a copy named <cite>config.yaml</cite> where you fill in the required information. Namely:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lumerical_api</span><span class="p">:</span>
-<span class="w">   </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">lumapi</span><span class="nv"> </span><span class="s">python</span><span class="nv"> </span><span class="s">package</span><span class="nv"> </span><span class="s">lumapi.py&quot;</span>
-
-<span class="nt">nextnano</span><span class="p">:</span>
-<span class="w">   </span><span class="nt">nextnano++</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">exe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">nextnano++</span><span class="nv"> </span><span class="s">executable&quot;</span>
-<span class="w">      </span><span class="nt">license</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">nextnano++</span><span class="nv"> </span><span class="s">license</span><span class="nv"> </span><span class="s">file&quot;</span>
-<span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">nextnano++</span><span class="nv"> </span><span class="s">database</span><span class="nv"> </span><span class="s">file&quot;</span>
-<span class="w">      </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">nextnano++</span><span class="nv"> </span><span class="s">output</span><span class="nv"> </span><span class="s">folder&quot;</span>
+</section>
+<section id="configuring-nextnano-and-lumerical-paths">
+<h2>Configuring nextnano and Lumerical paths<a class="headerlink" href="#configuring-nextnano-and-lumerical-paths" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ChargeSimulatorNN</span></code> (nextnano) and <code class="docutils literal notranslate"><span class="pre">OpticalSimulatorMODE</span></code> (Lumerical MODE)
+drive third-party software that Imodulator cannot install for you. You have to
+tell it where those tools live by writing a <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>. Every other
+simulator works without it.</p>
+<section id="step-1-find-where-the-file-goes">
+<h3>Step 1 — find where the file goes<a class="headerlink" href="#step-1-find-where-the-file-goes" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> is read from the <em>installed package directory</em>, i.e. next to
+<code class="docutils literal notranslate"><span class="pre">Config.py</span></code> — not from your working directory or your home folder. Print that
+directory with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)&quot;</span>
 </pre></div>
 </div>
+<p>If you installed from a clone (<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code>) this is just
+<code class="docutils literal notranslate"><span class="pre">src/imodulator/</span></code> in the repository.</p>
+</section>
+<section id="step-2-copy-the-template">
+<h3>Step 2 — copy the template<a class="headerlink" href="#step-2-copy-the-template" title="Link to this heading"></a></h3>
+<p>The package ships a <code class="docutils literal notranslate"><span class="pre">config_template.yaml</span></code> in that same directory. Copy it,
+dropping the <code class="docutils literal notranslate"><span class="pre">_template</span></code> suffix:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>cp<span class="w"> </span>config_template.yaml<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+<p>On Windows (PowerShell):</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">&gt;</span> <span class="nb">cd </span><span class="p">(</span><span class="n">python</span> <span class="n">-c</span> <span class="s2">&quot;import imodulator, pathlib; print(pathlib.Path(imodulator.__file__).parent)&quot;</span><span class="p">)</span>
+<span class="p">&gt;</span> <span class="nb">Copy-Item</span> <span class="n">config_template</span><span class="p">.</span><span class="n">yaml</span> <span class="n">config</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-fill-in-the-paths">
+<h3>Step 3 — fill in the paths<a class="headerlink" href="#step-3-fill-in-the-paths" title="Link to this heading"></a></h3>
+<p>Open <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> and replace the placeholders. A filled-in file looks like
+this — copy it and edit the values to match your machine:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lumerical_api</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:/Program</span><span class="nv"> </span><span class="s">Files/Lumerical/v242/api/python/lumapi.py&quot;</span>
+
+<span class="nt">nextnano</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nextnano++</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">exe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:/Program</span><span class="nv"> </span><span class="s">Files/nextnano/2024_12_16/nextnano++/bin/nextnano++_Intel_64bit.exe&quot;</span>
+<span class="w">    </span><span class="nt">license</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:/Users/&lt;you&gt;/Documents/nextnano/License/License_nnp.lic&quot;</span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:/Program</span><span class="nv"> </span><span class="s">Files/nextnano/2024_12_16/nextnano++/Syntax/database_nnp.in&quot;</span>
+<span class="w">    </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:/Users/&lt;you&gt;/Documents/nextnano/Output&quot;</span>
+</pre></div>
+</div>
+<p>What each key means:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lumerical_api.path</span></code></p></td>
+<td><p>Full path <strong>to the</strong> <code class="docutils literal notranslate"><span class="pre">lumapi.py</span></code> <strong>file itself</strong>, not to the folder
+containing it. It is loaded directly as a module file, so a directory
+path fails.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nextnano.nextnano++.exe</span></code></p></td>
+<td><p>The nextnano++ executable (pick the <code class="docutils literal notranslate"><span class="pre">Intel_64bit</span></code> build unless you
+have reason not to).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nextnano.nextnano++.license</span></code></p></td>
+<td><p>Your <code class="docutils literal notranslate"><span class="pre">.lic</span></code> license file, usually under
+<code class="docutils literal notranslate"><span class="pre">Documents/nextnano/License</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nextnano.nextnano++.database</span></code></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">database_nnp.in</span></code> material database shipped with nextnano.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nextnano.nextnano++.output</span></code></p></td>
+<td><p>A folder where simulation results are written. Imodulator creates an
+<code class="docutils literal notranslate"><span class="pre">nn_output</span></code> subfolder inside it, so point this at a parent directory
+you own — it does not need to exist beforehand.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Use forward slashes <code class="docutils literal notranslate"><span class="pre">/</span></code> even on Windows, and quote every path — backslashes
+inside a quoted YAML string are escape characters and will corrupt the path.</p>
+<p>You only need to fill in the section for the tool you actually use; the
+Lumerical and nextnano blocks are read independently, and only at the moment
+that tool is first requested. Keep both top-level keys present, though — remove
+the <code class="docutils literal notranslate"><span class="pre">lumerical_api</span></code> key entirely and importing <code class="docutils literal notranslate"><span class="pre">lumapi</span></code> raises a
+<code class="docutils literal notranslate"><span class="pre">KeyError</span></code> instead of a helpful message.</p>
+</section>
+<section id="step-4-check-it-worked">
+<h3>Step 4 — check it worked<a class="headerlink" href="#step-4-check-it-worked" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.Config</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_instance</span> <span class="k">as</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">get_lumapi</span><span class="p">()</span>       <span class="c1"># -&gt; &quot;Successfully imported lumapi&quot;</span>
+<span class="n">config</span><span class="o">.</span><span class="n">get_nextnanopy</span><span class="p">()</span>   <span class="c1"># -&gt; &quot;Successfully imported nextnanopy&quot;</span>
+                          <span class="c1">#    &quot;Successfully configured nextnano++ settings&quot;</span>
+</pre></div>
+</div>
+<p>If instead you see:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WARNING</span><span class="p">:</span> <span class="n">Configuration</span> <span class="n">file</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span> <span class="o">.../</span><span class="n">imodulator</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span> <span class="n">Using</span> <span class="n">template</span> <span class="n">file</span> <span class="n">instead</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>the file is missing or misnamed — it fell back to the template, whose
+placeholder paths point nowhere, and the import will fail afterwards. Re-check
+Step 1 and Step 2, and make sure the name is exactly <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> is git-ignored, so your local paths and license location are
+never committed. The flip side: because it lives inside the package
+directory, reinstalling or upgrading Imodulator into a fresh environment
+does not carry it over. Keep a copy somewhere outside the package if you
+rebuild environments often.</p>
+</div>
+</section>
+</section>
 </section>
 
 

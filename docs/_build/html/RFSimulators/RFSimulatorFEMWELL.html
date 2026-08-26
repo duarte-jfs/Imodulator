@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RFSimulatorFEMWELL &mdash; Imodulator 1.0.0 documentation</title>
+  <title>RFSimulatorFEMWELL &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,7 +47,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -150,7 +163,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -159,6 +171,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
 </ul>
 
         </div>
@@ -250,6 +266,29 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.confinement_factor">
+<span class="sig-name descname"><span class="pre">confinement_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygons</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.confinement_factor" title="Link to this definition"></a></dt>
+<dd><p>The fraction of the mode’s electric-field energy that sits inside the given polygons:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma = \frac{\int_{S_{poly}} |E|^2 dS}{\int_{S} |E|^2 dS}\]</div>
+<p>where <span class="math notranslate nohighlight">\(|E|^2 = |E_t|^2 + |E_z|^2\)</span> and <span class="math notranslate nohighlight">\(S\)</span> is the whole meshed cross-section. This is the geometric (energy) confinement factor, not the group-velocity-corrected optical one, so it is bounded to <span class="math notranslate nohighlight">\([0, 1]\)</span> and is meant for identifying which physical structure a mode belongs to – e.g. telling an electrode mode confined to the waveguide mesa apart from a delocalised substrate or box mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></span>) – The mode object containing the electric field data to be used for the calculation.</p></li>
+<li><p><strong>polygons</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – Name, or list of names, of the polygons whose combined area forms the confinement region. Each must be a subdomain of the mesh.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fraction of <span class="math notranslate nohighlight">\(|E|^2\)</span> inside <code class="docutils literal notranslate"><span class="pre">polygons</span></code>, between 0 and 1.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>confinement (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_RLGC">
 <span class="sig-name descname"><span class="pre">get_RLGC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_RLGC" title="Link to this definition"></a></dt>
 <dd><p>This function calculates the RLGC parameters calculated from waveguide circuit theory for a TEM field.</p>
@@ -333,7 +372,11 @@ impedances (dict): A dictionary containing the calculated impedances for each po
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.get_epsilon_rf">
 <span class="sig-name descname"><span class="pre">get_epsilon_rf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_charge_transport_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.get_epsilon_rf" title="Link to this definition"></a></dt>
-<dd><p>This function will return the <span class="math notranslate nohighlight">\(\epsilon_{RF}\)</span> tensor with the signature <code class="docutils literal notranslate"><span class="pre">self.epsilon_rf[vertice_idx,</span> <span class="pre">voltage_idx]</span></code> where <code class="docutils literal notranslate"><span class="pre">vertice_idx</span></code> is the index of the vertice in the mesh and <cite>voltage_idx</cite> is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the <code class="docutils literal notranslate"><span class="pre">voltage_idx</span></code> must be 0 as the second axis of the array will have size 1.</p>
+<dd><p>This function will return the <span class="math notranslate nohighlight">\(\epsilon_{RF}\)</span> tensor with the signature <code class="docutils literal notranslate"><span class="pre">self.epsilon_rf[element_idx,</span> <span class="pre">voltage_idx]</span></code> where <code class="docutils literal notranslate"><span class="pre">element_idx</span></code> is the index of the element in the mesh and <cite>voltage_idx</cite> is the index of the voltage in the bias points. In case no bias dependent data is available (i.e. no charge transport data is available) the <code class="docutils literal notranslate"><span class="pre">voltage_idx</span></code> must be 0 as the second axis of the array will have size 1.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The permittivity is piecewise constant per element, so every element takes the value of exactly one polygon and material interfaces stay sharp. Bias dependent quantities are therefore evaluated at the element centroids.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -418,7 +461,7 @@ ax2: The axis for the real part of the permittivity tensor.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mesh">
-<span class="sig-name descname"><span class="pre">plot_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mesh" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mesh" title="Link to this definition"></a></dt>
 <dd><p>Plots the mesh of the photonic device.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -436,8 +479,8 @@ ax: The matplotlib axis.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mode">
-<span class="sig-name descname"><span class="pre">plot_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wspace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_integral_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_vectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mode" title="Link to this definition"></a></dt>
-<dd><p>Plots the electric and magnetic fields of a mode.</p>
+<span class="sig-name descname"><span class="pre">plot_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">4)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wspace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_polygons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_integral_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_vectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_vectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_mode" title="Link to this definition"></a></dt>
+<dd><p>Plots the transverse components of the electric and magnetic fields of a mode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -454,6 +497,10 @@ ax: The matplotlib axis.</p>
 <li><p><strong>color_integral_lines</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'red'</span></code>)) – Color of the integral lines in the plot.</p></li>
 <li><p><strong>cmap</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'jet'</span></code>)) – Colormap used for plotting the magnitude of the fields.</p></li>
 <li><p><strong>color_vectors</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'black'</span></code>)) – Color of the vector field streamlines.</p></li>
+<li><p><strong>plot_vectors</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)) – Whether to plot the vector field streamlines. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, intensity of the transverse fields will be plotted. The advantage of this is that the projection of the mode into a rectangular grid is quite heavy and if you request too many points it can take a while. Plotting the intensity only though is very fast.</p></li>
+<li><p><strong>vector_density</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>)) – Density of the vector field streamlines. Higher values result in more streamlines.</p></li>
+<li><p><strong>axes</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib axes to plot on. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, new axes will be created. axes[0] is for the electric field and axes[1] is for the magnetic field.</p></li>
+<li><p><strong>fig</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib figure to plot on. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a new figure will be created.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -470,14 +517,14 @@ ax: The matplotlib axis.</p>
 <li><p>The fields are split into transverse and longitudinal components for plotting.</p></li>
 <li><p>The resulting plot includes both the magnitude of the fields and their respective vector field streamlines.</p></li>
 <li><p>Polygons and integral lines can be overlaid on the plot for additional context.</p></li>
-<li><p>The projection into a rectangular grid is quite heavy, so it is reccomended to use this method only for small regions to avoid large rectangular grids.</p></li>
+<li><p>The projection into a rectangular grid is quite heavy, so it is recommended to use this method only for small regions to avoid large rectangular grids if you want to plot the vector fields.</p></li>
 </ul>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.RFSimulator.RFSimulatorFEMWELL.plot_polygons">
-<span class="sig-name descname"><span class="pre">plot_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_polygons" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_aspect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.RFSimulator.RFSimulatorFEMWELL.plot_polygons" title="Link to this definition"></a></dt>
 <dd><p>Plots the polygon and line entities in the simulation window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -487,6 +534,7 @@ ax: The matplotlib axis.</p>
 <li><p><strong>color_junctions</strong> (default: <code class="docutils literal notranslate"><span class="pre">'blue'</span></code>) – The color of the junction entities in the plot.</p></li>
 <li><p><strong>fig</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib figure to plot on. If <cite>None</cite>, a new figure is created.</p></li>
 <li><p><strong>ax</strong> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The matplotlib axis to plot on. If <cite>None</cite>, a new axis is created.</p></li>
+<li><p><strong>equal_aspect</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the x and y axes are scaled with a 1:1 aspect ratio.</p></li>
 </ul>
 </dd>
 </dl>

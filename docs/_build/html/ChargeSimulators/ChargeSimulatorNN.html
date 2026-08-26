@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChargeSimulatorNN &mdash; Imodulator 1.0.0 documentation</title>
+  <title>ChargeSimulatorNN &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,7 +47,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -150,7 +163,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -159,6 +171,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
 </ul>
 
         </div>
@@ -193,29 +209,36 @@
 <p class="admonition-title">Note</p>
 <p>The generalization of the package to horizontal diodes such as the common silicon PN junctions ought to be simple to implement. However, due to time constraints, we are keeping it like this for the moment. If you need to implement such a feature, feel free to reach out and we will help you implement it.</p>
 </div>
-<figure class="align-center" id="id20">
+<figure class="align-center" id="id23">
 <a class="reference internal image-reference" href="../_images/charge_transport_1D_interpolation.png"><img alt="../_images/charge_transport_1D_interpolation.png" src="../_images/charge_transport_1D_interpolation.png" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Illustration of the 1D to 2D data interpolation performed with the <cite>ChargeSimmulatorNN</cite>.</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+<p><span class="caption-text">Illustration of the 1D to 2D data interpolation performed with the <cite>ChargeSimmulatorNN</cite>.</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <dl class="py class">
 <dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorNN">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ChargeSimulator.</span></span><span class="sig-name descname"><span class="pre">ChargeSimulatorNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputfile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quicksave'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'D:/Repos/imodulator/tests\\\\nn_output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN" title="Link to this definition"></a></dt>
-<dd><p>Initialize the ChargeSimulatorNN.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>device</strong> (<a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><em>PhotonicDevice</em></a>) – The photonic device to simulate.</p></li>
-<li><p><strong>simulation_line</strong> (<em>LineString</em>) – The line along which to perform 1D simulation.</p></li>
-<li><p><strong>inputfile_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name for the nextnano input file. Defaults to “quicksave”.</p></li>
-<li><p><strong>output_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for simulation output. Defaults to config value.</p></li>
-<li><p><strong>temperature</strong> (<em>float</em><em>, </em><em>optional</em>) – Simulation temperature in Kelvin. Defaults to 300.0.</p></li>
-<li><p><strong>bias_start_stop_step</strong> (<em>list</em><em>, </em><em>optional</em>) – Voltage sweep [start, stop, step]. Defaults to [0,1,1].</p></li>
-</ul>
-</dd>
-</dl>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ChargeSimulator.</span></span><span class="sig-name descname"><span class="pre">ChargeSimulatorNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputfile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quicksave'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN" title="Link to this definition"></a></dt>
+<dd><p>Initialize the ChargeSimulatorNN.
+Compatible with NextNano version 2026-02-05
+:type device: <span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a></span>
+:param device: The photonic device to simulate.
+:type device: PhotonicDevice
+:type simulation_line: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LineString</span></code></span>
+:param simulation_line: The line along which to perform 1D simulation.
+:type simulation_line: LineString
+:type inputfile_name: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'quicksave'</span></code>)
+:param inputfile_name: Name for the nextnano input file. Defaults to “quicksave”.
+:type inputfile_name: str, optional
+:type output_directory: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+:param output_directory: Directory for simulation output. Defaults to config value.
+:type output_directory: str, optional
+:type temperature: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">300.0</span></code>)
+:param temperature: Simulation temperature in Kelvin. Defaults to 300.0.
+:type temperature: float, optional
+:type bias_start_stop_step: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code>)
+:param bias_start_stop_step: Voltage sweep [start, stop, step]. Defaults to [0,1,1].
+:type bias_start_stop_step: list, optional</p>
 <p>Way of working:</p>
 <ol class="arabic simple">
 <li><p>The PhotonicDevice should be passed</p></li>
@@ -235,12 +258,16 @@ and the end of the line will be contact2</p>
 </div>
 </li>
 <li><p>In order to run the NNInfile: #the commands are from the nextnanopy</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">NNinputf</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">show_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">convergenceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">convergence_check_mode</span><span class="o">=</span><span class="s2">&quot;continue&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">NNinputf</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">show_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convergenceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convergence_check_mode</span><span class="o">=</span><span class="s2">&quot;continue&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p>In order to load already completed results</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">load_output_data</span><span class="p">(</span><span class="n">folderpath</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;AbsolutePath&quot;</span><span class="p">)</span> <span class="c1">#right click on the folder with the self.inputfile_name and copy path</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">load_output_data</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">folderpath</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;AbsolutePath&quot;</span>
+<span class="gp">... </span><span class="p">)</span>  <span class="c1"># right click on the folder with the self.inputfile_name and copy path</span>
 </pre></div>
 </div>
 </li>
@@ -248,7 +275,7 @@ and the end of the line will be contact2</p>
 </ol>
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorNN.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputfile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quicksave'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'D:/Repos/imodulator/tests\\\\nn_output'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputfile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quicksave'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_start_stop_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize the ChargeSimulatorNN.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -256,9 +283,9 @@ and the end of the line will be contact2</p>
 <li><p><strong>device</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a></span>) – PhotonicDevice instance containing the device geometry and materials.</p></li>
 <li><p><strong>simulation_line</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LineString</span></code></span>) – LineString defining the simulation line along which to perform 1D simulation.</p></li>
 <li><p><strong>inputfile_name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'quicksave'</span></code>)) – Name for the nextnano input file. Defaults to “quicksave”.</p></li>
-<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">'D:/Repos/imodulator/tests\\\\nn_output'</span></code>)) – Directory for simulation output. Defaults to config value.</p></li>
+<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)) – Directory for simulation output. Defaults to config value.</p></li>
 <li><p><strong>temperature</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">300.0</span></code>)) – Simulation temperature in Kelvin. Defaults to 300.0.</p></li>
-<li><p><strong>bias_start_stop_step</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1]</span></code>)) – Voltage sweep [start, stop, step]. Defaults to [0,1,1].</p></li>
+<li><p><strong>bias_start_stop_step</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span> (default: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code>)) – Voltage sweep [start, stop, step]. Defaults to [0,1,1].</p></li>
 </ul>
 </dd>
 </dl>
@@ -293,13 +320,15 @@ mobility_hole: Hole mobility [cm²/Vs]</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorNN.plot_results">
-<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tab10'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.plot_results" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tab10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_scale_carriers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.plot_results" title="Link to this definition"></a></dt>
 <dd><p>Plot simulation results in a 2x1 subplot layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>V_idx</strong> (<em>list</em><em>, </em><em>optional</em>) – Indices of voltages to plot. Defaults to first and last.</p></li>
-<li><p><strong>colors</strong> (<em>list</em><em>, </em><em>optional</em>) – List of colors for plotting. Defaults to default color cycle.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Colormap for voltage lines. Defaults to ‘tab10’.</p></li>
+<li><p><strong>log_scale_carriers</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use log scale for carrier concentrations. Defaults to True.</p></li>
+<li><p><strong>plot_limits</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot vertical lines at segment boundaries. Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -339,7 +368,7 @@ mobility_hole: Hole mobility [cm²/Vs]</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorNN.transfer_results_to_device">
-<span class="sig-name descname"><span class="pre">transfer_results_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.transfer_results_to_device" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transfer_results_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygons_to_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorNN.transfer_results_to_device" title="Link to this definition"></a></dt>
 <dd><p>Interpolate 1D simulation data onto a new 2D mesh.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -349,8 +378,7 @@ mobility_hole: Hole mobility [cm²/Vs]</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dx</strong> (<em>float</em><em>, </em><em>optional</em>) – Step size for new mesh in microns. Defaults to 0.05.</p></li>
-<li><p><strong>xmin</strong> (<em>float</em>) – Minimum x value for mesh (required).</p></li>
-<li><p><strong>xmax</strong> (<em>float</em>) – Maximum x value for mesh (required).</p></li>
+<li><p><strong>polygons_to_map</strong> (<em>list</em><em>, </em><em>optional</em>) – List of polygon names to which the interpolated data should be mapped. If None, data will be mapped to all polygons involved in the charge transport simulations. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

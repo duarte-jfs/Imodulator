@@ -1,0 +1,7 @@
+Input file: 'c:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\output_nn\quicksave.in'
+
+Input directory from command line:  ''
+Output directory from command line: 'C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave\'
+
+Create automatic subdirectory: no
+
