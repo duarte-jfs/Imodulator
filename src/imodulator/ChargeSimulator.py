@@ -596,7 +596,7 @@ class ChargeSimulatorNN:
         f_iv = [f for f in nndata.files if "IV_characteristics.dat" in f][0]
         self.V = pd.read_csv(f_iv, delim_whitespace=True).iloc[:, 0]
         f_grid = [f for f in nndata.files if "grid_x.dat" in f][0]
-        self.grid = pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist()
+        self.grid = np.asarray(pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist())
 
         self.Ec = np.zeros(shape=(len(self.V), len(self.grid)))
         self.Ev = np.zeros(shape=(len(self.V), len(self.grid)))
@@ -700,18 +700,18 @@ class ChargeSimulatorNN:
 
         # ax2r = ax2.twinx()
         for i, v in enumerate(V_idx):
-            ax1.plot(self.grid, self.Ec[v], "-", color=colors[i])
-            ax1.plot(self.grid, self.Ev[v], "-", color=colors[i])
+            ax1.plot(self.grid/1e3, self.Ec[v], "-", color=colors[i])
+            ax1.plot(self.grid/1e3, self.Ev[v], "-", color=colors[i])
             # Plot quasi-Fermi levels
-            ax1.plot(self.grid, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
-            ax1.plot(self.grid, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid/1e3, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid/1e3, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
             # Configure first subplot
 
             # ax2 = ax1.twinx()
-            ax2.plot(self.grid, self.N[v], "-", color=colors[i])
-            ax2.plot(self.grid, self.P[v], "-.", color=colors[i])
+            ax2.plot(self.grid/1e3, self.N[v], "-", color=colors[i])
+            ax2.plot(self.grid/1e3, self.P[v], "-.", color=colors[i])
 
-            ax3.plot(self.grid, self.Efield[v], color=colors[i])
+            ax3.plot(self.grid/1e3, self.Efield[v], color=colors[i])
             # ax3.set_ylim(-300,100)
 
         if plot_limits:
@@ -789,7 +789,7 @@ class ChargeSimulatorNN:
                     poly.has_charge_transport_data = True
 
         reg = self.photonicdevice.reg
-        y = np.array(self.grid)  # Convert list to numpy array first
+        y = np.array(self.grid)/1e3  # Convert list to numpy array first
 
         poly_union = shapely.union_all(
             [
