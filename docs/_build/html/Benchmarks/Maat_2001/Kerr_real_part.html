@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real part of the Franz Keldysh effect &mdash; Imodulator 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Maat 2001" href="EO_simulation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="EO_simulation.html">Maat 2001</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Real part of the Franz Keldysh effect</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Real part of the Franz Keldysh effect</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Benchmarks/Maat_2001/Kerr_real_part.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Real-part-of-the-Franz-Keldysh-effect">
+<h1>Real part of the Franz Keldysh effect<a class="headerlink" href="#Real-part-of-the-Franz-Keldysh-effect" title="Link to this heading"></a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_InGaAsP</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q13</span><span class="o">=</span><span class="n">n_InGaAsP</span><span class="p">(</span><span class="mf">1e12</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mf">0.615</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="n">bandgap_model</span><span class="o">=</span><span class="s1">&#39;jain&#39;</span><span class="p">)</span>
+<span class="n">Eg</span> <span class="o">=</span> <span class="n">Q13</span><span class="o">.</span><span class="n">get_bandgap</span><span class="p">()</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="p">(</span><span class="n">Eg</span><span class="o">/</span><span class="n">Q13</span><span class="o">.</span><span class="n">hbar</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">c</span><span class="p">))</span><span class="o">**-</span><span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Bandgap: </span><span class="si">{</span><span class="n">Eg</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> eV, Wavelength: </span><span class="si">{</span><span class="n">lam</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;nm&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> nm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Bandgap: 0.952 eV, Wavelength: 1303.080 nm
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q13</span><span class="o">=</span><span class="n">n_InGaAsP</span><span class="p">(</span><span class="mf">1e12</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mf">0.615</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="n">bandgap_model</span><span class="o">=</span><span class="s1">&#39;jain&#39;</span><span class="p">)</span>
+
+<span class="n">E</span><span class="o">=</span><span class="n">Q13</span><span class="o">.</span><span class="n">hbar</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1550</span><span class="o">*</span><span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">c</span>
+<span class="n">Eg</span><span class="o">=</span><span class="n">Q13</span><span class="o">.</span><span class="n">get_bandgap</span><span class="p">()</span>
+<span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">eps_s</span><span class="p">)</span>
+
+<span class="n">S11</span> <span class="o">=</span> <span class="mf">21.5e-20</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">S12</span> <span class="o">=</span> <span class="mf">11.9e-20</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">C_TE</span><span class="o">=</span><span class="n">S12</span><span class="o">/</span><span class="p">(</span><span class="n">E</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Eg</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">E</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">C_TE</span><span class="o">=</span><span class="n">C_TE</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">eV</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">C_TM</span><span class="o">=</span><span class="n">S11</span><span class="o">/</span><span class="p">(</span><span class="n">E</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Eg</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">E</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">C_TM</span><span class="o">=</span><span class="n">C_TM</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">eV</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">C_TE</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">C_TM</span><span class="p">)</span>
+
+<span class="c1">#Generate the plots</span>
+<span class="n">data_TE</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Maat_Kerr_plots\Q13.csv&#39;</span><span class="p">,</span>
+                   <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+<span class="n">data_TM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Maat_Kerr_plots\Q13_TM.csv&#39;</span><span class="p">,</span>
+                   <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+
+<span class="n">wv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">micrometer</span>
+<span class="n">E</span><span class="o">=</span><span class="n">Q13</span><span class="o">.</span><span class="n">hbar</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">wv</span> <span class="o">*</span> <span class="n">Q13</span><span class="o">.</span><span class="n">c</span>
+<span class="n">Eg</span><span class="o">=</span><span class="n">Q13</span><span class="o">.</span><span class="n">get_bandgap</span><span class="p">()</span>
+<span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">get_eps_s</span><span class="p">(</span><span class="n">wl</span><span class="o">=</span><span class="n">wv</span><span class="p">))</span>
+
+<span class="n">S12</span><span class="o">=</span><span class="n">C_TE</span><span class="o">*</span><span class="p">(</span><span class="n">E</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Eg</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">E</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">S12</span><span class="o">=</span><span class="n">S12</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">S11</span><span class="o">=</span><span class="n">C_TM</span><span class="o">*</span><span class="p">(</span><span class="n">E</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">Eg</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">E</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">S11</span><span class="o">=</span><span class="n">S11</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Q13</span><span class="o">.</span><span class="n">reg</span><span class="o">.</span><span class="n">volt</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wv</span><span class="p">,</span> <span class="n">S11</span><span class="o">/</span><span class="mf">1e-20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model Q1.3 (y=0.615) - S11&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_TM</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_TM</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+         <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Maat Q1.3 - S11&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wv</span><span class="p">,</span> <span class="n">S12</span><span class="o">/</span><span class="mf">1e-20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model Q1.3 (y=0.615) - S12&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_TE</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_TE</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+         <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Maat Q1.3 - S12&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Wavelength $(\mu m)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$S$ $(\times 10^{-20} m^2/V^2)$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+
+<span class="c1"># plt.plot([1.55,1.55,0.5], [0, 18.3,18.3], color=&#39;black&#39;, linestyle=&#39;dashed&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1.55</span><span class="p">,</span><span class="mf">1.55</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span><span class="mf">21.5</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+
+<span class="c1"># plt.plot([1.55,1.55,0.5], [0, 10.5,10.5], color=&#39;black&#39;, linestyle=&#39;dashed&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1.55</span><span class="p">,</span><span class="mf">1.55</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span><span class="mf">11.9</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.7346518087339359e-18 electron_volt ** 2 * meter ** 2 / volt ** 2
+3.1340347804856822e-18 electron_volt ** 2 * meter ** 2 / volt ** 2
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x230538b1d20&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_Kerr_real_part_3_2.png" src="../../_images/Benchmarks_Maat_2001_Kerr_real_part_3_2.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="EO_simulation.html" class="btn btn-neutral float-left" title="Maat 2001" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

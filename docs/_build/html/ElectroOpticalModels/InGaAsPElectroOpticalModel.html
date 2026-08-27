@@ -175,6 +175,7 @@
 <p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/Kerr_real_part.html">Real part of the Franz Keldysh effect</a></li>
 </ul>
 
         </div>
@@ -210,7 +211,7 @@
 <p>In order to use many of the models, we first need to be able to predict some physical properties for all alloys. We will go over them one my one.</p>
 <section id="effective-mass">
 <h2>Effective mass<a class="headerlink" href="#effective-mass" title="Link to this heading"></a></h2>
-<p>The effective masses are calculated according to <span id="id1">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
+<p>The effective masses are calculated according to <span id="id1">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
     m_e &amp;= \left( 0.07 - 0.0308y \right)m_0 \\
@@ -221,7 +222,7 @@
 </section>
 <section id="carrier-effective-density-of-states">
 <h2>Carrier effective density of states<a class="headerlink" href="#carrier-effective-density-of-states" title="Link to this heading"></a></h2>
-<p>The effective density of states are calculated from <span id="id2">Bennett <em>et al.</em> [<a class="reference internal" href="#id59" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>. For electrons we have:</p>
+<p>The effective density of states are calculated from <span id="id2">Bennett <em>et al.</em> [<a class="reference internal" href="#id58" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>. For electrons we have:</p>
 <div class="math notranslate nohighlight">
 \[N_C = 2 \left( \frac{m_e k_b T}{2\pi \hbar^2}\right)^{3/2}\]</div>
 <p>and for holes:</p>
@@ -234,21 +235,21 @@
 </section>
 <section id="spin-orbit-splitting">
 <h2>Spin orbit splitting<a class="headerlink" href="#spin-orbit-splitting" title="Link to this heading"></a></h2>
-<p>The spin orbit splitting is taken from <span id="id3">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
+<p>The spin orbit splitting is taken from <span id="id3">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[\Delta_{so} = 0.119 + 0.30y - 0.107y^2 \hspace{1cm} [eV]\]</div>
 </section>
 <section id="bandgap-narrowing">
 <h2>Bandgap narrowing<a class="headerlink" href="#bandgap-narrowing" title="Link to this heading"></a></h2>
-<p>The bandgap narrowing is a well known effect in III-V semiconductors, where it is observed that the bandgap of heavily doped materials shrinks. Here we follow the work of <span id="id4">Jain <em>et al.</em> [<a class="reference internal" href="#id60" title="S. C. Jain, J. M. McGregor, and D. J. Roulston. Band‐gap narrowing in novel III‐V semiconductors. Journal of Applied Physics, 68(7):3747–3749, October 1990. URL: http://aip.scitation.org/doi/10.1063/1.346291 (visited on 2023-04-19), doi:10.1063/1.346291.">9</a>]</span> where the band gap narrowing (BGN) is estimated via:</p>
+<p>The bandgap narrowing is a well known effect in III-V semiconductors, where it is observed that the bandgap of heavily doped materials shrinks. Here we follow the work of <span id="id4">Jain <em>et al.</em> [<a class="reference internal" href="#id59" title="S. C. Jain, J. M. McGregor, and D. J. Roulston. Band‐gap narrowing in novel III‐V semiconductors. Journal of Applied Physics, 68(7):3747–3749, October 1990. URL: http://aip.scitation.org/doi/10.1063/1.346291 (visited on 2023-04-19), doi:10.1063/1.346291.">9</a>]</span> where the band gap narrowing (BGN) is estimated via:</p>
 <div class="math notranslate nohighlight">
 \[\Delta E_g^{BGN} = A \times N^{1/3} + B \times N^{1/4} + C \times N^{1/2}\]</div>
-<p>where <span class="math notranslate nohighlight">\(N\)</span> is the carrier concentration and the constants <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> have been empirically found for GaAs, GaP, InP and InAs, allowing for interpolation for InGaAsP alloys via <span id="id5">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the carrier concentration and the constants <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> have been empirically found for GaAs, GaP, InP and InAs, allowing for interpolation for InGaAsP alloys via <span id="id5">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[Q(x,y) = xyQ_{GaAs} + x(1-y)Q_{GaP} + y(1-x)Q_{InAs} + (1-x)(1-y)Q_{InP}\]</div>
 <p>The constants are:</p>
-<table class="docutils align-center" id="id76">
-<caption><span class="caption-text">P-doped material</span><a class="headerlink" href="#id76" title="Link to this table"></a></caption>
+<table class="docutils align-center" id="id75">
+<caption><span class="caption-text">P-doped material</span><a class="headerlink" href="#id75" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 28.6%" />
 <col style="width: 23.8%" />
@@ -285,8 +286,8 @@
 </tr>
 </tbody>
 </table>
-<table class="docutils align-center" id="id77">
-<caption><span class="caption-text">N-doped material</span><a class="headerlink" href="#id77" title="Link to this table"></a></caption>
+<table class="docutils align-center" id="id76">
+<caption><span class="caption-text">N-doped material</span><a class="headerlink" href="#id76" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 28.6%" />
 <col style="width: 23.8%" />
@@ -326,7 +327,7 @@
 </section>
 <section id="charge-carrier-mobility">
 <h2>Charge carrier mobility<a class="headerlink" href="#charge-carrier-mobility" title="Link to this heading"></a></h2>
-<p>Despite most commercial software for the simulation of charge transport in semiconductors have a good material database, III-V (in particular InGaAsP) materials seldom have a correct value for mobility, and in particular doping dependent mobility values. For that reason we will follow the empirical model of <span id="id6">Sotoodeh <em>et al.</em> [<a class="reference internal" href="#id61" title="M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. Journal of Applied Physics, 87(6):2890–2900, March 2000. URL: https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121 (visited on 2023-05-24), doi:10.1063/1.372274.">13</a>]</span> for low field mobility:</p>
+<p>Despite most commercial software for the simulation of charge transport in semiconductors have a good material database, III-V (in particular InGaAsP) materials seldom have a correct value for mobility, and in particular doping dependent mobility values. For that reason we will follow the empirical model of <span id="id6">Sotoodeh <em>et al.</em> [<a class="reference internal" href="../index.html#id10" title="M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. Journal of Applied Physics, 87(6):2890–2900, March 2000. URL: https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121 (visited on 2023-05-24), doi:10.1063/1.372274.">1</a>]</span> for low field mobility:</p>
 <div class="math notranslate nohighlight">
 \[\mu (N, T) = \mu_{min} + \frac{\mu_{max}(300K)\left(\frac{300K}{T}\right)^{\theta_1}-\mu_{min}}{1+\left(\frac{N}{N_{ref}(300K)\left(\frac{T}{300K}\right)^{\theta_2}}\right)^\lambda}\]</div>
 <p>Where the values of <span class="math notranslate nohighlight">\(\lambda_n\)</span>, <span class="math notranslate nohighlight">\(\theta_{n2}\)</span>, <span class="math notranslate nohighlight">\(\log_10{N_{n,ref}(300K)}\)</span>, <span class="math notranslate nohighlight">\(\lambda_p\)</span>, <span class="math notranslate nohighlight">\(\mu_{p, min}\)</span>, <span class="math notranslate nohighlight">\(\theta_{p2}\)</span> and <span class="math notranslate nohighlight">\(\log_10{N_{p,ref}(300K)}\)</span> for <span class="math notranslate nohighlight">\(In_{1-x}Ga_{x}As_{y}P_{1-y}\)</span> are found via:</p>
@@ -365,8 +366,8 @@
 </tbody>
 </table>
 <p>Therefore, we just need to find the values for InGaAs and InGaP. To do so, we do a quadratic interpolation between each of the parameters, unless there are only two data points, in which case we do a linear interpolation. The values used are layed down in the tables below:</p>
-<table class="docutils align-center" id="id78">
-<caption><span class="caption-text">InGaP parameter list</span><a class="headerlink" href="#id78" title="Link to this table"></a></caption>
+<table class="docutils align-center" id="id77">
+<caption><span class="caption-text">InGaP parameter list</span><a class="headerlink" href="#id77" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 25.0%" />
@@ -449,8 +450,8 @@
 </tr>
 </tbody>
 </table>
-<table class="docutils align-center" id="id79">
-<caption><span class="caption-text">InGaAs parameter list</span><a class="headerlink" href="#id79" title="Link to this table"></a></caption>
+<table class="docutils align-center" id="id78">
+<caption><span class="caption-text">InGaAs parameter list</span><a class="headerlink" href="#id78" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 25.0%" />
@@ -530,7 +531,7 @@
 </section>
 <section id="refractive-index">
 <h2>Refractive index<a class="headerlink" href="#refractive-index" title="Link to this heading"></a></h2>
-<p>The optical refractive index above the bandgap absorption edge is calculated via the modified single oscillator model through <span id="id7">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
+<p>The optical refractive index above the bandgap absorption edge is calculated via the modified single oscillator model through <span id="id7">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[n^2 = 1+\frac{E_d}{E_0} + E_d \frac{E_d (\hbar \omega)^2}{E_0^3} + \frac{E_d}{2E_0^3(E_0^2 - E_g^2)} (\hbar \omega)^4ln\left[\frac{2E_0^2 - E_g^2 - (\hbar \omega)^2}{E_g^2 - (\hbar \omega)^2}\right]\]</div>
 <p>where <span class="math notranslate nohighlight">\(E_0\)</span> and <span class="math notranslate nohighlight">\(E_d\)</span> are given by:</p>
@@ -538,7 +539,7 @@
 \[E_0 = 3.391 - 1.652y + 0.863y^2 - 0.123y^3\]</div>
 <div class="math notranslate nohighlight">
 \[E_d = 28.91 - 9.278y + 5.626y^2\]</div>
-<p>Whereas if any information above the bandgap is needed, we resort to the following formula from <span id="id8">Seifert and Runge [<a class="reference internal" href="#id62" title="Sten Seifert and Patrick Runge. Revised refractive index and absorption of In_1-xGa_xas_yp_1-y lattice-matched to InP in transparent and absorption IR-region. Optical Materials Express, 6(2):629, February 2016. URL: https://opg.optica.org/abstract.cfm?URI=ome-6-2-629 (visited on 2023-08-29), doi:10.1364/OME.6.000629.">12</a>]</span>:</p>
+<p>Whereas if any information above the bandgap is needed, we resort to the following formula from <span id="id8">Seifert and Runge [<a class="reference internal" href="#id61" title="Sten Seifert and Patrick Runge. Revised refractive index and absorption of In_1-xGa_xas_yp_1-y lattice-matched to InP in transparent and absorption IR-region. Optical Materials Express, 6(2):629, February 2016. URL: https://opg.optica.org/abstract.cfm?URI=ome-6-2-629 (visited on 2023-08-29), doi:10.1364/OME.6.000629.">12</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
   n^* - 1 &amp;\approx \frac{a}{b - (E + i\Gamma)^*} + \frac{A\sqrt{R}}{(E + i\Gamma)^*}
@@ -562,10 +563,10 @@
 <p>Now that we have defined all the necessary physical properties needed to do our calculations, we can finally dive deeper into the electro-optic effects that take place. We will start with the effects that are governed by the electrons and holes. We will not consider in extreme details the physics behind each effect, for that we reccomend you follow the cited references. Instead, we will focus on the models that are employed and their possible shortcomings.</p>
 <section id="band-filling-effect">
 <h3>Band filling effect<a class="headerlink" href="#band-filling-effect" title="Link to this heading"></a></h3>
-<p>When doping a semiconductor with additional donors, the fermi level gets closer to the conduction band, which ultimately can cause the occupation of energy levels above the minimum of the conduction band to be occupied. This means that the excitation of electrons will only occur at higher energy levels than the bandgap energy. This change in the absorption spectrum will translate into a change in the refractive index via the Kramers-Kronig relations. For this effect we have found 2 works that seems to the most used throughout the literature: <span id="id9">Bennett <em>et al.</em> [<a class="reference internal" href="#id59" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span> and <span id="id10">Vinchant <em>et al.</em> [<a class="reference internal" href="#id63" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span>. In this package we allow the user to use either model, all of which complete with a model for <span class="math notranslate nohighlight">\(\Delta \alpha(\lambda, y, N, P)\)</span> and <span class="math notranslate nohighlight">\(\Delta n(\lambda, y, N, P)\)</span>.</p>
+<p>When doping a semiconductor with additional donors, the fermi level gets closer to the conduction band, which ultimately can cause the occupation of energy levels above the minimum of the conduction band to be occupied. This means that the excitation of electrons will only occur at higher energy levels than the bandgap energy. This change in the absorption spectrum will translate into a change in the refractive index via the Kramers-Kronig relations. For this effect we have found 2 works that seems to the most used throughout the literature: <span id="id9">Bennett <em>et al.</em> [<a class="reference internal" href="#id58" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span> and <span id="id10">Vinchant <em>et al.</em> [<a class="reference internal" href="#id62" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span>. In this package we allow the user to use either model, all of which complete with a model for <span class="math notranslate nohighlight">\(\Delta \alpha(\lambda, y, N, P)\)</span> and <span class="math notranslate nohighlight">\(\Delta n(\lambda, y, N, P)\)</span>.</p>
 <section id="bennet-s-model-with-bgn">
 <h4>Bennet’s model with BGN<a class="headerlink" href="#bennet-s-model-with-bgn" title="Link to this heading"></a></h4>
-<p>Here we follow the work of <span id="id11">Bennett <em>et al.</em> [<a class="reference internal" href="#id59" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>, with the difference that the quasi-fermi levels will be taken from numerical calculations of the charge transport simulator.</p>
+<p>Here we follow the work of <span id="id11">Bennett <em>et al.</em> [<a class="reference internal" href="#id58" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>, with the difference that the quasi-fermi levels will be taken from numerical calculations of the charge transport simulator.</p>
 <p>In this model, we do not consider the bandgap narrowing as a separate effect. Instead we consider it in-built into every model that is dependent on the bandgap value by considering <span class="math notranslate nohighlight">\(E_g \to E_g - \Delta E_{BGN}\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -580,16 +581,16 @@
 <p>where:</p>
 <div class="math notranslate nohighlight">
 \[\alpha_0(N,P,E) = \frac{C_{hh}}{E}\sqrt{E - E_g - \Delta E_{BGN}}  + \frac{C_{lh}}{E}\sqrt{E - E_g - \Delta E_{BGN}}\]</div>
-<p>The constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> are adapted from a constant <span class="math notranslate nohighlight">\(C = 4.4e12 cm^{-1} s^{-0.5}\)</span> in <span id="id12">Bennett <em>et al.</em> [<a class="reference internal" href="#id59" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>.</p>
+<p>The constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> are adapted from a constant <span class="math notranslate nohighlight">\(C = 4.4e12 cm^{-1} s^{-0.5}\)</span> in <span id="id12">Bennett <em>et al.</em> [<a class="reference internal" href="#id58" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>To determine the constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> for arbitrary concentrations of InGaAsP, we have adopted a new approach. We have noticed that in the work of <span id="id13">Bennett <em>et al.</em> [<a class="reference internal" href="#id59" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>, the quaternary interpolation is done via the charge carrier masses alone. However, the parabolic absorption formula given by</p>
+<p>To determine the constants <span class="math notranslate nohighlight">\(C_{hh}\)</span> and <span class="math notranslate nohighlight">\(C_{lh}\)</span> for arbitrary concentrations of InGaAsP, we have adopted a new approach. We have noticed that in the work of <span id="id13">Bennett <em>et al.</em> [<a class="reference internal" href="#id58" title="B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. IEEE Journal of Quantum Electronics, 26(1):113–122, January 1990. URL: http://ieeexplore.ieee.org/document/44924/ (visited on 2023-04-18), doi:10.1109/3.44924.">5</a>]</span>, the quaternary interpolation is done via the charge carrier masses alone. However, the parabolic absorption formula given by</p>
 <div class="math notranslate nohighlight">
 \[\alpha_0(N,P,E) = \frac{C}{E}\sqrt{E - E_g}\]</div>
-<p>tells us that the constant <span class="math notranslate nohighlight">\(C\)</span> can be written as <span id="id14">Moss <em>et al.</em> [<a class="reference internal" href="#id64" title="T. S. Moss, Geoffrey John Burrell, and Brian Ellis. Semiconductor opto-electronics. Butterworths, London, 1973. ISBN 978-0-408-70326-0.">11</a>]</span></p>
+<p>tells us that the constant <span class="math notranslate nohighlight">\(C\)</span> can be written as <span id="id14">Moss <em>et al.</em> [<a class="reference internal" href="#id63" title="T. S. Moss, Geoffrey John Burrell, and Brian Ellis. Semiconductor opto-electronics. Butterworths, London, 1973. ISBN 978-0-408-70326-0.">11</a>]</span></p>
 <div class="math notranslate nohighlight">
 \[C = \frac{2\pi e^2 (2m_r)^{3/2} |p_{m0}|^2}{3m_0^2 n_0 \epsilon_0 c h^3 \nu}\]</div>
-<p>we see that the constant is dependent on the refractive index as well, which will have an impact and is not accounted by Bennet. At the same time, <span id="id15">Vinchant <em>et al.</em> [<a class="reference internal" href="#id63" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span> states that a scaling factor is applied to the absorption spectrum so as to fit measurements at <span class="math notranslate nohighlight">\(E_g + 0.2eV\)</span>, however, such scaling factor is not disclosed. For these reasons we have decided to employ a new model.</p>
+<p>we see that the constant is dependent on the refractive index as well, which will have an impact and is not accounted by Bennet. At the same time, <span id="id15">Vinchant <em>et al.</em> [<a class="reference internal" href="#id62" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span> states that a scaling factor is applied to the absorption spectrum so as to fit measurements at <span class="math notranslate nohighlight">\(E_g + 0.2eV\)</span>, however, such scaling factor is not disclosed. For these reasons we have decided to employ a new model.</p>
 </div>
 <p>The reduced mass of the electron-heavy/light hole pairs is:</p>
 <div class="math notranslate nohighlight">
@@ -602,7 +603,7 @@
 \[C_{hh} = C \frac{m_{r,hh, InP}^{3/2}}{m_{r,hh, InP}^{3/2} + m_{r,lh, InP}^{3/2}} \left(\frac{m_{r, hh}}{m_{r,hh,InP}}\right)^{3/2} \frac{n_{0,InP}}{n_0}\]</div>
 <div class="math notranslate nohighlight">
 \[C_{lh} = C \frac{m_{r,lh, InP}^{3/2}}{m_{r,hh, InP}^{3/2} + m_{r,lh, InP}^{3/2}} \left(\frac{m_{r, lh}}{m_{r,lh,InP}}\right)^{3/2} \frac{n_{0,InP}}{n_0}\]</div>
-<p>The change in refractive index can now be calculated via the Kramers-Kronig integral. We have found, in accordance to the literature <span id="id16">[<a class="reference internal" href="#id63" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span>, that for all relevant alloys, the dependence with carrier concentration is linear. Therefore, we now emply the following slopes from <span class="math notranslate nohighlight">\(\Delta n = m_n N + m_p P\)</span>:</p>
+<p>The change in refractive index can now be calculated via the Kramers-Kronig integral. We have found, in accordance to the literature <span id="id16">[<a class="reference internal" href="#id62" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span>, that for all relevant alloys, the dependence with carrier concentration is linear. Therefore, we now emply the following slopes from <span class="math notranslate nohighlight">\(\Delta n = m_n N + m_p P\)</span>:</p>
 <p>To enable efficient simulation, we have generated a 3 dimensional array for both P and N dopants with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wl_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span><span class="mi">1650</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">#wavelength in nm</span>
 <span class="n">y_values</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.53</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.8</span><span class="p">]</span> <span class="c1">#As concentration</span>
@@ -617,7 +618,7 @@
 </section>
 <section id="vinchant-s-model">
 <h4>Vinchant’s model<a class="headerlink" href="#vinchant-s-model" title="Link to this heading"></a></h4>
-<p>Vinchan’t model <span id="id17">Vinchant <em>et al.</em> [<a class="reference internal" href="#id63" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span> follows the same methodology as Bennet’s model, with the exception that the bandgap narrowing effect is not accounted for in the absorption coefficient calculation, and a phenomenological scaling factor is applied to the absorption spectrum so as to fit measurements at <span class="math notranslate nohighlight">\(E_g + 0.2eV\)</span>. However, such scaling factor is not disclosed in the paper, which has made the exact replication of their results hard. For this reason, we implement this model by resorting to digital data extraction for figure 4 from the paper and subsequently build a limited interpolator. The limiting factor in this model is the wavelength dependence, as we are bound to only 2 data point for 1300nm and 1520nm.</p>
+<p>Vinchan’t model <span id="id17">Vinchant <em>et al.</em> [<a class="reference internal" href="#id62" title="J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. Journal of Lightwave Technology, 10(1):63–70, January 1992. URL: http://ieeexplore.ieee.org/document/108738/ (visited on 2023-04-06), doi:10.1109/50.108738.">14</a>]</span> follows the same methodology as Bennet’s model, with the exception that the bandgap narrowing effect is not accounted for in the absorption coefficient calculation, and a phenomenological scaling factor is applied to the absorption spectrum so as to fit measurements at <span class="math notranslate nohighlight">\(E_g + 0.2eV\)</span>. However, such scaling factor is not disclosed in the paper, which has made the exact replication of their results hard. For this reason, we implement this model by resorting to digital data extraction for figure 4 from the paper and subsequently build a limited interpolator. The limiting factor in this model is the wavelength dependence, as we are bound to only 2 data point for 1300nm and 1520nm.</p>
 </section>
 <section id="model-comparison">
 <h4>Model comparison<a class="headerlink" href="#model-comparison" title="Link to this heading"></a></h4>
@@ -628,19 +629,19 @@
 <col style="width: 50.0%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><figure class="align-default" id="id80">
+<tr class="row-odd"><td><figure class="align-default" id="id79">
 <a class="reference internal image-reference" href="../_images/vinchant_vs_model_bgn.png"><img alt="../_images/vinchant_vs_model_bgn.png" src="../_images/vinchant_vs_model_bgn.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Comparison betweem Vinchant’s model and Bennet’s model with BGN.</span><a class="headerlink" href="#id80" title="Link to this image"></a></p>
+<p><span class="caption-text">Comparison betweem Vinchant’s model and Bennet’s model with BGN.</span><a class="headerlink" href="#id79" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </td>
-<td><figure class="align-default" id="id81">
+<td><figure class="align-default" id="id80">
 <a class="reference internal image-reference" href="../_images/vinchant_vs_model_no_bgn.png"><img alt="../_images/vinchant_vs_model_no_bgn.png" src="../_images/vinchant_vs_model_no_bgn.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Comparison betweem Vinchant’s model and Bennet’s model without BGN.</span><a class="headerlink" href="#id81" title="Link to this image"></a></p>
+<p><span class="caption-text">Comparison betweem Vinchant’s model and Bennet’s model without BGN.</span><a class="headerlink" href="#id80" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </td>
@@ -660,14 +661,14 @@
 <li><p><span class="math notranslate nohighlight">\(\alpha_{VC}\)</span>: The loss from direct interband transitions, which is the case when a valence electron is excited directly through the bandgap</p></li>
 </ul>
 <p>The intervalence absorption effect is considered as a separate effect and will be explored later.</p>
-<figure class="align-center" id="id82">
+<figure class="align-center" id="id81">
 <a class="reference internal image-reference" href="../_images/Fiedler_1987_fig4.png"><img alt="../_images/Fiedler_1987_fig4.png" src="../_images/Fiedler_1987_fig4.png" style="width: 50%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Image retrieved from <span id="id18">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>, which shows the different contributions to the change in absorption due to free carriers.</span><a class="headerlink" href="#id82" title="Link to this image"></a></p>
+<p><span class="caption-text">Image retrieved from <span id="id18">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span>, which shows the different contributions to the change in absorption due to free carriers.</span><a class="headerlink" href="#id81" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>We follow the model from <span id="id19">Walukiewicz <em>et al.</em> [<a class="reference internal" href="#id65" title="W. Walukiewicz, J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. Electron mobility and free-carrier absorption in InP; determination of the compensation ratio. Journal of Applied Physics, 51(5):2659–2668, May 1980. URL: https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in (visited on 2023-08-14), doi:10.1063/1.327925.">15</a>]</span>, which is in accordance with <span id="id20">Dumke <em>et al.</em> [<a class="reference internal" href="#id66" title="W. P. Dumke, M. R. Lorenz, and G. D. Pettit. Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP. Physical Review B, 1(12):4668–4673, June 1970. URL: https://link.aps.org/doi/10.1103/PhysRevB.1.4668 (visited on 2023-08-10), doi:10.1103/PhysRevB.1.4668.">6</a>]</span>, for the estimation of <span class="math notranslate nohighlight">\(\alpha_{imp}\)</span>, <span class="math notranslate nohighlight">\(\alpha_{op}\)</span>, and <span class="math notranslate nohighlight">\(\alpha_{ac}\)</span>. The change in absorption is given by:</p>
+<p>We follow the model from <span id="id19">Walukiewicz <em>et al.</em> [<a class="reference internal" href="#id64" title="W. Walukiewicz, J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. Electron mobility and free-carrier absorption in InP; determination of the compensation ratio. Journal of Applied Physics, 51(5):2659–2668, May 1980. URL: https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in (visited on 2023-08-14), doi:10.1063/1.327925.">15</a>]</span>, which is in accordance with <span id="id20">Dumke <em>et al.</em> [<a class="reference internal" href="#id65" title="W. P. Dumke, M. R. Lorenz, and G. D. Pettit. Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP. Physical Review B, 1(12):4668–4673, June 1970. URL: https://link.aps.org/doi/10.1103/PhysRevB.1.4668 (visited on 2023-08-10), doi:10.1103/PhysRevB.1.4668.">6</a>]</span>, for the estimation of <span class="math notranslate nohighlight">\(\alpha_{imp}\)</span>, <span class="math notranslate nohighlight">\(\alpha_{op}\)</span>, and <span class="math notranslate nohighlight">\(\alpha_{ac}\)</span>. The change in absorption is given by:</p>
 <div class="math notranslate nohighlight">
 \[\Delta \alpha(N, \lambda) = A_{\text{imp}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{3.5}
 + A_{\text{op}}(N)\left(\frac{\lambda}{\lambda_0}\right)^{2.5}
@@ -822,7 +823,7 @@
 <p>As for the change in refractive index, we consider the simple Lorentz model:</p>
 <div class="math notranslate nohighlight">
 \[\Delta n(E) = -\frac{1}{2}  \frac{N e^2}{m_e \epsilon_0 (E/\hbar)^2 n_0}\]</div>
-<p>For the intraband absorption, <span class="math notranslate nohighlight">\(\alpha_{IB}\)</span>, we follow the treatment by <span id="id21">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> and compute the following integral:</p>
+<p>For the intraband absorption, <span class="math notranslate nohighlight">\(\alpha_{IB}\)</span>, we follow the treatment by <span id="id21">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> and compute the following integral:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
  \alpha_{IB} ={}&amp;
@@ -853,14 +854,14 @@
  } \, dE
  \right\}.
  \end{aligned}\end{split}\]</div>
-<p>Please refer to <span id="id22">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> for the definition of all the constants employed.</p>
-<p>Finally, for the interband absorption, <span class="math notranslate nohighlight">\(\alpha_{VC}\)</span>, we follow again the work of <span id="id23">Fiedler and Schlachetzki [<a class="reference internal" href="#id58" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> and compute the following integral:</p>
+<p>Please refer to <span id="id22">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> for the definition of all the constants employed.</p>
+<p>Finally, for the interband absorption, <span class="math notranslate nohighlight">\(\alpha_{VC}\)</span>, we follow again the work of <span id="id23">Fiedler and Schlachetzki [<a class="reference internal" href="#id57" title="F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. Solid-State Electronics, 30(1):73–83, January 1987. URL: https://linkinghub.elsevier.com/retrieve/pii/0038110187900323 (visited on 2023-05-16), doi:10.1016/0038-1101(87)90032-3.">7</a>]</span> and compute the following integral:</p>
 <div class="math notranslate nohighlight">
 \[\alpha_{VC} = 3.0\times 10^3 e^{-100(E_g - \hbar \omega)}\]</div>
 </section>
 <section id="intervalence-absorption">
 <h3>Intervalence absorption<a class="headerlink" href="#intervalence-absorption" title="Link to this heading"></a></h3>
-<p>The bandstructure of InGaAsP has two valence bands (light and heavy holes) and a third band due to the spin-orbit coupling. When a photon hits such a material which is hevily P-doped, it can cause an electron in the spin-orbit valence band to jump to one of the hole bands. This effect can be quite intense in III-V at 1550nm because the <span class="math notranslate nohighlight">\(\Delta_{so} &lt; 0.8eV\)</span>. In IngaAsP materials, this effect has been thorougly characterized, and here we employ the model from <span id="id24">Weber [<a class="reference internal" href="#id67" title="J.-P. Weber. Optimization of the carrier-induced effective index change in InGaAsP waveguides-application to tunable Bragg filters. IEEE Journal of Quantum Electronics, 30(8):1801–1816, August 1994. URL: http://ieeexplore.ieee.org/document/301645/ (visited on 2023-05-03), doi:10.1109/3.301645.">16</a>]</span>:</p>
+<p>The bandstructure of InGaAsP has two valence bands (light and heavy holes) and a third band due to the spin-orbit coupling. When a photon hits such a material which is hevily P-doped, it can cause an electron in the spin-orbit valence band to jump to one of the hole bands. This effect can be quite intense in III-V at 1550nm because the <span class="math notranslate nohighlight">\(\Delta_{so} &lt; 0.8eV\)</span>. In IngaAsP materials, this effect has been thorougly characterized, and here we employ the model from <span id="id24">Weber [<a class="reference internal" href="#id66" title="J.-P. Weber. Optimization of the carrier-induced effective index change in InGaAsP waveguides-application to tunable Bragg filters. IEEE Journal of Quantum Electronics, 30(8):1801–1816, August 1994. URL: http://ieeexplore.ieee.org/document/301645/ (visited on 2023-05-03), doi:10.1109/3.301645.">16</a>]</span>:</p>
 <div class="math notranslate nohighlight">
 \[\Delta \alpha(E,N) = 4.252\times 10^{-20} \exp \left(-3.657 E\right) P\]</div>
 <div class="math notranslate nohighlight">
@@ -873,7 +874,7 @@
 <p>In InGaAsP materials you have a linear and a quadratic field effect.</p>
 <section id="pockels-effect">
 <h3>Pockels effect<a class="headerlink" href="#pockels-effect" title="Link to this heading"></a></h3>
-<p>The pockels effect follows the works of <span id="id25">Adachi and Oe [<a class="reference internal" href="#id68" title="Sadao Adachi and Kunishige Oe. Internal strain and photoelastic effects in Ga $_\textrm  1− \textit x $ Al $_\textrm  \textit x $ As/GaAs and In $_\textrm  1− \textit x $ Ga $_\textrm  \textit x $ As $_\textrm  \textit y $ P $_\textrm  1− \textit y $ /InP crystals. Journal of Applied Physics, 54(11):6620–6627, November 1983. URL: https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142 (visited on 2023-05-04), doi:10.1063/1.331898.">1</a>]</span> and <span id="id26">Adachi and Oe [<a class="reference internal" href="#id69" title="Sadao Adachi and Kunishige Oe. Linear electro‐optic effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. Journal of Applied Physics, 56(1):74–80, July 1984. URL: http://aip.scitation.org/doi/10.1063/1.333731 (visited on 2023-04-19), doi:10.1063/1.333731.">2</a>]</span>. The electro-optic coefficient <span class="math notranslate nohighlight">\(r_{41}\)</span> is given by the sum of the free and piezoelectric contributions. Namely:</p>
+<p>The pockels effect follows the works of <span id="id25">Adachi and Oe [<a class="reference internal" href="#id67" title="Sadao Adachi and Kunishige Oe. Internal strain and photoelastic effects in Ga $_\textrm  1− \textit x $ Al $_\textrm  \textit x $ As/GaAs and In $_\textrm  1− \textit x $ Ga $_\textrm  \textit x $ As $_\textrm  \textit y $ P $_\textrm  1− \textit y $ /InP crystals. Journal of Applied Physics, 54(11):6620–6627, November 1983. URL: https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142 (visited on 2023-05-04), doi:10.1063/1.331898.">1</a>]</span> and <span id="id26">Adachi and Oe [<a class="reference internal" href="#id68" title="Sadao Adachi and Kunishige Oe. Linear electro‐optic effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. Journal of Applied Physics, 56(1):74–80, July 1984. URL: http://aip.scitation.org/doi/10.1063/1.333731 (visited on 2023-04-19), doi:10.1063/1.333731.">2</a>]</span>. The electro-optic coefficient <span class="math notranslate nohighlight">\(r_{41}\)</span> is given by the sum of the free and piezoelectric contributions. Namely:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For simplicity, here we will not write the <span class="math notranslate nohighlight">\(\Delta E_{BGN}\)</span> contribution, but consider it implied.</p>
@@ -906,10 +907,10 @@ r_{41, \text{piezo}} &amp;=
 <div class="math notranslate nohighlight">
 \[Q(x,y) = xyQ_{GaAs} + x(1-y)Q_{GaP} + y(1-x)Q_{InAs} + (1-x)(1-y)Q_{InP}\]</div>
 <p>and the constants for the binaries are found in the table below:</p>
-<table class="docutils align-default" id="id83">
+<table class="docutils align-default" id="id82">
 <caption><span class="caption-text">Constants for materials
  :align: center
- :header-rows: 1</span><a class="headerlink" href="#id83" title="Link to this table"></a></caption>
+ :header-rows: 1</span><a class="headerlink" href="#id82" title="Link to this table"></a></caption>
 <tbody>
 <tr class="row-odd"><td><p>Constant</p></td>
 <td><p>InP</p></td>
@@ -946,7 +947,7 @@ r_{41, \text{piezo}} &amp;=
 </section>
 <section id="kerr-effect">
 <h3>Kerr effect<a class="headerlink" href="#kerr-effect" title="Link to this heading"></a></h3>
-<p>The kerr effect is due to the Franz-Keldysh effect, which causes a ripple in the absorption band-edge, which translates to a quadratic change in the refractive index. Here, we follow the work of <span id="id27">Maat [<a class="reference internal" href="#id71">10</a>]</span> and <span id="id28">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span>.</p>
+<p>The kerr effect is due to the Franz-Keldysh effect, which causes a ripple in the absorption band-edge, which translates to a quadratic change in the refractive index. Here, we follow the work of <span id="id27">Maat [<a class="reference internal" href="#id70">10</a>]</span> and <span id="id28">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span>.</p>
 <section id="real-part">
 <h4>Real part<a class="headerlink" href="#real-part" title="Link to this heading"></a></h4>
 <p>We start with the real part of the the change in permitivity. For this component we follow the phenomenological description of the the Kerr effect and we consider the change in the index ellipsoind constants as:</p>
@@ -978,7 +979,7 @@ r_{41, \text{piezo}} &amp;=
 \end{aligned}\end{split}\]</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>In <span id="id29">Maat [<a class="reference internal" href="#id71">10</a>]</span>, in the main text it is claimed that with experimental data retrieved with the COBRA platform which uses Q1.25 as the core material, and with the wavelength of 1.55um, the values of <span class="math notranslate nohighlight">\(S_{11}\)</span> and <span class="math notranslate nohighlight">\(S_{12}\)</span> are</p>
+<p>In <span id="id29">Maat [<a class="reference internal" href="#id70">10</a>]</span>, in the main text it is claimed that with experimental data retrieved with the COBRA platform which uses Q1.3 as the core material, and with the wavelength of 1.55um, the values of <span class="math notranslate nohighlight">\(S_{11}\)</span> and <span class="math notranslate nohighlight">\(S_{12}\)</span> are</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
 S_{11} &amp;= 21.5\times10^{-20}\,\mathrm{m^2/V^2} \\
@@ -1013,21 +1014,21 @@ S_{12} = 11.9\times10^{-20}\,\mathrm{m^2/V^2}\]</div>
 <p>as the reference values and calculate <span class="math notranslate nohighlight">\(C_{TE}\)</span> and <span class="math notranslate nohighlight">\(C_{TM}\)</span>
 ourselves. This yields</p>
 <div class="math notranslate nohighlight">
-\[C_{TE} = 3.10\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
+\[C_{TE} = 1.73\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
 \qquad
-C_{TM} = 5.60\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.\]</div>
-<figure class="align-center" id="id84">
+C_{TM} = 3.13\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.\]</div>
+<figure class="align-center" id="id83">
 <a class="reference internal image-reference" href="../_images/maat_kerr.png"><img alt="../_images/maat_kerr.png" src="../_images/maat_kerr.png" style="width: 50%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Analysis of the quadratic electro-optic coefficients according to <span id="id30">Maat [<a class="reference internal" href="#id71">10</a>]</span>. The solid lines are the reproced model in the <cite>Imodulator</cite> and the dotted-dashed line are the digitally extracted lines from Fig. 3.3 of <span id="id31">Maat [<a class="reference internal" href="#id71">10</a>]</span> for the Q1.3 curve. The dashed black lines indicate the <span class="math notranslate nohighlight">\(S_{11,12}\)</span> parameters according to the published plot and the solid black lines are the <span class="math notranslate nohighlight">\(S_{11,12}\)</span> used in our model, <span class="math notranslate nohighlight">\(S_{11} = 21.5\times10^{-20}\,\mathrm{m^2/V^2}\)</span> and <span class="math notranslate nohighlight">\(S_{12} = 11.9\times10^{-20}\,\mathrm{m^2/V^2}\)</span>.</span><a class="headerlink" href="#id84" title="Link to this image"></a></p>
+<p><span class="caption-text">Analysis of the quadratic electro-optic coefficients according to <span id="id30">Maat [<a class="reference internal" href="#id70">10</a>]</span>. The code to reproduce this image is found in <span class="xref std std-doc">BenchmarksMaat_2001Kerr_real_part</span></span><a class="headerlink" href="#id83" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div>
 </section>
 <section id="imaginary-part">
 <h4>Imaginary part<a class="headerlink" href="#imaginary-part" title="Link to this heading"></a></h4>
-<p>The imaginary component of the Kerr effect has also been subject to customization as inconsistencies have been found in the literature. To best understand them, we shall compare the models adopted by <span id="id32">Maat [<a class="reference internal" href="#id71">10</a>]</span> and <span id="id33">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span>. The change in absorption is then given by:</p>
+<p>The imaginary component of the Kerr effect has also been subject to customization as inconsistencies have been found in the literature. To best understand them, we shall compare the models adopted by <span id="id31">Maat [<a class="reference internal" href="#id70">10</a>]</span> and <span id="id32">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span>. The change in absorption is then given by:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
  \text{(Maat)} \qquad &amp; \Delta \alpha (E)_{TE,TM} = A_{TE,TM}\lambda \frac{|E_ext|}{E_g - E} 10^{-B_{TE,TM}\frac{(E_g-E)^{3/2}}{|E_{ext}|}} \\
@@ -1035,23 +1036,23 @@ C_{TM} = 5.60\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.\]</div>
 \end{aligned}\end{split}\]</div>
 <p>Based on these equations, a number of inconsistencies have been found:</p>
 <ol class="arabic simple">
-<li><p>Comparing these two equations, we see that they demonstrate the same dependencies, with the incoming photon energy and material bandgap energy. However, <span id="id34">Maat [<a class="reference internal" href="#id71">10</a>]</span> aproach contains 4 fitting parameters, where <span id="id35">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> only contains 3. However, the constant <span class="math notranslate nohighlight">\(C\)</span> from <span id="id36">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> contains a dependency on <span class="math notranslate nohighlight">\(\mu_x \mu_y \mu_z\)</span> according to equation 3.37 and 3.23 from their main text. Therefore, Maat’s approach is preferred.</p></li>
+<li><p>Comparing these two equations, we see that they demonstrate the same dependencies, with the incoming photon energy and material bandgap energy. However, <span id="id33">Maat [<a class="reference internal" href="#id70">10</a>]</span> aproach contains 4 fitting parameters, where <span id="id34">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> only contains 3. However, the constant <span class="math notranslate nohighlight">\(C\)</span> from <span id="id35">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> contains a dependency on <span class="math notranslate nohighlight">\(\mu_x \mu_y \mu_z\)</span> according to equation 3.37 and 3.23 from their main text. Therefore, Maat’s approach is preferred.</p></li>
 <li><p>In the main text from Hagn, it is mentioned that with <span class="math notranslate nohighlight">\(C=4.8\times 10^{24}\)</span>, <span class="math notranslate nohighlight">\(\mu_{TE}=0.037m_0\)</span> and <span class="math notranslate nohighlight">\(\mu_{TM}=0.01m_0\)</span>, a good agreement between experiment and theoretical model is achieved. The constant <span class="math notranslate nohighlight">\(C=4.8\times 10^{24}\)</span> is given without units and even with custom adjustments, reproducing the results from their Fig.4.4 was not possible.</p></li>
-<li><p>Yet another attempt was made to fit the experimental data of <span id="id37">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> by following the work from <span id="id38">Bennett and Soref [<a class="reference internal" href="#id74" title="B. Bennett and R. Soref. Electrorefraction and electroabsorption in InP, GaAs, GaSb, InAs, and InSb. IEEE Journal of Quantum Electronics, 23(12):2159–2166, December 1987. doi:10.1109/JQE.1987.1073276.">4</a>]</span> and <span id="id39">Aspnes [<a class="reference internal" href="#id75" title="David E. Aspnes. Electric Field Effects on the Dielectric Constant of Solids. Physical Review, 153(3):972–982, January 1967. doi:10.1103/PhysRev.153.972.">3</a>]</span>. The fit was not successful.</p></li>
-<li><p>The values reported in <span id="id40">Maat [<a class="reference internal" href="#id71">10</a>]</span> for <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span> and <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span> underestimate the electro-absorption and do not coincide with the change in absorption reported by <span id="id41">Hagn [<a class="reference internal" href="#id73" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> in Fig. 4.4 for the same detuning values (<span class="math notranslate nohighlight">\(E_g-E\)</span>).</p></li>
+<li><p>Yet another attempt was made to fit the experimental data of <span id="id36">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> by following the work from <span id="id37">Bennett and Soref [<a class="reference internal" href="#id73" title="B. Bennett and R. Soref. Electrorefraction and electroabsorption in InP, GaAs, GaSb, InAs, and InSb. IEEE Journal of Quantum Electronics, 23(12):2159–2166, December 1987. doi:10.1109/JQE.1987.1073276.">4</a>]</span> and <span id="id38">Aspnes [<a class="reference internal" href="#id74" title="David E. Aspnes. Electric Field Effects on the Dielectric Constant of Solids. Physical Review, 153(3):972–982, January 1967. doi:10.1103/PhysRev.153.972.">3</a>]</span>. The fit was not successful.</p></li>
+<li><p>The values reported in <span id="id39">Maat [<a class="reference internal" href="#id70">10</a>]</span> for <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span> and <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span> underestimate the electro-absorption and do not coincide with the change in absorption reported by <span id="id40">Hagn [<a class="reference internal" href="#id72" title="Gerhard Hagn. Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks. PhD thesis, ETH Zurich, 2001. arXiv:20.500.11850/146406, doi:10.3929/ETHZ-A-004353336.">8</a>]</span> in Fig. 4.4 for the same detuning values (<span class="math notranslate nohighlight">\(E_g-E\)</span>).</p></li>
 </ol>
-<p>For these reasons, we have decided recreate the measurements done by <span id="id42">Maat [<a class="reference internal" href="#id71">10</a>]</span> in Fig.3.2 of the main text and manually fit the parameters <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span> and <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span> to the data. One additional constraint we have imposed is the fact that <span class="math notranslate nohighlight">\(B_{TE}=B_{TM}\)</span>. The reason for this constraint stems from the theoretical treatment of <span id="id43">Aspnes [<a class="reference internal" href="#id75" title="David E. Aspnes. Electric Field Effects on the Dielectric Constant of Solids. Physical Review, 153(3):972–982, January 1967. doi:10.1103/PhysRev.153.972.">3</a>]</span> where the constant inside the exponential (i.e. <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span>) does not have any dependency on the incoming photon polarization, depending only on the reduced effective mass of the electron. The constant <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span>, on the other hand, has a dependency on the momentum matrix element :math:<a href="#id44"><span class="problematic" id="id45">`</span></a><a href="#id46"><span class="problematic" id="id47">|</span></a>rangle psi_c|E cdot p <a href="#id48"><span class="problematic" id="id49">|</span></a>psi_v rangle <a href="#id50"><span class="problematic" id="id51">|</span></a><a href="#id52"><span class="problematic" id="id53">`</span></a>which in turn will lead to an optical anisotropic response. The adapted values are:</p>
+<p>For these reasons, we have decided recreate the measurements done by <span id="id41">Maat [<a class="reference internal" href="#id70">10</a>]</span> in Fig.3.2 of the main text and manually fit the parameters <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span> and <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span> to the data. One additional constraint we have imposed is the fact that <span class="math notranslate nohighlight">\(B_{TE}=B_{TM}\)</span>. The reason for this constraint stems from the theoretical treatment of <span id="id42">Aspnes [<a class="reference internal" href="#id74" title="David E. Aspnes. Electric Field Effects on the Dielectric Constant of Solids. Physical Review, 153(3):972–982, January 1967. doi:10.1103/PhysRev.153.972.">3</a>]</span> where the constant inside the exponential (i.e. <span class="math notranslate nohighlight">\(B_{TE,TM}\)</span>) does not have any dependency on the incoming photon polarization, depending only on the reduced effective mass of the electron. The constant <span class="math notranslate nohighlight">\(A_{TE,TM}\)</span>, on the other hand, has a dependency on the momentum matrix element :math:<a href="#id43"><span class="problematic" id="id44">`</span></a><a href="#id45"><span class="problematic" id="id46">|</span></a>rangle psi_c|E cdot p <a href="#id47"><span class="problematic" id="id48">|</span></a>psi_v rangle <a href="#id49"><span class="problematic" id="id50">|</span></a><a href="#id51"><span class="problematic" id="id52">`</span></a>which in turn will lead to an optical anisotropic response. The adapted values are:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
   A_{TE} &amp;= 0.9\times 10^{3} \quad \frac{eV}{Vm} \\
   A_{TM} &amp;= 1.7\times 10^{3} \quad \frac{eV}{Vm} \\
   B_{TE,TM} &amp;= 0.42\times 10^9 \quad \frac{V}{eV^{-3/2}m}
 \end{aligned}\end{split}\]</div>
-<figure class="align-center" id="id85">
+<figure class="align-center" id="id84">
 <a class="reference internal image-reference" href="../_images/maat_kerr_absorption.png"><img alt="../_images/maat_kerr_absorption.png" src="../_images/maat_kerr_absorption.png" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Results from the benchmark. The code to reproduce this plot can be found in <span class="xref std std-doc">BenchmarksMaat_2001EO_simulation</span></span><a class="headerlink" href="#id85" title="Link to this image"></a></p>
+<p><span class="caption-text">Results from the benchmark. The code to reproduce this plot can be found in <span class="xref std std-doc">BenchmarksMaat_2001EO_simulation</span></span><a class="headerlink" href="#id84" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <dl class="py class">
@@ -1222,75 +1223,75 @@ It uses the modified single oscillator model and the conversion formulas from th
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
-<div class="docutils container" id="id54">
+<div class="docutils container" id="id53">
 <div role="list" class="citation-list">
-<div class="citation" id="id68" role="doc-biblioentry">
+<div class="citation" id="id67" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id25">1</a><span class="fn-bracket">]</span></span>
 <p>Sadao Adachi and Kunishige Oe. Internal strain and photoelastic effects in Ga $_\textrm  1− \textit x $ Al $_\textrm  \textit x $ As/GaAs and In $_\textrm  1− \textit x $ Ga $_\textrm  \textit x $ As $_\textrm  \textit y $ P $_\textrm  1− \textit y $ /InP crystals. <em>Journal of Applied Physics</em>, 54(11):6620–6627, November 1983. URL: <a class="reference external" href="https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142">https://pubs.aip.org/aip/jap/article/54/11/6620-6627/13142</a> (visited on 2023-05-04), <a class="reference external" href="https://doi.org/10.1063/1.331898">doi:10.1063/1.331898</a>.</p>
 </div>
-<div class="citation" id="id69" role="doc-biblioentry">
+<div class="citation" id="id68" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id26">2</a><span class="fn-bracket">]</span></span>
 <p>Sadao Adachi and Kunishige Oe. Linear electro‐optic effects in zincblende‐type semiconductors: Key properties of InGaAsP relevant to device design. <em>Journal of Applied Physics</em>, 56(1):74–80, July 1984. URL: <a class="reference external" href="http://aip.scitation.org/doi/10.1063/1.333731">http://aip.scitation.org/doi/10.1063/1.333731</a> (visited on 2023-04-19), <a class="reference external" href="https://doi.org/10.1063/1.333731">doi:10.1063/1.333731</a>.</p>
 </div>
-<div class="citation" id="id75" role="doc-biblioentry">
+<div class="citation" id="id74" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id39">1</a>,<a role="doc-backlink" href="#id43">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id38">1</a>,<a role="doc-backlink" href="#id42">2</a>)</span>
 <p>David E. Aspnes. Electric Field Effects on the Dielectric Constant of Solids. <em>Physical Review</em>, 153(3):972–982, January 1967. <a class="reference external" href="https://doi.org/10.1103/PhysRev.153.972">doi:10.1103/PhysRev.153.972</a>.</p>
 </div>
-<div class="citation" id="id74" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id38">4</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id73" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id37">4</a><span class="fn-bracket">]</span></span>
 <p>B. Bennett and R. Soref. Electrorefraction and electroabsorption in InP, GaAs, GaSb, InAs, and InSb. <em>IEEE Journal of Quantum Electronics</em>, 23(12):2159–2166, December 1987. <a class="reference external" href="https://doi.org/10.1109/JQE.1987.1073276">doi:10.1109/JQE.1987.1073276</a>.</p>
 </div>
-<div class="citation" id="id59" role="doc-biblioentry">
+<div class="citation" id="id58" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id11">3</a>,<a role="doc-backlink" href="#id12">4</a>,<a role="doc-backlink" href="#id13">5</a>)</span>
 <p>B.R. Bennett, R.A. Soref, and J.A. Del Alamo. Carrier-induced change in refractive index of InP, GaAs and InGaAsP. <em>IEEE Journal of Quantum Electronics</em>, 26(1):113–122, January 1990. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/44924/">http://ieeexplore.ieee.org/document/44924/</a> (visited on 2023-04-18), <a class="reference external" href="https://doi.org/10.1109/3.44924">doi:10.1109/3.44924</a>.</p>
 </div>
-<div class="citation" id="id66" role="doc-biblioentry">
+<div class="citation" id="id65" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id20">6</a><span class="fn-bracket">]</span></span>
 <p>W. P. Dumke, M. R. Lorenz, and G. D. Pettit. Intra- and Interband Free-Carrier Absorption and the Fundamental Absorption Edge in n -Type InP. <em>Physical Review B</em>, 1(12):4668–4673, June 1970. URL: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.1.4668">https://link.aps.org/doi/10.1103/PhysRevB.1.4668</a> (visited on 2023-08-10), <a class="reference external" href="https://doi.org/10.1103/PhysRevB.1.4668">doi:10.1103/PhysRevB.1.4668</a>.</p>
 </div>
-<div class="citation" id="id58" role="doc-biblioentry">
+<div class="citation" id="id57" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id5">3</a>,<a role="doc-backlink" href="#id7">4</a>,<a role="doc-backlink" href="#id18">5</a>,<a role="doc-backlink" href="#id21">6</a>,<a role="doc-backlink" href="#id22">7</a>,<a role="doc-backlink" href="#id23">8</a>)</span>
 <p>F. Fiedler and A. Schlachetzki. Optical parameters of InP-based waveguides. <em>Solid-State Electronics</em>, 30(1):73–83, January 1987. URL: <a class="reference external" href="https://linkinghub.elsevier.com/retrieve/pii/0038110187900323">https://linkinghub.elsevier.com/retrieve/pii/0038110187900323</a> (visited on 2023-05-16), <a class="reference external" href="https://doi.org/10.1016/0038-1101(87)90032-3">doi:10.1016/0038-1101(87)90032-3</a>.</p>
 </div>
-<div class="citation" id="id73" role="doc-biblioentry">
+<div class="citation" id="id72" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id28">1</a>,<a role="doc-backlink" href="#id33">2</a>,<a role="doc-backlink" href="#id35">3</a>,<a role="doc-backlink" href="#id36">4</a>,<a role="doc-backlink" href="#id37">5</a>,<a role="doc-backlink" href="#id41">6</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id28">1</a>,<a role="doc-backlink" href="#id32">2</a>,<a role="doc-backlink" href="#id34">3</a>,<a role="doc-backlink" href="#id35">4</a>,<a role="doc-backlink" href="#id36">5</a>,<a role="doc-backlink" href="#id40">6</a>)</span>
 <p>Gerhard Hagn. <em>Electro-Optic Effects and Their Application in Indium Phosphide Waveguide Devices for Fibre Optic Access Networks</em>. PhD thesis, ETH Zurich, 2001. <a class="reference external" href="https://arxiv.org/abs/20.500.11850/146406">arXiv:20.500.11850/146406</a>, <a class="reference external" href="https://doi.org/10.3929/ETHZ-A-004353336">doi:10.3929/ETHZ-A-004353336</a>.</p>
 </div>
-<div class="citation" id="id60" role="doc-biblioentry">
+<div class="citation" id="id59" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">9</a><span class="fn-bracket">]</span></span>
 <p>S. C. Jain, J. M. McGregor, and D. J. Roulston. Band‐gap narrowing in novel III‐V semiconductors. <em>Journal of Applied Physics</em>, 68(7):3747–3749, October 1990. URL: <a class="reference external" href="http://aip.scitation.org/doi/10.1063/1.346291">http://aip.scitation.org/doi/10.1063/1.346291</a> (visited on 2023-04-19), <a class="reference external" href="https://doi.org/10.1063/1.346291">doi:10.1063/1.346291</a>.</p>
 </div>
-<div class="citation" id="id71" role="doc-biblioentry">
+<div class="citation" id="id70" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id27">1</a>,<a role="doc-backlink" href="#id29">2</a>,<a role="doc-backlink" href="#id30">3</a>,<a role="doc-backlink" href="#id31">4</a>,<a role="doc-backlink" href="#id32">5</a>,<a role="doc-backlink" href="#id34">6</a>,<a role="doc-backlink" href="#id40">7</a>,<a role="doc-backlink" href="#id42">8</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id27">1</a>,<a role="doc-backlink" href="#id29">2</a>,<a role="doc-backlink" href="#id30">3</a>,<a role="doc-backlink" href="#id31">4</a>,<a role="doc-backlink" href="#id33">5</a>,<a role="doc-backlink" href="#id39">6</a>,<a role="doc-backlink" href="#id41">7</a>)</span>
 <p><strong>missing publisher in maat_inp-based_2001</strong></p>
 </div>
-<div class="citation" id="id64" role="doc-biblioentry">
+<div class="citation" id="id63" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">11</a><span class="fn-bracket">]</span></span>
 <p>T. S. Moss, Geoffrey John Burrell, and Brian Ellis. <em>Semiconductor opto-electronics</em>. Butterworths, London, 1973. ISBN 978-0-408-70326-0.</p>
 </div>
-<div class="citation" id="id62" role="doc-biblioentry">
+<div class="citation" id="id61" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">12</a><span class="fn-bracket">]</span></span>
 <p>Sten Seifert and Patrick Runge. Revised refractive index and absorption of In_1-xGa_xas_yp_1-y lattice-matched to InP in transparent and absorption IR-region. <em>Optical Materials Express</em>, 6(2):629, February 2016. URL: <a class="reference external" href="https://opg.optica.org/abstract.cfm?URI=ome-6-2-629">https://opg.optica.org/abstract.cfm?URI=ome-6-2-629</a> (visited on 2023-08-29), <a class="reference external" href="https://doi.org/10.1364/OME.6.000629">doi:10.1364/OME.6.000629</a>.</p>
 </div>
-<div class="citation" id="id61" role="doc-biblioentry">
+<div class="citation" id="id60" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">13</a><span class="fn-bracket">]</span></span>
 <p>M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. <em>Journal of Applied Physics</em>, 87(6):2890–2900, March 2000. URL: <a class="reference external" href="https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121">https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121</a> (visited on 2023-05-24), <a class="reference external" href="https://doi.org/10.1063/1.372274">doi:10.1063/1.372274</a>.</p>
 </div>
-<div class="citation" id="id63" role="doc-biblioentry">
+<div class="citation" id="id62" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id10">1</a>,<a role="doc-backlink" href="#id15">2</a>,<a role="doc-backlink" href="#id16">3</a>,<a role="doc-backlink" href="#id17">4</a>)</span>
 <p>J.-F. Vinchant, J.A. Cavailles, M. Erman, P. Jarry, and M. Renaud. InP/GaInAsP guided-wave phase modulators based on carrier-induced effects: theory and experiment. <em>Journal of Lightwave Technology</em>, 10(1):63–70, January 1992. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/108738/">http://ieeexplore.ieee.org/document/108738/</a> (visited on 2023-04-06), <a class="reference external" href="https://doi.org/10.1109/50.108738">doi:10.1109/50.108738</a>.</p>
 </div>
-<div class="citation" id="id65" role="doc-biblioentry">
+<div class="citation" id="id64" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id19">15</a><span class="fn-bracket">]</span></span>
 <p>W. Walukiewicz, J. Lagowski, L. Jastrzebski, P. Rava, M. Lichtensteiger, C. H. Gatos, and H. C. Gatos. Electron mobility and free-carrier absorption in InP; determination of the compensation ratio. <em>Journal of Applied Physics</em>, 51(5):2659–2668, May 1980. URL: <a class="reference external" href="https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in">https://pubs.aip.org/jap/article/51/5/2659/498806/Electron-mobility-and-free-carrier-absorption-in</a> (visited on 2023-08-14), <a class="reference external" href="https://doi.org/10.1063/1.327925">doi:10.1063/1.327925</a>.</p>
 </div>
-<div class="citation" id="id67" role="doc-biblioentry">
+<div class="citation" id="id66" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id24">16</a><span class="fn-bracket">]</span></span>
 <p>J.-P. Weber. Optimization of the carrier-induced effective index change in InGaAsP waveguides-application to tunable Bragg filters. <em>IEEE Journal of Quantum Electronics</em>, 30(8):1801–1816, August 1994. URL: <a class="reference external" href="http://ieeexplore.ieee.org/document/301645/">http://ieeexplore.ieee.org/document/301645/</a> (visited on 2023-05-03), <a class="reference external" href="https://doi.org/10.1109/3.301645">doi:10.1109/3.301645</a>.</p>
 </div>

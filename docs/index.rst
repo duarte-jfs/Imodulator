@@ -111,6 +111,7 @@ This work was funded by the European Union through the QuGANTIC project and the 
    :caption: Benchmarks
 
    Benchmarks/Maat_2001/EO_simulation
+   Benchmarks/Maat_2001/Kerr_real_part
 
 
 References

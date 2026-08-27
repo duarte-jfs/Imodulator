@@ -755,7 +755,7 @@ where the constants :math:`C_{TE,TM}` have been found to be
   \end{aligned}
 
 .. warning::
-  In :cite:t:`maat_inp-based_2001`, in the main text it is claimed that with experimental data retrieved with the COBRA platform which uses Q1.25 as the core material, and with the wavelength of 1.55um, the values of :math:`S_{11}` and :math:`S_{12}` are
+  In :cite:t:`maat_inp-based_2001`, in the main text it is claimed that with experimental data retrieved with the COBRA platform which uses Q1.3 as the core material, and with the wavelength of 1.55um, the values of :math:`S_{11}` and :math:`S_{12}` are
 
   .. math::
 
@@ -809,15 +809,15 @@ where the constants :math:`C_{TE,TM}` have been found to be
 
   .. math::
 
-    C_{TE} = 3.10\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
+    C_{TE} = 1.73\times10^{-18}\,\mathrm{eV^2\,m^2/V^2},
     \qquad
-    C_{TM} = 5.60\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.
+    C_{TM} = 3.13\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.
 
   .. figure:: images_ingaasp/maat_kerr.png
    :width: 50%
    :align: center
 
-   Analysis of the quadratic electro-optic coefficients according to :cite:t:`maat_inp-based_2001`. The solid lines are the reproced model in the `Imodulator` and the dotted-dashed line are the digitally extracted lines from Fig. 3.3 of :cite:t:`maat_inp-based_2001` for the Q1.3 curve. The dashed black lines indicate the :math:`S_{11,12}` parameters according to the published plot and the solid black lines are the :math:`S_{11,12}` used in our model, :math:`S_{11} = 21.5\times10^{-20}\,\mathrm{m^2/V^2}` and :math:`S_{12} = 11.9\times10^{-20}\,\mathrm{m^2/V^2}`.
+   Analysis of the quadratic electro-optic coefficients according to :cite:t:`maat_inp-based_2001`. The code to reproduce this image is found in :doc:`Benchmarks\Maat_2001\Kerr_real_part`
 
 
 Imaginary part

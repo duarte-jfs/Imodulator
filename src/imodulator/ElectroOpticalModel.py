@@ -1204,8 +1204,8 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         # C_TM=-1.82e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
 
         # Adapted constants from [1]
-        C_TE = -3.10e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
-        C_TM = -5.60e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
+        C_TE = -1.73e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
+        C_TM = -3.13e-18 * self.reg.eV**2 * self.reg.meter**2 / self.reg.volt**2
 
         A_mat = (
             np.asarray([[A_TE, 0, 0], [0, A_TM, 0], [0, 0, A_TE]])
