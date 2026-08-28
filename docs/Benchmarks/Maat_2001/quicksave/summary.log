@@ -1,0 +1,115 @@
+Start time: Wed 2026-08-26, 18:02:41 (+0200)
+Setup completed.
+
+Performing bias-independent calculations...
+
+Starting calculation for BIAS POINT = contact1  0.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  1.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  2.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  3.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  4.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  5.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  6.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  7.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  8.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  9.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  10.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  11.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  12.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  13.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  14.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+       WARNING: CURRENT-POISSON failed to converge.
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  15.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  16.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  17.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+       WARNING: CURRENT-POISSON failed to converge.
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  18.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  19.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+Starting calculation for BIAS POINT = contact1  20.000000 V   contact2  0.000000 V   
+   Solving CURRENT-POISSON...
+   Finished CURRENT-POISSON.
+Completed calculation for BIAS POINT.
+
+End time: Wed 2026-08-26, 18:03:40 (+0200)
+
+Simulation completed.

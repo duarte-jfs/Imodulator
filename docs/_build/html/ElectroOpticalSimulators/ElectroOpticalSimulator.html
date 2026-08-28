@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ElectroOpticalSimulator &mdash; Imodulator 1.0.0 documentation</title>
+  <title>ElectroOpticalSimulator &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -47,7 +47,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -150,7 +163,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -159,6 +171,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/Kerr_real_part.html">Real part of the Franz Keldysh effect</a></li>
 </ul>
 
         </div>
@@ -224,10 +241,10 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">ElectroOpticalSimulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">ElectroOpticalSimulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1550</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1550</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initializes the ElectroOpticalSimulator with a PhotonicDevice and an optional simulation window.</p>
 <p>The simulation windows will define the electro optical simulation region.</p>
 <dl class="field-list simple">
@@ -235,6 +252,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device</strong> (<a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><em>PhotonicDevice</em></a>) – The photonic device to simulate.</p></li>
 <li><p><strong>simulation_window</strong> (<em>Polygon</em><em>, </em><em>optional</em>) – The polygon defining the simulation region. If None, the entire device is used.</p></li>
+<li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the optical mode in nanometers. Default is 1550 nm.</p></li>
 </ul>
 </dd>
 </dl>
@@ -263,13 +281,13 @@ A \\[4pt] B
 <p>The output will follow the same structure as the <code class="docutils literal notranslate"><span class="pre">epsilon_optical</span></code> dictionary, that is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">ElectroOpticalModelName</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_effects</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">),</span>
-        <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">label1</span><span class="p">,</span> <span class="n">label2</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_effects</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">),</span>
+        <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">label1</span><span class="p">,</span> <span class="n">label2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
     <span class="p">},</span>
     <span class="n">ElectroOpticalModelName2</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_effects</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">),</span>
-        <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">label1</span><span class="p">,</span> <span class="n">label2</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_effects</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">),</span>
+        <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">label1</span><span class="p">,</span> <span class="n">label2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -341,8 +359,8 @@ dictionaries with the results and labels.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.plot_polygons">
-<span class="sig-name descname"><span class="pre">plot_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.plot_polygons" title="Link to this definition"></a></dt>
-<dd><p>plots all the polygons and boundaries</p>
+<span class="sig-name descname"><span class="pre">plot_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_junctions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_aspect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.plot_polygons" title="Link to this definition"></a></dt>
+<dd><p>plots all the polygons and boundaries. Set equal_aspect to True for a 1:1 x/y aspect ratio</p>
 </dd></dl>
 
 </dd></dl>

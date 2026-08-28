@@ -1,0 +1,211 @@
+
+        global{
+        $sweepcheck = 1
+
+        simulate1D{}
+
+        temperature = 300.0 # Kelvin
+        substrate{ name = "InP" }
+        crystal_zb{
+            x_hkl = [1, 0, 0]
+            y_hkl = [0, 1, 0]
+        }
+        }
+        
+        
+
+        grid{
+            xgrid{
+        	line{pos = -9.0 spacing = 2}
+			line{pos = 1.0 spacing = 2.0}
+			line{pos = 1000.0 spacing = 2.0}
+			line{pos = 2000.0 spacing = 2.0}
+			line{pos = 2550.0 spacing = 2.0}
+			line{pos = 2740.0 spacing = 2.0}
+			line{pos = 2760.0 spacing = 1.0}
+			line{pos = 3760.0 spacing = 1.0}
+			line{pos = 3789.0 spacing = 2}
+			line{pos = 3799.0 spacing = 2}   
+            }
+                  
+        }
+        
+
+        structure{
+            output_region_index{ }
+            output_material_index{ }
+            output_user_index{ }
+            output_contact_index{ }
+            output_alloy_composition{ }
+            output_impurities{ }
+            
+            region{
+                everywhere{}
+                binary{name = 'Air'}
+            }
+            
+        
+            region{
+                line{x = [-9.00,1.00] }
+                contact{name = contact1}
+            }
+            
+            region{
+                line{x = [1.00,1000.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.00]
+                    alloy_y = [0.00]
+                    
+                }
+                doping{
+                    constant{
+                        name= "n-type"
+                        conc= 5.00e+18    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [1000.00,2000.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.00]
+                    alloy_y = [0.00]
+                    
+                }
+                doping{
+                    constant{
+                        name= "n-type"
+                        conc= 7.20e+16    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [2000.00,2550.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.24]
+                    alloy_y = [0.53]
+                    
+                }
+                doping{
+                    constant{
+                        name= "n-type"
+                        conc= 7.70e+16    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [2550.00,2740.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.00]
+                    alloy_y = [0.00]
+                    
+                }
+                doping{
+                    constant{
+                        name= "n-type"
+                        conc= 5.00e+15    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [2740.00,2760.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.24]
+                    alloy_y = [0.53]
+                    
+                }
+                doping{
+                    constant{
+                        name= "n-type"
+                        conc= 5.00e+15    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [2760.00,3760.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.00]
+                    alloy_y = [0.00]
+                    
+                }
+                doping{
+                    constant{
+                        name= "p-type"
+                        conc= 4.80e+17    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [3760.00,3789.00]}
+                quaternary_constant{
+                    name = "Ga(x)In(1-x)As(y)P(1-y)"    
+                    alloy_x = [0.47]
+                    alloy_y = [1.00]
+                    
+                }
+                doping{
+                    constant{
+                        name= "p-type"
+                        conc= 1.00e+19    
+                    }
+                }        
+            }
+            
+            region{
+                line{x = [3789.00,3799.00] }
+                contact{name = contact2}
+            }
+            
+                  
+        }
+        
+
+        impurities{
+            donor { name = "n-type" energy = -1 degeneracy = 2 }
+            acceptor { name = "p-type" energy = -1 degeneracy = 4 }
+        }
+
+        classical{
+            Gamma{}
+            HH{}
+            # LH{}
+            # SO{}
+            # X{}
+            # L{}
+
+            output_bandedges{ averaged = yes}
+            output_carrier_densities{}
+        }
+
+        poisson{
+            charge_neutral{}
+            output_electric_field{}
+        }
+
+        currents{
+            output_mobilities{}
+            recombination_model{} #required by the runner
+        }
+
+        contacts{
+            ohmic{ name = "contact1" bias = [0, 20] steps = 20}
+            ohmic{ name = "contact2" bias = 0.0 }
+        }
+
+        run{
+            current_poisson{
+                iterations = 10000
+                output_log = yes
+            }
+        }

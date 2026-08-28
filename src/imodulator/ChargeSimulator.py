@@ -257,10 +257,43 @@ class ChargeSimulatorNN:
         print("Charge transport will take place with:")
         print(*names_to_print, sep="\n")
 
-        # Store the line segments for later use
-        self.line_segments = line_segments
-        self.simulation_line = simulation_line
+        # The order of the line segments in line_Segments is dependent on the order of the self.polygon_entities. However, in this case, we must ensure that the line segments are stored in such a way that the polygons to which they belong appear as if we are to walk along the beggining of the simulation line to the end.
+        
+        # To do this we will simple walk the line: we start at point 0 of the line. Then we find the point halfway through point 0 and 1, and find to which polygon it belongs to. Then we move on to point 1 and find the one halfway between 1 and 2 and look for the corresponding polygon. We continue until we're done.
 
+        start_point = np.asarray(simulation_line.xy).T[0]
+        end_point = np.asarray(simulation_line.xy).T[1]
+
+        new_line_segments = OrderedDict()
+
+        current_point = start_point  # This will be updated as we walk the line
+
+        # The starting point must appear only once, so finding the first line segment is easy.
+        # For the second point we will loop over all the line segments except those already found, and find the one that contains the current point
+        k = 0
+        while not np.isclose(current_point, end_point).all():
+            for name, line in line_segments.items():
+                if name in new_line_segments:
+                    continue
+                # print(name, np.asarray(line.xy))
+                points = np.asarray(line.xy).T
+
+                p0 = points[0]
+                p1 = points[1]
+
+                if np.allclose(p0, current_point) or np.allclose(p1, current_point):
+                    new_line_segments[name] = line
+                    current_point = p1 if np.allclose(p0, current_point) else p0
+                    break
+
+            k += 1
+            if k > 10_000:  # This is just a timeout safety measure
+                raise ValueError("Something went wrong, could not find all line segments")
+
+        # Store the line segments for later use
+        self.line_segments = new_line_segments
+        self.simulation_line = simulation_line
+        
     def _create_in_file(self):
         """
         Create and write the nextnano input file from PhotonicDevice data.
@@ -563,7 +596,7 @@ class ChargeSimulatorNN:
         f_iv = [f for f in nndata.files if "IV_characteristics.dat" in f][0]
         self.V = pd.read_csv(f_iv, delim_whitespace=True).iloc[:, 0]
         f_grid = [f for f in nndata.files if "grid_x.dat" in f][0]
-        self.grid = pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist()
+        self.grid = np.asarray(pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist())
 
         self.Ec = np.zeros(shape=(len(self.V), len(self.grid)))
         self.Ev = np.zeros(shape=(len(self.V), len(self.grid)))
@@ -627,13 +660,16 @@ class ChargeSimulatorNN:
                 [f for f in nnfiles if "mobility_hole.dat" in f][0], delim_whitespace=True
             ).iloc[0, 1]
 
-    def plot_results(self, V_idx=None, cmap="tab10"):
+    def plot_results(self, V_idx=None, cmap="tab10", log_scale_carriers=True, plot_limits=True):
         """
         Plot simulation results in a 2x1 subplot layout.
 
         Args:
             V_idx (list, optional): Indices of voltages to plot. Defaults to first and last.
-            colors (list, optional): List of colors for plotting. Defaults to default color cycle.
+            cmap (str, optional): Colormap for voltage lines. Defaults to 'tab10'.
+            log_scale_carriers (bool, optional): Whether to use log scale for carrier concentrations. Defaults to True.
+            plot_limits (bool, optional): Whether to plot vertical lines at segment boundaries. Defaults to True.
+
 
         Returns:
             tuple: Figure and axes objects
@@ -642,65 +678,93 @@ class ChargeSimulatorNN:
             V_idx = [0, len(self.V) - 1]
 
         cmap = plt.get_cmap(cmap)
-        norm = plt.Normalize(vmin=min(V_idx), vmax=max(V_idx))
-        colors = [cmap(norm(v)) for v in V_idx]
+        norm = plt.Normalize(vmin=min(self.V), vmax=max(self.V))
+        colors = [cmap(norm(self.V[v])) for v in V_idx]
 
         if V_idx == None:
             V_idx = [0, len(self.V) - 1]
 
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 8), sharex=True)
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 8), sharex=True)
+
+        ax11 = ax1.twinx()  # Ax to plot the vertical lines of the boundaries
+        ax21 = ax2.twinx()  # Ax to plot the vertical lines of the boundaries
+        ax31 = ax3.twinx()  # Ax to plot the vertical lines of the boundaries
+
+        ax11.set_axis_off()
+        ax21.set_axis_off()
+        ax31.set_axis_off()
+
+        for ax in [ax11, ax21, ax31]:
+            ax.set_ylim(0, 1)
+            ax.set_yticks([])
+
         # ax2r = ax2.twinx()
         for i, v in enumerate(V_idx):
-            ax1.plot(
-                self.grid,
-                self.Ec[v],
-                "-",
-                color=colors[i],
-                label=r"$E_c(eV) @ V={{{:.1f}}} V)$".format(self.V[v]),
-            )
-            ax1.plot(self.grid, self.Ev[v], "-", color=colors[i])
+            ax1.plot(self.grid/1e3, self.Ec[v], "-", color=colors[i])
+            ax1.plot(self.grid/1e3, self.Ev[v], "-", color=colors[i])
             # Plot quasi-Fermi levels
-            ax1.plot(self.grid, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
-            ax1.plot(self.grid, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid/1e3, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid/1e3, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
             # Configure first subplot
 
             # ax2 = ax1.twinx()
-            ax2.plot(
-                self.grid,
-                self.N[v],
-                "-",
-                color=colors[i],
-                label=r"e conc. @ V={{{:.1f}}} V)$".format(self.V[v]),
-            )
-            ax2.plot(
-                self.grid,
-                -self.P[v],
-                "-.",
-                color=colors[i],
-                label=r"-h conc. @ V={{{:.1f}}} V)$".format(self.V[v]),
-            )
+            ax2.plot(self.grid/1e3, self.N[v], "-", color=colors[i])
+            ax2.plot(self.grid/1e3, self.P[v], "-.", color=colors[i])
 
-            ax3.plot(
-                self.grid,
-                self.Efield[v],
-                label=r"EField@ V={{{:.1f}}} V)$".format(v),
-                color=colors[i],
-            )
-            ax3.set_ylim(-300, 100)
+            ax3.plot(self.grid/1e3, self.Efield[v], color=colors[i])
+            # ax3.set_ylim(-300,100)
+
+        if plot_limits:
+            for ax in [ax11, ax21, ax31]:
+                for name, segment in self.line_segments.items():
+                    x0, x1 = segment.xy[0]
+                    y0, y1 = segment.xy[1]
+
+                    ax.plot([y0, y0], [0, 1], "r-", label=f"Segment {name}", alpha=0.2)
+                    ax.plot([y1, y1], [0, 1], "r-", label=f"Segment {name}", alpha=0.2)
 
         ax1.set_ylabel("Energy (eV)")
         ax1.grid(True, alpha=0.3)
-        ax1.legend(loc="best")
+        # ax1.legend(loc='best')
 
         ax2.set_ylabel(r"Carrier conc. ($cm^{-3}$)")
         ax2.grid(True, alpha=0.3)
-        ax2.legend(loc="best")
+        # ax2.legend(loc='best')
+        if log_scale_carriers:
+            ax2.set_yscale("log")
+        ax2.set_ylim(1e15, 1e19)
+
+        # Add dummy lines so that we can put a legend for electron and hole
+        (l1,) = ax2.plot([], [], "k-", label="Electrons")
+        (l2,) = ax2.plot([], [], "k--", label="Holes")
+        ax2.legend(handles=[l1, l2], loc="best")
 
         ax3.set_ylabel(r"Electric field (kV/cm)")
         ax3.grid(True, alpha=0.3)
-        ax3.legend(loc="best")
+        # ax3.legend(loc='best')
 
-    def transfer_results_to_device(self, dx=0.05, xmin=None, xmax=None):
+        from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+        norm_cbar = plt.Normalize(vmin=self.V[min(V_idx)], vmax=self.V[max(V_idx)])
+
+        divider = make_axes_locatable(ax1)
+        cax = divider.append_axes("top", size="8%", pad=0.1)
+
+        ax11.set_ylim(0, 1.17)  # A small compensation so that the lines are nice
+
+        sm = plt.cm.ScalarMappable(norm=norm_cbar, cmap=cmap)
+        sm.set_array([])  # required in older mpl versions
+
+        cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
+        cb.ax.xaxis.set_ticks_position("top")
+        cb.ax.xaxis.set_label_position("top")
+
+        cb.set_label("Bias Voltage (V)")
+
+        for v in [self.V[vi] for vi in V_idx]:
+            cb.ax.axvline(v, color="k", lw=1.5)
+
+    def transfer_results_to_device(self, dx=0.05, polygons_to_map=None):
         """
         Interpolate 1D simulation data onto a new 2D mesh.
 
@@ -709,70 +773,31 @@ class ChargeSimulatorNN:
 
         Args:
             dx (float, optional): Step size for new mesh in microns. Defaults to 0.05.
-            xmin (float): Minimum x value for mesh (required).
-            xmax (float): Maximum x value for mesh (required).
+            polygons_to_map (list, optional): List of polygon names to which the interpolated data should be mapped. If None, data will be mapped to all polygons involved in the charge transport simulations. Defaults to None.
 
         Returns:
             None. Stores interpolators in self.photonicdevice.charge.
         """
 
-        if xmin is None or xmax is None:
-            raise ValueError(
-                "Both xmin and xmax must be provided as numeric values. (e.g. waveguide boundaries)"
-            )
-        if xmin >= xmax:
-            raise ValueError(
-                f"xmin ({xmin}) must be smaller than xmax ({xmax}), otherwise the x mesh is empty."
-            )
+        if polygons_to_map is None:
+            polygons_to_map = self.line_segments.keys()
+
+        # All the polygons that are NOT on the simulation line have not had their flag of has_charge_Transport_Data changed to True, so we need to do it here to make sure that the data gets mapped correctly in the end
+        else:
+            for poly in self.photonicdevice.photo_polygons:
+                if poly.name in polygons_to_map and not poly.name in self.line_segments.keys():
+                    poly.has_charge_transport_data = True
 
         reg = self.photonicdevice.reg
-        # First part is to make data into 2d and fit the wg
-        x = np.arange(xmin, xmax, dx)
-        if len(x) == 0:
-            raise ValueError(
-                f"Empty x mesh: dx ({dx}) is larger than the span xmax - xmin ({xmax - xmin})."
-            )
-        y = np.array(self.grid) * 1e-3  # Convert list to numpy array first
+        y = np.array(self.grid)/1e3  # Convert list to numpy array first
 
-        xx, yy = np.meshgrid(x, y)
+        poly_union = shapely.union_all(
+            [
+                next(p for p in self.photonicdevice.photo_polygons if p.name == poly_name).polygon
+                for poly_name in polygons_to_map
+            ]
+        )
 
-        # Initialize 2D arrays for each variable
-        Ec_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Ev_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efn_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efp_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        N_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        P_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        Efield_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        mun_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-        mup_2d = np.zeros(shape=(len(self.V), len(y), len(x)))
-
-        # Store coordinate grids
-        self.x_2d = x
-        self.y_2d = y
-        self.xx_2d = xx
-        self.yy_2d = yy
-
-        # For each voltage, replicate 1D data across x-axis
-        for i, v in enumerate(self.V):
-            # Take 1D data (shape: n_y_points) and replicate across x-axis
-            # Using broadcasting: 1D array becomes column, then broadcast to all x positions
-            Ec_2d[i] = np.broadcast_to(self.Ec[i][:, np.newaxis], (len(y), len(x)))
-            Ev_2d[i] = np.broadcast_to(self.Ev[i][:, np.newaxis], (len(y), len(x)))
-            Efn_2d[i] = np.broadcast_to(self.Efn[i][:, np.newaxis], (len(y), len(x)))
-            Efp_2d[i] = np.broadcast_to(self.Efp[i][:, np.newaxis], (len(y), len(x)))
-            N_2d[i] = np.broadcast_to(self.N[i][:, np.newaxis], (len(y), len(x)))
-            P_2d[i] = np.broadcast_to(self.P[i][:, np.newaxis], (len(y), len(x)))
-            Efield_2d[i] = np.broadcast_to(self.Efield[i][:, np.newaxis], (len(y), len(x)))
-            mun_2d[i] = np.broadcast_to(self.mun[i][:, np.newaxis], (len(y), len(x)))
-            mup_2d[i] = np.broadcast_to(self.mup[i][:, np.newaxis], (len(y), len(x)))
-
-        # Transform the Efield into a 3d vector field of shape (Ny, Nx, 3)
-        Efield_2d = Efield_2d[..., np.newaxis] * self.sim_vector_norm
-
-        # this part needs to poop out the interpolators
-        # if the interpolator is called the out of bound points should return the boundary values
-        # Initialize interpolator dictionaries
         Ec_int = []
         Ev_int = []
         Efn_int = []
@@ -784,127 +809,29 @@ class ChargeSimulatorNN:
         mup_int = []
 
         for i, v in enumerate(self.V):
-            Ec_int.append(
-                lambda x, y, arr=Ec_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.eV
-                )
-            )
+            Ec_int_interp = interp1d(y, self.Ec[i], bounds_error=False, fill_value=0)
+            Ev_int_interp = interp1d(y, self.Ev[i], bounds_error=False, fill_value=0)
+            Efn_int_interp = interp1d(y, self.Efn[i], bounds_error=False, fill_value=0)
+            Efp_int_interp = interp1d(y, self.Efp[i], bounds_error=False, fill_value=0)
+            N_int_interp = interp1d(y, self.N[i], bounds_error=False, fill_value=0)
+            P_int_interp = interp1d(y, self.P[i], bounds_error=False, fill_value=0)
+            Efield_int_interp = interp1d(y, self.Efield[i], bounds_error=False, fill_value=0)
+            mun_int_interp = interp1d(y, self.mun[i], bounds_error=False, fill_value=0)
+            mup_int_interp = interp1d(y, self.mup[i], bounds_error=False, fill_value=0)
 
-            Ev_int.append(
-                lambda x, y, arr=Ev_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.eV
-                )
-            )
-
-            Efn_int.append(
-                lambda x, y, arr=Efn_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.eV
-                )
-            )
-
-            Efp_int.append(
-                lambda x, y, arr=Efp_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.eV
-                )
-            )
-
-            N_int.append(
-                lambda x, y, arr=N_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.cm**-3
-                )
-            )
-
-            P_int.append(
-                lambda x, y, arr=P_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.cm**-3
-                )
-            )
-
+            Ec_int.append(make_interp(poly_union, Ec_int_interp, reg.eV))
+            Ev_int.append(make_interp(poly_union, Ev_int_interp, reg.eV))
+            Efn_int.append(make_interp(poly_union, Efn_int_interp, reg.eV))
+            Efp_int.append(make_interp(poly_union, Efp_int_interp, reg.eV))
+            N_int.append(make_interp(poly_union, N_int_interp, reg.cm**-3))
+            P_int.append(make_interp(poly_union, P_int_interp, reg.cm**-3))
             Efield_int.append(
-                lambda x, y, arr=Efield_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.kV
-                    / reg.cm
+                make_vector_interp(
+                    poly_union, Efield_int_interp, self.sim_vector_norm, reg.kV / reg.cm
                 )
             )
-
-            mun_int.append(
-                lambda x, y, arr=mun_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.cm**2
-                    / reg.V
-                    / reg.s
-                )
-            )
-
-            mup_int.append(
-                lambda x, y, arr=mup_2d[i]: (
-                    RegularGridInterpolator(
-                        (self.y_2d, self.x_2d),
-                        arr,
-                        method="linear",
-                        bounds_error=False,
-                        fill_value=None,
-                    )((y, x))
-                    * reg.cm**2
-                    / reg.V
-                    / reg.s
-                )
-            )
+            mun_int.append(make_interp(poly_union, mun_int_interp, reg.cm**2 / reg.V / reg.s))
+            mup_int.append(make_interp(poly_union, mup_int_interp, reg.cm**2 / reg.V / reg.s))
 
         self.photonicdevice.charge = {
             "Ec": Ec_int,

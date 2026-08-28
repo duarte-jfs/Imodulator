@@ -19,4 +19,5 @@ __all__ = [
     "OpticalSimulatorFEMWELL",
     "OpticalSimulatorMODE",
     "ElectroOpticalSimulator",
+	"utils"
 ]

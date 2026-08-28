@@ -10,3 +10,5 @@
 - Added material dispersion compatibility in `PhotonicPolygon.optical_material` and subsequent compatibility with `OpticalSimulatorFEMWELL`.
 - `PhotonicDevice` now allows the user to specify `PhotonicPolygon`s to combine into a `MultiPolygon` for current line integral calculations, through the argument `line_integral_multi_polygons`. This is useful if a user has a complex metalic contact which might allow for different meshing resolutions for more efficient computation, while the current calculation remains over the whole metalic contact.
 - Added confinement factor calculation to the `RFSimulator`
+- Utility functions have been added in `Imodulator.utils` which include some functions and models that can generate broadband refractive index values for arbitrary doping, As concentration and wavelength for InGaAsP alloys lattice matched to InP.
+- Benchmarks have been included in the documentation.

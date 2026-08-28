@@ -1,0 +1,4 @@
+Index   Contact
+    0   no_contact_defined
+    1   contact1
+    2   contact2

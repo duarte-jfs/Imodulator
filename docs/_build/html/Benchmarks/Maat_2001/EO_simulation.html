@@ -1,0 +1,869 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maat 2001 &mdash; Imodulator 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Real part of the Franz Keldysh effect" href="Kerr_real_part.html" />
+    <link rel="prev" title="Active polarization controller" href="../../Tutorials/polarization_converter/polarization_converter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Imodulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicPolygon.html">Photonic Polygons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.name"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.electro_optic_module_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.electro_optic_module_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.name"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.d_buffer_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.MetalPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">MetalPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.polygon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.name"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_material"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_material</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_eps"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_eps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.electro_optic_module"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.electro_optic_module</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.eo_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.eo_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.rf_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.rf_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.optical_mesh_settings"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.optical_mesh_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.charge_transport_simulator_kwargs"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.charge_transport_simulator_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.calculate_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.calculate_current</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicPolygon.html#imodulator.PhotonicPolygon.InsulatorPolygon.d_buffer_current"><code class="docutils literal notranslate"><span class="pre">InsulatorPolygon.d_buffer_current</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PhotonicDevice.html">Photonic Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.__init__"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice.plot_polygons"><code class="docutils literal notranslate"><span class="pre">PhotonicDevice.plot_polygons()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PhotonicDevice.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Charge-transport simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorNN.html">ChargeSimulatorNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ChargeSimulators/ChargeSimulatorSolcore.html">ChargeSimulatorSolcore</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">RF mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../RFSimulators/RFSimulatorFEMWELL.html">RFSimulatorFEMWELL</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optical mode solvers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorFEMWELL.html">OpticalSimulatorFEMWELL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../OpticalSimulators/OpticalSimulatorMODE.html">OpticalSimulatorMODE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro Optical models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalModels/InGaAsPElectroOpticalModel.html">InGaAsPElectroOpticalModel</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electro-optic simulators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ElectroOpticalSimulators/ElectroOpticalSimulator.html">ElectroOpticalSimulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/building_photonic_device/building_photonic_device.html">Building a PhotonicDevice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html">Optical simulation with FEMWELL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/optical_simulation_femwell/optical_simulation_femwell.html#Mesh-refinement">Mesh refinement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/poisson_drift_diffusion_solcore/poisson_drift_diffusion_solcore.html">Solving the poisson-drift-diffusion equation with Solcore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html">RF simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Mesh-refinement">Mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Using-a-symmetry-plane">Using a symmetry plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation/rf_simulation.html#Frequency-sweep">Frequency sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html">RF simulation with charge transport data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-poisson-drift-diffusion-equation">Solving the poisson-drift-diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Solving-the-RF-mode">Solving the RF mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Frequency-sweep">Frequency sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport.html#Voltage-sweep">Voltage sweep</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html">DC electro-optical modulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Phase-matching-condition">Phase matching condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Solving-the-PDD">Solving the PDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Maat 2001</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Kerr_real_part.html">Real part of the Franz Keldysh effect</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Imodulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Maat 2001</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Benchmarks/Maat_2001/EO_simulation.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Maat-2001">
+<h1>Maat 2001<a class="headerlink" href="#Maat-2001" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">enlighten</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Modulator_CPW</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.ChargeSimulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChargeSimulatorSolcore</span><span class="p">,</span> <span class="n">ChargeSimulatorNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.OpticalSimulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">,</span> <span class="n">OpticalSimulatorMODE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.ElectroOpticalSimulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElectroOpticalSimulator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imodulator.RFSimulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFSimulatorFEMWELL</span> <span class="k">as</span> <span class="n">RFSimulator</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">skrf</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rf</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+<p>In this notebook we will replicate the absorption plots from [1], in particular Fig.3.2. To see details on the cross section and model build please look at the source code in the repo in the <code class="docutils literal notranslate"><span class="pre">utils.py</span></code>.</p>
+<p>[1] D. H. P. Maat, InP-based integrated MZI switches for optical communication. 2001.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span> <span class="o">=</span> <span class="n">Modulator_CPW</span><span class="p">()</span>
+<span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">plot_polygons</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_3_1.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_3_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">+</span><span class="mf">0.001</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span> <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span><span class="o">-</span><span class="mf">0.001</span><span class="p">]])</span>
+
+<span class="n">charge</span><span class="o">=</span><span class="n">ChargeSimulatorNN</span><span class="p">(</span>
+    <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+    <span class="n">simulation_line</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+    <span class="n">bias_start_stop_step</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">],</span>
+    <span class="n">output_directory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;output_nn&quot;</span>
+<span class="p">)</span>
+
+<span class="n">charge</span><span class="o">.</span><span class="n">plot_with_simulation_line</span><span class="p">()</span>
+
+<span class="n">charge</span><span class="o">.</span><span class="n">NNinputf</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="n">show_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">convergenceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">convergence_check_mode</span><span class="o">=</span><span class="s2">&quot;continue&quot;</span><span class="p">,</span>
+    <span class="n">outputdirectory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat&quot;</span><span class="p">)</span>
+
+<span class="n">charge</span><span class="o">.</span><span class="n">load_output_data</span><span class="p">(</span><span class="n">folderpath</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave&quot;</span><span class="p">)</span>
+
+<span class="n">charge</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span>
+    <span class="n">V_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;plasma&#39;</span><span class="p">,</span>
+    <span class="n">plot_limits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">polygons_to_map</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;L1&#39;</span><span class="p">,</span> <span class="s1">&#39;L2&#39;</span><span class="p">,</span> <span class="s1">&#39;L3&#39;</span><span class="p">,</span> <span class="s1">&#39;L4&#39;</span><span class="p">,</span> <span class="s1">&#39;L5&#39;</span><span class="p">,</span> <span class="s1">&#39;L6&#39;</span><span class="p">,</span> <span class="s1">&#39;etchstop&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Charge transport will take place with:
+L6
+L5
+etchstop
+L4
+L3
+L2
+L1
+Input file created: output_nn\quicksave.in
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\nextnanopy\defaults.py:202: UserWarning: Unsupported products in config file: [&#39;nextnano.NEGF++&#39;] will be ignored. To not see this message, please remove unsupported products from the config file: C:\Users\20230622\.nextnanopy-configNote: nextnano.NEGF++ was renamed to nextnano.NEGF, nextnano.NEGF was renamed to nextnano.NEGF_classic. Please check the documentation for more details.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Simulation did not converge! Check the log:
+C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave\quicksave.log
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_4_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_4_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_4_4.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_4_4.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                    <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span>
+            <span class="n">include_metals</span><span class="o">=</span><span class="kc">True</span><span class="o">*</span><span class="mi">0</span>
+        <span class="p">)</span>
+<span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">(</span><span class="n">gmsh_algorithm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">nelements</span><span class="p">)</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">plot_epsilon_optical</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+15996
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 800x400 with 4 Axes&gt;,
+ [&lt;Axes: title={&#39;center&#39;: &#39;$\\epsilon_{xx}$ real part&#39;}, xlabel=&#39;x (um)&#39;, ylabel=&#39;y (um)&#39;&gt;,
+  &lt;Axes: title={&#39;center&#39;: &#39;$\\epsilon_{xx}$ imaginary part&#39;}, xlabel=&#39;x (um)&#39;, ylabel=&#39;y (um)&#39;&gt;])
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_5_2.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_5_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_5_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_5_3.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.55</span><span class="p">,</span>
+    <span class="n">num_modes</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">metallic_boundaries</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">],</span>
+    <span class="n">n_guess</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">return_modes</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Effective index - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;loss - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> dB/cm&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;power: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_power</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TE fraction: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">te_fraction</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TM fraction: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tm_fraction</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;transversality: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transversality</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#------------------------------------------#&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+    <span class="n">mode</span><span class="o">.</span><span class="n">plot_mode</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Effective index - mode 0: 3.2698
+loss - mode 0: 2.13 dB/cm
+power:  (0.9999999999999999+0j)
+TE fraction:  0.9994622084957769
+TM fraction:  0.0005377915042230619
+transversality: 0.9979487968191524
+#------------------------------------------#
+Effective index - mode 1: 3.2645
+loss - mode 1: 2.46 dB/cm
+power:  (1.0000000000000002+0j)
+TE fraction:  0.000972453593002514
+TM fraction:  0.9990275464069975
+transversality: 0.973836891577347
+#------------------------------------------#
+Effective index - mode 2: 3.2588
+loss - mode 2: 2.02 dB/cm
+power:  (0.9999999999999999+0j)
+TE fraction:  0.9983397875966012
+TM fraction:  0.001660212403398753
+transversality: 0.9920078432065876
+#------------------------------------------#
+Effective index - mode 3: 3.2535
+loss - mode 3: 2.38 dB/cm
+power:  (1.0000000000000002+0j)
+TE fraction:  0.002083116727439847
+TM fraction:  0.9979168832725601
+transversality: 0.9735569676106849
+#------------------------------------------#
+Effective index - mode 4: 3.2411
+loss - mode 4: 1.83 dB/cm
+power:  (0.9999999999999999+0j)
+TE fraction:  0.99696424392834
+TM fraction:  0.0030357560716599563
+transversality: 0.9833366108639897
+#------------------------------------------#
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_1.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_2.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_4.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_4.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_5.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_5.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wl_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1570</span><span class="p">,</span><span class="mi">1555</span><span class="p">,</span><span class="mi">1540</span><span class="p">,</span><span class="mi">1525</span><span class="p">]</span>
+<span class="n">kappa_TE_vals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">kappa_TM_vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">enlighten</span><span class="o">.</span><span class="n">get_manager</span><span class="p">()</span>
+<span class="n">pbar</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">wl_vals</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Calculating EO response&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
+<span class="n">pbar_voltage</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Calculating EO response&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;voltage index&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wl_vals</span><span class="p">:</span>
+    <span class="n">EO</span><span class="o">=</span><span class="n">ElectroOpticalSimulator</span><span class="p">(</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span> <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span><span class="o">+</span><span class="mi">1</span>
+        <span class="p">),</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span>
+    <span class="p">)</span>
+
+    <span class="n">EO</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
+    <span class="c1"># fig, ax = EO.plot_mesh()</span>
+    <span class="c1"># EO.plot_polygons(ax=ax)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">EO</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">nelements</span><span class="p">)</span>
+
+    <span class="n">EO</span><span class="o">.</span><span class="n">get_epsilon_optical</span><span class="p">()</span>
+
+    <span class="n">kappa_all_TE</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">kappa_all_TM</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">voltage_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">pbar_voltage</span><span class="o">.</span><span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])):</span>
+        <span class="n">kappa</span> <span class="o">=</span> <span class="n">EO</span><span class="o">.</span><span class="n">calculate_EO_response</span><span class="p">(</span>
+            <span class="n">voltage_idx</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+            <span class="n">rot_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">rot_z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">base_epsilon_voltage_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">,</span>
+            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">,</span>
+            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">wl</span><span class="o">/</span><span class="mf">1e3</span>
+        <span class="p">)</span>
+        <span class="n">kappa_all_TE</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s1">&#39;InGaAsPElectroOpticalModel&#39;</span><span class="p">][</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+
+        <span class="n">kappa</span> <span class="o">=</span> <span class="n">EO</span><span class="o">.</span><span class="n">calculate_EO_response</span><span class="p">(</span>
+            <span class="n">voltage_idx</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+            <span class="n">rot_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">rot_z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">base_epsilon_voltage_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">,</span>
+            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">,</span>
+            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">wl</span><span class="o">/</span><span class="mf">1e3</span>
+        <span class="p">)</span>
+        <span class="n">kappa_all_TM</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s1">&#39;InGaAsPElectroOpticalModel&#39;</span><span class="p">][</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+
+        <span class="n">pbar_voltage</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="n">kappa_all_TE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kappa_all_TE</span><span class="p">)</span>
+    <span class="n">kappa_all_TM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kappa_all_TM</span><span class="p">)</span>
+
+    <span class="n">kappa_TE_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa_all_TE</span><span class="p">)</span>
+    <span class="n">kappa_TM_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa_all_TM</span><span class="p">)</span>
+
+    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<style>
+</style>
+<div class="enlighten">
+  <div class="enlighten-bar">
+    <pre>Calculating EO response 100%|█████████████████████████████████| 4/4 [06:46&lt;00:00, 0.01 wavelength/s]</pre>
+  </div>
+  <div class="enlighten-bar">
+    <pre>Calculating EO response 100%|████████████████████████████| 21/21 [06:46&lt;00:00, 0.05 voltage index/s]</pre>
+  </div>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+13910
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: divide by zero encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+13910
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: divide by zero encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+13910
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: divide by zero encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+13910
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: divide by zero encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+<span class="s1">&#39;kappa_vals.npy&#39;</span><span class="p">,</span>
+<span class="p">{</span>
+    <span class="s1">&#39;wl_vals&#39;</span><span class="p">:</span> <span class="n">wl_vals</span><span class="p">,</span>
+    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">charge</span><span class="o">.</span><span class="n">V</span><span class="p">,</span>
+    <span class="s1">&#39;kappa_TE_vals&#39;</span><span class="p">:</span> <span class="n">kappa_TE_vals</span><span class="p">,</span>
+    <span class="s1">&#39;kappa_TM_vals&#39;</span><span class="p">:</span> <span class="n">kappa_TM_vals</span>
+<span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">A</span><span class="o">+</span><span class="n">B</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">D</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">E</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+
+<span class="n">data_maat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;.\maat_data_all_new.csv&#39;</span><span class="p">,</span>
+    <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+    <span class="n">skip_header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="n">filling_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax_TE</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_TM</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">]</span>
+
+<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
+    <span class="n">ax_TE</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Maat&#39;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
+    <span class="n">alpha_TE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TE_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="o">*</span><span class="mf">1e-3</span>
+
+    <span class="n">ax_TE</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">V</span><span class="p">,</span>
+            <span class="n">alpha_TE</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Simulated&#39;</span>
+    <span class="p">)</span>
+
+<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
+    <span class="n">ax_TM</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm&#39;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
+    <span class="n">alpha_TM</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TM_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="o">*</span><span class="mf">1e-3</span>
+
+    <span class="n">ax_TM</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+         <span class="n">V</span><span class="p">,</span>
+            <span class="n">alpha_TM</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Simulated&#39;</span>
+    <span class="p">)</span>
+
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Attenuation (dB)&#39;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Attenuation (dB)&#39;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TE mode&#39;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TM mode&#39;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="c1"># ax_TM.legend(frameon=False, loc=&#39;lower left&#39;, fontsize=8)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;EO_simulation.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_10_0.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_10_0.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../Tutorials/polarization_converter/polarization_converter.html" class="btn btn-neutral float-left" title="Active polarization controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Kerr_real_part.html" class="btn btn-neutral float-right" title="Real part of the Franz Keldysh effect" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Duarte Silva, Kaan Sünnetçioğlu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

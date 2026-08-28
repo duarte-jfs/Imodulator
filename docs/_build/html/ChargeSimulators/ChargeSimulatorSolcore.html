@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChargeSimulatorSolcore &mdash; Imodulator 1.0.0 documentation</title>
+  <title>ChargeSimulatorSolcore &mdash; Imodulator 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -45,7 +45,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-1-find-where-the-file-goes">Step 1 — find where the file goes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-2-copy-the-template">Step 2 — copy the template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-3-fill-in-the-paths">Step 3 — fill in the paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#step-4-check-it-worked">Step 4 — check it worked</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../PhotonicPolygon.html">Photonic Polygons</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../PhotonicPolygon.html#imodulator.PhotonicPolygon.SemiconductorPolygon.polygon"><code class="docutils literal notranslate"><span class="pre">SemiconductorPolygon.polygon</span></code></a></li>
@@ -148,7 +161,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Find-the-optical-mode">Find the optical mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Solve-the-charge-transport-equations">Solve the charge transport equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Calculate-the-electro-optic-response">Calculate the electro optic response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Tutorials/dc_electro_optical/dc_electro_optical.html#Correcting-PDD-data">Correcting PDD data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html">Active polarization controller</a><ul>
@@ -157,6 +169,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../Tutorials/polarization_converter/polarization_converter.html#Calculate-the-electro-optic-response">Calculate the electro-optic response</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/EO_simulation.html">Maat 2001</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Benchmarks/Maat_2001/Kerr_real_part.html">Real part of the Franz Keldysh effect</a></li>
 </ul>
 
         </div>
@@ -193,11 +210,11 @@
 <li><p>The voltages applied to the device that are returned to the user are not necessarily correct. Depending on the voltage values array you give it it may return the values in a different order. Please see <a class="reference external" href="https://github.com/qpv-research-group/solcore5/issues/294">https://github.com/qpv-research-group/solcore5/issues/294</a></p></li>
 </ul>
 </div>
-<figure class="align-center" id="id20">
+<figure class="align-center" id="id23">
 <a class="reference internal image-reference" href="../_images/charge_transport_1D_interpolation.png"><img alt="../_images/charge_transport_1D_interpolation.png" src="../_images/charge_transport_1D_interpolation.png" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Illustration of the 1D to 2D data interpolation performed with the <cite>ChargeSimmulatorSolcore</cite>.</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+<p><span class="caption-text">Illustration of the 1D to 2D data interpolation performed with the <cite>ChargeSimmulatorSolcore</cite>.</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <dl class="py class">
@@ -338,7 +355,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ChargeSimulator.ChargeSimulatorSolcore.transfer_results_to_device">
-<span class="sig-name descname"><span class="pre">transfer_results_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.transfer_results_to_device" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transfer_results_to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygons_to_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ChargeSimulator.ChargeSimulatorSolcore.transfer_results_to_device" title="Link to this definition"></a></dt>
 <dd><p>Interpolate 1D simulation data onto a new 2D mesh.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -348,8 +365,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dx</strong> (<em>float</em><em>, </em><em>optional</em>) – Step size for new mesh in microns. Defaults to 0.05.</p></li>
-<li><p><strong>xmin</strong> (<em>float</em>) – Minimum x value for mesh (required).</p></li>
-<li><p><strong>xmax</strong> (<em>float</em>) – Maximum x value for mesh (required).</p></li>
+<li><p><strong>polygons_to_map</strong> (<em>list</em><em>, </em><em>optional</em>) – List of polygon names to which the interpolated data should be mapped. If None, data will be mapped to all polygons involved in the charge transport simulations. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
