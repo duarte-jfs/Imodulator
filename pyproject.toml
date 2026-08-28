@@ -50,8 +50,12 @@ solcore = ["solcore>=5.10.1"] # solcore depends on solsesame==2.1a1 (a pre-relea
 # pip install imodulator[nextnanopy]
 nextnanopy = ["nextnanopy>=1.2.0"]
 all = ["imodulator[femwell,solcore,nextnanopy]"]
-# Formatting toolchain. Install with: pip install -e ".[dev]"
-dev = ["ruff==0.16.1"]
+# Developer tooling: formatting and registering this env as a Jupyter kernel for the
+# docs/Tutorials notebooks (kernelspec name "imodulator_venv"). scikit-rf (imported as
+# `skrf`) is included for RF network/transmission-line analysis, and ipympl for the
+# interactive %matplotlib widget backend in that kernel. Install with:
+# pip install -e ".[dev]"
+dev = ["ruff==0.16.1", "ipykernel>=6.29", "scikit-rf>=1.4", "ipympl>=0.9"]
 
 [project.urls]
 Homepage = "https://github.com/duarte-jfs/Imodulator"
