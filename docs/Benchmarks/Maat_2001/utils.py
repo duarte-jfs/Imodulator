@@ -50,9 +50,9 @@ class Modulator_CPW:
         #As concentration
         self.y_L1 = 0
         self.y_L2 = 0
-        self.y_L3 = 0.53
+        self.y_L3 = 0.615
         self.y_L4 = 0
-        self.y_etchstop = 0.53
+        self.y_etchstop = 0.615
         self.y_L5 = 0
         self.y_L6 = 1
 

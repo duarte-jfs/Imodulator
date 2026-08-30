@@ -205,8 +205,8 @@
              
   <section id="Maat-2001">
 <h1>Maat 2001<a class="headerlink" href="#Maat-2001" title="Link to this heading"></a></h1>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -229,14 +229,48 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">widget</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
+WARNING: The RCWA solver will not be available because an S4 installation has not been found.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\solcore\registries.py:73: UserWarning: Optics solver &#39;RCWA&#39; will not be available. An installation of S4 has not been found.
+  warn(
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\nextnanopy\defaults.py:202: UserWarning: Unsupported products in config file: [&#39;nextnano.NEGF++&#39;] will be ignored. To not see this message, please remove unsupported products from the config file: C:\Users\20230622\.nextnanopy-configNote: nextnano.NEGF++ was renamed to nextnano.NEGF, nextnano.NEGF was renamed to nextnano.NEGF_classic. Please check the documentation for more details.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Successfully imported nextnanopy
+Successfully configured nextnano++ settings
+  [OK] nextnano++ exe: C:/Program Files/nextnano/2026_07_03/nextnano++/bin/nextnano++_Intel_64bit.exe
+  [OK] nextnano++ license: C:/Users/20230622/OneDrive - TU Eindhoven/PhD/License_nnp.lic
+  [OK] nextnano++ database: C:/Program Files/nextnano/2026_07_03/nextnano++/database/database.nnp
+  [OK] nextnano++ outputdirectory: D:/Repos/imodulator/tests\nn_output
+nextnano configuration test passed: all paths are valid.
+</pre></div></div>
 </div>
 <p>In this notebook we will replicate the absorption plots from [1], in particular Fig.3.2. To see details on the cross section and model build please look at the source code in the repo in the <code class="docutils literal notranslate"><span class="pre">utils.py</span></code>.</p>
 <p>[1] D. H. P. Maat, InP-based integrated MZI switches for optical communication. 2001.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span> <span class="o">=</span> <span class="n">Modulator_CPW</span><span class="p">()</span>
@@ -262,11 +296,10 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_3_1.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_3_1.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3605e8cbf51a466899b95bfbe8f4b95f", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
@@ -315,22 +348,6 @@ L3
 L2
 L1
 Input file created: output_nn\quicksave.in
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\nextnanopy\defaults.py:202: UserWarning: Unsupported products in config file: [&#39;nextnano.NEGF++&#39;] will be ignored. To not see this message, please remove unsupported products from the config file: C:\Users\20230622\.nextnanopy-configNote: nextnano.NEGF++ was renamed to nextnano.NEGF, nextnano.NEGF was renamed to nextnano.NEGF_classic. Please check the documentation for more details.
-  warnings.warn(
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
 
 Simulation did not converge! Check the log:
 C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave\quicksave.log
@@ -340,18 +357,31 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_4_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_4_3.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1268d17743344d06b5c2950904fe28eb", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_4_4.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_4_4.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d1c6cee781924ff9b92ffb27780213b8", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;Efield&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.72</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<table><tbody><tr><th>Magnitude</th><td style='text-align:left;'><pre>[0.0 483.91179654097 0.0]</pre></td></tr><tr><th>Units</th><td style='text-align:left;'>kilovolt/centimeter</td></tr></tbody></table></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
@@ -377,7 +407,7 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -391,18 +421,16 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_5_2.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_5_2.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9d7a1847a9ad476eb177a48654a3c998", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_5_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_5_3.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f5806bec98dc45c7b3cd14c292873f21", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -433,40 +461,40 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index - mode 0: 3.2698
-loss - mode 0: 2.13 dB/cm
+Effective index - mode 0: 3.2961
+loss - mode 0: 1.73 dB/cm
+power:  (1+0j)
+TE fraction:  0.9994265416802499
+TM fraction:  0.0005734583197500864
+transversality: 0.9979858719772031
+#------------------------------------------#
+Effective index - mode 1: 3.2894
+loss - mode 1: 2.03 dB/cm
+power:  (1+0j)
+TE fraction:  0.0017144457198131882
+TM fraction:  0.9982855542801868
+transversality: 0.9697883159810426
+#------------------------------------------#
+Effective index - mode 2: 3.2852
+loss - mode 2: 1.66 dB/cm
 power:  (0.9999999999999999+0j)
-TE fraction:  0.9994622084957769
-TM fraction:  0.0005377915042230619
-transversality: 0.9979487968191524
+TE fraction:  0.9976317542396768
+TM fraction:  0.00236824576032324
+transversality: 0.9921032990603569
 #------------------------------------------#
-Effective index - mode 1: 3.2645
-loss - mode 1: 2.46 dB/cm
-power:  (1.0000000000000002+0j)
-TE fraction:  0.000972453593002514
-TM fraction:  0.9990275464069975
-transversality: 0.973836891577347
-#------------------------------------------#
-Effective index - mode 2: 3.2588
-loss - mode 2: 2.02 dB/cm
+Effective index - mode 3: 3.2784
+loss - mode 3: 1.97 dB/cm
 power:  (0.9999999999999999+0j)
-TE fraction:  0.9983397875966012
-TM fraction:  0.001660212403398753
-transversality: 0.9920078432065876
+TE fraction:  0.002704543205077568
+TM fraction:  0.9972954567949225
+transversality: 0.9695183090394761
 #------------------------------------------#
-Effective index - mode 3: 3.2535
-loss - mode 3: 2.38 dB/cm
-power:  (1.0000000000000002+0j)
-TE fraction:  0.002083116727439847
-TM fraction:  0.9979168832725601
-transversality: 0.9735569676106849
-#------------------------------------------#
-Effective index - mode 4: 3.2411
-loss - mode 4: 1.83 dB/cm
+Effective index - mode 4: 3.2676
+loss - mode 4: 1.54 dB/cm
 power:  (0.9999999999999999+0j)
-TE fraction:  0.99696424392834
-TM fraction:  0.0030357560716599563
-transversality: 0.9833366108639897
+TE fraction:  0.9963963419152012
+TM fraction:  0.0036036580847987887
+transversality: 0.9834257954763087
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -474,39 +502,34 @@ transversality: 0.9833366108639897
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_1.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_1.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_2.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_2.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3d76005794f545cf90cabbf9bc917524", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_3.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_3.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6ae71989f0a449dd969fec31bf973b3a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_4.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_4.png" />
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bf3cedf64cfd4acdb2e020bd6f56d1e9", "version_major": 2, "version_minor": 0}</script></div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9fd757bcada94818b04bde0ad5ce387d", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_6_5.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_6_5.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "901d6fd2a81f41ca9ad4e291a244c934", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
@@ -514,7 +537,7 @@ transversality: 0.9833366108639897
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wl_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1570</span><span class="p">,</span><span class="mi">1555</span><span class="p">,</span><span class="mi">1540</span><span class="p">,</span><span class="mi">1525</span><span class="p">]</span>
@@ -593,12 +616,7 @@ transversality: 0.9833366108639897
 <style>
 </style>
 <div class="enlighten">
-  <div class="enlighten-bar">
-    <pre>Calculating EO response 100%|█████████████████████████████████| 4/4 [06:46&lt;00:00, 0.01 wavelength/s]</pre>
-  </div>
-  <div class="enlighten-bar">
-    <pre>Calculating EO response 100%|████████████████████████████| 21/21 [06:46&lt;00:00, 0.05 voltage index/s]</pre>
-  </div>
+
 </div></div>
 </div>
 <div class="nboutput docutils container">
@@ -726,7 +744,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
@@ -742,7 +760,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
@@ -830,8 +848,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Benchmarks_Maat_2001_EO_simulation_10_0.png" src="../../_images/Benchmarks_Maat_2001_EO_simulation_10_0.png" />
-</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9827154d5e77499190cefea241a7f28a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 

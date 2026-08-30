@@ -1188,15 +1188,9 @@ class InGaAsPElectroOpticalModel(ElectroOpticalModel):
         # B_TE = 0.71e9
         # B_TM = 0.48e9
 
-        ## Used the model of [1] to fit the data of [2]
-        # A_TE = 0.065e3
-        # A_TM = 0.072e3
-        # B_TE = 0.15e9
-        # B_TM = 0.12e9
-
-        #These allow the replication of the results of [1] while using the Imodulator.
-        A_TE = 0.9e3
-        A_TM = 1.7e3
+        ## Adjusted the coefficients to match the results from [1] using the Imodulator
+        A_TE = 0.26e3
+        A_TM = 0.55e3
         B_TE = 0.42e9
         B_TM = 0.42e9
 

@@ -846,8 +846,8 @@ For these reasons, we have decided recreate the measurements done by :cite:t:`ma
 
 .. math::
   \begin{aligned}
-    A_{TE} &= 0.9\times 10^{3} \quad \frac{eV}{Vm} \\
-    A_{TM} &= 1.7\times 10^{3} \quad \frac{eV}{Vm} \\
+    A_{TE} &= 0.26\times 10^{3} \quad \frac{eV}{Vm} \\
+    A_{TM} &= 0.55\times 10^{3} \quad \frac{eV}{Vm} \\
     B_{TE,TM} &= 0.42\times 10^9 \quad \frac{V}{eV^{-3/2}m}
   \end{aligned}
 
