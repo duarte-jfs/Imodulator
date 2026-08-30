@@ -5,9 +5,10 @@ from imodulator.PhotonicPolygon import (
     InsulatorPolygon,
 )
 from imodulator.RFSimulator import RFSimulatorFEMWELL
-from imodulator.OpticalSimulator import OpticalSimulatorMODE
+from imodulator.OpticalSimulator import OpticalSimulatorMODE, OpticalSimulatorFEMWELL
 from imodulator.ElectroOpticalSimulator import ElectroOpticalSimulator
 from imodulator import Config
+from imodulator import utils
 
 __all__ = [
     "Config",
@@ -19,5 +20,5 @@ __all__ = [
     "OpticalSimulatorFEMWELL",
     "OpticalSimulatorMODE",
     "ElectroOpticalSimulator",
-	"utils"
+    "utils",
 ]
