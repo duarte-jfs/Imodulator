@@ -223,6 +223,12 @@ class RFSimulatorFEMWELL:
         for poly_name in polygons_to_remove:
             self.polygon_entities.pop(poly_name)
 
+            #Also remove it from the rf_photopolygons list
+            for i, poly in enumerate(self.rf_photopolygons):
+                if poly.name == poly_name:
+                    self.rf_photopolygons.pop(i)
+                    break
+
         self.entities = OrderedDict(
             list(self.line_entities.items())
             + list(self.junction_entities.items())
