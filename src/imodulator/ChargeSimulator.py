@@ -1740,7 +1740,7 @@ class ChargeSimulatorSolcore:
 
         solar_cell_sesame = SolarCell([self.junction])
         solar_cell_solver(solar_cell_sesame, "iv", options)
-
+        self.solar_cell_sesame = solar_cell_sesame
         if smooth_output:
             from scipy.signal import savgol_filter
 
@@ -1946,7 +1946,7 @@ class ChargeSimulatorSolcore:
 
         return fig, ax
 
-    def plot_results(self, V_idx=None, cmap="tab10", log_scale_carriers=True, plot_limits=True):
+    def plot_results(self, V_idx=None, cmap="tab10", log_scale_carriers=True, plot_limits=True, plot_design_doping = True):
         """
         Plot simulation results in a 2x1 subplot layout.
 
@@ -1955,6 +1955,7 @@ class ChargeSimulatorSolcore:
             cmap (str, optional): Colormap for voltage lines. Defaults to 'tab10'.
             log_scale_carriers (bool, optional): Whether to use log scale for carrier concentrations. Defaults to True.
             plot_limits (bool, optional): Whether to plot vertical lines at segment boundaries. Defaults to True.
+            plot_design_doping (bool, optional): Whether to plot the design doping profile. Defaults to True.
 
 
         Returns:
@@ -1999,6 +2000,10 @@ class ChargeSimulatorSolcore:
 
             ax3.plot(self.mesh, self.Efield[v], color=colors[i])
             # ax3.set_ylim(-300,100)
+
+        if plot_design_doping:
+            ax2.plot(self.mesh, self.solar_cell_sesame[0].sesame_sys.rho*1e19, color = 'black', linestyle = 'solid')
+            ax2.plot(self.mesh, -self.solar_cell_sesame[0].sesame_sys.rho*1e19, color = 'black', linestyle = 'dashed')
 
         if plot_limits:
             for ax in [ax11, ax21, ax31]:
