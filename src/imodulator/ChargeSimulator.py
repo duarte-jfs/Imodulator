@@ -1,41 +1,32 @@
 from __future__ import annotations
 
-import os
 import copy
-from collections import OrderedDict
-import warnings
-import numpy as np
-import pandas as pd
-
-from matplotlib import pyplot as plt
-from matplotlib.gridspec import GridSpec
-import matplotlib.cm as cm
-
-from shapely.geometry import (
-    Polygon,
-    LineString,
-    MultiLineString,
-    LinearRing,
-)
-import shapely
-
-from scipy.interpolate import RegularGridInterpolator, LinearNDInterpolator, interp1d
-
-
-from imodulator import PhotonicDevice
-from imodulator.PhotonicPolygon import (
-    SemiconductorPolygon,
-    MetalPolygon,
-    InsulatorPolygon,
-)
-
-import json
 import inspect
+import json
+import os
+from collections import OrderedDict
 from configparser import ConfigParser
 
 import gmsh
+import numpy as np
+import pandas as pd
+import shapely
+from matplotlib import pyplot as plt
+from scipy.interpolate import interp1d
+from shapely.geometry import (
+    LinearRing,
+    LineString,
+    MultiLineString,
+    Polygon,
+)
 
+from imodulator import PhotonicDevice
 from imodulator._optional_deps import require
+from imodulator.PhotonicPolygon import (
+    InsulatorPolygon,
+    MetalPolygon,
+    SemiconductorPolygon,
+)
 
 ####### SOLCORE imports ##########
 # solcore is an optional dependency (pip install imodulator[solcore]). Import it
@@ -47,20 +38,20 @@ from imodulator._optional_deps import require
 try:
     import solcore
     from solcore import config
-    from solcore.material_system.material_system import BaseMaterial
     from solcore.material_data.mobility import (
+        calculate_AlGaAs,
         calculate_InAlAs,
         calculate_InGaAs,
         calculate_InGaAsP,
         calculate_InGaP,
-        calculate_AlGaAs,
         mobility_low_field,
     )
+    from solcore.material_system.material_system import BaseMaterial
     from solcore.parameter_system import ParameterSystem
     from solcore.poisson_drift_diffusion.DeviceStructure import DefaultProperties
-    from solcore.solar_cell import Junction, SolarCell, Layer
-    from solcore.state import State
+    from solcore.solar_cell import Junction, Layer, SolarCell
     from solcore.solar_cell_solver import solar_cell_solver
+    from solcore.state import State
 except ModuleNotFoundError:
     BaseMaterial = object
 
@@ -258,7 +249,7 @@ class ChargeSimulatorNN:
         print(*names_to_print, sep="\n")
 
         # The order of the line segments in line_Segments is dependent on the order of the self.polygon_entities. However, in this case, we must ensure that the line segments are stored in such a way that the polygons to which they belong appear as if we are to walk along the beggining of the simulation line to the end.
-        
+
         # To do this we will simple walk the line: we start at point 0 of the line. Then we find the point halfway through point 0 and 1, and find to which polygon it belongs to. Then we move on to point 1 and find the one halfway between 1 and 2 and look for the corresponding polygon. We continue until we're done.
 
         start_point = np.asarray(simulation_line.xy).T[0]
@@ -293,7 +284,7 @@ class ChargeSimulatorNN:
         # Store the line segments for later use
         self.line_segments = new_line_segments
         self.simulation_line = simulation_line
-        
+
     def _create_in_file(self):
         """
         Create and write the nextnano input file from PhotonicDevice data.
@@ -330,6 +321,8 @@ class ChargeSimulatorNN:
         self.NNinputf = nn.InputFile(output_path)
         self.NNinputf.config = nn.config  # makes sure you use the config
 
+    # The nextnano input-file templates below are kept exactly as written.
+    # fmt: off
     def _create_global_section(self):
         """Create the global section of the nextnano input file"""
         output = f"""
@@ -446,7 +439,7 @@ class ChargeSimulatorNN:
                         region_definitions.append(f"""
             region{{
                 {line}
-                {f"contact{{name = contact1}}"}
+                {"contact{name = contact1}"}
             }}
             """)
                     ######################################################
@@ -476,7 +469,7 @@ class ChargeSimulatorNN:
                         region_definitions.append(f"""
             region{{
                 {line}
-                {f"contact{{name = contact2}}"}
+                {"contact{name = contact2}"}
             }}
             """)
 
@@ -508,11 +501,11 @@ class ChargeSimulatorNN:
 
     def _create_impurities_section(self):
         """Create the impurities section"""
-        return f"""
-        impurities{{
-            donor {{ name = "n-type" energy = -1 degeneracy = 2 }}
-            acceptor {{ name = "p-type" energy = -1 degeneracy = 4 }}
-        }}"""
+        return """
+        impurities{
+            donor { name = "n-type" energy = -1 degeneracy = 2 }
+            acceptor { name = "p-type" energy = -1 degeneracy = 4 }
+        }"""
 
     def _create_classical_section(self):
         """Create the classical section"""
@@ -562,6 +555,7 @@ class ChargeSimulatorNN:
                 output_log = yes
             }
         }"""
+    # fmt: on
 
     def load_output_data(self, folderpath=None):
         """
@@ -596,7 +590,9 @@ class ChargeSimulatorNN:
         f_iv = [f for f in nndata.files if "IV_characteristics.dat" in f][0]
         self.V = pd.read_csv(f_iv, delim_whitespace=True).iloc[:, 0]
         f_grid = [f for f in nndata.files if "grid_x.dat" in f][0]
-        self.grid = np.asarray(pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist())
+        self.grid = np.asarray(
+            pd.read_csv(f_grid, delim_whitespace=True)["Position[nm]"].values.tolist()
+        )
 
         self.Ec = np.zeros(shape=(len(self.V), len(self.grid)))
         self.Ev = np.zeros(shape=(len(self.V), len(self.grid)))
@@ -700,18 +696,18 @@ class ChargeSimulatorNN:
 
         # ax2r = ax2.twinx()
         for i, v in enumerate(V_idx):
-            ax1.plot(self.grid/1e3, self.Ec[v], "-", color=colors[i])
-            ax1.plot(self.grid/1e3, self.Ev[v], "-", color=colors[i])
+            ax1.plot(self.grid / 1e3, self.Ec[v], "-", color=colors[i])
+            ax1.plot(self.grid / 1e3, self.Ev[v], "-", color=colors[i])
             # Plot quasi-Fermi levels
-            ax1.plot(self.grid/1e3, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
-            ax1.plot(self.grid/1e3, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid / 1e3, self.Efn[v], "-.", color=colors[i], linewidth=0.5)
+            ax1.plot(self.grid / 1e3, self.Efp[v], "-.", color=colors[i], linewidth=0.5)
             # Configure first subplot
 
             # ax2 = ax1.twinx()
-            ax2.plot(self.grid/1e3, self.N[v], "-", color=colors[i])
-            ax2.plot(self.grid/1e3, self.P[v], "-.", color=colors[i])
+            ax2.plot(self.grid / 1e3, self.N[v], "-", color=colors[i])
+            ax2.plot(self.grid / 1e3, self.P[v], "-.", color=colors[i])
 
-            ax3.plot(self.grid/1e3, self.Efield[v], color=colors[i])
+            ax3.plot(self.grid / 1e3, self.Efield[v], color=colors[i])
             # ax3.set_ylim(-300,100)
 
         if plot_limits:
@@ -789,7 +785,7 @@ class ChargeSimulatorNN:
                     poly.has_charge_transport_data = True
 
         reg = self.photonicdevice.reg
-        y = np.array(self.grid)/1e3  # Convert list to numpy array first
+        y = np.array(self.grid) / 1e3  # Convert list to numpy array first
 
         poly_union = shapely.union_all(
             [
@@ -1946,7 +1942,14 @@ class ChargeSimulatorSolcore:
 
         return fig, ax
 
-    def plot_results(self, V_idx=None, cmap="tab10", log_scale_carriers=True, plot_limits=True, plot_design_doping = True):
+    def plot_results(
+        self,
+        V_idx=None,
+        cmap="tab10",
+        log_scale_carriers=True,
+        plot_limits=True,
+        plot_design_doping=True,
+    ):
         """
         Plot simulation results in a 2x1 subplot layout.
 
@@ -2002,8 +2005,18 @@ class ChargeSimulatorSolcore:
             # ax3.set_ylim(-300,100)
 
         if plot_design_doping:
-            ax2.plot(self.mesh, self.solar_cell_sesame[0].sesame_sys.rho*1e19, color = 'black', linestyle = 'solid')
-            ax2.plot(self.mesh, -self.solar_cell_sesame[0].sesame_sys.rho*1e19, color = 'black', linestyle = 'dashed')
+            ax2.plot(
+                self.mesh,
+                self.solar_cell_sesame[0].sesame_sys.rho * 1e19,
+                color="black",
+                linestyle="solid",
+            )
+            ax2.plot(
+                self.mesh,
+                -self.solar_cell_sesame[0].sesame_sys.rho * 1e19,
+                color="black",
+                linestyle="dashed",
+            )
 
         if plot_limits:
             for ax in [ax11, ax21, ax31]:
