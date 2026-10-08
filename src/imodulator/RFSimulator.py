@@ -22,12 +22,7 @@ from skfem import adaptive_theta
 # RFSimulatorFEMWELL raises a clear error at instantiation if it is missing.
 try:
     from femwell.mesh import mesh_from_OrderedDict
-    from femwell.maxwell.waveguide import (
-        Modes,
-        Mode,
-        calculate_scalar_product,
-        compute_modes
-    )
+    from femwell.maxwell.waveguide import Modes, Mode, calculate_scalar_product, compute_modes
 except ModuleNotFoundError:
     pass
 
@@ -223,7 +218,7 @@ class RFSimulatorFEMWELL:
         for poly_name in polygons_to_remove:
             self.polygon_entities.pop(poly_name)
 
-            #Also remove it from the rf_photopolygons list
+            # Also remove it from the rf_photopolygons list
             for i, poly in enumerate(self.rf_photopolygons):
                 if poly.name == poly_name:
                     self.rf_photopolygons.pop(i)
@@ -302,9 +297,7 @@ class RFSimulatorFEMWELL:
 
         old_mesh = self.mesh
 
-        elements_to_refine = adaptive_theta(
-            mode_for_refinement.eval_error_estimator(), theta=0.5
-        )
+        elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
 
         new_mesh = old_mesh.refined(elements_to_refine)
 
@@ -600,8 +593,8 @@ class RFSimulatorFEMWELL:
         color_vectors: str = "black",
         plot_vectors: bool = True,
         vector_density: float = 1.0,
-        axes = None,
-        fig = None
+        axes=None,
+        fig=None,
     ):
         """
         Plots the transverse components of the electric and magnetic fields of a mode.
@@ -738,7 +731,7 @@ class RFSimulatorFEMWELL:
                     data.real[:, :, 1],
                     color=color_vectors,
                     linewidth=0.5,
-                    density=vector_density
+                    density=vector_density,
                 )
 
     def plot_polygons(
@@ -777,11 +770,7 @@ class RFSimulatorFEMWELL:
         if equal_aspect:
             ax.set_aspect("equal", adjustable="box")
 
-    def plot_mesh(
-        self,
-        plot_polygons: bool = True,
-        ax = None
-    ):
+    def plot_mesh(self, plot_polygons: bool = True, ax=None):
         """
         Plots the mesh of the photonic device.
 
@@ -1101,9 +1090,7 @@ class RFSimulatorFEMWELL:
             )
 
         elements = np.unique(
-            np.concatenate(
-                [np.asarray(self.mesh.subdomains[name], dtype=int) for name in names]
-            )
+            np.concatenate([np.asarray(self.mesh.subdomains[name], dtype=int) for name in names])
         )
         if elements.size == 0:
             return 0.0

@@ -858,9 +858,7 @@ class OpticalSimulatorFEMWELL:
             dofs_idxs = self._dofs_of(photo_polygon)
 
             for i in range(3):
-                self.epsilon_optical[i, i, dofs_idxs] = photo_polygon.optical_material(
-                    wavelength
-                )
+                self.epsilon_optical[i, i, dofs_idxs] = photo_polygon.optical_material(wavelength)
 
     def _dofs_of(self, photo_polygon) -> np.ndarray:
         """
@@ -1019,9 +1017,7 @@ class OpticalSimulatorFEMWELL:
 
         old_mesh = self.mesh
 
-        elements_to_refine = adaptive_theta(
-            mode_for_refinement.eval_error_estimator(), theta=0.5
-        )
+        elements_to_refine = adaptive_theta(mode_for_refinement.eval_error_estimator(), theta=0.5)
 
         new_mesh = old_mesh.refined(elements_to_refine)
 

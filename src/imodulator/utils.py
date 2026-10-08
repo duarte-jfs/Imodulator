@@ -5,129 +5,132 @@ Have fun
 """
 
 import numpy as np
-import pint
 from pint import UnitRegistry
-from scipy.integrate import quad, quad_vec, simpson
+from scipy.integrate import simpson
 from scipy.interpolate import interp1d, make_interp_spline
-from scipy.optimize import fsolve, root_scalar
-from scipy.special import exp1, expi, roots_legendre
-import os
+from scipy.special import exp1, expi
 
 
 def get_n(E, y=0):
+    """
+        code to generate the real refractive index as well as the
+    absorption coefficient according to [1].
+
+    [1] -Sten Seifert and Patrick Runge, "Revised refractive index and absorption of In1-xGaxAsyP1-y lattice-matched to InP in transparent and absorption IR-region," Opt. Mater. Express 6, 629-639 (2016)
 
     """
-    code to generate the real refractive index as well as the 
-absorption coefficient according to [1].
+    Eg = 1.35 - 0.72 * y + 0.12 * y**2
 
-[1] -Sten Seifert and Patrick Runge, "Revised refractive index and absorption of In1-xGaxAsyP1-y lattice-matched to InP in transparent and absorption IR-region," Opt. Mater. Express 6, 629-639 (2016)
+    R = -0.00115 + 0.00191 * Eg
+    Gamma = -0.000691 + 0.00433 * Eg
+    A = -0.0453 + 2.1103 * Eg
+    a = 72.32 + 12.78 * Eg
+    b = 4.84 + 4.66 * Eg
+    c = -0.015 + 0.02 * Eg
+    d = -0.178 + 1.042 * Eg
 
-    """
-    Eg=1.35-0.72*y+0.12*y**2
-
-    R=-0.00115+0.00191*Eg
-    Gamma=-0.000691+0.00433*Eg
-    A=-0.0453+2.1103*Eg
-    a=72.32+12.78*Eg
-    b=4.84+4.66*Eg
-    c=-0.015+0.02*Eg
-    d=-0.178+1.042*Eg
-    
-    
     def cot(x):
-        return 1/np.tan(x)
+        return 1 / np.tan(x)
 
-    n=np.sqrt(1+
-              a/(b-(E+1j*Gamma)**2)+
-              A*np.sqrt(R)/(E+1j*Gamma)**2*(
-                                            np.log(Eg**2/(Eg**2-(E+1j*Gamma)**2))+np.pi*(
-                                                                                        2*cot(np.pi*np.sqrt(R/Eg))
-                                                                                        -cot(np.pi*np.sqrt(R/(Eg-(E+1j*Gamma))))
-                                                                                        -cot(np.pi*np.sqrt(R/(Eg+(E+1j*Gamma)))))))
-    
-    if type(E) == np.ndarray and type(y) !=np.ndarray:
-        idx=np.where(E<Eg)
-        k=np.sqrt(n**2+a/(b-E**2)).imag+c*(E-Eg)+d*(E-Eg)**2
-        k[idx]=np.sqrt(n[idx]**2+a/(b-E[idx]**2)).imag
-        
-    elif type(E) != np.ndarray and type(y) !=np.ndarray:
-        if E<Eg:
-            c=d=0
-        
-        k=np.sqrt(n**2+a/(b-E**2)).imag+c*(E-Eg)+d*(E-Eg)**2
-        
-    elif type(E) != np.ndarray and type(y) ==np.ndarray:
-        idx=np.where(E<Eg)
-        c[idx]=0
-        d[idx]=0
-        
-        k=np.sqrt(n**2+a/(b-E**2)).imag+c*(E-Eg)+d*(E-Eg)**2
-        
+    n = np.sqrt(
+        1
+        + a / (b - (E + 1j * Gamma) ** 2)
+        + A
+        * np.sqrt(R)
+        / (E + 1j * Gamma) ** 2
+        * (
+            np.log(Eg**2 / (Eg**2 - (E + 1j * Gamma) ** 2))
+            + np.pi
+            * (
+                2 * cot(np.pi * np.sqrt(R / Eg))
+                - cot(np.pi * np.sqrt(R / (Eg - (E + 1j * Gamma))))
+                - cot(np.pi * np.sqrt(R / (Eg + (E + 1j * Gamma))))
+            )
+        )
+    )
+
+    if type(E) == np.ndarray and type(y) != np.ndarray:
+        idx = np.where(E < Eg)
+        k = np.sqrt(n**2 + a / (b - E**2)).imag + c * (E - Eg) + d * (E - Eg) ** 2
+        k[idx] = np.sqrt(n[idx] ** 2 + a / (b - E[idx] ** 2)).imag
+
+    elif type(E) != np.ndarray and type(y) != np.ndarray:
+        if E < Eg:
+            c = d = 0
+
+        k = np.sqrt(n**2 + a / (b - E**2)).imag + c * (E - Eg) + d * (E - Eg) ** 2
+
+    elif type(E) != np.ndarray and type(y) == np.ndarray:
+        idx = np.where(E < Eg)
+        c[idx] = 0
+        d[idx] = 0
+
+        k = np.sqrt(n**2 + a / (b - E**2)).imag + c * (E - Eg) + d * (E - Eg) ** 2
+
     # print(n)
-    return n.real + 1j*k
+    return n.real + 1j * k
 
 
-def get_broadband_index(model, wl_min=1500, wl_max=1600, N_samples = 100):
-    '''
+def get_broadband_index(model, wl_min=1500, wl_max=1600, N_samples=100):
+    """
     Returns the complex refractive index of the model from wl_min to wl_max.
-    
+
     model: InGaAsP model
     wl_min: minimum wavelength in nanometer;
     wl_max: maximum wavelength in nanometers;
     N_samples: number of samples in the refractive index;
-    
+
     Returns:
     n: complex refractive index. dtype of np.complex128, of shape (N_samples, 2)
-    
-    '''
-    
-    wl = np.linspace(wl_min,wl_max, N_samples) * model.reg.nanometer
-    E = 2*np.pi*model.hbar*model.c/wl
+
+    """
+
+    wl = np.linspace(wl_min, wl_max, N_samples) * model.reg.nanometer
+    E = 2 * np.pi * model.hbar * model.c / wl
 
     eps_s = model.get_eps_s(wl=wl)
     alpha = model.get_alpha_sqrt(E=E)
     alpha = np.nan_to_num(alpha, nan=0)
 
     n0 = np.sqrt(eps_s)
-    k0 = (alpha/2/(2*np.pi/wl)).to(model.reg.dimensionless)
-    
+    k0 = (alpha / 2 / (2 * np.pi / wl)).to(model.reg.dimensionless)
+
     if type(model) == n_InGaAsP:
-   
         dalpha_BF = model.get_dalpha_BF(E=E)
         dalpha_plasma = model.get_dalpha_plasma(E=E)
 
-        dk_BF = (dalpha_BF/2/(2*np.pi/wl)).to(model.reg.dimensionless)
-        dk_plasma = (dalpha_plasma/2/(2*np.pi/wl)).to(model.reg.dimensionless)
+        dk_BF = (dalpha_BF / 2 / (2 * np.pi / wl)).to(model.reg.dimensionless)
+        dk_plasma = (dalpha_plasma / 2 / (2 * np.pi / wl)).to(model.reg.dimensionless)
 
         dn_BF = model.get_dn_BF(E=E)
         dn_plasma = model.get_dn_plasma(E=E)
 
-        n = (n0+dn_BF+dn_plasma) - 1j*(k0+dk_BF+dk_plasma)
-        
+        n = (n0 + dn_BF + dn_plasma) - 1j * (k0 + dk_BF + dk_plasma)
+
     elif type(model) == p_InGaAsP:
-        
         dalpha_BF = model.get_dalpha_BF(E=E)
         dalpha_iv = model.get_dalpha_iv(E=E)
 
-        dk_BF = (dalpha_BF/2/(2*np.pi/wl)).to(model.reg.dimensionless)
-        dk_iv = (dalpha_iv/2/(2*np.pi/wl)).to(model.reg.dimensionless)
+        dk_BF = (dalpha_BF / 2 / (2 * np.pi / wl)).to(model.reg.dimensionless)
+        dk_iv = (dalpha_iv / 2 / (2 * np.pi / wl)).to(model.reg.dimensionless)
 
         dn_BF = model.get_dn_BF(E=E)
         dn_iv = model.get_dn_iv(E=E)
 
-        n = (n0+dn_BF+dn_iv) - 1j*(k0+dk_BF+dk_iv)
-        
+        n = (n0 + dn_BF + dn_iv) - 1j * (k0 + dk_BF + dk_iv)
+
     else:
         print("WHAT THE HELL DID YOU FEED INTO THIS??")
-        
-    out = np.zeros((N_samples, 2), dtype = np.complex128)
 
-    out[:, 0] = (model.c/wl).to(model.reg.hertz).magnitude
+    out = np.zeros((N_samples, 2), dtype=np.complex128)
+
+    out[:, 0] = (model.c / wl).to(model.reg.hertz).magnitude
     out[:, 1] = (n**2).to(model.reg.dimensionless).magnitude
-    
+
     return out
 
-class n_InGaAsP(object):
+
+class n_InGaAsP:
     def __init__(self, N, T, y, wl, bandgap_model="jain"):
         """
         Base model for an n-type In_{1-x}Ga_{x}As_{y}P_{1-y}.
@@ -182,9 +185,7 @@ class n_InGaAsP(object):
         self.mhl = (0.12 - 0.078 * self.y + 0.002 * self.y**2) * self.m0
 
         # Formulas [2]
-        self.Nc = 2 * (
-            (self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5
-        ).to(
+        self.Nc = 2 * ((self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5).to(
             self.reg.centimeter**-3
         )  # cm^-3
         self.Nv = 2 * (
@@ -195,32 +196,24 @@ class n_InGaAsP(object):
                 / (2 * np.pi * self.hbar**2)
             )
             ** 1.5
-        ).to(
-            self.reg.centimeter**-3
-        )  # cm^-3
+        ).to(self.reg.centimeter**-3)  # cm^-3
 
         # Formula from [4]
         self.ni = np.sqrt(self.Nc * self.Nv) * np.exp(
             -self.get_bandgap(model="none") / (2 * self.kb * self.T)
         )
 
-        if self.N < self.ni:
-            self.N = self.ni
+        self.N = max(self.N, self.ni)
 
         self.P = self.ni**2 / self.N  # Assumes non degenerate semiconductor
 
-        self.so = (
-            0.119 + 0.30 * self.y - 0.107 * self.y**2
-        ) * self.reg.eV  # eV. Taken from [5]
+        self.so = (0.119 + 0.30 * self.y - 0.107 * self.y**2) * self.reg.eV  # eV. Taken from [5]
 
         self.eps_s = self.get_eps_s(self.y, self.wl, bandgap_model=self.bandgap_model)
 
         # Taken from [2]
         self.C = (
-            4.4e12
-            * self.reg.centimeter**-1
-            * self.reg.second**-0.5
-            * np.sqrt(self.hbar)
+            4.4e12 * self.reg.centimeter**-1 * self.reg.second**-0.5 * np.sqrt(self.hbar)
         )  # Taken from Bennet 1990
         # The sqrt(hbar) comes from the fact that C comes from an earlier paper that fits an absorption curve to frequency rather than energy
 
@@ -238,7 +231,7 @@ class n_InGaAsP(object):
         n0_InP = get_n(self.energy.magnitude, y=0).real
         n0 = get_n(self.energy.magnitude, y=y).real
         self.n0 = n0
-        
+
         self.Chh = self.C * (mr_InP_hh**1.5 / (mr_InP_hh**1.5 + mr_InP_hl**1.5))
         self.Chl = self.C * (mr_InP_hl**1.5 / (mr_InP_hh**1.5 + mr_InP_hl**1.5))
         # print('n', self.Chh, self.Chl)
@@ -251,29 +244,25 @@ class n_InGaAsP(object):
         self.Ef = self.get_fermi_level()
 
         # Parameters for piezo effects. Taken from [3]
-        self.S11 = (
-            1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        )  # mechanical compliance
+        self.S11 = 1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1  # mechanical compliance
         self.S12 = -0.589e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
         self.S44 = 2.26e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        self.e14 = (
-            -0.083 * self.reg.coulomb * self.reg.meter**-2
-        )  # piezoelectric stress constant.
+        self.e14 = -0.083 * self.reg.coulomb * self.reg.meter**-2  # piezoelectric stress constant.
 
-        #Density
-        self.rho = (4.81+0.74*y) * self.reg.g*self.reg.centimeter**-3  # g cm^-3
-        self.s = (5.2-0.372*y-0.144*y**2)*1e5 * self.reg.cm/self.reg.second  # cm s^-1 
+        # Density
+        self.rho = (4.81 + 0.74 * y) * self.reg.g * self.reg.centimeter**-3  # g cm^-3
+        self.s = (5.2 - 0.372 * y - 0.144 * y**2) * 1e5 * self.reg.cm / self.reg.second  # cm s^-1
 
-        #Energy transitions
-        self.E10 = (0.61+0.182*y+0.105*y**2) * self.reg.eV
-        self.E20 = (3.38+0.549*y-0.208*y**2) * self.reg.eV
+        # Energy transitions
+        self.E10 = (0.61 + 0.182 * y + 0.105 * y**2) * self.reg.eV
+        self.E20 = (3.38 + 0.549 * y - 0.208 * y**2) * self.reg.eV
 
-        #Phonon energies
-        self.Eac = (24-2.84*y+1.57*y**2) * self.reg.meV
-        self.Eop = (42.6-21.1*y+2.87*y**2) * self.reg.meV
+        # Phonon energies
+        self.Eac = (24 - 2.84 * y + 1.57 * y**2) * self.reg.meV
+        self.Eop = (42.6 - 21.1 * y + 2.87 * y**2) * self.reg.meV
 
-        #Deformation potential
-        self.Edef = (7.95-2.04*y+0.839*y**2) * self.reg.eV
+        # Deformation potential
+        self.Edef = (7.95 - 2.04 * y + 0.839 * y**2) * self.reg.eV
 
     def get_eps_s(self, y=None, wl=None, N=None, bandgap_model=None, regime="optical"):
         """
@@ -440,11 +429,11 @@ class n_InGaAsP(object):
             "theta1": {"n": [1.57, 1.59, 2.1], "p": [2.3, 1.59, 2.2]},
             "theta2": {"n": [3.0, 3.68, 3.0], "p": [3.0, 3.0, 3.0]},
         }
-        for key1 in values_InGaAs.keys():
+        for key1 in values_InGaAs:
             for key2 in values_InGaAs[key1].keys():
                 values_InGaAs[key1][key2] = np.asarray(values_InGaAs[key1][key2])
 
-        for key in values_InGaAs.keys():
+        for key in values_InGaAs:
             if key != "Nref":
                 values_InGaAs[key]["n_out"] = make_interp_spline(
                     x_values, values_InGaAs[key]["n"], k=2
@@ -470,11 +459,11 @@ class n_InGaAsP(object):
             "theta2": {"n": [3.25, 0.71], "p": [3.0, 0]},
         }
 
-        for key1 in values_InGaP.keys():
+        for key1 in values_InGaP:
             for key2 in values_InGaP[key1].keys():
                 values_InGaP[key1][key2] = np.asarray(values_InGaP[key1][key2])
 
-        for key in values_InGaP.keys():
+        for key in values_InGaP:
             if key not in ["Nref", "theta2"]:
                 values_InGaP[key]["n_out"] = make_interp_spline(
                     x_values, values_InGaP[key]["n"], k=2
@@ -500,25 +489,21 @@ class n_InGaAsP(object):
         values = {
             "mu_max": {
                 "n": (
-                    y * values_InGaAs["mu_max"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["n_out"]
+                    y * values_InGaAs["mu_max"]["n_out"] + (1 - y) * values_InGaP["mu_max"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_max"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["p_out"]
+                    y * values_InGaAs["mu_max"]["p_out"] + (1 - y) * values_InGaP["mu_max"]["p_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
             },
             "mu_min": {
                 "n": (
-                    y * values_InGaAs["mu_min"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["n_out"]
+                    y * values_InGaAs["mu_min"]["n_out"] + (1 - y) * values_InGaP["mu_min"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_min"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["p_out"]
+                    y * values_InGaAs["mu_min"]["p_out"] + (1 - y) * values_InGaP["mu_min"]["p_out"]
                 ),
             },
             "Nref": {
@@ -535,34 +520,28 @@ class n_InGaAsP(object):
             },
             "lambda": {
                 "n": (
-                    y * values_InGaAs["lambda"]["n_out"]
-                    + (1 - y) * values_InGaP["lambda"]["n_out"]
+                    y * values_InGaAs["lambda"]["n_out"] + (1 - y) * values_InGaP["lambda"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["lambda"]["p_out"]
-                    + (1 - y) * values_InGaP["lambda"]["p_out"]
+                    y * values_InGaAs["lambda"]["p_out"] + (1 - y) * values_InGaP["lambda"]["p_out"]
                 ),
             },
             "theta1": {
                 "n": (
-                    y * values_InGaAs["theta1"]["n_out"]
-                    + (1 - y) * values_InGaP["theta1"]["n_out"]
+                    y * values_InGaAs["theta1"]["n_out"] + (1 - y) * values_InGaP["theta1"]["n_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["theta1"]["p_out"]
-                    + (1 - y) * values_InGaP["theta1"]["p_out"]
+                    y * values_InGaAs["theta1"]["p_out"] + (1 - y) * values_InGaP["theta1"]["p_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
             },
             "theta2": {
                 "n": (
-                    y * values_InGaAs["theta2"]["n_out"]
-                    + (1 - y) * values_InGaP["theta2"]["n_out"]
+                    y * values_InGaAs["theta2"]["n_out"] + (1 - y) * values_InGaP["theta2"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["theta2"]["p_out"]
-                    + (1 - y) * values_InGaP["theta2"]["p_out"]
+                    y * values_InGaAs["theta2"]["p_out"] + (1 - y) * values_InGaP["theta2"]["p_out"]
                 ),
             },
         }
@@ -572,8 +551,7 @@ class n_InGaAsP(object):
         P = self.P.to(self.reg.centimeter**-3).magnitude
 
         mobility_n = values["mu_min"]["n"] + (
-            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"]
-            - values["mu_min"]["n"]
+            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"] - values["mu_min"]["n"]
         ) / (
             1
             + (N / (values["Nref"]["n"] * (300 / T) ** values["theta2"]["n"]))
@@ -581,8 +559,7 @@ class n_InGaAsP(object):
         )
 
         mobility_p = values["mu_min"]["p"] + (
-            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"]
-            - values["mu_min"]["p"]
+            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"] - values["mu_min"]["p"]
         ) / (
             1
             + (P / (values["Nref"]["p"] * (300 / T) ** values["theta2"]["p"]))
@@ -659,9 +636,7 @@ class n_InGaAsP(object):
             )
 
             BGN = (
-                A * N.magnitude ** (1 / 3)
-                + B * N.magnitude**0.25
-                + C * N.magnitude**0.5
+                A * N.magnitude ** (1 / 3) + B * N.magnitude**0.25 + C * N.magnitude**0.5
             ) * self.reg.eV
 
         elif model == "none":
@@ -896,15 +871,15 @@ class n_InGaAsP(object):
             ]
         )
 
-        alpha_imp_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_imp, kind="linear"
-        )(np.log10(x))
-        alpha_ac_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_ac, kind="linear"
-        )(np.log10(x))
-        alpha_op_interp = lambda x: interp1d(
-            np.log10(dopings), alpha_op, kind="linear"
-        )(np.log10(x))
+        alpha_imp_interp = lambda x: interp1d(np.log10(dopings), alpha_imp, kind="linear")(
+            np.log10(x)
+        )
+        alpha_ac_interp = lambda x: interp1d(np.log10(dopings), alpha_ac, kind="linear")(
+            np.log10(x)
+        )
+        alpha_op_interp = lambda x: interp1d(np.log10(dopings), alpha_op, kind="linear")(
+            np.log10(x)
+        )
 
         lam0 = 10e-6 * self.reg.meter
 
@@ -918,20 +893,29 @@ class n_InGaAsP(object):
             + alpha_ac_interp(doping) * (wv_ratio) ** 1.5
         )
 
-        ## Now we must also account for the interband transitions 
+        ## Now we must also account for the interband transitions
 
         # A = (1.4+1.85*self.y)*1e-5*1.3e23 * self.reg.eV**-1 * self.reg.g * self.reg.s**-2*self.reg.cm**-2
 
-        A = (1.4+1.85*self.y)*1e-5 * (
-            self.me.units**1.5 *
-            self.Eac.units * 
-            self.Edef.units *
-            1/self.rho.units *
-            1/self.s.units**2 *
-            1/self.reg.eV**3 *
-            self.reg.eV**2
-        )**-1 * self.reg.cm**-1 * 1.3e65 #The factor of is necessary to make the calculations match the ones from fiedler paper
-
+        A = (
+            (1.4 + 1.85 * self.y)
+            * 1e-5
+            * (
+                self.me.units**1.5
+                * self.Eac.units
+                * self.Edef.units
+                * 1
+                / self.rho.units
+                * 1
+                / self.s.units**2
+                * 1
+                / self.reg.eV**3
+                * self.reg.eV**2
+            )
+            ** -1
+            * self.reg.cm**-1
+            * 1.3e65
+        )  # The factor of is necessary to make the calculations match the ones from fiedler paper
 
         if type(E.magnitude) == np.ndarray:
             tmp1 = (E + self.Eac - self.E10).to(self.reg.eV).magnitude
@@ -958,28 +942,65 @@ class n_InGaAsP(object):
             else:
                 u_minus = self.E10 - E + self.Eac
 
-
-        a1 = A*(self.me)**1.5*self.Eac*self.Edef/self.n0/self.rho/self.s**2/(np.exp(self.Eac/(self.kb*self.T))-1)
-        a2 = 1/((self.E20 - E)**2 * E)
-        a3 = np.exp(self.Eac/self.kb/self.T)
+        a1 = (
+            A
+            * (self.me) ** 1.5
+            * self.Eac
+            * self.Edef
+            / self.n0
+            / self.rho
+            / self.s**2
+            / (np.exp(self.Eac / (self.kb * self.T)) - 1)
+        )
+        a2 = 1 / ((self.E20 - E) ** 2 * E)
+        a3 = np.exp(self.Eac / self.kb / self.T)
 
         energy_integrand_a4 = np.linspace(u_plus.to(self.reg.eV).magnitude, 100, 1000) * self.reg.eV
-        a4_integrand = energy_integrand_a4**0.5 * (energy_integrand_a4-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a4-self.Ef)/self.kb/self.T)+1)
-        a4_integrand = np.nan_to_num(a4_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
-        a4 = simpson(a4_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a4.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
+        a4_integrand = (
+            energy_integrand_a4**0.5
+            * (energy_integrand_a4 - self.E10 + E + self.Eac) ** 0.5
+            / (np.exp((energy_integrand_a4 - self.Ef) / self.kb / self.T) + 1)
+        )
+        a4_integrand = np.nan_to_num(
+            a4_integrand
+        )  # This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a4 = (
+            simpson(
+                a4_integrand.to(self.reg.eV).magnitude,
+                x=energy_integrand_a4.to(self.reg.eV).magnitude,
+                axis=0,
+            )
+            * self.reg.eV**2
+        )
 
+        energy_integrand_a5 = (
+            np.linspace(u_minus.to(self.reg.eV).magnitude, 100, 10000) * self.reg.eV
+        )
+        a5_integrand = (
+            energy_integrand_a5**0.5
+            * (energy_integrand_a5 - self.E10 + E + self.Eac) ** 0.5
+            / (np.exp((energy_integrand_a5 - self.Ef) / self.kb / self.T) + 1)
+        )
+        a5_integrand = np.nan_to_num(
+            a5_integrand
+        )  # This removes nan values that stem from very small negative numbers inside the root like -1e-17
+        a5 = (
+            simpson(
+                a5_integrand.to(self.reg.eV).magnitude,
+                x=energy_integrand_a5.to(self.reg.eV).magnitude,
+                axis=0,
+            )
+            * self.reg.eV**2
+        )
 
-        energy_integrand_a5 = np.linspace(u_minus.to(self.reg.eV).magnitude, 100, 10000) * self.reg.eV
-        a5_integrand = energy_integrand_a5**0.5 * (energy_integrand_a5-self.E10+E+self.Eac)**0.5/(np.exp((energy_integrand_a5-self.Ef)/self.kb/self.T)+1)
-        a5_integrand = np.nan_to_num(a5_integrand) #This removes nan values that stem from very small negative numbers inside the root like -1e-17
-        a5 = simpson(a5_integrand.to(self.reg.eV).magnitude, x=energy_integrand_a5.to(self.reg.eV).magnitude, axis=0) * self.reg.eV**2
+        alpha_IB = a1 * a2 * (a3 * a4 + a5)
 
-        alpha_IB = a1*a2*(a3*a4+a5)
+        Eg = self.get_bandgap(model="jain")
+        alpha_VC = (
+            3e3 * np.exp(-100 * (Eg - E).to(self.reg.eV).magnitude)
+        ) * self.reg.centimeter**-1
 
-        Eg = self.get_bandgap(model='jain')
-        alpha_VC = (3e3 * np.exp(-100*(Eg-E).to(self.reg.eV).magnitude)) * self.reg.centimeter**-1
-
-        return (alpha) * self.reg.centimeter**-1 + alpha_VC + alpha_IB 
+        return (alpha) * self.reg.centimeter**-1 + alpha_VC + alpha_IB
 
     def get_dn_BF(self, E=None, bandgap_model=None, h=1e-3):
         """
@@ -1013,9 +1034,7 @@ class n_InGaAsP(object):
         )  # this is left as 'none' because it is only used for the limits of integration. That way they are always the same.
 
         n_points_right = ((2 * Eg - E) / h).to(self.reg.dimensionless).astype(int)
-        n_points_left = (
-            ((E - 0.001 * self.reg.eV) / h).to(self.reg.dimensionless).astype(int)
-        )
+        n_points_left = ((E - 0.001 * self.reg.eV) / h).to(self.reg.dimensionless).astype(int)
         Nright = np.max(n_points_right)
         Nleft = np.max(n_points_left)
         # print(Nright, Nleft)
@@ -1047,7 +1066,9 @@ class n_InGaAsP(object):
             * h
         )
 
-        return np.squeeze((integral * self.c * self.hbar / np.pi)).to(
+        return np.squeeze(
+            integral * self.c * self.hbar / np.pi
+        ).to(
             self.reg.dimensionless
         )  # the reason why you dont divide by e is because of the eV dimension on the integral result!!
 
@@ -1071,11 +1092,9 @@ class n_InGaAsP(object):
         return (
             -1
             / 2
-            * (
-                N
-                * self.e**2
-                / (self.me * self.e0 * E**2 / self.hbar**2 * np.sqrt(self.eps_s))
-            ).to(self.reg.dimensionless)
+            * (N * self.e**2 / (self.me * self.e0 * E**2 / self.hbar**2 * np.sqrt(self.eps_s))).to(
+                self.reg.dimensionless
+            )
         )
 
     def get_dperm_pockels(self, E, Efield, bandgap_model=None):
@@ -1349,7 +1368,7 @@ class n_InGaAsP(object):
         # B_TE = 0.71e9
         # B_TM = 0.48e9
 
-        #These allow the replication of the results of [1] while using the Imodulator.
+        # These allow the replication of the results of [1] while using the Imodulator.
         A_TE = 0.9e3
         A_TM = 1.7e3
         B_TE = 0.42e9
@@ -1398,9 +1417,7 @@ class n_InGaAsP(object):
         )
         dalpha = dalpha.to(self.reg.meter**-1)
 
-        dperm_imag = (
-            np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
-        )
+        dperm_imag = np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
         # print(type(E.magnitude))
         if type(E.magnitude) == np.ndarray:
             S11 = C_TE * E**2 / (np.sqrt(self.eps_s) ** 4 * (Eg**2 - E**2) ** 2)
@@ -1453,8 +1470,7 @@ class n_InGaAsP(object):
 
         # find the change in permitivity
         dperm = (
-            np.einsum("ik,kltp,lj->ijtp", perm, deta_real, perm) * -1 / self.e0
-            + 1j * dperm_imag
+            np.einsum("ik,kltp,lj->ijtp", perm, deta_real, perm) * -1 / self.e0 + 1j * dperm_imag
         )
 
         return dperm
@@ -1491,7 +1507,7 @@ class n_InGaAsP(object):
         return S11, S12
 
 
-class p_InGaAsP(object):
+class p_InGaAsP:
     def __init__(self, P, T, y, wl, bandgap_model="jain"):
         """
         Base model for an p-type In_{1-x}Ga_{x}As_{y}P_{1-y}.
@@ -1546,9 +1562,7 @@ class p_InGaAsP(object):
         self.mhl = (0.12 - 0.078 * self.y + 0.002 * self.y**2) * self.m0
 
         # Formulas [2]
-        self.Nc = 2 * (
-            (self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5
-        ).to(
+        self.Nc = 2 * ((self.me * self.kb * self.T / (2 * np.pi * self.hbar**2)) ** 1.5).to(
             self.reg.centimeter**-3
         )  # cm^-3
         self.Nv = 2 * (
@@ -1559,32 +1573,24 @@ class p_InGaAsP(object):
                 / (2 * np.pi * self.hbar**2)
             )
             ** 1.5
-        ).to(
-            self.reg.centimeter**-3
-        )  # cm^-3
+        ).to(self.reg.centimeter**-3)  # cm^-3
 
         # Formula from [4]
         self.ni = np.sqrt(self.Nc * self.Nv) * np.exp(
             -self.get_bandgap(model="none") / (2 * self.kb * self.T)
         )
 
-        if self.P < self.ni:
-            self.P = self.ni
+        self.P = max(self.P, self.ni)
 
         self.N = self.ni**2 / self.P  # Assumes non degenerate semiconductor
 
-        self.so = (
-            0.119 + 0.30 * self.y - 0.107 * self.y**2
-        ) * self.reg.eV  # eV. Taken from [5]
+        self.so = (0.119 + 0.30 * self.y - 0.107 * self.y**2) * self.reg.eV  # eV. Taken from [5]
 
         self.eps_s = self.get_eps_s(self.y, self.wl, bandgap_model=self.bandgap_model)
 
         # Taken from [2]
         self.C = (
-            4.4e12
-            * self.reg.centimeter**-1
-            * self.reg.second**-0.5
-            * np.sqrt(self.hbar)
+            4.4e12 * self.reg.centimeter**-1 * self.reg.second**-0.5 * np.sqrt(self.hbar)
         )  # Taken from Bennet 1990
         # The sqrt(hbar) comes from the fact that C comes from an earlier paper that fits an absorption curve to frequency rather than energy
 
@@ -1612,30 +1618,25 @@ class p_InGaAsP(object):
         self.Ef = self.get_fermi_level()
 
         # Parameters for piezo effects. Taken from [3]
-        self.S11 = (
-            1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        )  # mechanical compliance
+        self.S11 = 1.639e-12 * self.reg.centimeter**2 * self.reg.dyne**-1  # mechanical compliance
         self.S12 = -0.589e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
         self.S44 = 2.26e-12 * self.reg.centimeter**2 * self.reg.dyne**-1
-        self.e14 = (
-            -0.083 * self.reg.coulomb * self.reg.meter**-2
-        )  # piezoelectric stress constant.
+        self.e14 = -0.083 * self.reg.coulomb * self.reg.meter**-2  # piezoelectric stress constant.
 
-        #Density
-        self.rho = (4.81+0.74*y) * self.reg.g*self.reg.centimeter**-3  # g cm^-3
-        self.s = (5.2-0.372*y-0.144*y**2)*1e5 * self.reg.cm/self.reg.second  # cm s^-1 
+        # Density
+        self.rho = (4.81 + 0.74 * y) * self.reg.g * self.reg.centimeter**-3  # g cm^-3
+        self.s = (5.2 - 0.372 * y - 0.144 * y**2) * 1e5 * self.reg.cm / self.reg.second  # cm s^-1
 
-        #Energy transitions
-        self.E10 = (0.61+0.182*y+0.105*y**2) * self.reg.eV
-        self.E20 = (3.38+0.549*y-0.208*y**2) * self.reg.eV
+        # Energy transitions
+        self.E10 = (0.61 + 0.182 * y + 0.105 * y**2) * self.reg.eV
+        self.E20 = (3.38 + 0.549 * y - 0.208 * y**2) * self.reg.eV
 
-        #Phonon energies
-        self.Eac = (24-2.84*y+1.57*y**2) * self.reg.meV
-        self.Eop = (42.6-21.1*y+2.87*y**2) * self.reg.meV
+        # Phonon energies
+        self.Eac = (24 - 2.84 * y + 1.57 * y**2) * self.reg.meV
+        self.Eop = (42.6 - 21.1 * y + 2.87 * y**2) * self.reg.meV
 
-        #Deformation potential
-        self.Edef = (7.95-2.04*y+0.839*y**2) * self.reg.eV
-
+        # Deformation potential
+        self.Edef = (7.95 - 2.04 * y + 0.839 * y**2) * self.reg.eV
 
     def get_eps_s(self, y=None, wl=None, P=None, bandgap_model=None, regime="optical"):
         """
@@ -1806,11 +1807,11 @@ class p_InGaAsP(object):
             "theta1": {"n": [1.57, 1.59, 2.1], "p": [2.3, 1.59, 2.2]},
             "theta2": {"n": [3.0, 3.68, 3.0], "p": [3.0, 3.0, 3.0]},
         }
-        for key1 in values_InGaAs.keys():
+        for key1 in values_InGaAs:
             for key2 in values_InGaAs[key1].keys():
                 values_InGaAs[key1][key2] = np.asarray(values_InGaAs[key1][key2])
 
-        for key in values_InGaAs.keys():
+        for key in values_InGaAs:
             if key != "Nref":
                 values_InGaAs[key]["n_out"] = make_interp_spline(
                     x_values, values_InGaAs[key]["n"], k=2
@@ -1836,11 +1837,11 @@ class p_InGaAsP(object):
             "theta2": {"n": [3.25, 0.71], "p": [3.0, 0]},
         }
 
-        for key1 in values_InGaP.keys():
+        for key1 in values_InGaP:
             for key2 in values_InGaP[key1].keys():
                 values_InGaP[key1][key2] = np.asarray(values_InGaP[key1][key2])
 
-        for key in values_InGaP.keys():
+        for key in values_InGaP:
             if key not in ["Nref", "theta2"]:
                 values_InGaP[key]["n_out"] = make_interp_spline(
                     x_values, values_InGaP[key]["n"], k=2
@@ -1866,25 +1867,21 @@ class p_InGaAsP(object):
         values = {
             "mu_max": {
                 "n": (
-                    y * values_InGaAs["mu_max"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["n_out"]
+                    y * values_InGaAs["mu_max"]["n_out"] + (1 - y) * values_InGaP["mu_max"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_max"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_max"]["p_out"]
+                    y * values_InGaAs["mu_max"]["p_out"] + (1 - y) * values_InGaP["mu_max"]["p_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
             },
             "mu_min": {
                 "n": (
-                    y * values_InGaAs["mu_min"]["n_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["n_out"]
+                    y * values_InGaAs["mu_min"]["n_out"] + (1 - y) * values_InGaP["mu_min"]["n_out"]
                 )
                 / (1 + 6 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["mu_min"]["p_out"]
-                    + (1 - y) * values_InGaP["mu_min"]["p_out"]
+                    y * values_InGaAs["mu_min"]["p_out"] + (1 - y) * values_InGaP["mu_min"]["p_out"]
                 ),
             },
             "Nref": {
@@ -1901,34 +1898,28 @@ class p_InGaAsP(object):
             },
             "lambda": {
                 "n": (
-                    y * values_InGaAs["lambda"]["n_out"]
-                    + (1 - y) * values_InGaP["lambda"]["n_out"]
+                    y * values_InGaAs["lambda"]["n_out"] + (1 - y) * values_InGaP["lambda"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["lambda"]["p_out"]
-                    + (1 - y) * values_InGaP["lambda"]["p_out"]
+                    y * values_InGaAs["lambda"]["p_out"] + (1 - y) * values_InGaP["lambda"]["p_out"]
                 ),
             },
             "theta1": {
                 "n": (
-                    y * values_InGaAs["theta1"]["n_out"]
-                    + (1 - y) * values_InGaP["theta1"]["n_out"]
+                    y * values_InGaAs["theta1"]["n_out"] + (1 - y) * values_InGaP["theta1"]["n_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
                 "p": (
-                    y * values_InGaAs["theta1"]["p_out"]
-                    + (1 - y) * values_InGaP["theta1"]["p_out"]
+                    y * values_InGaAs["theta1"]["p_out"] + (1 - y) * values_InGaP["theta1"]["p_out"]
                 )
                 / (1 + 1 * y * (1 - y)),
             },
             "theta2": {
                 "n": (
-                    y * values_InGaAs["theta2"]["n_out"]
-                    + (1 - y) * values_InGaP["theta2"]["n_out"]
+                    y * values_InGaAs["theta2"]["n_out"] + (1 - y) * values_InGaP["theta2"]["n_out"]
                 ),
                 "p": (
-                    y * values_InGaAs["theta2"]["p_out"]
-                    + (1 - y) * values_InGaP["theta2"]["p_out"]
+                    y * values_InGaAs["theta2"]["p_out"] + (1 - y) * values_InGaP["theta2"]["p_out"]
                 ),
             },
         }
@@ -1938,8 +1929,7 @@ class p_InGaAsP(object):
         P = self.P.to(self.reg.centimeter**-3).magnitude
 
         mobility_n = values["mu_min"]["n"] + (
-            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"]
-            - values["mu_min"]["n"]
+            values["mu_max"]["n"] * (300 / T) ** values["theta1"]["n"] - values["mu_min"]["n"]
         ) / (
             1
             + (N / (values["Nref"]["n"] * (300 / T) ** values["theta2"]["n"]))
@@ -1947,8 +1937,7 @@ class p_InGaAsP(object):
         )
 
         mobility_p = values["mu_min"]["p"] + (
-            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"]
-            - values["mu_min"]["p"]
+            values["mu_max"]["p"] * (300 / T) ** values["theta1"]["p"] - values["mu_min"]["p"]
         ) / (
             1
             + (P / (values["Nref"]["p"] * (300 / T) ** values["theta2"]["p"]))
@@ -2024,9 +2013,7 @@ class p_InGaAsP(object):
             )
 
             BGN = (
-                A * P.magnitude ** (1 / 3)
-                + B * P.magnitude**0.25
-                + C * P.magnitude**0.5
+                A * P.magnitude ** (1 / 3) + B * P.magnitude**0.25 + C * P.magnitude**0.5
             ) * self.reg.eV
 
         elif model == "none":
@@ -2062,10 +2049,7 @@ class p_InGaAsP(object):
 
         Eg = self.get_bandgap(P=P, T=T, model=bandgap_model)
 
-        Ef = (
-            -(np.log(P / self.Nv) + 1 / np.sqrt(8) * P / self.Nv) * self.kb * self.T
-            - Eg
-        )
+        Ef = -(np.log(P / self.Nv) + 1 / np.sqrt(8) * P / self.Nv) * self.kb * self.T - Eg
 
         return Ef.to(self.reg.eV)
 
@@ -2184,9 +2168,7 @@ class p_InGaAsP(object):
         )  # this is left as 'none' because it is only used for the limits of integration. That way they are always the same.
 
         n_points_right = ((2 * Eg - E) / h).to(self.reg.dimensionless).astype(int)
-        n_points_left = (
-            ((E - 0.001 * self.reg.eV) / h).to(self.reg.dimensionless).astype(int)
-        )
+        n_points_left = ((E - 0.001 * self.reg.eV) / h).to(self.reg.dimensionless).astype(int)
         Nright = np.max(n_points_right)
         Nleft = np.max(n_points_left)
         # print(Nright, Nleft)
@@ -2222,7 +2204,9 @@ class p_InGaAsP(object):
             * h
         )
         # print(integral)
-        return np.squeeze((integral * self.c * self.hbar / np.pi)).to(
+        return np.squeeze(
+            integral * self.c * self.hbar / np.pi
+        ).to(
             self.reg.dimensionless
         )  # the reason why you dont divide by e is because of the eV dimension on the integral result!!
 
@@ -2534,7 +2518,7 @@ class p_InGaAsP(object):
         # B_TE = 0.71e9
         # B_TM = 0.48e9
 
-        #These allow the replication of the results of [1] while using the Imodulator.
+        # These allow the replication of the results of [1] while using the Imodulator.
         A_TE = 0.9e3
         A_TM = 1.7e3
         B_TE = 0.42e9
@@ -2583,9 +2567,7 @@ class p_InGaAsP(object):
         )
         dalpha = dalpha.to(self.reg.meter**-1)
 
-        dperm_imag = (
-            np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
-        )
+        dperm_imag = np.sqrt(self.eps_s) * self.c / (2 * np.pi * freq) * dalpha * self.e0
         # print(type(E.magnitude))
         if type(E.magnitude) == np.ndarray:
             S11 = C_TE * E**2 / (np.sqrt(self.eps_s) ** 4 * (Eg**2 - E**2) ** 2)
@@ -2638,8 +2620,7 @@ class p_InGaAsP(object):
 
         # find the change in permitivity
         dperm = (
-            np.einsum("ik,kltp,lj->ijtp", perm, deta_real, perm) * -1 / self.e0
-            + 1j * dperm_imag
+            np.einsum("ik,kltp,lj->ijtp", perm, deta_real, perm) * -1 / self.e0 + 1j * dperm_imag
         )
 
         return dperm
