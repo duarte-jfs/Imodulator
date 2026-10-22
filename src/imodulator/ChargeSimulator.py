@@ -4,6 +4,7 @@ import copy
 import inspect
 import json
 import os
+import warnings
 from collections import OrderedDict
 from configparser import ConfigParser
 
@@ -2146,7 +2147,7 @@ class ChargeSimulatorCHARGE:
         device: PhotonicDevice,
         simulation_window: Polygon | None = None,
         temperature: float = 300.0,
-        bias_start_stop_step: list = [0, 1, 2],  # [start, stop, number of points], V on bias_contact
+        bias_start_stop_step: list = [0, 1, 2],
         bias_contact: str = "pmetal",
         ground_contact: str = "nmetal",
         include_insulators: bool = True,
@@ -2327,25 +2328,36 @@ class ChargeSimulatorCHARGE:
 
     def create_charge(
         self,
-        mesh_semiconductor: float = 5e-9,
-        mesh_max: float = 50e-9,
-        min_edge_length: float = 1e-9,
-        solver_type: str = "gummel",
+        mesh_semiconductor: float = 20e-9,
+        mesh_max: float = 200e-9,
+        min_edge_length: float = 5e-9,
+        solver_type: str = "newton",
         global_iteration_limit: int = 150,
-        gradient_mixing: str = "conservative",
+        gradient_mixing: str = "disabled",
         norm_length: float = 1e-2,
     ):
         """
         Create the simulation region, the CHARGE solver, mesh, contacts, bias sweep and doping.
+
+        The CHARGE mesher refines every abrupt doping step (the uniform doping of neighbouring
+        layers) down to min_edge_length, which resolves the depletion edges. That refinement, more
+        than mesh_semiconductor, sets the element count. The defaults come from a convergence study
+        on a gen2 EOPM cross-section (imos-eopm-simulations, Gen2/reports/charge2d_mesh_convergence):
+        against a 5 nm / 1 nm mesh they keep the field in the intrinsic layers within 0.4 %, the
+        depleted charge and the peak junction field within ~1 %, in about 3 min for 0 -> -10 V in
+        1 V steps. Accumulation layers at heterojunctions (a few nm thick) need min_edge_length of
+        1-2 nm, at 2-6x the runtime. The runtime is set mostly by the voltage span of the sweep
+        (~20 s per volt there) and much less by the mesh or the thread count.
 
         Args:
             mesh_semiconductor: Maximum triangle edge length inside every semiconductor, in m.
             mesh_max: Maximum triangle edge length elsewhere (insulators, vacuum, metals), in m.
             min_edge_length: Minimum edge length of the mesher, in m. Must be below mesh_semiconductor,
                 otherwise the semiconductor constraint is not reached.
-            solver_type: CHARGE solver, "gummel" or "newton".
+            solver_type: CHARGE solver, "newton" or "gummel" (same result, about 2x slower).
             global_iteration_limit: Maximum number of solver iterations per bias point.
-            gradient_mixing: CHARGE gradient mixing ("disabled", "fast", "conservative").
+            gradient_mixing: CHARGE gradient mixing ("disabled", "fast", "conservative"). Only helps
+                field-dependent mobility models; the materials here use constant mobilities.
             norm_length: Length (m) along z the 2D contact currents are normalised to.
         """
         dev = self.lumdev
@@ -2429,11 +2441,15 @@ class ChargeSimulatorCHARGE:
         Run the bias sweep and load the results.
 
         Creates the attributes:
-            V: bias of bias_contact, one entry per sweep point [V].
+            V: bias of bias_contact, one entry per converged sweep point [V].
             results: per CHARGE result group ("charge", "bandstructure", "electrostatics"), the node
                 coordinates "x", "y" [um], the 0-based triangle "connectivity" and the fields with shape
                 (n_bias, n_nodes): n, p [cm^-3]; Ec, Ev, Efn, Efp [eV]; Ex, Ey [kV/cm].
             I: contact current per contact [A per norm length].
+
+        CHARGE stops the sweep without an error at the first bias point it cannot converge (e.g. a
+        single 0 -> -10 V step) and returns only the points before it; a warning names the missing
+        points. Smaller bias steps fix it (1 V steps also run faster than 2 V steps).
         """
         dev = self.lumdev
         dev.save(self.filename)
@@ -2466,6 +2482,15 @@ class ChargeSimulatorCHARGE:
             self.results[group] = data
             if group == "electrostatics":
                 self.V = np.asarray(r["V_" + self.bias_contact], dtype=float).ravel()
+
+        Vstart, Vstop, Vsteps = self.bias_start_stop_step
+        requested = np.linspace(Vstart, Vstop, int(Vsteps))
+        missing = [v for v in requested if not np.isclose(self.V, v).any()]
+        if missing:
+            warnings.warn(
+                f"CHARGE did not converge at {np.round(missing, 6).tolist()} V and returned "
+                f"{len(self.V)} of {len(requested)} bias points; use smaller bias steps."
+            )
 
         self.I = {}
         for contact in (self.bias_contact, self.ground_contact):
@@ -2571,7 +2596,8 @@ class ChargeSimulatorCHARGE:
                 pts = shapely.points(x, y)
                 vals = np.zeros(np.shape(pts))
                 for p in self.semiconductors:
-                    vals = np.where(shapely.covers(p.polygon, pts), self.materials[p.name][key], vals)
+                    inside_p = shapely.covers(p.polygon, pts)
+                    vals = np.where(inside_p, self.materials[p.name][key], vals)
                 return vals * unit
 
             return f
