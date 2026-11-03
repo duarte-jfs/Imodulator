@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DC electro-optical modulation &mdash; Imodulator 1.0.2 documentation</title>
+  <title>DC electro-optical modulation &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -656,6 +657,11 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <div class="highlight"><pre>
 Successfully imported nextnanopy
 Successfully configured nextnano++ settings
+  [OK] nextnano++ exe: C:/Program Files/nextnano/2026_07_03/nextnano++/bin/nextnano++_Intel_64bit.exe
+  [OK] nextnano++ license: C:/Users/20230622/OneDrive - TU Eindhoven/PhD/License_nnp.lic
+  [OK] nextnano++ database: C:/Program Files/nextnano/2026_07_03/nextnano++/database/database.nnp
+  [OK] nextnano++ outputdirectory: D:/Repos/imodulator/tests\nn_output
+nextnano configuration test passed: all paths are valid.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -715,7 +721,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <section id="Find-the-optical-mode">
 <h2>Find the optical mode<a class="headerlink" href="#Find-the-optical-mode" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
@@ -731,7 +737,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -755,7 +761,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 <p>To get nicer results, we will do a mesh refinement step.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -779,20 +785,20 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index - mode 0: 3.2201
-loss - mode 0: 8.15 dB/cm
+Effective index - mode 0: 3.2089
+loss - mode 0: 0.81 dB/cm
 #------------------------------------------#
-Effective index - mode 1: 3.2179
-loss - mode 1: 4.05 dB/cm
+Effective index - mode 1: 3.2013
+loss - mode 1: 1.51 dB/cm
 #------------------------------------------#
-Effective index - mode 2: 3.0602
-loss - mode 2: 2339.77 dB/cm
+Effective index - mode 2: 3.0656
+loss - mode 2: 2770.05 dB/cm
 #------------------------------------------#
-Effective index - mode 3: 3.0555
-loss - mode 3: 2645.73 dB/cm
+Effective index - mode 3: 3.0481
+loss - mode 3: 26074.94 dB/cm
 #------------------------------------------#
-Effective index - mode 4: 3.0526
-loss - mode 4: 157.58 dB/cm
+Effective index - mode 4: 3.0299
+loss - mode 4: 4554.66 dB/cm
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -832,7 +838,7 @@ loss - mode 4: 157.58 dB/cm
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neff</span> <span class="o">=</span> <span class="p">[]</span>
@@ -840,7 +846,7 @@ loss - mode 4: 157.58 dB/cm
 <span class="n">nelements</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
 
     <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -876,49 +882,29 @@ loss - mode 4: 157.58 dB/cm
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 --- Refinement iteration 0 ---
-neff: 3.217871, loss: 4.05 dB/cm, nelements: 1061
+neff: 3.208872, loss: 0.81 dB/cm, nelements: 1059
 --- Refinement iteration 1 ---
-neff: 3.217228, loss: 3.64 dB/cm, nelements: 1101
+neff: 3.208569, loss: 0.82 dB/cm, nelements: 1247
 --- Refinement iteration 2 ---
-neff: 3.212777, loss: 4.17 dB/cm, nelements: 1255
+neff: 3.208517, loss: 0.82 dB/cm, nelements: 1425
 --- Refinement iteration 3 ---
-neff: 3.210950, loss: 4.34 dB/cm, nelements: 1429
+neff: 3.208557, loss: 0.82 dB/cm, nelements: 1809
 --- Refinement iteration 4 ---
-neff: 3.208468, loss: 4.60 dB/cm, nelements: 1629
+neff: 3.209108, loss: 0.80 dB/cm, nelements: 2079
 --- Refinement iteration 5 ---
-neff: 3.208010, loss: 4.64 dB/cm, nelements: 1703
+neff: 3.209102, loss: 0.80 dB/cm, nelements: 2471
 --- Refinement iteration 6 ---
-neff: 3.203102, loss: 5.69 dB/cm, nelements: 2345
+neff: 3.209294, loss: 0.80 dB/cm, nelements: 3849
 --- Refinement iteration 7 ---
-neff: 3.202746, loss: 5.35 dB/cm, nelements: 2569
+neff: 3.209452, loss: 0.80 dB/cm, nelements: 5351
 --- Refinement iteration 8 ---
-neff: 3.205577, loss: 5.11 dB/cm, nelements: 2915
+neff: 3.209550, loss: 1.08 dB/cm, nelements: 7799
 --- Refinement iteration 9 ---
-neff: 3.205445, loss: 5.12 dB/cm, nelements: 3081
---- Refinement iteration 10 ---
-neff: 3.205348, loss: 5.12 dB/cm, nelements: 3239
---- Refinement iteration 11 ---
-neff: 3.205254, loss: 5.25 dB/cm, nelements: 4339
---- Refinement iteration 12 ---
-neff: 3.205057, loss: 5.24 dB/cm, nelements: 4847
---- Refinement iteration 13 ---
-neff: 3.205034, loss: 5.25 dB/cm, nelements: 4913
---- Refinement iteration 14 ---
-neff: 3.204012, loss: 4.86 dB/cm, nelements: 6567
---- Refinement iteration 15 ---
-neff: 3.203949, loss: 4.84 dB/cm, nelements: 6845
---- Refinement iteration 16 ---
-neff: 3.203854, loss: 4.00 dB/cm, nelements: 9479
---- Refinement iteration 17 ---
-neff: 3.203805, loss: 4.00 dB/cm, nelements: 9921
---- Refinement iteration 18 ---
-neff: 3.204288, loss: 3.06 dB/cm, nelements: 12973
---- Refinement iteration 19 ---
-neff: 3.204256, loss: 3.06 dB/cm, nelements: 13375
+neff: 3.209591, loss: 1.04 dB/cm, nelements: 10423
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -955,7 +941,7 @@ neff: 3.204256, loss: 3.06 dB/cm, nelements: 13375
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
@@ -963,7 +949,7 @@ neff: 3.204256, loss: 3.06 dB/cm, nelements: 13375
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -979,7 +965,7 @@ neff: 3.204256, loss: 3.06 dB/cm, nelements: 13375
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -1003,20 +989,20 @@ neff: 3.204256, loss: 3.06 dB/cm, nelements: 13375
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index - mode 0: 3.2108
-loss - mode 0: 7.59 dB/cm
+Effective index - mode 0: 3.2096
+loss - mode 0: 1.16 dB/cm
 #------------------------------------------#
-Effective index - mode 1: 3.2038
-loss - mode 1: 2.98 dB/cm
+Effective index - mode 1: 3.2027
+loss - mode 1: 1.45 dB/cm
 #------------------------------------------#
-Effective index - mode 2: 3.1892
-loss - mode 2: 44123.50 dB/cm
+Effective index - mode 2: 3.0693
+loss - mode 2: 3928.81 dB/cm
 #------------------------------------------#
-Effective index - mode 3: 3.0500
-loss - mode 3: 2470.85 dB/cm
+Effective index - mode 3: 3.0548
+loss - mode 3: 27155.99 dB/cm
 #------------------------------------------#
-Effective index - mode 4: 3.0406
-loss - mode 4: 1830.36 dB/cm
+Effective index - mode 4: 3.0321
+loss - mode 4: 4488.75 dB/cm
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -1056,28 +1042,19 @@ loss - mode 4: 1830.36 dB/cm
 </div>
 </div>
 <p>Now that we have found our modes, we will transfer the TE and TM modes to the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
-  data[ixs] = self._kernel(vbasis.basis[i], w, dx)
-</pre></div></div>
-</div>
 </section>
 <section id="Solve-the-charge-transport-equations">
 <h2>Solve the charge transport equations<a class="headerlink" href="#Solve-the-charge-transport-equations" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
@@ -1126,7 +1103,7 @@ n
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">solve_PDD</span><span class="p">(</span>
@@ -1180,7 +1157,7 @@ Solving IV of the total solar cell...
 </div>
 <p>And now we transfer again the results to the `<code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
@@ -1192,7 +1169,7 @@ Solving IV of the total solar cell...
 <h2>Calculate the electro optic response<a class="headerlink" href="#Calculate-the-electro-optic-response" title="Link to this heading"></a></h2>
 <p>We now have all the data necessary to perform the electro-optic calculations. We start by initializing the <code class="docutils literal notranslate"><span class="pre">ElectroOpticSimulator</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EO</span> <span class="o">=</span> <span class="n">ElectroOpticalSimulator</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -1208,7 +1185,7 @@ Solving IV of the total solar cell...
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1224,40 +1201,17 @@ Text(0, 0.5, &#39;y (um)&#39;)
 </div>
 </div>
 <p>We can now calculate the <span class="math notranslate nohighlight">\(\Delta \bar{\epsilon}(x,y,V)\)</span></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EO</span><span class="o">.</span><span class="n">get_epsilon_optical</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
-  result_magnitude = func(*stripped_args, **stripped_kwargs)
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
-  result_magnitude = func(*stripped_args, **stripped_kwargs)
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
-  magnitude = new_self._magnitude**exponent
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
-  magnitude = new_self._magnitude**exponent
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
-  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
-  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
-C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Python packages\Imodulator\src\imodulator\ElectroOpticalSimulator.py:367: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-  epsilon_optical_all[EO_model_name][&#39;dperms&#39;][:, :, vertices_idxs, voltage_idx, perm_idx] = perm
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
-  result_magnitude = func(*stripped_args, **stripped_kwargs)
-</pre></div></div>
-</div>
 <p>It is instructive to understand the structure of the <code class="docutils literal notranslate"><span class="pre">EO.epsilon_optical</span></code> object as it became quite complex out of necessity to allow for future models. This object is stored as a dictionary. Each key of this dictionary aims to capture the effects induced by an <code class="docutils literal notranslate"><span class="pre">ElectroOpticalModel</span></code>. In our case we have only <code class="docutils literal notranslate"><span class="pre">InGaAsPElectroOpticalModel</span></code>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EO</span><span class="o">.</span><span class="n">epsilon_optical</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -1265,7 +1219,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1277,7 +1231,7 @@ dict_keys([&#39;InGaAsPElectroOpticalModel&#39;])
 to focus on optimizing field effects rather than charge effects since they are fundamentally limited. If you are designing for lower frequencies you may be interested in a balance between charge effects and field effects. The structure of this nested dictionary gives you two keys: <code class="docutils literal notranslate"><span class="pre">dperms</span></code> and <code class="docutils literal notranslate"><span class="pre">labels</span></code>. The <code class="docutils literal notranslate"><span class="pre">dperms</span></code> are the actual changes in permitivity induced by the various effects, and the <code class="docutils literal notranslate"><span class="pre">labels</span></code> is just a list which lets you retrieve the <code class="docutils literal notranslate"><span class="pre">dperm</span></code> for each of the effects. The
 <code class="docutils literal notranslate"><span class="pre">dperms</span></code> array has a shape of the shape [3,3,mesh points, voltage values, effects].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">EO</span><span class="o">.</span><span class="n">epsilon_optical</span><span class="p">[</span><span class="s2">&quot;InGaAsPElectroOpticalModel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -1298,7 +1252,7 @@ dict_keys([&#39;dperms&#39;, &#39;labels&#39;])
 </div>
 <p>Armed with this information we can actually inspect the <span class="math notranslate nohighlight">\(\Delta \bar{\epsilon}\)</span> for the various effects:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we will inspect some of the calculated properties</span>
@@ -1366,7 +1320,7 @@ dict_keys([&#39;dperms&#39;, &#39;labels&#39;])
 <li><p>We will calculate the electro-optic response with respect to 0V.</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the EO response for all voltages</span>

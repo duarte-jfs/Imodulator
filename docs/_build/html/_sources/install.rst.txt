@@ -91,6 +91,20 @@ Note that ``uv.lock`` only governs installs from a clone. Users installing the
 published package with ``pip install imodulator`` resolve dependencies normally
 against the constraints in ``pyproject.toml``.
 
+Reproducible environment with Nix (flake)
+------------------------------------------
+
+The repository also ships a ``flake.nix`` that builds the same pinned
+environment (femwell + solcore extras) as a self-contained Nix store path, with
+the system libraries the wheels need baked in — nothing is installed
+system-wide. The same commands work on **Linux** (``x86_64-linux``) and
+**macOS / Apple Silicon** (``aarch64-darwin``):
+
+.. code-block:: console
+
+   $ cd Imodulator
+   $ nix develop .          # the environment on your PATH, plus uv
+
 Optional extras
 ---------------
 

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maat 2001 &mdash; Imodulator 1.0.2 documentation</title>
+  <title>Maat 2001 &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -275,8 +276,8 @@ nextnano configuration test passed: all paths are valid.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span> <span class="o">=</span> <span class="n">Modulator_CPW</span><span class="p">()</span>
 <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">plot_polygons</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -302,15 +303,27 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">+</span><span class="mf">0.001</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span> <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span><span class="o">-</span><span class="mf">0.001</span><span class="p">]])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">],</span>
+        <span class="p">[</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span>
+            <span class="o">-</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
-<span class="n">charge</span><span class="o">=</span><span class="n">ChargeSimulatorNN</span><span class="p">(</span>
+<span class="n">charge</span> <span class="o">=</span> <span class="n">ChargeSimulatorNN</span><span class="p">(</span>
     <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
     <span class="n">simulation_line</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
-    <span class="n">bias_start_stop_step</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">],</span>
-    <span class="n">output_directory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;output_nn&quot;</span>
+    <span class="n">bias_start_stop_step</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">],</span>
+    <span class="n">output_directory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;output_nn&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">charge</span><span class="o">.</span><span class="n">plot_with_simulation_line</span><span class="p">()</span>
@@ -319,18 +332,21 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
     <span class="n">show_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">convergenceCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">convergence_check_mode</span><span class="o">=</span><span class="s2">&quot;continue&quot;</span><span class="p">,</span>
-    <span class="n">outputdirectory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat&quot;</span><span class="p">)</span>
+    <span class="n">outputdirectory</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">charge</span><span class="o">.</span><span class="n">load_output_data</span><span class="p">(</span><span class="n">folderpath</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave&quot;</span><span class="p">)</span>
+<span class="n">charge</span><span class="o">.</span><span class="n">load_output_data</span><span class="p">(</span>
+    <span class="n">folderpath</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator paper\Generic_InP\maat\quicksave&quot;</span>
+<span class="p">)</span>
 
 <span class="n">charge</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span>
-    <span class="n">V_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;plasma&#39;</span><span class="p">,</span>
+    <span class="n">V_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
     <span class="n">plot_limits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">polygons_to_map</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;L1&#39;</span><span class="p">,</span> <span class="s1">&#39;L2&#39;</span><span class="p">,</span> <span class="s1">&#39;L3&#39;</span><span class="p">,</span> <span class="s1">&#39;L4&#39;</span><span class="p">,</span> <span class="s1">&#39;L5&#39;</span><span class="p">,</span> <span class="s1">&#39;L6&#39;</span><span class="p">,</span> <span class="s1">&#39;etchstop&#39;</span><span class="p">])</span>
+    <span class="n">dx</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">polygons_to_map</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;L1&quot;</span><span class="p">,</span> <span class="s2">&quot;L2&quot;</span><span class="p">,</span> <span class="s2">&quot;L3&quot;</span><span class="p">,</span> <span class="s2">&quot;L4&quot;</span><span class="p">,</span> <span class="s2">&quot;L5&quot;</span><span class="p">,</span> <span class="s2">&quot;L6&quot;</span><span class="p">,</span> <span class="s2">&quot;etchstop&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -369,7 +385,7 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;Efield&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.72</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;Efield&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.72</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -385,10 +401,8 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
-                    <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span>
-            <span class="n">include_metals</span><span class="o">=</span><span class="kc">True</span><span class="o">*</span><span class="mi">0</span>
-        <span class="p">)</span>
+    <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">include_metals</span><span class="o">=</span><span class="kc">True</span> <span class="o">*</span> <span class="mi">0</span>
+<span class="p">)</span>
 <span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">(</span><span class="n">gmsh_algorithm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
 
@@ -439,17 +453,17 @@ C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Reports and papers\16. Imodulator 
     <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">metallic_boundaries</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">],</span>
     <span class="n">n_guess</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
-    <span class="n">return_modes</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">return_modes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Effective index - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;loss - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> dB/cm&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effective index - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;loss - mode </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> dB/cm&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;power: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_power</span><span class="p">())</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TE fraction: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">te_fraction</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TM fraction: &quot;</span><span class="p">,</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tm_fraction</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;transversality: </span><span class="si">{</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transversality</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#------------------------------------------#&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#------------------------------------------#&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
     <span class="n">mode</span><span class="o">.</span><span class="n">plot_mode</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -532,7 +546,7 @@ transversality: 0.9834257954763087
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -540,23 +554,31 @@ transversality: 0.9834257954763087
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wl_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1570</span><span class="p">,</span><span class="mi">1555</span><span class="p">,</span><span class="mi">1540</span><span class="p">,</span><span class="mi">1525</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wl_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1570</span><span class="p">,</span> <span class="mi">1555</span><span class="p">,</span> <span class="mi">1540</span><span class="p">,</span> <span class="mi">1525</span><span class="p">]</span>
 <span class="n">kappa_TE_vals</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">kappa_TM_vals</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">manager</span> <span class="o">=</span> <span class="n">enlighten</span><span class="o">.</span><span class="n">get_manager</span><span class="p">()</span>
-<span class="n">pbar</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">wl_vals</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Calculating EO response&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
-<span class="n">pbar_voltage</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Calculating EO response&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;voltage index&#39;</span><span class="p">)</span>
+<span class="n">pbar</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">wl_vals</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Calculating EO response&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
+<span class="n">pbar_voltage</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span>
+    <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Calculating EO response&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;voltage index&quot;</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wl_vals</span><span class="p">:</span>
-    <span class="n">EO</span><span class="o">=</span><span class="n">ElectroOpticalSimulator</span><span class="p">(</span>
+    <span class="n">EO</span> <span class="o">=</span> <span class="n">ElectroOpticalSimulator</span><span class="p">(</span>
         <span class="n">device</span><span class="o">=</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
-            <span class="o">-</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span>
             <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-            <span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span> <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span><span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span><span class="o">+</span><span class="mi">1</span>
+            <span class="o">+</span><span class="n">modulator</span><span class="o">.</span><span class="n">w_metal_sig</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">modulator</span><span class="o">.</span><span class="n">h_L1</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L2</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L3</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L4</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L5</span>
+            <span class="o">+</span> <span class="n">modulator</span><span class="o">.</span><span class="n">h_L6</span>
+            <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">EO</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
@@ -569,33 +591,33 @@ transversality: 0.9834257954763087
 
     <span class="n">kappa_all_TE</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">kappa_all_TM</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">voltage_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">voltage_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">pbar_voltage</span><span class="o">.</span><span class="n">count</span><span class="o">=</span><span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])):</span>
+    <span class="n">pbar_voltage</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">])):</span>
         <span class="n">kappa</span> <span class="o">=</span> <span class="n">EO</span><span class="o">.</span><span class="n">calculate_EO_response</span><span class="p">(</span>
             <span class="n">voltage_idx</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
             <span class="n">rot_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>
             <span class="n">rot_z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">base_epsilon_voltage_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">,</span>
-            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">,</span>
-            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">wl</span><span class="o">/</span><span class="mf">1e3</span>
+            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s2">&quot;TE&quot;</span><span class="p">,</span>
+            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s2">&quot;TE&quot;</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">kappa_all_TE</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s1">&#39;InGaAsPElectroOpticalModel&#39;</span><span class="p">][</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+        <span class="n">kappa_all_TE</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s2">&quot;InGaAsPElectroOpticalModel&quot;</span><span class="p">][</span><span class="s2">&quot;results&quot;</span><span class="p">])</span>
 
         <span class="n">kappa</span> <span class="o">=</span> <span class="n">EO</span><span class="o">.</span><span class="n">calculate_EO_response</span><span class="p">(</span>
             <span class="n">voltage_idx</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
             <span class="n">rot_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">rot_y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>
             <span class="n">rot_z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">base_epsilon_voltage_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">,</span>
-            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">,</span>
-            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">wl</span><span class="o">/</span><span class="mf">1e3</span>
+            <span class="n">optical_mode_a</span><span class="o">=</span><span class="s2">&quot;TM&quot;</span><span class="p">,</span>
+            <span class="n">optical_mode_b</span><span class="o">=</span><span class="s2">&quot;TM&quot;</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">kappa_all_TM</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s1">&#39;InGaAsPElectroOpticalModel&#39;</span><span class="p">][</span><span class="s1">&#39;results&#39;</span><span class="p">])</span>
+        <span class="n">kappa_all_TM</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="s2">&quot;InGaAsPElectroOpticalModel&quot;</span><span class="p">][</span><span class="s2">&quot;results&quot;</span><span class="p">])</span>
 
         <span class="n">pbar_voltage</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
@@ -748,107 +770,110 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
-<span class="s1">&#39;kappa_vals.npy&#39;</span><span class="p">,</span>
-<span class="p">{</span>
-    <span class="s1">&#39;wl_vals&#39;</span><span class="p">:</span> <span class="n">wl_vals</span><span class="p">,</span>
-    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">charge</span><span class="o">.</span><span class="n">V</span><span class="p">,</span>
-    <span class="s1">&#39;kappa_TE_vals&#39;</span><span class="p">:</span> <span class="n">kappa_TE_vals</span><span class="p">,</span>
-    <span class="s1">&#39;kappa_TM_vals&#39;</span><span class="p">:</span> <span class="n">kappa_TM_vals</span>
-<span class="p">}</span>
+    <span class="s2">&quot;kappa_vals.npy&quot;</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;wl_vals&quot;</span><span class="p">:</span> <span class="n">wl_vals</span><span class="p">,</span>
+        <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="n">charge</span><span class="o">.</span><span class="n">V</span><span class="p">,</span>
+        <span class="s2">&quot;kappa_TE_vals&quot;</span><span class="p">:</span> <span class="n">kappa_TE_vals</span><span class="p">,</span>
+        <span class="s2">&quot;kappa_TM_vals&quot;</span><span class="p">:</span> <span class="n">kappa_TM_vals</span><span class="p">,</span>
+    <span class="p">},</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">A</span><span class="o">+</span><span class="n">B</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">D</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">E</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">C</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">D</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">E</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">4</span>
+
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
 
 <span class="n">data_maat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s1">&#39;.\maat_data_all_new.csv&#39;</span><span class="p">,</span>
-    <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">&quot;.\maat_data_all_new.csv&quot;</span><span class="p">,</span>
+    <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
     <span class="n">skip_header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
     <span class="n">filling_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
-<span class="n">ax_TE</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ax_TM</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_TE</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax_TM</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">]</span>
 
-<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
+<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
     <span class="n">ax_TE</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="p">],</span>
-        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">idx</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
         <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Maat&#39;</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> nm - Maat&quot;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
-    <span class="n">alpha_TE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TE_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="o">*</span><span class="mf">1e-3</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+    <span class="n">alpha_TE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TE_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span> <span class="o">*</span> <span class="mf">1e-3</span>
 
-    <span class="n">ax_TE</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-            <span class="n">V</span><span class="p">,</span>
-            <span class="n">alpha_TE</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Simulated&#39;</span>
-    <span class="p">)</span>
+    <span class="n">ax_TE</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">alpha_TE</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> nm - Simulated&quot;</span><span class="p">)</span>
 
-<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
+<span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
     <span class="n">ax_TM</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="p">],</span>
-        <span class="n">data_maat</span><span class="p">[:,</span><span class="mi">2</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">idx</span><span class="p">],</span>
+        <span class="n">data_maat</span><span class="p">[:,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
         <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm&#39;</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> nm&quot;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
-    <span class="n">alpha_TM</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TM_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="o">*</span><span class="mf">1e-3</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">modulator</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+    <span class="n">alpha_TM</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.343</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kappa_TM_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span> <span class="o">*</span> <span class="mf">1e-3</span>
 
-    <span class="n">ax_TM</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-         <span class="n">V</span><span class="p">,</span>
-            <span class="n">alpha_TM</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> nm - Simulated&#39;</span>
-    <span class="p">)</span>
+    <span class="n">ax_TM</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">alpha_TM</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;WL = </span><span class="si">{</span><span class="n">wl_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> nm - Simulated&quot;</span><span class="p">)</span>
 
-<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">)</span>
-<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">)</span>
-<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Attenuation (dB)&#39;</span><span class="p">)</span>
-<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Attenuation (dB)&#39;</span><span class="p">)</span>
-<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TE mode&#39;</span><span class="p">)</span>
-<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;TM mode&#39;</span><span class="p">)</span>
-<span class="n">ax_TE</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Voltage (V)&quot;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Voltage (V)&quot;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Attenuation (dB)&quot;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Attenuation (dB)&quot;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;TE mode&quot;</span><span class="p">)</span>
+<span class="n">ax_TM</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;TM mode&quot;</span><span class="p">)</span>
+<span class="n">ax_TE</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="c1"># ax_TM.legend(frameon=False, loc=&#39;lower left&#39;, fontsize=8)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;EO_simulation.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;EO_simulation.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9827154d5e77499190cefea241a7f28a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9827154d5e77499190cefea241a7f28a", "version_major": 2, "version_minor": 0}</script></div>
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">The Kernel crashed while executing code in the current cell or a previous cell.
+
+</span><span class="ansi-red-intense-fg ansi-bold">Please review the code in the cell(s) to identify a possible cause of the failure.
+
+</span><span class="ansi-red-intense-fg ansi-bold">Click &lt;a href=&#39;https://aka.ms/vscodeJupyterKernelCrash&#39;&gt;here&lt;/a&gt; for more info.
+
+</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+</pre></div></div>
 </div>
 </section>
 

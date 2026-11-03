@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InGaAsPElectroOpticalModel &mdash; Imodulator 1.0.2 documentation</title>
+  <title>InGaAsPElectroOpticalModel &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -327,7 +328,7 @@
 </section>
 <section id="charge-carrier-mobility">
 <h2>Charge carrier mobility<a class="headerlink" href="#charge-carrier-mobility" title="Link to this heading"></a></h2>
-<p>Despite most commercial software for the simulation of charge transport in semiconductors have a good material database, III-V (in particular InGaAsP) materials seldom have a correct value for mobility, and in particular doping dependent mobility values. For that reason we will follow the empirical model of <span id="id6">Sotoodeh <em>et al.</em> [<a class="reference internal" href="#id60" title="M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. Journal of Applied Physics, 87(6):2890–2900, March 2000. URL: https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121 (visited on 2023-05-24), doi:10.1063/1.372274.">13</a>]</span> for low field mobility:</p>
+<p>Despite most commercial software for the simulation of charge transport in semiconductors have a good material database, III-V (in particular InGaAsP) materials seldom have a correct value for mobility, and in particular doping dependent mobility values. For that reason we will follow the empirical model of <span id="id6">Sotoodeh <em>et al.</em> [<a class="reference internal" href="../index.html#id10" title="M. Sotoodeh, A. H. Khalid, and A. A. Rezazadeh. Empirical low-field mobility model for III–V compounds applicable in device simulation codes. Journal of Applied Physics, 87(6):2890–2900, March 2000. URL: https://pubs.aip.org/aip/jap/article/87/6/2890-2900/489121 (visited on 2023-05-24), doi:10.1063/1.372274.">1</a>]</span> for low field mobility:</p>
 <div class="math notranslate nohighlight">
 \[\mu (N, T) = \mu_{min} + \frac{\mu_{max}(300K)\left(\frac{300K}{T}\right)^{\theta_1}-\mu_{min}}{1+\left(\frac{N}{N_{ref}(300K)\left(\frac{T}{300K}\right)^{\theta_2}}\right)^\lambda}\]</div>
 <p>Where the values of <span class="math notranslate nohighlight">\(\lambda_n\)</span>, <span class="math notranslate nohighlight">\(\theta_{n2}\)</span>, <span class="math notranslate nohighlight">\(\log_10{N_{n,ref}(300K)}\)</span>, <span class="math notranslate nohighlight">\(\lambda_p\)</span>, <span class="math notranslate nohighlight">\(\mu_{p, min}\)</span>, <span class="math notranslate nohighlight">\(\theta_{p2}\)</span> and <span class="math notranslate nohighlight">\(\log_10{N_{p,ref}(300K)}\)</span> for <span class="math notranslate nohighlight">\(In_{1-x}Ga_{x}As_{y}P_{1-y}\)</span> are found via:</p>
@@ -1048,13 +1049,19 @@ C_{TM} = 3.13\times10^{-18}\,\mathrm{eV^2\,m^2/V^2}.\]</div>
   A_{TM} &amp;= 0.55\times 10^{3} \quad \frac{eV}{Vm} \\
   B_{TE,TM} &amp;= 0.42\times 10^9 \quad \frac{V}{eV^{-3/2}m}
 \end{aligned}\end{split}\]</div>
-<figure class="align-center" id="id84">
-<a class="reference internal image-reference" href="../_images/maat_kerr_absorption.png"><img alt="../_images/maat_kerr_absorption.png" src="../_images/maat_kerr_absorption.png" style="width: 80%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Results from the benchmark. The code to reproduce this plot can be found in <span class="xref std std-doc">BenchmarksMaat_2001EO_simulation</span></span><a class="headerlink" href="#id84" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+<p>Finally, we have also assumed that the absorption for the z component of the electric field is the same that of the TE polarization by direct comparison with the results from Kleinman symmetry imposed upon the real part. This is not necessarily correct. In fact, Kleinman symmetry breaks whenever large dispersion is present, which in our case both effects on Franz Keldysh (real and absorption) are highly dispersive, so validity is questionable. However, until the time of writing, we have not found any major inconsistencies in our benchmarks.
+.. figure:: images_ingaasp/maat_kerr_absorption.png</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">width<span class="colon">:</span></dt>
+<dd class="field-odd"><p>80%</p>
+</dd>
+<dt class="field-even">align<span class="colon">:</span></dt>
+<dd class="field-even"><p>center</p>
+</dd>
+</dl>
+<p>Results from the benchmark. The code to reproduce this plot can be found in <span class="xref std std-doc">BenchmarksMaat_2001EO_simulation</span></p>
+</div></blockquote>
 <dl class="py class">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalModel.</span></span><span class="sig-name descname"><span class="pre">InGaAsPElectroOpticalModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Efield</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandgap_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jain'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BF_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vinchant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1550</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalModel.InGaAsPElectroOpticalModel" title="Link to this definition"></a></dt>

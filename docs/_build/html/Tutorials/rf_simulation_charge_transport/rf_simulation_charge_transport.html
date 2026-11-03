@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RF simulation with charge transport data &mdash; Imodulator 1.0.2 documentation</title>
+  <title>RF simulation with charge transport data &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -635,7 +636,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Successfully imported lumapi
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
 WARNING: The RCWA solver will not be available because an S4 installation has not been found.
 </pre></div></div>
 </div>
@@ -644,7 +645,7 @@ WARNING: The RCWA solver will not be available because an S4 installation has no
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\solcore\registries.py:73: UserWarning: Optics solver &#39;RCWA&#39; will not be available. An installation of S4 has not been found.
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\solcore\registries.py:73: UserWarning: Optics solver &#39;RCWA&#39; will not be available. An installation of S4 has not been found.
   warn(
 </pre></div></div>
 </div>
@@ -655,6 +656,11 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\solc
 <div class="highlight"><pre>
 Successfully imported nextnanopy
 Successfully configured nextnano++ settings
+  [OK] nextnano++ exe: C:/Program Files/nextnano/2026_07_03/nextnano++/bin/nextnano++_Intel_64bit.exe
+  [OK] nextnano++ license: C:/Users/20230622/OneDrive - TU Eindhoven/PhD/License_nnp.lic
+  [OK] nextnano++ database: C:/Program Files/nextnano/2026_07_03/nextnano++/database/database.nnp
+  [OK] nextnano++ outputdirectory: D:/Repos/imodulator/tests\nn_output
+nextnano configuration test passed: all paths are valid.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -662,7 +668,8 @@ Successfully configured nextnano++ settings
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\nextnanopy-0.1.22-py3.10.egg\nextnanopy\defaults.py:202: UserWarning: Unsupported products in config file: [&#39;nextnano.NEGF++&#39;] will be ignored. To not see this message, please remove unsupported products from the config file: C:\Users\20235351\.nextnanopy-configNote: nextnano.NEGF++ was renamed to nextnano.NEGF, nextnano.NEGF was renamed to nextnano.NEGF_classic. Please check the documentation for more details.
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\nextnanopy\defaults.py:202: UserWarning: Unsupported products in config file: [&#39;nextnano.NEGF++&#39;] will be ignored. To not see this message, please remove unsupported products from the config file: C:\Users\20230622\.nextnanopy-configNote: nextnano.NEGF++ was renamed to nextnano.NEGF, nextnano.NEGF was renamed to nextnano.NEGF_classic. Please check the documentation for more details.
+  warnings.warn(
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -809,7 +816,7 @@ Solving IV of the junctions...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\solcore\sesame_drift_diffusion\solve_pdd.py:194: UserWarning: All voltages are positive, but junction has been identified as n-p, so the  open-circuit voltage (Voc) of the junction will be negative.
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\solcore\sesame_drift_diffusion\solve_pdd.py:193: UserWarning: All voltages are positive, but junction has been identified as n-p, so the  open-circuit voltage (Voc) of the junction will be negative.
   warnings.warn(
 </pre></div></div>
 </div>
@@ -830,7 +837,7 @@ Solving IV of the total solar cell...
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
@@ -842,7 +849,7 @@ Solving IV of the total solar cell...
 <h2>Solving the RF mode<a class="headerlink" href="#Solving-the-RF-mode" title="Link to this heading"></a></h2>
 <p>Here we will move directly with a symmetry plane, as we will be characterizing a CPW line</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rf_sim</span> <span class="o">=</span> <span class="n">RFSimulatorFEMWELL</span><span class="p">(</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">))</span>
@@ -867,7 +874,7 @@ Number of elements 638
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -893,7 +900,7 @@ Number of elements 638
 <div class="math notranslate nohighlight">
 \[\sigma (x,y,V) = e\left(\mu_n (x,y) N(x,y,V) + \mu_p (x,y) P(x,y,V)\right)\]</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">plot_eps_rf</span><span class="p">(</span>
@@ -923,7 +930,7 @@ Number of elements 638
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by zero encountered in log10
+C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Python packages\Imodulator\src\imodulator\RFSimulator.py:525: RuntimeWarning: divide by zero encountered in log10
   data_to_plot_im = np.log10(-data_to_plot_im)
 </pre></div></div>
 </div>
@@ -943,7 +950,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
 </div>
 <p>For the moment the mesh is quite coarse and we cannot see much. Let us calculate some modes and then move to some mesh refinement</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rf_sim</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -978,8 +985,8 @@ loss - mode 0: -2689.90 dB/cm
 Effective index - mode 1: 2.0987
 loss - mode 1: 0.90 dB/cm
 #------------------------------------------#
-Effective index - mode 2: 3.7049
-loss - mode 2: 8.26 dB/cm
+Effective index - mode 2: 3.7038
+loss - mode 2: 8.37 dB/cm
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -988,7 +995,7 @@ loss - mode 2: 8.26 dB/cm
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
   data[ixs] = self._kernel(vbasis.basis[i], w, dx)
 </pre></div></div>
 </div>
@@ -1015,7 +1022,7 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfe
 </div>
 <p>With this we see we are interested in mode number 1. Let us hope there is no mode jump and we can stay with mode index 2 for the full refinement.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1025,7 +1032,7 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfe
 <span class="n">z0</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">rf_sim</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
 
     <span class="n">rf_sim</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -1048,7 +1055,7 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfe
     <span class="c1">######### Calculate characteristic impedance #########</span>
     <span class="n">p0</span><span class="p">,</span> <span class="n">i0_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">])</span>
 
-    <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+    <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
     <span class="n">p0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p0</span>
 
     <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -1076,69 +1083,49 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfe
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 --- Refinement iteration 0 ---
-Nelements: 948 | neff: 3.644956 | loss: 7.79 dB/cm | Z0: 101.90+0.80j Ohm
+Nelements: 948 | neff: 3.643978 | loss: 7.91 dB/cm | Z0: 101.90+0.94j Ohm
 --- Refinement iteration 1 ---
-Nelements: 984 | neff: 3.638842 | loss: 7.78 dB/cm | Z0: 95.64+0.73j Ohm
+Nelements: 984 | neff: 3.637865 | loss: 7.89 dB/cm | Z0: 95.65+0.87j Ohm
 --- Refinement iteration 2 ---
-Nelements: 1115 | neff: 3.622867 | loss: 7.59 dB/cm | Z0: 85.08+0.36j Ohm
+Nelements: 1115 | neff: 3.621899 | loss: 7.70 dB/cm | Z0: 85.09+0.48j Ohm
 --- Refinement iteration 3 ---
-Nelements: 1249 | neff: 3.626797 | loss: 7.63 dB/cm | Z0: 77.82+0.23j Ohm
+Nelements: 1237 | neff: 3.626392 | loss: 7.70 dB/cm | Z0: 77.82+0.30j Ohm
 --- Refinement iteration 4 ---
-Nelements: 1369 | neff: 3.600025 | loss: 8.00 dB/cm | Z0: 56.71+0.46j Ohm
+Nelements: 1375 | neff: 3.606797 | loss: 7.97 dB/cm | Z0: 56.40+0.43j Ohm
 --- Refinement iteration 5 ---
-Nelements: 1451 | neff: 3.579529 | loss: 8.39 dB/cm | Z0: 56.49+0.73j Ohm
+Nelements: 1457 | neff: 3.588976 | loss: 8.33 dB/cm | Z0: 56.33+0.67j Ohm
 --- Refinement iteration 6 ---
-Nelements: 1601 | neff: 3.579476 | loss: 8.38 dB/cm | Z0: 55.48+0.67j Ohm
+Nelements: 1607 | neff: 3.588928 | loss: 8.31 dB/cm | Z0: 55.33+0.61j Ohm
 --- Refinement iteration 7 ---
-Nelements: 2031 | neff: 3.578986 | loss: 8.36 dB/cm | Z0: 53.25+0.62j Ohm
+Nelements: 2029 | neff: 3.588497 | loss: 8.30 dB/cm | Z0: 53.10+0.56j Ohm
 --- Refinement iteration 8 ---
-Nelements: 2566 | neff: 3.467047 | loss: 7.93 dB/cm | Z0: 52.18+0.49j Ohm
+Nelements: 2607 | neff: 3.475942 | loss: 8.04 dB/cm | Z0: 51.99+0.55j Ohm
 --- Refinement iteration 9 ---
-Nelements: 3114 | neff: 3.463487 | loss: 7.63 dB/cm | Z0: 48.58+0.26j Ohm
+Nelements: 3146 | neff: 3.471737 | loss: 7.72 dB/cm | Z0: 48.44+0.31j Ohm
 --- Refinement iteration 10 ---
-Nelements: 3142 | neff: 3.480129 | loss: 7.50 dB/cm | Z0: 46.79+0.15j Ohm
+Nelements: 3174 | neff: 3.488018 | loss: 7.58 dB/cm | Z0: 46.65+0.19j Ohm
 --- Refinement iteration 11 ---
-Nelements: 3336 | neff: 3.480087 | loss: 7.50 dB/cm | Z0: 46.77+0.15j Ohm
+Nelements: 3368 | neff: 3.487977 | loss: 7.58 dB/cm | Z0: 46.64+0.19j Ohm
 --- Refinement iteration 12 ---
-Nelements: 3426 | neff: 3.483678 | loss: 7.46 dB/cm | Z0: 46.69+0.12j Ohm
+Nelements: 3458 | neff: 3.491623 | loss: 7.54 dB/cm | Z0: 46.56+0.15j Ohm
 --- Refinement iteration 13 ---
-Nelements: 4447 | neff: 3.483439 | loss: 7.46 dB/cm | Z0: 46.65+0.12j Ohm
+Nelements: 4632 | neff: 3.491386 | loss: 7.53 dB/cm | Z0: 46.51+0.15j Ohm
 --- Refinement iteration 14 ---
-Nelements: 5345 | neff: 3.496262 | loss: 7.35 dB/cm | Z0: 46.24+0.24j Ohm
+Nelements: 5397 | neff: 3.504478 | loss: 7.32 dB/cm | Z0: 46.02+0.21j Ohm
 --- Refinement iteration 15 ---
-Nelements: 5389 | neff: 3.500800 | loss: 7.18 dB/cm | Z0: 45.32+0.15j Ohm
+Nelements: 5449 | neff: 3.507662 | loss: 7.25 dB/cm | Z0: 45.23+0.18j Ohm
 --- Refinement iteration 16 ---
-Nelements: 5706 | neff: 3.500925 | loss: 7.18 dB/cm | Z0: 45.34+0.15j Ohm
+Nelements: 5791 | neff: 3.507656 | loss: 7.24 dB/cm | Z0: 45.25+0.18j Ohm
 --- Refinement iteration 17 ---
-Nelements: 6646 | neff: 3.500919 | loss: 7.16 dB/cm | Z0: 45.20+0.14j Ohm
+Nelements: 7567 | neff: 3.507936 | loss: 7.23 dB/cm | Z0: 45.11+0.17j Ohm
 --- Refinement iteration 18 ---
-Nelements: 6674 | neff: 3.498616 | loss: 7.13 dB/cm | Z0: 45.27+0.12j Ohm
+Nelements: 7591 | neff: 3.510678 | loss: 7.18 dB/cm | Z0: 44.93+0.15j Ohm
 --- Refinement iteration 19 ---
-Nelements: 7092 | neff: 3.498628 | loss: 7.13 dB/cm | Z0: 45.31+0.12j Ohm
---- Refinement iteration 20 ---
-Nelements: 7370 | neff: 3.501227 | loss: 7.11 dB/cm | Z0: 45.14+0.12j Ohm
---- Refinement iteration 21 ---
-Nelements: 7410 | neff: 3.501185 | loss: 7.11 dB/cm | Z0: 44.97+0.12j Ohm
---- Refinement iteration 22 ---
-Nelements: 9266 | neff: 3.501163 | loss: 7.11 dB/cm | Z0: 44.97+0.12j Ohm
---- Refinement iteration 23 ---
-Nelements: 11975 | neff: 3.506916 | loss: 7.11 dB/cm | Z0: 44.73+0.12j Ohm
---- Refinement iteration 24 ---
-Nelements: 13907 | neff: 3.506939 | loss: 7.14 dB/cm | Z0: 44.64+0.14j Ohm
---- Refinement iteration 25 ---
-Nelements: 14044 | neff: 3.502759 | loss: 7.25 dB/cm | Z0: 44.73+0.21j Ohm
---- Refinement iteration 26 ---
-Nelements: 14095 | neff: 3.491192 | loss: 7.37 dB/cm | Z0: 44.94+0.30j Ohm
---- Refinement iteration 27 ---
-Nelements: 14283 | neff: 3.476385 | loss: 7.41 dB/cm | Z0: 45.19+0.34j Ohm
---- Refinement iteration 28 ---
-Nelements: 14333 | neff: 3.469176 | loss: 7.24 dB/cm | Z0: 45.33+0.25j Ohm
---- Refinement iteration 29 ---
-Nelements: 14547 | neff: 3.468876 | loss: 7.20 dB/cm | Z0: 45.34+0.23j Ohm
+Nelements: 7703 | neff: 3.510695 | loss: 7.18 dB/cm | Z0: 44.93+0.15j Ohm
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1179,7 +1166,7 @@ Nelements: 14547 | neff: 3.468876 | loss: 7.20 dB/cm | Z0: 45.34+0.23j Ohm
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1191,7 +1178,7 @@ Nelements: 14547 | neff: 3.468876 | loss: 7.20 dB/cm | Z0: 45.34+0.23j Ohm
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1207,7 +1194,7 @@ Nelements: 14547 | neff: 3.468876 | loss: 7.20 dB/cm | Z0: 45.34+0.23j Ohm
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">plot_eps_rf</span><span class="p">(</span>
@@ -1237,7 +1224,7 @@ Nelements: 14547 | neff: 3.468876 | loss: 7.20 dB/cm | Z0: 45.34+0.23j Ohm
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by zero encountered in log10
+C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Python packages\Imodulator\src\imodulator\RFSimulator.py:525: RuntimeWarning: divide by zero encountered in log10
   data_to_plot_im = np.log10(-data_to_plot_im)
 </pre></div></div>
 </div>
@@ -1260,7 +1247,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
 <section id="Frequency-sweep">
 <h2>Frequency sweep<a class="headerlink" href="#Frequency-sweep" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freq_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
@@ -1292,7 +1279,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
         <span class="n">p0</span><span class="p">,</span> <span class="n">i0_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
 
         <span class="n">p0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p0</span>
-        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
 
         <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 
@@ -1350,7 +1337,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1420,7 +1407,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
 <h2>Voltage sweep<a class="headerlink" href="#Voltage-sweep" title="Link to this heading"></a></h2>
 <p>Since we now have voltage data information, it becomes simple to study how the small signal characteristics are expected to vary with voltage. This will innevitably be a measure of how linear the electrical propagation will be.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]))</span>
@@ -1455,7 +1442,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
         <span class="n">p0</span> <span class="o">=</span> <span class="p">(</span>
             <span class="mi">2</span> <span class="o">*</span> <span class="n">p0</span>
         <span class="p">)</span>  <span class="c1"># This correction is needed as the power of the actual field we are interested in is twice of the one calculated by the simulator</span>
-        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
 
         <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 
@@ -1504,7 +1491,7 @@ D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>

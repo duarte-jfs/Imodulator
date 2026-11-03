@@ -851,6 +851,7 @@ For these reasons, we have decided recreate the measurements done by :cite:t:`ma
     B_{TE,TM} &= 0.42\times 10^9 \quad \frac{V}{eV^{-3/2}m}
   \end{aligned}
 
+Finally, we have also assumed that the absorption for the z component of the electric field is the same that of the TE polarization by direct comparison with the results from Kleinman symmetry imposed upon the real part. This is not necessarily correct. In fact, Kleinman symmetry breaks whenever large dispersion is present, which in our case both effects on Franz Keldysh (real and absorption) are highly dispersive, so validity is questionable. However, until the time of writing, we have not found any major inconsistencies in our benchmarks.
 .. figure:: images_ingaasp/maat_kerr_absorption.png
    :width: 80%
    :align: center
