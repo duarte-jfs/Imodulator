@@ -58,6 +58,10 @@ For the moment, the full functionality of the **Imodulator** package is limited 
 - Include a 2D PDD solver based on [sesame](https://sesame.readthedocs.io/en/latest/) integrated with `openbandparams`
 - Improve the documentation (**help wanted!**).
 
+- Implementing alternative RF solvers such as Advanced Design Systems (ADS) and/or CST Studio Suite
+
+- Implementing a heat transfer solver and thermo-optic module to simulate thermo-optic phase shifters
+
 If you have any questions please reach out to the **Discussions** tab and we can brainstorm some ideas.
 
 ## Acknowledgements
