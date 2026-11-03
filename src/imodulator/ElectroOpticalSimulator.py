@@ -61,7 +61,7 @@ class ElectroOpticalSimulator:
         self,
         device: PhotonicDevice,
         simulation_window: Polygon | None = None,
-        wavelength: float = 1550,
+        wavelength: float = 1.55,
     ):
         """
         Initializes the ElectroOpticalSimulator with a PhotonicDevice and an optional simulation window.
@@ -71,13 +71,13 @@ class ElectroOpticalSimulator:
         Args:
             device (PhotonicDevice): The photonic device to simulate.
             simulation_window (Polygon, optional): The polygon defining the simulation region. If None, the entire device is used.
-            wavelength (float): The wavelength of the optical mode in nanometers. Default is 1550 nm.
+            wavelength (float): The wavelength of the optical mode in micrometers. Default is 1.55 μm.
         """
         require("femwell", "femwell")
 
         self.photodevice = device
         self.reg = self.photodevice.reg
-        self.wl = wavelength * self.reg.nanometer
+        self.wl = wavelength * self.reg.micrometer
 
         self.e = 1.602176634e-19 * self.reg.coulomb
         self.e0 = 8.854e-12 * self.reg.farad * self.reg.meter**-1
