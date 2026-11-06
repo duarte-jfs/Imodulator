@@ -207,6 +207,14 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>imodulator
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For <cite>femwell</cite>, our current release of imodulator 1.1.0 has in the requirements to have <code class="docutils literal notranslate"><span class="pre">femwell==0.1.12</span></code>. However, this is an old release and our code might fail because of that. The reason we do it is because PyPI will not accept a dependency to a specific commit of a GitHub repository. For the moment, we reccoment you to install femmell as:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/HelgeGehring/femwell.git@be2c54763f6215757fd2dac543c9385a82ca5b26
+</pre></div>
+</div>
+<p>But newer commits might work too. This is a temporary solution until a new version of femwell is released in PyPI.</p>
+</div>
 <section id="using-uv-recommended">
 <h2>Using uv (recommended)<a class="headerlink" href="#using-uv-recommended" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://docs.astral.sh/uv/">uv</a> creates the virtual environment and resolves

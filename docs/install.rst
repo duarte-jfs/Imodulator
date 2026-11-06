@@ -10,6 +10,16 @@ To use Imodulator, simply install via pip:
 
    (.venv) $ pip install imodulator
 
+.. warning::
+
+   For `femwell`, our current release of imodulator 1.1.0 has in the requirements to have ``femwell==0.1.12``. However, this is an old release and our code might fail because of that. The reason we do it is because PyPI will not accept a dependency to a specific commit of a GitHub repository. For the moment, we reccoment you to install femmell as:
+
+   .. code-block:: console
+
+      (.venv) $ pip install git+https://github.com/HelgeGehring/femwell.git@be2c54763f6215757fd2dac543c9385a82ca5b26
+
+   But newer commits might work too. This is a temporary solution until a new version of femwell is released in PyPI.
+
 Using uv (recommended)
 ----------------------
 
