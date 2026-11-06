@@ -81,6 +81,7 @@ The DOI tracking for this project is handled by Zenodo, and a single DOI shall b
 |----------|------|
 |  all     | https://doi.org/10.5281/zenodo.17633733 |
 |  v1.0.2  | https://doi.org/10.5281/zenodo.17639012 |
+|  v1.1.0  | https://doi.org/10.5281/zenodo.24013816 |
 
 
 
