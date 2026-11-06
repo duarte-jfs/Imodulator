@@ -106,6 +106,13 @@ This work was funded by the European Union through the QuGANTIC project and the 
    Tutorials/dc_electro_optical/dc_electro_optical
    Tutorials/polarization_converter/polarization_converter
 
+.. toctree::
+   :maxdepth: 3
+   :caption: Benchmarks
+
+   Benchmarks/Maat_2001/EO_simulation
+   Benchmarks/Maat_2001/Kerr_real_part
+
 
 References
 ----------

@@ -1,0 +1,4 @@
+Index   Material
+   -1   no_material_defined
+    1   Air
+  187   Ga(x)In(1-x)As(y)P(1-y)
