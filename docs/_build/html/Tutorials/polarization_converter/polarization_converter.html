@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Active polarization controller &mdash; Imodulator 1.0.2 documentation</title>
+  <title>Active polarization controller &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -636,7 +637,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Successfully imported lumapi
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
 WARNING: The RCWA solver will not be available because an S4 installation has not been found.
 </pre></div></div>
 </div>
@@ -656,6 +657,11 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <div class="highlight"><pre>
 Successfully imported nextnanopy
 Successfully configured nextnano++ settings
+  [OK] nextnano++ exe: C:/Program Files/nextnano/2026_07_03/nextnano++/bin/nextnano++_Intel_64bit.exe
+  [OK] nextnano++ license: C:/Users/20230622/OneDrive - TU Eindhoven/PhD/License_nnp.lic
+  [OK] nextnano++ database: C:/Program Files/nextnano/2026_07_03/nextnano++/database/database.nnp
+  [OK] nextnano++ outputdirectory: D:/Repos/imodulator/tests\nn_output
+nextnano configuration test passed: all paths are valid.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -671,13 +677,13 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 <h2>Phase matching condition<a class="headerlink" href="#Phase-matching-condition" title="Link to this heading"></a></h2>
 <p>Our first task is to study the modes as a function of the waveguide width in the hopes of finding a phase matching condition. To get some better accuracy we will do 10 mesh refinement steps for each width value and we will use the most TE mode with highest confinement factor in the waveguide core. We will then save the data of only the TE and TM modes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="n">N_modes</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">N_iterations_refinement</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">N_iterations_refinement</span> <span class="o">=</span> <span class="mi">2</span>
 
 <span class="n">neff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">width_values</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">width_values</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
@@ -759,21 +765,12 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 
     <span class="c1"># Find TE and TM modes and store neff and loss</span>
     <span class="n">te_fractions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">opt_mode</span><span class="o">.</span><span class="n">te_fraction</span> <span class="k">for</span> <span class="n">opt_mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">])</span>
-    <span class="n">conf_factors</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">elements</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">subdomains</span><span class="p">[</span><span class="s2">&quot;wg1&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">opt_mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
-        <span class="n">conf_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opt_mode</span><span class="o">.</span><span class="n">calculate_confinement_factor</span><span class="p">(</span><span class="n">elements</span><span class="p">))</span>
-    <span class="n">conf_factors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">conf_factors</span><span class="p">)</span>
+    <span class="n">TE_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">te_fractions</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">TM_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">te_fractions</span> <span class="o">&lt;=</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">TE_TM_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">conf_factors</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
-
-    <span class="k">if</span> <span class="n">te_fractions</span><span class="p">[</span><span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">te_fractions</span><span class="p">[</span><span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">1</span><span class="p">]]:</span>
-        <span class="n">TE_mode_idx</span> <span class="o">=</span> <span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">TM_mode_idx</span> <span class="o">=</span> <span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">TE_mode_idx</span> <span class="o">=</span> <span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">TM_mode_idx</span> <span class="o">=</span> <span class="n">TE_TM_modes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">TE_mode_idx</span> <span class="o">=</span> <span class="n">TE_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">TM_mode_idx</span> <span class="o">=</span> <span class="n">TM_modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">neff</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">modes</span><span class="p">[</span><span class="n">TE_mode_idx</span><span class="p">]</span><span class="o">.</span><span class="n">n_eff</span><span class="o">.</span><span class="n">real</span>
     <span class="n">loss</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">modes</span><span class="p">[</span><span class="n">TE_mode_idx</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_propagation_loss</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)</span>
@@ -803,7 +800,7 @@ mesh refinement [##################################################] 100%
 </div>
 <p>We can now check the effective index of the TE and TM modes</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -823,12 +820,12 @@ mesh refinement [##################################################] 100%
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x277d103c550&gt;
+&lt;matplotlib.legend.Legend at 0x1c90095dea0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -840,7 +837,7 @@ mesh refinement [##################################################] 100%
 </div>
 <p>Now we calculate the modes again and inspect them</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eopm</span> <span class="o">=</span> <span class="n">InP_EOPM</span><span class="p">(</span><span class="n">w_wg</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
@@ -916,20 +913,20 @@ mesh refinement [##################################################] 100%
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index - mode 0: 3.3101###################################] 100%
-loss - mode 0: 59032.28 dB/cm
+Effective index - mode 0: 3.2313###################################] 100%
+loss - mode 0: 1.08 dB/cm
 #------------------------------------------#
-Effective index - mode 1: 3.2629
-loss - mode 1: 49218.90 dB/cm
+Effective index - mode 1: 3.2299
+loss - mode 1: 1.52 dB/cm
 #------------------------------------------#
-Effective index - mode 2: 3.2325
-loss - mode 2: 4.38 dB/cm
+Effective index - mode 2: 3.0931
+loss - mode 2: 19.76 dB/cm
 #------------------------------------------#
-Effective index - mode 3: 3.2324
-loss - mode 3: 9.33 dB/cm
+Effective index - mode 3: 3.0917
+loss - mode 3: 4333.32 dB/cm
 #------------------------------------------#
-Effective index - mode 4: 3.1550
-loss - mode 4: 60798.24 dB/cm
+Effective index - mode 4: 3.0760
+loss - mode 4: 18000.51 dB/cm
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -968,29 +965,20 @@ loss - mode 4: 60798.24 dB/cm
 <img alt="../../_images/Tutorials_polarization_converter_polarization_converter_7_5.png" src="../../_images/Tutorials_polarization_converter_polarization_converter_7_5.png" />
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
-  data[ixs] = self._kernel(vbasis.basis[i], w, dx)
-</pre></div></div>
 </div>
 </section>
 <section id="Solving-the-PDD">
 <h2>Solving the PDD<a class="headerlink" href="#Solving-the-PDD" title="Link to this heading"></a></h2>
 <p>Now that we have our modes, we can calculate the charge transport quantities:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
@@ -1039,7 +1027,7 @@ n
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">solve_PDD</span><span class="p">(</span>
@@ -1064,22 +1052,6 @@ Material &#34;wg2&#34; does not have k-data defined. Returning &#34;zeros&#34;
 Material &#34;p1&#34; does not have k-data defined. Returning &#34;zeros&#34;
 Material &#34;p2&#34; does not have k-data defined. Returning &#34;zeros&#34;
 Solving IV of the junctions...
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\solcore\sesame_drift_diffusion\solve_pdd.py:193: UserWarning: All voltages are positive, but junction has been identified as n-p, so the  open-circuit voltage (Voc) of the junction will be negative.
-  warnings.warn(
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
 Solving IV of the tunnel junctions...
 Solving IV of the total solar cell...
 </pre></div></div>
@@ -1088,14 +1060,14 @@ Solving IV of the total solar cell...
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Tutorials_polarization_converter_polarization_converter_11_3.png" src="../../_images/Tutorials_polarization_converter_polarization_converter_11_3.png" />
+<img alt="../../_images/Tutorials_polarization_converter_polarization_converter_11_1.png" src="../../_images/Tutorials_polarization_converter_polarization_converter_11_1.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">charge</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1104,7 +1076,7 @@ Solving IV of the total solar cell...
 <h2>Calculate the electro-optic response<a class="headerlink" href="#Calculate-the-electro-optic-response" title="Link to this heading"></a></h2>
 <p>Now that we have the optical modes and the PDD data we can calculate the coupling constants</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EO</span> <span class="o">=</span> <span class="n">ElectroOpticalSimulator</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">simulation_window</span><span class="o">=</span><span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -1120,7 +1092,7 @@ Solving IV of the total solar cell...
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1136,7 +1108,7 @@ Text(0, 0.5, &#39;y (um)&#39;)
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EO</span><span class="o">.</span><span class="n">get_epsilon_optical</span><span class="p">()</span>
@@ -1148,25 +1120,27 @@ Text(0, 0.5, &#39;y (um)&#39;)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
 c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in sqrt
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: divide by zero encountered in log
+  result_magnitude = func(*stripped_args, **stripped_kwargs)
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: overflow encountered in exp
   result_magnitude = func(*stripped_args, **stripped_kwargs)
 c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: divide by zero encountered in divide
   magnitude = magnitude_op(new_self._magnitude, other._magnitude)
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
-  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
-C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Python packages\photonmod\src\imodulator\ElectroOpticalSimulator.py:367: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-  epsilon_optical_all[EO_model_name][&#39;dperms&#39;][:, :, vertices_idxs, voltage_idx, perm_idx] = perm
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\numpy\numpy_func.py:322: RuntimeWarning: invalid value encountered in log
-  result_magnitude = func(*stripped_args, **stripped_kwargs)
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
-  magnitude = new_self._magnitude**exponent
 c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in sqrt
   magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1271: RuntimeWarning: invalid value encountered in power
+  magnitude = new_self._magnitude**exponent
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\pint\facets\plain\quantity.py:1006: RuntimeWarning: invalid value encountered in divide
+  magnitude = magnitude_op(new_self._magnitude, other._magnitude)
 </pre></div></div>
 </div>
 <p>The only effect in our system that can cause polarization conversion is the pockels effect, but only if we keep the <span class="math notranslate nohighlight">\(\Delta \epsilon\)</span> non-diagonal. Therefore, we shall study it as a function of angle as well.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the EO response for all voltages</span>
@@ -1215,7 +1189,7 @@ Calculating EO response [##################################################] 100
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
@@ -1284,14 +1258,14 @@ Calculating EO response [##################################################] 100
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-&lt;&gt;:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\779305644.py:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-  ax.set_xlabel(&#39;Re($\kappa_{TE,TM}$)&#39;)
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\779305644.py:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-  ax.set_ylabel(&#39;Im($\kappa_{TE,TM}$)&#39;)
+&lt;&gt;:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\331452442.py:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+  ax.set_xlabel(&#34;Re($\kappa_{TE,TM}$)&#34;)
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\331452442.py:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+  ax.set_ylabel(&#34;Im($\kappa_{TE,TM}$)&#34;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1302,7 +1276,7 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\779305644.py:36: Deprecatio
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
@@ -1371,14 +1345,14 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\779305644.py:36: Deprecatio
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-&lt;&gt;:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-&lt;&gt;:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3195157124.py:35: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-  ax.set_xlabel(&#39;Re($\kappa_{TM,TE}$)&#39;)
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3195157124.py:36: DeprecationWarning: invalid escape sequence &#39;\k&#39;
-  ax.set_ylabel(&#39;Im($\kappa_{TM,TE}$)&#39;)
+&lt;&gt;:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+&lt;&gt;:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\942949393.py:40: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+  ax.set_xlabel(&#34;Re($\kappa_{TM,TE}$)&#34;)
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\942949393.py:41: DeprecationWarning: invalid escape sequence &#39;\k&#39;
+  ax.set_ylabel(&#34;Im($\kappa_{TM,TE}$)&#34;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1390,7 +1364,7 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3195157124.py:36: Deprecati
 </div>
 <p>In the plot above, the color code is meant to represent the angle with respect to the y axis, and the direction of the arrows represents the increase in reverse bias voltage. We can clearly see that the most impactfull effect in the polarization conversion is by far the pockels effect. However, we see that the other effects also provide an effect. Because we are unsure if the theory holds for all effects, we will restrict ourselves to the pockels effect:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
@@ -1423,8 +1397,8 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3195157124.py:36: Deprecati
     <span class="n">k_ba</span> <span class="o">=</span> <span class="n">kappa_tm_te</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">voltage_idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span>
     <span class="n">k_bb</span> <span class="o">=</span> <span class="n">kappa_tm_tm</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">voltage_idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span>
 
-    <span class="n">beta_TE</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">k</span>
-    <span class="n">beta_TM</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">k</span>
+    <span class="n">beta_TE</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">k</span>
+    <span class="n">beta_TM</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">k</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span>
         <span class="n">fun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">f1</span><span class="p">(</span>
@@ -1482,8 +1456,8 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3195157124.py:36: Deprecati
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3798512384.py:70: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-  ax.legend(bbox_to_anchor=(1.05, 1), loc=&#39;upper left&#39;)
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\324147395.py:78: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax.legend(bbox_to_anchor=(1.05, 1), loc=&#34;upper left&#34;)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1495,7 +1469,7 @@ C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\3798512384.py:70: UserWarni
 </div>
 <p>We said we would restrict to pockels, but we can include all the effects and see what happens.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
@@ -1654,7 +1628,7 @@ Simulating propagation for angle 180.00 degrees
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plt.plot(z_space*1e3, np.abs(a)**2, label=&#39;TM&#39;)</span>
@@ -1675,6 +1649,8 @@ Simulating propagation for angle 180.00 degrees
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="n">idx_angle</span> <span class="o">=</span> <span class="mi">55</span>
+
 <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Normalized power in TE mode&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Propagation distance (mm)&quot;</span><span class="p">)</span>
@@ -1683,6 +1659,12 @@ Simulating propagation for angle 180.00 degrees
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Voltage = </span><span class="si">{:.2f}</span><span class="s2"> V&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eopm</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">charge</span><span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">][</span><span class="n">voltage_idx</span><span class="p">]))</span>
 
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span>
+    <span class="n">angle_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">]</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Angle = </span><span class="si">{</span><span class="n">angle_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 
 <span class="c1"># Plot only the 0 angle case</span>
@@ -1691,15 +1673,15 @@ Simulating propagation for angle 180.00 degrees
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">z_space</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">A_values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Angle = </span><span class="si">{</span><span class="n">angle_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">A_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Angle = </span><span class="si">{</span><span class="n">angle_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">z_space</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">B_values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Angle = </span><span class="si">{</span><span class="n">angle_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">B_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Angle = </span><span class="si">{</span><span class="n">angle_values</span><span class="p">[</span><span class="n">idx_angle</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">180</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -1710,17 +1692,17 @@ Simulating propagation for angle 180.00 degrees
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\20230622\AppData\Local\Temp\ipykernel_29600\649306782.py:18: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-  ax.legend(bbox_to_anchor=(1.05, 1), loc=&#39;upper left&#39;)
+C:\Users\20230622\AppData\Local\Temp\ipykernel_22936\4118647340.py:25: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax.legend(bbox_to_anchor=(1.05, 1), loc=&#34;upper left&#34;)
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x277da5ce980&gt;]
+[&lt;matplotlib.lines.Line2D at 0x1c8c2c60f70&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">

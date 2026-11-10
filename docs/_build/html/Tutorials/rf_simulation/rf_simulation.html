@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RF simulation &mdash; Imodulator 1.0.2 documentation</title>
+  <title>RF simulation &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -464,7 +465,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Successfully imported lumapi
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -596,7 +597,7 @@ Number of elements 9276
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-D:\Repos\imodulator\src\imodulator\RFSimulator.py:519: RuntimeWarning: divide by zero encountered in log10
+C:\Users\20230622\OneDrive - TU Eindhoven\PhD\Python packages\Imodulator\src\imodulator\RFSimulator.py:525: RuntimeWarning: divide by zero encountered in log10
   data_to_plot_im = np.log10(-data_to_plot_im)
 </pre></div></div>
 </div>
@@ -667,7 +668,7 @@ loss - mode 2: 0.08 dB/cm
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
   data[ixs] = self._kernel(vbasis.basis[i], w, dx)
 </pre></div></div>
 </div>
@@ -746,7 +747,7 @@ direction in the ground tracks. Knowing this, and since our modes are mostly TEM
 
 <span class="c1">## Characteristic impedance</span>
 <span class="n">p0</span><span class="p">,</span> <span class="n">currents</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-<span class="n">current</span> <span class="o">=</span> <span class="n">currents</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+<span class="n">current</span> <span class="o">=</span> <span class="n">currents</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
 <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Power: </span><span class="si">{</span><span class="n">p0</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -766,8 +767,8 @@ direction in the ground tracks. Knowing this, and since our modes are mostly TEM
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index: (1.9740592112214523-0.04084659987167858j)
-Propagation loss (dB/cm): 0.8916821599961189
+Effective index: (1.9740592113293194-0.04084659983444179j)
+Propagation loss (dB/cm): 0.8916821591832389
 Power: 1.000-0.008j
 Current: -0.032+0.045j
 Characteristic impedance: 330.373-2.483j
@@ -803,9 +804,9 @@ S12: -5.38 dB
 <div class="highlight"><pre>
 R: 7.216559 milliohm / micrometer
 L: 2.213078 picohenry / micrometer
-G: 656595.889944 femtosiemens / micrometer
+G: 656595.890312 femtosiemens / micrometer
 C: 0.021408 femtofarad / micrometer
-Characteristic impedance from RLGC: (321.5956854767312-6.8855973307481895j) ohm
+Characteristic impedance from RLGC: (321.59568529522403-6.885597316563563j) ohm
 </pre></div></div>
 </div>
 <section id="Mesh-refinement">
@@ -822,7 +823,7 @@ Characteristic impedance from RLGC: (321.5956854767312-6.8855973307481895j) ohm
 <span class="n">z0</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">rf_sim</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
 
     <span class="n">rf_sim</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -844,7 +845,7 @@ Characteristic impedance from RLGC: (321.5956854767312-6.8855973307481895j) ohm
     <span class="c1">######### Calculate characteristic impedance #########</span>
     <span class="n">p0</span><span class="p">,</span> <span class="n">i0_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">])</span>
 
-    <span class="n">I0</span> <span class="o">=</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+    <span class="n">I0</span> <span class="o">=</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
     <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span>
 
     <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -1035,352 +1036,12 @@ Nelements: 12536 | neff: 1.949472 | loss: 0.77 dB/cm | Z0: 133.43-1.85j Ohm
 Named boundaries invalidated by a call to Mesh.refined()
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 12690 | neff: 1.952239 | loss: 0.77 dB/cm | Z0: 119.81-1.75j Ohm
---- Refinement iteration 10 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 13386 | neff: 1.951560 | loss: 0.76 dB/cm | Z0: 119.53-1.75j Ohm
---- Refinement iteration 11 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 13410 | neff: 1.951436 | loss: 0.76 dB/cm | Z0: 110.53-1.68j Ohm
---- Refinement iteration 12 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 13914 | neff: 1.951119 | loss: 0.76 dB/cm | Z0: 110.36-1.68j Ohm
---- Refinement iteration 13 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 13942 | neff: 1.951366 | loss: 0.75 dB/cm | Z0: 108.10-1.67j Ohm
---- Refinement iteration 14 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 14062 | neff: 1.951254 | loss: 0.75 dB/cm | Z0: 107.81-1.67j Ohm
---- Refinement iteration 15 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 15554 | neff: 1.950860 | loss: 0.75 dB/cm | Z0: 107.78-1.67j Ohm
---- Refinement iteration 16 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 15696 | neff: 1.950221 | loss: 0.75 dB/cm | Z0: 106.30-1.68j Ohm
---- Refinement iteration 17 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 17224 | neff: 1.950135 | loss: 0.75 dB/cm | Z0: 105.88-1.67j Ohm
---- Refinement iteration 18 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18344 | neff: 1.950432 | loss: 0.74 dB/cm | Z0: 101.67-1.62j Ohm
---- Refinement iteration 19 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18472 | neff: 1.950388 | loss: 0.74 dB/cm | Z0: 101.54-1.63j Ohm
---- Refinement iteration 20 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 21048 | neff: 1.950362 | loss: 0.74 dB/cm | Z0: 101.56-1.63j Ohm
---- Refinement iteration 21 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 23674 | neff: 1.950009 | loss: 0.73 dB/cm | Z0: 100.48-1.63j Ohm
---- Refinement iteration 22 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 23814 | neff: 1.949720 | loss: 0.73 dB/cm | Z0: 99.81-1.62j Ohm
---- Refinement iteration 23 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 24652 | neff: 1.949673 | loss: 0.73 dB/cm | Z0: 99.78-1.62j Ohm
---- Refinement iteration 24 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 26922 | neff: 1.949736 | loss: 0.73 dB/cm | Z0: 99.03-1.61j Ohm
---- Refinement iteration 25 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 26970 | neff: 1.949660 | loss: 0.73 dB/cm | Z0: 98.91-1.61j Ohm
---- Refinement iteration 26 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 27004 | neff: 1.949655 | loss: 0.73 dB/cm | Z0: 98.91-1.61j Ohm
---- Refinement iteration 27 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 30578 | neff: 1.949653 | loss: 0.73 dB/cm | Z0: 98.91-1.61j Ohm
---- Refinement iteration 28 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 30680 | neff: 1.949531 | loss: 0.73 dB/cm | Z0: 98.99-1.62j Ohm
---- Refinement iteration 29 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Nelements: 30716 | neff: 1.949505 | loss: 0.73 dB/cm | Z0: 98.97-1.62j Ohm
+Nelements: 12690 | neff: 1.952239 | loss: 0.77 dB/cm | Z0: 119.81-1.75j Ohm
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1479,12 +1140,12 @@ linear) and the algorithm that we use works by finding the nearest neighbours of
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-R: 5.513924 milliohm / micrometer
-L: 2.144432 picohenry / micrometer
-G: 6777026.638256 femtosiemens / micrometer
-C: 0.220498 femtofarad / micrometer
-Characteristic impedance from RLGC: 98.63-1.66j ohm
-Characteristic impedance from mode calculation: 98.97-1.62j Ohm
+R: 5.910397 milliohm / micrometer
+L: 2.150682 picohenry / micrometer
+G: 4723172.336265 femtosiemens / micrometer
+C: 0.153029 femtofarad / micrometer
+Characteristic impedance from RLGC: 118.57-2.14j ohm
+Characteristic impedance from mode calculation: 119.81-1.75j Ohm
 </pre></div></div>
 </div>
 </section>
@@ -1566,7 +1227,7 @@ loss - mode 1: 0.09 dB/cm
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
+c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
   data[ixs] = self._kernel(vbasis.basis[i], w, dx)
 </pre></div></div>
 </div>
@@ -1587,7 +1248,7 @@ c:\Users\20235351\AppData\Local\anaconda3\envs\imodulator\lib\site-packages\skfe
 <p>Now, however, it becomes slightly more tricky for tthe impedance calculation. This is where you must be aware of what you are calculating. We have used a symmetry plane by simply cutting all of our polygons by the <code class="docutils literal notranslate"><span class="pre">simulation_window</span></code> box. This also includes the line for the line integral. This means that the value of the current that we get from the <code class="docutils literal notranslate"><span class="pre">RFSimulatorFEMWELL</span></code> will only give you half the real current. Coincidently, the value of the power of the field is also halved because the
 field we are actually interested is twice the value of the one we calculated. Therefore we must correct the values of the current and power to get the same values as before:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1598,7 +1259,7 @@ field we are actually interested is twice the value of the one we calculated. Th
 
 <span class="c1">## Characteristic impedance</span>
 <span class="n">p0</span><span class="p">,</span> <span class="n">currents</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-<span class="n">current</span> <span class="o">=</span> <span class="n">currents</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+<span class="n">current</span> <span class="o">=</span> <span class="n">currents</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
 
 <span class="c1">############ CORRECTION FOR SYMMETRY PLANE ###########</span>
 <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">*</span> <span class="mi">2</span>
@@ -1624,10 +1285,10 @@ field we are actually interested is twice the value of the one we calculated. Th
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index: (1.9646619369220861-0.0394209423748188j)
-Propagation loss (dB/cm): 0.8605600259578337
+Effective index: (1.9646619372298102-0.03942094239408281j)
+Propagation loss (dB/cm): 0.8605600263783673
 Power: 2.000-0.012j
-Current: -0.068-0.028j
+Current: 0.073+0.007j
 Characteristic impedance: 372.257-2.208j
 S11: -1.35 dB
 S12: -6.12 dB
@@ -1635,7 +1296,7 @@ S12: -6.12 dB
 </div>
 <p>We can now do the mesh refinement to get nicer results:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1645,7 +1306,7 @@ S12: -6.12 dB
 <span class="n">z0</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">rf_sim</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
 
     <span class="n">rf_sim</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -1667,7 +1328,7 @@ S12: -6.12 dB
     <span class="c1">######### Calculate characteristic impedance #########</span>
     <span class="n">p0</span><span class="p">,</span> <span class="n">i0_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">idx_mode</span><span class="p">])</span>
 
-    <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+    <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
     <span class="n">p0</span> <span class="o">=</span> <span class="p">(</span>
         <span class="mi">2</span> <span class="o">*</span> <span class="n">p0</span>
     <span class="p">)</span>  <span class="c1"># This correction is needed as the power of the actual field we are interested in is twice of the one calculated by the simulator</span>
@@ -1860,356 +1521,16 @@ Nelements: 4648 | neff: 1.946792 | loss: 0.77 dB/cm | Z0: 112.80-1.65j Ohm
 Named boundaries invalidated by a call to Mesh.refined()
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 4952 | neff: 1.949031 | loss: 0.76 dB/cm | Z0: 104.74-1.60j Ohm
---- Refinement iteration 10 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 5115 | neff: 1.950137 | loss: 0.76 dB/cm | Z0: 103.48-1.61j Ohm
---- Refinement iteration 11 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 5674 | neff: 1.950312 | loss: 0.76 dB/cm | Z0: 102.51-1.60j Ohm
---- Refinement iteration 12 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 5968 | neff: 1.949660 | loss: 0.75 dB/cm | Z0: 101.88-1.61j Ohm
---- Refinement iteration 13 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 7437 | neff: 1.949322 | loss: 0.75 dB/cm | Z0: 101.58-1.61j Ohm
---- Refinement iteration 14 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 7507 | neff: 1.949385 | loss: 0.74 dB/cm | Z0: 100.80-1.62j Ohm
---- Refinement iteration 15 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 8273 | neff: 1.949349 | loss: 0.74 dB/cm | Z0: 100.74-1.62j Ohm
---- Refinement iteration 16 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 10124 | neff: 1.949239 | loss: 0.74 dB/cm | Z0: 100.09-1.62j Ohm
---- Refinement iteration 17 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 11855 | neff: 1.949201 | loss: 0.73 dB/cm | Z0: 99.20-1.62j Ohm
---- Refinement iteration 18 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 11911 | neff: 1.949366 | loss: 0.73 dB/cm | Z0: 99.11-1.62j Ohm
---- Refinement iteration 19 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 13419 | neff: 1.949344 | loss: 0.73 dB/cm | Z0: 99.09-1.62j Ohm
---- Refinement iteration 20 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 15392 | neff: 1.949349 | loss: 0.73 dB/cm | Z0: 98.98-1.62j Ohm
---- Refinement iteration 21 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 15418 | neff: 1.949336 | loss: 0.73 dB/cm | Z0: 98.64-1.62j Ohm
---- Refinement iteration 22 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 17002 | neff: 1.949335 | loss: 0.73 dB/cm | Z0: 98.59-1.62j Ohm
---- Refinement iteration 23 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18609 | neff: 1.949289 | loss: 0.73 dB/cm | Z0: 98.78-1.63j Ohm
---- Refinement iteration 24 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18621 | neff: 1.949279 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
---- Refinement iteration 25 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18663 | neff: 1.949276 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
---- Refinement iteration 26 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18743 | neff: 1.949264 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
---- Refinement iteration 27 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18781 | neff: 1.949257 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
---- Refinement iteration 28 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Nelements: 18937 | neff: 1.949252 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
---- Refinement iteration 29 ---
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Named boundaries invalidated by a call to Mesh.refined()
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Nelements: 20185 | neff: 1.949226 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
+Nelements: 4952 | neff: 1.949031 | loss: 0.76 dB/cm | Z0: 104.74-1.60j Ohm
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -2253,10 +1574,10 @@ Nelements: 20185 | neff: 1.949226 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
 <section id="Frequency-sweep">
 <h2>Frequency sweep<a class="headerlink" href="#Frequency-sweep" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freq_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freq_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 
 <span class="n">n_modes</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">neff_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_modes</span><span class="p">,</span> <span class="n">freq_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -2285,7 +1606,7 @@ Nelements: 20185 | neff: 1.949226 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
         <span class="n">p0</span><span class="p">,</span> <span class="n">i0_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rf_sim</span><span class="o">.</span><span class="n">get_currents</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">rf_sim</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
 
         <span class="n">p0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p0</span>
-        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">]</span>
+        <span class="n">I0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i0_all</span><span class="p">[</span><span class="s2">&quot;sig_metal_line_current&quot;</span><span class="p">]</span>
 
         <span class="n">Z0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 
@@ -2311,39 +1632,29 @@ Nelements: 20185 | neff: 1.949226 | loss: 0.73 dB/cm | Z0: 98.92-1.63j Ohm
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 --- Frequency: 1.0 GHz ---
---- Frequency: 4.413793103448276 GHz ---
---- Frequency: 7.827586206896552 GHz ---
---- Frequency: 11.241379310344827 GHz ---
---- Frequency: 14.655172413793103 GHz ---
---- Frequency: 18.06896551724138 GHz ---
---- Frequency: 21.482758620689655 GHz ---
---- Frequency: 24.89655172413793 GHz ---
---- Frequency: 28.310344827586206 GHz ---
---- Frequency: 31.724137931034484 GHz ---
---- Frequency: 35.13793103448276 GHz ---
---- Frequency: 38.55172413793103 GHz ---
---- Frequency: 41.96551724137931 GHz ---
---- Frequency: 45.37931034482759 GHz ---
---- Frequency: 48.79310344827586 GHz ---
---- Frequency: 52.206896551724135 GHz ---
---- Frequency: 55.62068965517241 GHz ---
---- Frequency: 59.03448275862069 GHz ---
---- Frequency: 62.44827586206897 GHz ---
---- Frequency: 65.86206896551724 GHz ---
---- Frequency: 69.27586206896552 GHz ---
---- Frequency: 72.6896551724138 GHz ---
---- Frequency: 76.10344827586206 GHz ---
---- Frequency: 79.51724137931035 GHz ---
---- Frequency: 82.93103448275862 GHz ---
---- Frequency: 86.34482758620689 GHz ---
---- Frequency: 89.75862068965517 GHz ---
---- Frequency: 93.17241379310344 GHz ---
---- Frequency: 96.58620689655172 GHz ---
+--- Frequency: 6.2105263157894735 GHz ---
+--- Frequency: 11.421052631578947 GHz ---
+--- Frequency: 16.63157894736842 GHz ---
+--- Frequency: 21.842105263157894 GHz ---
+--- Frequency: 27.052631578947366 GHz ---
+--- Frequency: 32.26315789473684 GHz ---
+--- Frequency: 37.473684210526315 GHz ---
+--- Frequency: 42.68421052631579 GHz ---
+--- Frequency: 47.89473684210526 GHz ---
+--- Frequency: 53.10526315789473 GHz ---
+--- Frequency: 58.315789473684205 GHz ---
+--- Frequency: 63.526315789473685 GHz ---
+--- Frequency: 68.73684210526315 GHz ---
+--- Frequency: 73.94736842105263 GHz ---
+--- Frequency: 79.1578947368421 GHz ---
+--- Frequency: 84.36842105263158 GHz ---
+--- Frequency: 89.57894736842105 GHz ---
+--- Frequency: 94.78947368421052 GHz ---
 --- Frequency: 100.0 GHz ---
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>

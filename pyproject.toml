@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "imodulator"
-version = "1.0.2"
+version = "1.1.0"
 authors = [
   { name="Duarte Silva", email="d.j.fernandes.da.silva@tue.nl" },
   { name="Ali Kaan Sünnetçioğlu", email="a.k.sunnetcioglu@tue.nl" }
@@ -40,9 +40,10 @@ dependencies = [
 # Pinned to a femwell main commit because the PyPI releases lack fixes we depend on.
 # PyPI/TestPyPI reject distributions carrying direct references, so this pin has to go
 # before a release upload — see "How to release a new version" in developers.md.
-femwell = [
-    "femwell @ git+https://github.com/HelgeGehring/femwell.git@be2c54763f6215757fd2dac543c9385a82ca5b26",
-]
+# femwell = [
+#     "femwell @ git+https://github.com/HelgeGehring/femwell.git@be2c54763f6215757fd2dac543c9385a82ca5b26",
+# ]
+femwell = ["femwell==0.1.12"] #Pinning a version for the UV lock
 # Solcore-based charge transport (ChargeSimulatorSolcore). Install with:
 # pip install imodulator[solcore]
 solcore = ["solcore>=5.10.1"] # solcore depends on solsesame==2.1a1 (a pre-release); if install fails, add --prerelease=allow

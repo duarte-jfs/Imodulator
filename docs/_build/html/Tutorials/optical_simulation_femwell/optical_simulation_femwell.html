@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Optical simulation with FEMWELL &mdash; Imodulator 1.0.2 documentation</title>
+  <title>Optical simulation with FEMWELL &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -209,7 +210,7 @@
 <div style="text-align: center;"><p><img alt="Alt text" src="../../_images/main1.png" /></p>
 </div><p>To illustrate how to do this, we will use the class developed in <code class="docutils literal notranslate"><span class="pre">Building</span> <span class="pre">a</span> <span class="pre">Photonic</span> <span class="pre">Device</span></code> tutorial: <code class="docutils literal notranslate"><span class="pre">InP_EOPM</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -634,7 +635,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Successfully imported lumapi
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -690,7 +691,7 @@ Successfully imported lumapi
 </div>
 <p>Now we initialize the optical simulator.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span> <span class="o">=</span> <span class="n">OpticalSimulatorFEMWELL</span><span class="p">(</span>
@@ -710,7 +711,7 @@ Successfully imported lumapi
 </div>
 <p>We can generate the mesh and inspect it:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
@@ -720,7 +721,7 @@ Successfully imported lumapi
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -737,7 +738,7 @@ Successfully imported lumapi
 </div>
 <p>We can also inspect the optical permitivity:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">plot_epsilon_optical</span><span class="p">()</span>
@@ -745,7 +746,7 @@ Successfully imported lumapi
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -764,7 +765,7 @@ Successfully imported lumapi
 </div>
 <p>It is important here to recognize that you see a clear linear grating around the structure. This is strictly due to the algorithm for plotting. In case you really need to inspect the values of the <code class="docutils literal notranslate"><span class="pre">epsilon_optical</span></code> as it stands in the mesh, you can do the following:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">epsilon_optical</span><span class="o">.</span><span class="n">shape</span>
@@ -794,7 +795,7 @@ Successfully imported lumapi
 </div>
 <p>We can now calculate the modes:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -818,20 +819,20 @@ Successfully imported lumapi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Effective index - mode 0: 3.2990
-loss - mode 0: 59462.25 dB/cm
+Effective index - mode 0: 3.2089
+loss - mode 0: 0.81 dB/cm
 #------------------------------------------#
-Effective index - mode 1: 3.2494
-loss - mode 1: 49129.62 dB/cm
+Effective index - mode 1: 3.2013
+loss - mode 1: 1.51 dB/cm
 #------------------------------------------#
-Effective index - mode 2: 3.2201
-loss - mode 2: 8.15 dB/cm
+Effective index - mode 2: 3.0656
+loss - mode 2: 2770.05 dB/cm
 #------------------------------------------#
-Effective index - mode 3: 3.2179
-loss - mode 3: 4.05 dB/cm
+Effective index - mode 3: 3.0481
+loss - mode 3: 26074.94 dB/cm
 #------------------------------------------#
-Effective index - mode 4: 3.0602
-loss - mode 4: 2339.77 dB/cm
+Effective index - mode 4: 3.0299
+loss - mode 4: 4554.66 dB/cm
 #------------------------------------------#
 </pre></div></div>
 </div>
@@ -872,26 +873,17 @@ loss - mode 4: 2339.77 dB/cm
 </div>
 <p>Now it is time to transfer the modes to the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code>. The way we do it is to simply state what is the TE and TM mode indices. However, it may happen that you are studying some system that there is no TE and TM mode, but rather you are interested in some hybrid modes. This TE and TM are nothing more than labels for the <code class="docutils literal notranslate"><span class="pre">Imodulator</span></code>. No math is done on the assumption that a mode is TE or TM. We take the full vector of any mode you give it. This can be useful if you are exploring some
 polarization controller for example.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">transfer_results_to_device</span><span class="p">(</span><span class="n">TE_TM_idx</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages\skfem\assembly\form\linear_form.py:44: ComplexWarning: Casting complex values to real discards the imaginary part
-  data[ixs] = self._kernel(vbasis.basis[i], w, dx)
-</pre></div></div>
-</div>
 <p>The modes have been transferred to the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> and they are stored as an interpolator:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
@@ -926,7 +918,7 @@ c:\Users\20230622\AppData\Local\anaconda3\envs\imodulator_venv\lib\site-packages
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -946,7 +938,7 @@ Text(0.5, 0, &#39;x (um)&#39;)
 <p>We can also do some mesh refinement on the mode solver, in case you are interested in very accurate results.</p>
 <p>For details on the mesh refinement, we suggest you look into the tutorials implemented in <code class="docutils literal notranslate"><span class="pre">FEMWELL</span></code>. All we’ve done here was to reuse their tools to fit our needs.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neff</span> <span class="o">=</span> <span class="p">[]</span>
@@ -954,7 +946,7 @@ Text(0.5, 0, &#39;x (um)&#39;)
 <span class="n">nelements</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">mode</span><span class="o">.</span><span class="n">make_mesh</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Refinement iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
 
     <span class="n">mode</span><span class="o">.</span><span class="n">compute_modes</span><span class="p">(</span>
@@ -1015,30 +1007,10 @@ Named boundaries invalidated by a call to Mesh.refined()
 --- Refinement iteration 7 ---
 --- Refinement iteration 8 ---
 --- Refinement iteration 9 ---
---- Refinement iteration 10 ---
---- Refinement iteration 11 ---
---- Refinement iteration 12 ---
---- Refinement iteration 13 ---
---- Refinement iteration 14 ---
---- Refinement iteration 15 ---
---- Refinement iteration 16 ---
---- Refinement iteration 17 ---
---- Refinement iteration 18 ---
---- Refinement iteration 19 ---
---- Refinement iteration 20 ---
---- Refinement iteration 21 ---
---- Refinement iteration 22 ---
---- Refinement iteration 23 ---
---- Refinement iteration 24 ---
---- Refinement iteration 25 ---
---- Refinement iteration 26 ---
---- Refinement iteration 27 ---
---- Refinement iteration 28 ---
---- Refinement iteration 29 ---
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1076,7 +1048,7 @@ Named boundaries invalidated by a call to Mesh.refined()
 </div>
 <p>We can inspect the final mesh</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="o">.</span><span class="n">plot_mesh</span><span class="p">()</span>
@@ -1084,7 +1056,7 @@ Named boundaries invalidated by a call to Mesh.refined()
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">

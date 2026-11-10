@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.11.*"
 
 [options]
@@ -207,14 +207,18 @@ wheels = [
 
 [[package]]
 name = "femwell"
-version = "0.0.1"
-source = { git = "https://github.com/HelgeGehring/femwell.git?rev=be2c54763f6215757fd2dac543c9385a82ca5b26#be2c54763f6215757fd2dac543c9385a82ca5b26" }
+version = "0.1.12"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "gmsh" },
     { name = "matplotlib" },
     { name = "meshwell" },
     { name = "pygmsh" },
     { name = "scikit-fem" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0d/b4/a708445e721661acc7dd4849dc28282fa77ce198dfd23fb03ae6ad691a7d/femwell-0.1.12.tar.gz", hash = "sha256:2f0f1438063a0a17ef7c181443834685aaf8f607cde11a1bde232de5760eb822", size = 258821, upload-time = "2025-01-06T16:29:00.083Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/21/c0/752e0b4e43ff11cf449c6c38daf89724f54467f979f513d435f90793c55e/femwell-0.1.12-py2.py3-none-any.whl", hash = "sha256:df509647f743ee1a6fdb25219917c2e596649be96b0fbafebc87939aa79d01e6", size = 85342, upload-time = "2025-01-06T16:28:58.03Z" },
 ]
 
 [[package]]
@@ -296,7 +300,7 @@ wheels = [
 
 [[package]]
 name = "imodulator"
-version = "1.0.2"
+version = "1.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
@@ -335,7 +339,7 @@ solcore = [
 
 [package.metadata]
 requires-dist = [
-    { name = "femwell", marker = "extra == 'femwell'", git = "https://github.com/HelgeGehring/femwell.git?rev=be2c54763f6215757fd2dac543c9385a82ca5b26" },
+    { name = "femwell", marker = "extra == 'femwell'", specifier = "==0.1.12" },
     { name = "imodulator", extras = ["femwell", "solcore", "nextnanopy"], marker = "extra == 'all'" },
     { name = "ipykernel", marker = "extra == 'dev'", specifier = ">=6.29" },
     { name = "ipympl", marker = "extra == 'dev'", specifier = ">=0.9" },

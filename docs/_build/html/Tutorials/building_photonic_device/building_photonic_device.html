@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Building a PhotonicDevice &mdash; Imodulator 1.0.2 documentation</title>
+  <title>Building a PhotonicDevice &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -226,7 +227,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Successfully imported lumapi
+Failed to import lumapi: [Errno 2] No such file or directory: &#39;C:/Program Files/Lumerical/v232/api/python/lumapi.py&#39;
 </pre></div></div>
 </div>
 <p>Building a <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> is where you, as a designer, will be spending the majority of your time. It is a very tedius and cumbersome task, as you have to get all the material parameters right as well as the geometry. Luckily, with the <code class="docutils literal notranslate"><span class="pre">Imodulator</span></code> you only have to do this once. While using this software, we have found it easier to to wrap the creation of the <code class="docutils literal notranslate"><span class="pre">PhotonicDevice</span></code> in a python class, but feel free to do as you see fit.</p>
@@ -350,7 +351,7 @@ Successfully imported lumapi
 </div>
 <p>Now that we have all the mesh settings, we shall create the geometry which is handled by <code class="docutils literal notranslate"><span class="pre">shapely</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_create_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -707,7 +708,7 @@ Successfully imported lumapi
 <p>For the moment we cannot check how the physical properties look like. But we will be able to do once we start working with the different simulators.</p>
 <p>Because we deal with shapely, it is possible to have arbitrary shapes with each polygon as well:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">InP_EOPM_tree</span><span class="p">:</span>
@@ -970,7 +971,7 @@ Successfully imported lumapi
                 <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span><span class="n">bcb_eps</span><span class="p">],</span>
             <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
@@ -985,7 +986,7 @@ Successfully imported lumapi
                 <span class="bp">self</span><span class="o">.</span><span class="n">w_window</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span><span class="n">bcb_eps</span><span class="p">],</span>
             <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
@@ -1000,7 +1001,7 @@ Successfully imported lumapi
                 <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_wg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span><span class="n">bcb_eps</span><span class="p">],</span>
             <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
@@ -1015,7 +1016,7 @@ Successfully imported lumapi
                 <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_wg2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_p2</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">bcb_eps</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span><span class="n">bcb_eps</span><span class="p">],</span>
             <span class="n">optical_material</span><span class="o">=</span><span class="mf">1.56</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;bcb&quot;</span><span class="p">],</span>
@@ -1062,7 +1063,7 @@ Successfully imported lumapi
                     <span class="p">),</span>
                 <span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">eps_rf_metal</span><span class="p">],</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">],</span>
             <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s2">&quot;sig_metal&quot;</span><span class="p">],</span>
@@ -1078,7 +1079,7 @@ Successfully imported lumapi
                 <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">eps_rf_metal</span><span class="p">],</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_left&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_left&quot;</span><span class="p">],</span>
             <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_left&quot;</span><span class="p">],</span>
@@ -1093,7 +1094,7 @@ Successfully imported lumapi
                 <span class="bp">self</span><span class="o">.</span><span class="n">w_sig_metal</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metal_sep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gnd_metal</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">h_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metal</span><span class="p">,</span>
             <span class="p">),</span>
-            <span class="n">rf_eps</span><span class="o">=</span><span class="n">eps_rf_metal</span><span class="p">,</span>
+            <span class="n">rf_eps</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">,</span> <span class="n">eps_rf_metal</span><span class="p">],</span>
             <span class="n">eo_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eo_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_right&quot;</span><span class="p">],</span>
             <span class="n">rf_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rf_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_right&quot;</span><span class="p">],</span>
             <span class="n">optical_mesh_settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_mesh_settings</span><span class="p">[</span><span class="s2">&quot;n_metal_right&quot;</span><span class="p">],</span>
@@ -1164,26 +1165,12 @@ Successfully imported lumapi
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <img alt="../../_images/Tutorials_building_photonic_device_building_photonic_device_11_0.png" src="../../_images/Tutorials_building_photonic_device_building_photonic_device_11_0.png" />
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">The Kernel crashed while executing code in the current cell or a previous cell.
-
-</span><span class="ansi-red-intense-fg ansi-bold">Please review the code in the cell(s) to identify a possible cause of the failure.
-
-</span><span class="ansi-red-intense-fg ansi-bold">Click &lt;a href=&#39;https://aka.ms/vscodeJupyterKernelCrash&#39;&gt;here&lt;/a&gt; for more info.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
 </div>
 </section>
 

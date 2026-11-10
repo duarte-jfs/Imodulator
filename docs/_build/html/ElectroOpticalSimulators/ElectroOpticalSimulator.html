@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ElectroOpticalSimulator &mdash; Imodulator 1.0.2 documentation</title>
+  <title>ElectroOpticalSimulator &mdash; Imodulator 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../_static/documentation_options.js?v=fc837d61"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#using-uv-recommended">Using uv (recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-installs-with-uv-lock">Reproducible installs with uv.lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#reproducible-environment-with-nix-flake">Reproducible environment with Nix (flake)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#optional-extras">Optional extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#installing-from-source">Installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#configuring-nextnano-and-lumerical-paths">Configuring nextnano and Lumerical paths</a><ul>
@@ -241,10 +242,10 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">ElectroOpticalSimulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1550</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imodulator.ElectroOpticalSimulator.</span></span><span class="sig-name descname"><span class="pre">ElectroOpticalSimulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.55</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1550</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.55</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#imodulator.ElectroOpticalSimulator.ElectroOpticalSimulator.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initializes the ElectroOpticalSimulator with a PhotonicDevice and an optional simulation window.</p>
 <p>The simulation windows will define the electro optical simulation region.</p>
 <dl class="field-list simple">
@@ -252,7 +253,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device</strong> (<a class="reference internal" href="../PhotonicDevice.html#imodulator.PhotonicDevice.PhotonicDevice" title="imodulator.PhotonicDevice.PhotonicDevice"><em>PhotonicDevice</em></a>) – The photonic device to simulate.</p></li>
 <li><p><strong>simulation_window</strong> (<em>Polygon</em><em>, </em><em>optional</em>) – The polygon defining the simulation region. If None, the entire device is used.</p></li>
-<li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the optical mode in nanometers. Default is 1550 nm.</p></li>
+<li><p><strong>wavelength</strong> (<em>float</em>) – The wavelength of the optical mode in micrometers. Default is 1.55 μm.</p></li>
 </ul>
 </dd>
 </dl>
