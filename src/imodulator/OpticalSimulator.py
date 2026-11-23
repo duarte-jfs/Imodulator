@@ -83,6 +83,7 @@ class OpticalSimulatorMODE:
         include_metals: bool = False,
         save_sim: bool = True,
         wavelength: float = 1.55,
+        GUI: bool = True,
     ):
         """
         Initialize the OpticalSimulatorMODE class for MODE simulation.
@@ -112,6 +113,8 @@ class OpticalSimulatorMODE:
              save_sim: Whether to save simulation files. Defaults to False
              wavelength: The wavelength **in um** at which each polygon's
                  ``optical_material`` is evaluated to get its permittivity. Defaults to 1.55
+             GUI: Whether to show the Lumerical MODE window. Set to False to run MODE
+                 without a GUI (hidden session). Defaults to True
 
          .. todo::
              Permitivity tensor to input n,k values? Not sure if necesary
@@ -150,7 +153,7 @@ class OpticalSimulatorMODE:
             if name in self.photonicdevice.resolutions_optical.keys():
                 self.resolutions[name] = self.photonicdevice.resolutions_optical[name]
         # Lumerical MODE API starts here
-        self.mode = self.lumapi.MODE()
+        self.mode = self.lumapi.MODE(hide=not GUI)
         self._create_geometry()
         self._create_materials()
         self.mode.save("quicksave" + ".lms")
