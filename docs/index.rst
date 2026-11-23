@@ -104,6 +104,7 @@ This work was funded by the European Union through the QuGANTIC project and the 
    Tutorials/rf_simulation/rf_simulation
    Tutorials/rf_simulation_charge_transport/rf_simulation_charge_transport
    Tutorials/dc_electro_optical/dc_electro_optical
+   Tutorials/dc_2d_electro_optical/dc_2d_electro_optical
    Tutorials/polarization_converter/polarization_converter
 
 .. toctree::

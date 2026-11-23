@@ -4,14 +4,18 @@ import copy
 import inspect
 import json
 import os
+import warnings
 from collections import OrderedDict
 from configparser import ConfigParser
 
 import gmsh
 import numpy as np
+import openbandparams as obp
 import pandas as pd
 import shapely
 from matplotlib import pyplot as plt
+from matplotlib.colors import LogNorm
+from matplotlib.tri import LinearTriInterpolator, Triangulation
 from scipy.interpolate import interp1d
 from shapely.geometry import (
     LinearRing,
@@ -2103,3 +2107,553 @@ class ChargeSimulatorSolcore:
         ax.set_xlabel("Real space (um)")
 
         return fig, ax
+
+
+class ChargeSimulatorCHARGE:
+    """
+    2D drift-diffusion simulation of a PhotonicDevice cross-section with Lumerical CHARGE.
+
+    Way of working (same as :class:`OpticalSimulatorMODE <imodulator.OpticalSimulator.OpticalSimulatorMODE>`):
+
+    1. __init__(): opens a lumapi DEVICE session and creates the materials and polygons of every
+       semiconductor inside the simulation window, the two contact metals and (optionally) the insulators.
+    2. create_charge(): simulation region, CHARGE solver, mesh, contacts, bias sweep and doping.
+    3. solve(): runs the bias sweep and loads the results (self.V, self.results, self.I).
+    4. get_line_profile(line): 1D cut of the 2D solution along a LineString, in the units of the 1D
+       solvers, to compare with :class:`ChargeSimulatorNN` / :class:`ChargeSimulatorSolcore`.
+    5. transfer_results_to_device(): stores 2D interpolators in self.photonicdevice.charge for the
+       EO and RF simulators.
+    6. plot_results(): 2D maps of n, p and |E| at one bias.
+
+    Materials: a semiconductor is any SemiconductorPolygon whose charge_transport_simulator_kwargs carry
+    a ``doping_type`` ('n', 'p'; anything else is left undoped) and ``doping_conc`` (cm^-3). Its band
+    gap, electron affinity, DOS effective masses and DC permittivity come from its openbandparams
+    material (``sol_obp_material``, else GaInPAs lattice matched to InP at ``alloy_y``), i.e. the same
+    parameters :class:`ChargeSimulatorSolcore` uses. The mobilities are constants from the
+    imodulator.utils InGaAsP models. CHARGE has no InGaAsP model, so every layer is its InP model with
+    these values overridden; the electron affinity enters through the work function, which CHARGE
+    defines from the vacuum level to midgap (WF = affinity + Eg/2).
+
+    Contacts are the interfaces of the two named metal polygons with the semiconductors, both
+    force-ohmic. ``bias_contact`` is swept, ``ground_contact`` stays at 0 V.
+
+    Units of the results: positions in um, n / p in cm^-3, E in kV/cm, energies in eV (referenced to
+    the Fermi level of the grounded contact), contact currents in A per ``norm length`` of the 2D
+    cross-section.
+    """
+
+    def __init__(
+        self,
+        device: PhotonicDevice,
+        simulation_window: Polygon | None = None,
+        temperature: float = 300.0,
+        bias_start_stop_step: list = [0, 1, 2],
+        bias_contact: str = "pmetal",
+        ground_contact: str = "nmetal",
+        include_insulators: bool = True,
+        filename: str = "quicksave.ldev",
+        GUI: bool = True,
+    ):
+        """
+        Initialize the ChargeSimulatorCHARGE.
+
+        Args:
+            device: PhotonicDevice instance containing the device geometry and materials.
+            simulation_window: Region to simulate (shapely Polygon, um). Only its bounding box is used.
+                Defaults to the bounds of all charge-transport semiconductors padded by 0.1 um.
+            temperature: Simulation temperature in Kelvin. Defaults to 300.0.
+            bias_start_stop_step: Voltage sweep [start, stop, number of points] on bias_contact.
+            bias_contact: Name of the metal polygon whose voltage is swept.
+            ground_contact: Name of the grounded metal polygon.
+            include_insulators: Whether to include the insulator polygons (with their DC permittivity,
+                taken from rf_eps). Otherwise everything that is not semiconductor or contact is vacuum.
+            filename: Lumerical project the simulation is saved to (CHARGE only runs a saved project).
+            GUI: Whether to show the Lumerical DEVICE (CHARGE) window. Set to False to run CHARGE
+                without a GUI (hidden session). Defaults to True.
+        """
+        self.lumapi = config_instance.get_lumapi()
+        if self.lumapi is None:
+            raise ImportError(
+                "lumapi is not available, check the lumerical path in imodulator's config.yaml"
+            )
+
+        self.photonicdevice = device
+        self.temperature = temperature
+        self.bias_start_stop_step = bias_start_stop_step
+        self.bias_contact = bias_contact
+        self.ground_contact = ground_contact
+        self.filename = os.path.abspath(filename)
+
+        polygons = self.photonicdevice.photo_polygons
+        semiconductors = [
+            p
+            for p in polygons
+            if isinstance(p, SemiconductorPolygon)
+            and isinstance((p.charge_transport_simulator_kwargs or {}).get("doping_type"), str)
+        ]
+        if simulation_window is None:
+            x0, y0, x1, y1 = shapely.union_all([p.polygon for p in semiconductors]).bounds
+            simulation_window = shapely.box(x0 - 0.1, y0 - 0.1, x1 + 0.1, y1 + 0.1)
+        self.simulation_window = simulation_window
+        window = shapely.box(*simulation_window.bounds)
+
+        self.semiconductors = [p for p in semiconductors if p.polygon.intersection(window).area > 0]
+        self.metals = []
+        for name in (bias_contact, ground_contact):
+            metal = next((p for p in polygons if p.name == name), None)
+            if not isinstance(metal, MetalPolygon):
+                raise ValueError(f"Contact '{name}' is not a MetalPolygon of the device")
+            self.metals.append(metal)
+
+        # Insulators are clipped by every polygon above them in the device priority order, so that no
+        # two CHARGE solids overlap.
+        self.insulators = OrderedDict()
+        if include_insulators:
+            taken = shapely.union_all([p.polygon for p in self.semiconductors + self.metals])
+            for p in polygons:
+                if not isinstance(p, InsulatorPolygon) or p.name == "background":
+                    continue
+                part = p.polygon.difference(taken).intersection(window)
+                taken = taken.union(p.polygon)
+                if part.area > 0:
+                    self.insulators[p.name] = (part, self._dc_permittivity(p))
+
+        for poly in self.semiconductors:
+            poly.has_charge_transport_data = True
+
+        print("Charge transport will take place with:")
+        print(*[p.name for p in self.semiconductors], sep="\n")
+
+        self.materials = OrderedDict(
+            (p.name, self._semiconductor_parameters(p)) for p in self.semiconductors
+        )
+
+        # Lumerical DEVICE API starts here
+        self.lumdev = self.lumapi.DEVICE(hide=not GUI)
+        self.lumdev.switchtolayout()
+        self.lumdev.deleteall()
+        self._create_materials()
+        self._create_geometry()
+        self.lumdev.save(self.filename)
+
+    @staticmethod
+    def _dc_permittivity(polygon) -> float:
+        # rf_eps takes omega = 2*pi*f with f in GHz (as in RFSimulator). A tabulated rf_eps may not
+        # reach omega = 0, so take the lowest of these frequencies inside its range.
+        for f_GHz in (0, 0.01, 0.1, 1, 10):
+            try:
+                return float(np.real(complex(polygon.rf_eps(2 * np.pi * f_GHz))))
+            except ValueError:
+                continue
+        raise ValueError(
+            f"Could not evaluate the DC permittivity of '{polygon.name}' from its rf_eps "
+            "between 0 and 10 GHz"
+        )
+
+    def _semiconductor_parameters(self, polygon) -> dict:
+        """Band gap, affinity, DOS masses, permittivity (openbandparams) and mobilities (imodulator.utils)."""
+        from imodulator.utils import n_InGaAsP, p_InGaAsP
+
+        T = self.temperature
+        kwargs = polygon.charge_transport_simulator_kwargs
+        y = float(np.atleast_1d(kwargs.get("alloy_y", 0.0))[0])
+        material = kwargs.get("sol_obp_material")
+        if material is None:
+            material = obp.GaInPAs(T=T, As=y, a=obp.InP.a())
+
+        Eg = material.Eg(T=T)
+        chi = material.electron_affinity(T=T)
+        # DOS masses as in CustomMaterial_OBP (Nc from the Gamma electron mass, Nv from hh + lh)
+        mp = (material.meff_hh_100(T=T) ** 1.5 + material.meff_lh_100(T=T) ** 1.5) ** (2 / 3)
+
+        conc = float(kwargs.get("doping_conc") or 1e15)
+        model = (p_InGaAsP if kwargs["doping_type"] == "p" else n_InGaAsP)(conc, T, y, 1550)
+        mobility_unit = model.reg.centimeter**2 / (model.reg.volt * model.reg.second)
+        mun, mup = (m.to(mobility_unit).magnitude for m in model.get_mobility(model.x, model.y))
+
+        return dict(
+            Eg=float(Eg),
+            affinity=float(chi),
+            work_function=float(chi + Eg / 2),  # CHARGE: vacuum level to midgap
+            mn=float(material.meff_e_Gamma(T=T)),
+            mp=float(mp),
+            eps_dc=float(material.dielectric(T=T)),
+            mun=float(mun),
+            mup=float(mup),
+            doping_type=kwargs["doping_type"],
+            doping_conc=conc,
+        )
+
+    def _new_material(self, name, ct_base):
+        if self.lumdev.materialexists(name):
+            self.lumdev.select("materials::" + name)
+            self.lumdev.delete()
+        self.lumdev.addmodelmaterial()
+        self.lumdev.set("name", name)
+        self.lumdev.select("materials::" + name)
+        self.lumdev.addmaterialproperties("CT", ct_base)
+
+    def _create_materials(self):
+        """CT materials: vacuum background, gold contacts, insulators and one InP-based model per semiconductor."""
+        self._new_material("m_Vacuum", "Air")
+        self._new_material("m_Gold", "Au (Gold) - CRC")
+        for name, (_, eps) in self.insulators.items():
+            self._new_material("m_" + name, "Air")
+            self.lumdev.select(f"materials::m_{name}::Air")
+            self.lumdev.set("relative dielectric permittivity", eps)
+        for name, m in self.materials.items():
+            self._new_material("m_" + name, "InP (Indium Phosphide)")
+            self.lumdev.select(f"materials::m_{name}::InP (Indium Phosphide)")
+            for prop in ("Eg", "mn", "mp"):
+                self.lumdev.set(f"electronic.gamma.{prop}.active model", "Constant")
+                self.lumdev.set(f"electronic.gamma.{prop}.constant", m[prop])
+            for prop in ("mun", "mup"):
+                self.lumdev.set(f"electronic.gamma.{prop}.active model", "Constant")
+                self.lumdev.set(f"electronic.gamma.{prop}.lattice.constant", m[prop])
+            self.lumdev.set("dc permittivity", m["eps_dc"])
+            self.lumdev.set("work function", m["work_function"])
+
+    def _add_polygon(self, name, polygon, material):
+        parts = list(polygon.geoms) if hasattr(polygon, "geoms") else [polygon]
+        for i, part in enumerate(parts):
+            self.lumdev.addpoly()
+            self.lumdev.set("name", name if len(parts) == 1 else f"{name}_{i}")
+            self.lumdev.set("x", 0)
+            self.lumdev.set("y", 0)
+            self.lumdev.set("z", 0)
+            self.lumdev.set("z span", 1e-6)
+            self.lumdev.set("vertices", np.asarray(part.exterior.coords)[:-1] * 1e-6)
+            self.lumdev.set("material", material)
+
+    def _create_geometry(self):
+        for p in self.semiconductors:
+            self._add_polygon(p.name, p.polygon, "m_" + p.name)
+        for p in self.metals:
+            self._add_polygon(p.name, p.polygon, "m_Gold")
+        for name, (part, _) in self.insulators.items():
+            self._add_polygon(name, part, "m_" + name)
+
+    def create_charge(
+        self,
+        mesh_semiconductor: float = 20e-9,
+        mesh_max: float = 200e-9,
+        min_edge_length: float = 5e-9,
+        solver_type: str = "newton",
+        global_iteration_limit: int = 150,
+        gradient_mixing: str = "disabled",
+        norm_length: float = 1e-2,
+    ):
+        """
+        Create the simulation region, the CHARGE solver, mesh, contacts, bias sweep and doping.
+
+        The CHARGE mesher refines every abrupt doping step (the uniform doping of neighbouring
+        layers) down to min_edge_length, which resolves the depletion edges. That refinement, more
+        than mesh_semiconductor, sets the element count. The defaults come from a convergence study
+        on a gen2 EOPM cross-section (imos-eopm-simulations, Gen2/reports/charge2d_mesh_convergence):
+        against a 5 nm / 1 nm mesh they keep the field in the intrinsic layers within 0.4 %, the
+        depleted charge and the peak junction field within ~1 %, in about 3 min for 0 -> -10 V in
+        1 V steps. Accumulation layers at heterojunctions (a few nm thick) need min_edge_length of
+        1-2 nm, at 2-6x the runtime. The runtime is set mostly by the voltage span of the sweep
+        (~20 s per volt there) and much less by the mesh or the thread count.
+
+        Args:
+            mesh_semiconductor: Maximum triangle edge length inside every semiconductor, in m.
+            mesh_max: Maximum triangle edge length elsewhere (insulators, vacuum, metals), in m.
+            min_edge_length: Minimum edge length of the mesher, in m. Must be below mesh_semiconductor,
+                otherwise the semiconductor constraint is not reached.
+            solver_type: CHARGE solver, "newton" or "gummel" (same result, about 2x slower).
+            global_iteration_limit: Maximum number of solver iterations per bias point.
+            gradient_mixing: CHARGE gradient mixing ("disabled", "fast", "conservative"). Only helps
+                field-dependent mobility models; the materials here use constant mobilities.
+            norm_length: Length (m) along z the 2D contact currents are normalised to.
+        """
+        dev = self.lumdev
+        um = 1e-6
+        x0, y0, x1, y1 = self.simulation_window.bounds
+        dev.switchtolayout()
+
+        # deleteall() keeps the default simulation region, so reuse it instead of adding a second one
+        if dev.getnamednumber("simulation region") == 0:
+            dev.addsimulationregion()
+        dev.select("simulation region")
+        dev.set("dimension", "2D Z-normal")
+        dev.set("background material", "m_Vacuum")
+        dev.set("x", (x0 + x1) / 2 * um)
+        dev.set("x span", (x1 - x0) * um)
+        dev.set("y min", y0 * um)
+        dev.set("y max", y1 * um)
+
+        if dev.getnamednumber("CHARGE") > 0:  # its mesh, contacts and doping go with it
+            dev.select("CHARGE")
+            dev.delete()
+        dev.addchargesolver()
+        dev.select("CHARGE")
+        dev.set("simulation temperature", self.temperature)
+        dev.set("solver type", solver_type)
+        dev.set("norm length", norm_length)
+        dev.set("global iteration limit", global_iteration_limit)
+        dev.set("gradient mixing", gradient_mixing)
+        dev.set("min edge length", min_edge_length)
+        dev.set("max edge length", mesh_max)
+
+        for p in self.semiconductors:
+            bx0, by0, bx1, by1 = p.polygon.bounds
+            dev.addchargemesh()
+            dev.set("name", "mesh " + p.name)
+            dev.set("x", (bx0 + bx1) / 2 * um)
+            dev.set("x span", (bx1 - bx0) * um)
+            dev.set("y min", by0 * um)
+            dev.set("y max", by1 * um)
+            dev.set("volume type", "solid")
+            dev.set("volume solid", p.name)
+            dev.set("max edge length", mesh_semiconductor)
+
+        for name in (self.bias_contact, self.ground_contact):
+            dev.addelectricalcontact()
+            dev.set("name", name)
+            dev.select("CHARGE::boundary conditions::" + name)
+            dev.set("force ohmic", True)
+            dev.set("surface type", "solid")
+            dev.set("solid", name)
+        dev.select("CHARGE::boundary conditions::" + self.bias_contact)
+        Vstart, Vstop, Vsteps = self.bias_start_stop_step
+        dev.set("sweep type", "range")
+        dev.set("range start", Vstart)
+        dev.set("range stop", Vstop)
+        dev.set("range num points", Vsteps)
+
+        for p in self.semiconductors:
+            m = self.materials[p.name]
+            if m["doping_type"] not in ("n", "p"):
+                continue
+            bx0, by0, bx1, by1 = p.polygon.bounds
+            dev.adddope()
+            dev.set("name", p.name + " doping")
+            dev.select("CHARGE::" + p.name + " doping")
+            dev.set("x", (bx0 + bx1) / 2 * um)
+            dev.set("x span", (bx1 - bx0) * um)
+            dev.set("y min", by0 * um)
+            dev.set("y max", by1 * um)
+            dev.set("z", 0)
+            dev.set("z span", 1 * um)
+            dev.set("volume type", "solid")
+            dev.set("volume solid", p.name)
+            dev.set("dopant type", m["doping_type"])
+            dev.set("concentration", m["doping_conc"] * 1e6)  # cm^-3 -> m^-3
+
+        dev.save(self.filename)
+
+    def solve(self):
+        """
+        Run the bias sweep and load the results.
+
+        Creates the attributes:
+            V: bias of bias_contact, one entry per converged sweep point [V].
+            results: per CHARGE result group ("charge", "bandstructure", "electrostatics"), the node
+                coordinates "x", "y" [um], the 0-based triangle "connectivity" and the fields with shape
+                (n_bias, n_nodes): n, p [cm^-3]; Ec, Ev, Efn, Efp [eV]; Ex, Ey [kV/cm].
+            I: contact current per contact [A per norm length].
+
+        CHARGE stops the sweep without an error at the first bias point it cannot converge (e.g. a
+        single 0 -> -10 V step) and returns only the points before it; a warning names the missing
+        points. Smaller bias steps fix it (1 V steps also run faster than 2 V steps).
+        """
+        dev = self.lumdev
+        dev.save(self.filename)
+        dev.run()
+
+        groups = dev.getresult("CHARGE").split("\n")
+        if "electrostatics" not in groups:
+            raise RuntimeError(f"CHARGE returned no results, check the log next to {self.filename}")
+
+        fields = {
+            "charge": ("n", "p"),
+            "bandstructure": ("Ec", "Ev", "Efn", "Efp"),
+            "electrostatics": ("E",),
+        }
+        self.results = {}
+        for group, keys in fields.items():
+            r = dev.getresult("CHARGE", group)
+            data = dict(
+                x=r["x"][:, 0, 0] / 1e-6,
+                y=r["y"][:, 0, 0] / 1e-6,
+                connectivity=r["connectivity"].astype(np.int32) - 1,
+            )
+            for k in keys:
+                values = np.asarray(r[k], dtype=float)  # (n_nodes, n_bias, 1, n_components)
+                if k == "E":
+                    data["Ex"] = values[:, :, 0, 0].T * 1e-5  # V/m -> kV/cm
+                    data["Ey"] = values[:, :, 0, 1].T * 1e-5
+                else:
+                    data[k] = values[:, :, 0, 0].T  # n and p come back in cm^-3
+            self.results[group] = data
+            if group == "electrostatics":
+                self.V = np.asarray(r["V_" + self.bias_contact], dtype=float).ravel()
+
+        Vstart, Vstop, Vsteps = self.bias_start_stop_step
+        requested = np.linspace(Vstart, Vstop, int(Vsteps))
+        missing = [v for v in requested if not np.isclose(self.V, v).any()]
+        if missing:
+            warnings.warn(
+                f"CHARGE did not converge at {np.round(missing, 6).tolist()} V and returned "
+                f"{len(self.V)} of {len(requested)} bias points; use smaller bias steps."
+            )
+
+        self.I = {}
+        for contact in (self.bias_contact, self.ground_contact):
+            r = dev.getresult("CHARGE", contact)
+            if "I" in r:
+                self.I[contact] = np.asarray(r["I"], dtype=float).ravel()
+            elif "In" in r and "Ip" in r:
+                self.I[contact] = (
+                    np.asarray(r["In"], dtype=float) + np.asarray(r["Ip"], dtype=float)
+                ).ravel()
+
+        self._triangulations = {}
+
+    def _tri(self, group):
+        if group not in self._triangulations:
+            r = self.results[group]
+            self._triangulations[group] = Triangulation(r["x"], r["y"], r["connectivity"])
+        return self._triangulations[group]
+
+    def _interpolate(self, group, key, idx, x, y):
+        return LinearTriInterpolator(self._tri(group), self.results[group][key][idx])(x, y)
+
+    def get_line_profile(self, line: LineString, num_points: int = 2000) -> dict:
+        """
+        Sample the 2D solution along a straight line.
+
+        Args:
+            line: LineString (um) from its first to its last point; the field is projected on this
+                direction, as the 1D solvers do with their simulation line.
+            num_points: Number of samples along the line.
+
+        Returns:
+            dict with "x", "y", "s" (distance along the line) in um, "V", and arrays of shape
+            (n_bias, num_points): Ec, Ev, Efn, Efp [eV], N, P [cm^-3], Efield [kV/cm] (component along
+            the line). Points outside the semiconductors are NaN.
+        """
+        s = np.linspace(0, line.length, num_points)
+        points = shapely.line_interpolate_point(line, s)
+        x, y = shapely.get_x(points), shapely.get_y(points)
+        tx, ty = get_normalized_vector(line)
+
+        profile = dict(x=x, y=y, s=s, V=self.V)
+        for out, (group, key) in {
+            "Ec": ("bandstructure", "Ec"),
+            "Ev": ("bandstructure", "Ev"),
+            "Efn": ("bandstructure", "Efn"),
+            "Efp": ("bandstructure", "Efp"),
+            "N": ("charge", "n"),
+            "P": ("charge", "p"),
+        }.items():
+            profile[out] = np.array(
+                [self._interpolate(group, key, k, x, y).filled(np.nan) for k in range(len(self.V))]
+            )
+        profile["Efield"] = np.array(
+            [
+                tx * self._interpolate("electrostatics", "Ex", k, x, y).filled(np.nan)
+                + ty * self._interpolate("electrostatics", "Ey", k, x, y).filled(np.nan)
+                for k in range(len(self.V))
+            ]
+        )
+        return profile
+
+    def transfer_results_to_device(self):
+        """
+        Store 2D interpolators of the solution in self.photonicdevice.charge, with the same keys and
+        units as the 1D solvers. Every quantity is zero outside the simulated semiconductors; Efield is
+        the vector (Ex, Ey, 0).
+
+        Returns:
+            None. Stores interpolators in self.photonicdevice.charge.
+        """
+        reg = self.photonicdevice.reg
+        union = shapely.union_all([p.polygon for p in self.semiconductors])
+
+        def inside(x, y):
+            return shapely.covers(union, shapely.points(x, y))
+
+        def scalar(group, key, idx, unit):
+            interp = LinearTriInterpolator(self._tri(group), self.results[group][key][idx])
+
+            def f(x, y):
+                vals = interp(x, y).filled(0.0)
+                return np.where(inside(x, y), vals, 0.0) * unit
+
+            return f
+
+        def vector(idx, unit):
+            tri = self._tri("electrostatics")
+            ex = LinearTriInterpolator(tri, self.results["electrostatics"]["Ex"][idx])
+            ey = LinearTriInterpolator(tri, self.results["electrostatics"]["Ey"][idx])
+
+            def f(x, y):
+                m = inside(x, y)
+                vx = np.where(m, ex(x, y).filled(0.0), 0.0)
+                vy = np.where(m, ey(x, y).filled(0.0), 0.0)
+                return np.stack([vx, vy, np.zeros_like(vx)], axis=-1) * unit
+
+            return f
+
+        def mobility(key, unit):
+            # piecewise constant: the CHARGE materials use the constant mobility model
+            def f(x, y):
+                pts = shapely.points(x, y)
+                vals = np.zeros(np.shape(pts))
+                for p in self.semiconductors:
+                    inside_p = shapely.covers(p.polygon, pts)
+                    vals = np.where(inside_p, self.materials[p.name][key], vals)
+                return vals * unit
+
+            return f
+
+        n_bias = range(len(self.V))
+        mob_unit = reg.cm**2 / reg.V / reg.s
+        self.photonicdevice.charge = {
+            "Ec": [scalar("bandstructure", "Ec", i, reg.eV) for i in n_bias],
+            "Ev": [scalar("bandstructure", "Ev", i, reg.eV) for i in n_bias],
+            "Efn": [scalar("bandstructure", "Efn", i, reg.eV) for i in n_bias],
+            "Efp": [scalar("bandstructure", "Efp", i, reg.eV) for i in n_bias],
+            "N": [scalar("charge", "n", i, reg.cm**-3) for i in n_bias],
+            "P": [scalar("charge", "p", i, reg.cm**-3) for i in n_bias],
+            "Efield": [vector(i, reg.kV / reg.cm) for i in n_bias],
+            "mun": [mobility("mun", mob_unit) for _ in n_bias],
+            "mup": [mobility("mup", mob_unit) for _ in n_bias],
+            "V": self.V,
+        }
+
+    def plot_results(self, V_idx: int = -1, figsize=(9, 9), xlim=None, ylim=None):
+        """
+        Plot 2D maps of n, p and |E| at one bias, with the semiconductor outlines.
+
+        Args:
+            V_idx: Index of the bias point. Defaults to the last one.
+            figsize: Figure size. Defaults to (9, 9).
+            xlim, ylim: Axis limits in um. Default to the simulation window.
+
+        Returns:
+            fig, axs: matplotlib figure and axes objects
+        """
+        x0, y0, x1, y1 = self.simulation_window.bounds
+        e = self.results["electrostatics"]
+        c = self.results["charge"]
+        maps = [
+            ("n (cm$^{-3}$)", "charge", np.clip(c["n"][V_idx], 1e8, None), LogNorm()),
+            ("p (cm$^{-3}$)", "charge", np.clip(c["p"][V_idx], 1e8, None), LogNorm()),
+            ("|E| (kV/cm)", "electrostatics", np.hypot(e["Ex"][V_idx], e["Ey"][V_idx]), None),
+        ]
+        fig, axs = plt.subplots(3, 1, figsize=figsize, sharex=True, sharey=True)
+        for ax, (title, group, values, norm) in zip(axs, maps):
+            im = ax.tripcolor(self._tri(group), values, shading="gouraud", cmap="jet", norm=norm)
+            fig.colorbar(im, ax=ax)
+            for p in self.semiconductors:
+                ax.plot(*p.polygon.exterior.xy, "k", lw=0.4)
+            ax.set_title(f"{title} @ {self.V[V_idx]:g} V")
+            ax.set_ylabel("y (um)")
+        axs[-1].set_xlabel("x (um)")
+        axs[-1].set_xlim(*(xlim or (x0, x1)))
+        axs[-1].set_ylim(*(ylim or (y0, y1)))
+        fig.tight_layout()
+        return fig, axs
