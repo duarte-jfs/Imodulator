@@ -2152,7 +2152,7 @@ class ChargeSimulatorCHARGE:
         ground_contact: str = "nmetal",
         include_insulators: bool = True,
         filename: str = "quicksave.ldev",
-        hide: bool = True,
+        GUI: bool = True,
     ):
         """
         Initialize the ChargeSimulatorCHARGE.
@@ -2168,7 +2168,8 @@ class ChargeSimulatorCHARGE:
             include_insulators: Whether to include the insulator polygons (with their DC permittivity,
                 taken from rf_eps). Otherwise everything that is not semiconductor or contact is vacuum.
             filename: Lumerical project the simulation is saved to (CHARGE only runs a saved project).
-            hide: Whether to hide the Lumerical GUI.
+            GUI: Whether to show the Lumerical DEVICE (CHARGE) window. Set to False to run CHARGE
+                without a GUI (hidden session). Defaults to True.
         """
         self.lumapi = config_instance.get_lumapi()
         if self.lumapi is None:
@@ -2228,7 +2229,7 @@ class ChargeSimulatorCHARGE:
         )
 
         # Lumerical DEVICE API starts here
-        self.lumdev = self.lumapi.DEVICE(hide=hide)
+        self.lumdev = self.lumapi.DEVICE(hide=not GUI)
         self.lumdev.switchtolayout()
         self.lumdev.deleteall()
         self._create_materials()
@@ -2237,11 +2238,17 @@ class ChargeSimulatorCHARGE:
 
     @staticmethod
     def _dc_permittivity(polygon) -> float:
-        try:
-            eps = polygon.rf_eps(0)
-        except Exception:  # tabulated rf_eps may not reach omega = 0
-            eps = polygon.rf_eps(2 * np.pi * 1e9)
-        return float(np.real(complex(eps)))
+        # rf_eps takes omega = 2*pi*f with f in GHz (as in RFSimulator). A tabulated rf_eps may not
+        # reach omega = 0, so take the lowest of these frequencies inside its range.
+        for f_GHz in (0, 0.01, 0.1, 1, 10):
+            try:
+                return float(np.real(complex(polygon.rf_eps(2 * np.pi * f_GHz))))
+            except ValueError:
+                continue
+        raise ValueError(
+            f"Could not evaluate the DC permittivity of '{polygon.name}' from its rf_eps "
+            "between 0 and 10 GHz"
+        )
 
     def _semiconductor_parameters(self, polygon) -> dict:
         """Band gap, affinity, DOS masses, permittivity (openbandparams) and mobilities (imodulator.utils)."""
